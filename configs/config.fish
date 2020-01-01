@@ -119,7 +119,7 @@ alias psql='psql -d delta'
 # Mongo alias
 alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
-alias msto='sudo -A su -c "nohup /usr/bin/mongod --quiet --config /etc/mongodb.conf&"'
+alias msto='sudo -A su -c "nohup /usr/bin/mongod --quiet --config /etc/mongodb.conf&";yes | rm nohup.out'
 function mimp
     echo "$argv[1]"
     set db (string split ' ' "$argv[1]" -f1)
