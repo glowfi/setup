@@ -3,13 +3,15 @@
 # READ ARGUMENT
 uname=$1
 
+
+# CORE PACAKAGES
+
 echo ""
 echo "---------------------------------------------------------------------------------"
 echo "--------------Installing CORE PACKAGES FOR DWM...--------------------------------"
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-# CORE PACAKAGES
 sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst 
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock 
 sudo pacman -S --noconfirm pulsemixer pamixer
@@ -18,6 +20,7 @@ sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs 
 
 # APPEARANCE
+
 sudo pacman -S --noconfirm lxappearance breeze-icons breeze-gtk breeze ttf-joypixels
 yes | yay -S libxft-bgra
 
@@ -39,7 +42,8 @@ echo "--------------Creating wallpaper and pipewire scripts...------------------
 echo "----------------------------------------------------------------------------------------"
 echo ""
 
-# WALLPAPER SCRIPT 
+# WALLPAPER SCRIPT
+
 touch ~/.wall.sh
 echo '#!/bin/bash
 while true;
@@ -50,7 +54,8 @@ done &
 ' >> ~/.wall.sh
 
 
-# PIPEWIRE SCRIPT 
+# PIPEWIRE SCRIPT
+
 touch ~/.pw.sh
 echo "#!/bin/sh
 /usr/bin/pipewire &
@@ -64,7 +69,8 @@ echo "--------------Creating xinitrc...-----------------------------------------
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# XINIT SETUP 
+# XINIT SETUP
+
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 sed -i '51,55d' ~/.xinitrc
 
@@ -105,18 +111,21 @@ echo "--------------Installing DWM DMENU SLOCK AND TOPBAR...--------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-# INSTALL DWM 
+# INSTALL DWM
+
 cd ~/setup/configs/dwm-6.2
 sudo cp config.def.h config.h
 sudo make clean setup
 cd ..
 
 # INSTALL DEMNU
+
 cd ~/setup/configs/dmenu
 sudo make clean setup
 cd ..
 
 # INSTALL SLOCK
+
 cd ~/setup/configs/slock
 new1=static const char *user  = "${uname}";
 new2=static const char *group = "${uname}";
@@ -129,6 +138,7 @@ sudo systemctl enable slock@$uname.service
 cd ..
 
 # INSTALL TOPBAR
+
 cp -r ~/setup/configs/dwm-bar ~
 cd
 
@@ -139,6 +149,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 # UPDATE MIMETYPE
+
 touch ~/zathura.desktop
 sudo touch zathura.desktop
 cp -r ~/setup/configs/zathura ~/.config
