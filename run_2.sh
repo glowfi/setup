@@ -19,12 +19,10 @@ chmod +x ~/setup/3_packages.sh
 chmod +x ~/setup/4_cdx.sh
 ~/setup/4_cdx.sh
 
-if [[ $choice == "1" ]]
-then
+if [[ $choice == "1" ]]; then
     chmod +x ~/setup/5_kde_.sh
     ~/setup/5_kde_.sh
-elif [[ $choice == "2" ]]
-then
+elif [[ $choice == "2" ]]; then
     chmod +x ~/setup/5_dwm_.sh
     ~/setup/5_dwm_.sh $uname
 else
