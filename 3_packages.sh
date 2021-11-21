@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo "What is your username?"
-read uname
-
 echo "--------------------------------------------------------------"
 echo "--------------Refreshing mirrorlist...------------------------"
 echo "--------------------------------------------------------------"
@@ -62,7 +59,6 @@ sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
 yay -S --noconfirm mongodb-bin
 
 ### PACK
-sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst 
 yay -S --noconfirm brave-bin onlyoffice-bin
 
 ### TERMINAL TOMFOOLERY
@@ -143,4 +139,4 @@ cp -r ~/setup/configs/kitty ~/.config/
 
 # CHANGE DEFAULT SHELL
 
-sudo usermod --shell /bin/fish $uname
+sudo usermod --shell /bin/fish $1
