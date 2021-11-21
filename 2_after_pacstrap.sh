@@ -42,6 +42,19 @@ sed -i '177s/.//' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
+# ADD FEATURES TO pacman.conf
+
+echo ""
+echo "----------------------------------------------------------------"
+echo "--------------Enabling ParallelDownloads...---------------------"
+echo "----------------------------------------------------------------"
+echo ""
+
+sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+sudo pacman -Syy
+
+
 # SET HOSTNAME
 
 echo ""
