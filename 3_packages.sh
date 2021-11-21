@@ -1,12 +1,12 @@
 #!/bin/sh
 
+# SYNCHRONIZING
+
 echo ""
 echo "--------------------------------------------------------------"
 echo "--------------Refreshing mirrorlist...------------------------"
 echo "--------------------------------------------------------------"
 echo ""
-
-# SYNCHRONIZING
 
 sudo timedatectl set-ntp true
 sudo hwclock --systohc
