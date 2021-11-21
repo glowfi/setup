@@ -13,18 +13,6 @@ sudo hwclock --systohc
 sudo reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syy
 
-# ADD FEATURES TO pacman.conf
-
-echo ""
-echo "----------------------------------------------------------------"
-echo "--------------Enabling ParallelDownloads...---------------------"
-echo "----------------------------------------------------------------"
-echo ""
-
-sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
-sudo pacman -Syy
-
 # DISPLAY
 
 echo ""
