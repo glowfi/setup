@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd
+
 chmod +x ~/setup/2_after_pacstrap.sh
 ~/setup/2_after_pacstrap.sh 
 
