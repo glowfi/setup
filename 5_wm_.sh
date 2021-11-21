@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "What is your username?"
+read uname
+
 echo "---------------------------------------------------------------------------------"
 echo "--------------Installing CORE PACKAGES FOR DWM...--------------------------------"
 echo "---------------------------------------------------------------------------------"
@@ -104,11 +107,14 @@ cd ..
 
 # INSTALL SLOCK
 cd ~/setup/configs/slock
-vim ~/setup/configs/slock/config.def.h
+new1=static const char *user  = "${uname}";
+new2=static const char *group = "${uname}";
+sudo sed -i "2s/.*/static const char *user  = "$uname";/" ~/setup/configs/slock/config.def.h
+sudo sed -i "3s/.*/static const char *group = "$uname";/" ~/setup/configs/slock/config.def.h
 sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
 sudo cp config.def.h config.h
 sudo make clean setup
-sudo systemctl enable slock@john.service
+sudo systemctl enable slock@$uname.service
 cd ..
 
 # INSTALL TOPBAR
