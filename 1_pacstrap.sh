@@ -2,9 +2,11 @@
 
 # SYNCHRONIZE
 
+echo ""
 echo -e "-------------------------------------------------------------------------"
 echo -e "-----------Setting up mirrors for faster downloads-----------------------"
 echo -e "-------------------------------------------------------------------------"
+echo ""
 
 timedatectl set-ntp true
 sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
@@ -12,9 +14,11 @@ sed -i 's/^#Para/Para/' /etc/pacman.conf
 reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syyy
 
+echo ""
 echo "-------------------------------------------------"
 echo "-------Select your disk to format----------------"
 echo "-------------------------------------------------"
+echo ""
 lsblk
 echo "Please enter disk to work on: (example /dev/sda)"
 read DISK
@@ -23,9 +27,11 @@ read -p "are you sure you want to continue (Y/N):" formatdisk
 
 case $formatdisk in
     y|Y|yes|Yes|YES)
+    echo ""
     echo "--------------------------------------"
     echo -e "\nFormatting disk...\n"
     echo "--------------------------------------"
+    echo ""
 
     # Align Disk
     sgdisk -Z ${DISK} # zap all on disk
@@ -33,9 +39,11 @@ case $formatdisk in
 
     # PARTITION
 
+    echo ""
     echo "--------------------------------------------------"
     echo "-------Auto partitioning the disk...--------------"
     echo "--------------------------------------------------"
+    echo ""
 
     (
       echo n;
@@ -60,9 +68,11 @@ case $formatdisk in
 
     # FORMAT
 
+    echo ""
     echo "-----------------------------------------------------"
     echo "--------------Formatting disk...---------------------"
     echo "-----------------------------------------------------"
+    echo ""
 
 
     mkfs.fat -F32 ${DISK}1
@@ -71,9 +81,11 @@ case $formatdisk in
 
     # MOUNT
 
+    echo ""
     echo "-----------------------------------------------------"
     echo "--------------Mounting disk...-----------------------"
     echo "-----------------------------------------------------"
+    echo ""
 
 
     mount ${DISK}2 /mnt
@@ -88,9 +100,11 @@ case $formatdisk in
 
     # BASE SETUP
 
+    echo ""
     echo "----------------------------------------------------"
     echo "--------------Pacstrapping...-----------------------"
     echo "----------------------------------------------------"
+    echo ""
 
     pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
 

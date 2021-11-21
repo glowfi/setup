@@ -1,8 +1,10 @@
 #!/bin/fish
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing Python Modules...------------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 # PYTHON MODULES
 
@@ -16,9 +18,11 @@ jupyter contrib nbextension install --user
 jupyter nbextensions_configurator enable --user
 pyppeteer-install
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing Node Modules...--------------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 # DOWNLOAD NODEJS
 
@@ -30,18 +34,22 @@ rm -rf ~/node.tar.xz
 
 npm i -g yarn
 
+echo ""
 echo "-------------------------------------------------------------------------------"
 echo "--------------Installing a Fuzzy File Finder...--------------------------------"
 echo "-------------------------------------------------------------------------------"
+echo ""
 
 # FZF TERMINAL INTEGRATION
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+echo ""
 echo "-------------------------------------------------------------------------------"
 echo "--------------Installing terminal utilities...---------------------------------"
 echo "-------------------------------------------------------------------------------"
+echo ""
 
 # INSTALL CHECKUR
 
@@ -67,9 +75,11 @@ chmod +x ~/.local/bin/xhibit.py
 
 # SETUP POSTGRES
 
+echo ""
 echo "-------------------------------------------------------------------------------"
 echo "--------------Setuping Database...---------------------------------------------"
 echo "-------------------------------------------------------------------------------"
+echo ""
 
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
@@ -77,9 +87,11 @@ sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|crea
 
 # DOWNLOAD NEOVIM
 
+echo ""
 echo "---------------------------------------------------------------------------------------------"
 echo "--------------Installing the best text editor in the world...--------------------------------"
 echo "---------------------------------------------------------------------------------------------"
+echo ""
 
 pip install neovim ueberzug black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync

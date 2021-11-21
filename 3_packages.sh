@@ -1,8 +1,10 @@
 #!/bin/sh
 
+echo ""
 echo "--------------------------------------------------------------"
 echo "--------------Refreshing mirrorlist...------------------------"
 echo "--------------------------------------------------------------"
+echo ""
 
 # SYNCHRONIZING
 
@@ -13,9 +15,11 @@ sudo pacman -Syy
 
 # ADD FEATURES TO pacman.conf
 
+echo ""
 echo "----------------------------------------------------------------"
 echo "--------------Enabling ParallelDownloads...---------------------"
 echo "----------------------------------------------------------------"
+echo ""
 
 sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
@@ -23,18 +27,22 @@ sudo pacman -Syy
 
 # DISPLAY
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing display driver packages...---------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 sudo pacman -S --noconfirm xorg-server xf86-video-amdgpu
 
 
 # AUR HELPER
 
+echo ""
 echo "----------------------------------------------------------------"
 echo "--------------Installing AUR helper...--------------------------"
 echo "----------------------------------------------------------------"
+echo ""
 
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin/
@@ -44,9 +52,11 @@ rm -rf yay-bin
 
 # PACKAGES
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing required packages...---------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
@@ -84,34 +94,43 @@ yay -S --noconfirm gimp-plugin-registry
 
 # ENABLE ZRAM
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Enabling ZRAM...------------------------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 sudo sed -i '8s/.*/MAX_SIZE=724/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
 # ADD FEATURES TO sudoers
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Adding insultson wrong password...------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 sudo sed -i '71s/.*/Defaults insults/' /etc/sudoers
 
 # SETUP APPARMOR
+
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Enabling APPARMOR...--------------------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo pacman -S --noconfirm apparmor
 sudo systemctl enable --now apparmor.service
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------COPYING SETTINGS...---------------------------------------"
 echo "------------------------------------------------------------------------"
+echo ""
 
 # COPY FISH SHELL SETTINGS
 
