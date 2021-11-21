@@ -116,8 +116,13 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # UPDATING mkinitcpio.conf
 
-sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
-mkinitcpio -p linux-zen
+if lspci | grep -E "Radeon"; then
+    sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
+    mkinitcpio -p linux-zen
+else
+    sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+    mkinitcpio -p linux-zen
+fi
 
 
 # ENABLE PACKAGES
