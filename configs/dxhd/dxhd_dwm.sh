@@ -6,7 +6,7 @@
 
 ## Logout/Restart/Shutdown
 #super+x 
-    chosen=$(echo -e "[Cancel]\nShutdown\nReboot\nLock" | dmenu -i)
+    chosen=$(echo -e "[Cancel]\nShutdown\nReboot\nLock" | dmenu -i -nb "#32302f" -nf "#bbbbbb" -sb "#98971a" -sf "#eeeeee")
 
     if [[ $chosen = "Shutdown" ]]; then
         systemctl poweroff
