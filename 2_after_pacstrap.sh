@@ -53,10 +53,8 @@ echo "----------------------------------------------------------"
 echo "--------------Adding you as user...-----------------------"
 echo "----------------------------------------------------------"
 
-echo "What would be the username?"
-read uname
-echo "What would be the fullname of the user?"
-read fname
+uname=$1 
+fname=$2
 
 echo root:password | chpasswd
 useradd -mG wheel $uname
