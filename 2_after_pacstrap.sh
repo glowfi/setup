@@ -95,6 +95,10 @@ mkinitcpio -p linux-zen
 
 # ENABLE PACKAGES
 
+echo "---------------------------------------------------------"
+echo "--------------Enabling Services...-----------------------"
+echo "---------------------------------------------------------"
+
 systemctl enable NetworkManager
 systemctl enable reflector.timer
 

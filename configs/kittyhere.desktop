@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+MimeType=inode/directory;
+Actions=openKittyHere;
+X-KDE-AuthorizeAction=shell_access
+
+[Desktop Action openKittyHere]
+TryExec=konsole
+Icon=utilities-terminal
+Exec=kitty --directory %f
+Name=Open Kitty Here

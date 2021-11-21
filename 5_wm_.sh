@@ -1,13 +1,14 @@
 #!/bin/sh
 
-echo "What is your username?"
-read uname
+# READ ARGUMENT
+uname=$1
 
 echo "---------------------------------------------------------------------------------"
 echo "--------------Installing CORE PACKAGES FOR DWM...--------------------------------"
 echo "---------------------------------------------------------------------------------"
 
 # CORE PACAKAGES
+sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst 
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock 
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils  
