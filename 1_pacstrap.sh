@@ -140,7 +140,7 @@ case $formatdisk in
     ;;
 
     n|N|no|No|NO)
-        echo "Disk partitioning cancelled!Exited....."
+        echo "Disk partitioning cancelled!Exiting from further installation....."
     ;;
 
 esac
