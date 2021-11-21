@@ -81,4 +81,4 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 # GO TO MAIN SYSTEM
 
-bash -c "arch-chroot /mnt;git clone https://github.com/glowfi/setup;cd setup;chmod +x ./2_after_pacstrap;./2_after_pacstrap;cd ..;"
+arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh;rm -rf setup;"
