@@ -21,7 +21,17 @@ echo "--------------Installing display driver packages...---------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm xorg-server xf86-video-amdgpu
+## Determine GPU  
+if lspci | grep -E "NVIDIA|GeForce"; then
+     sudo pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+elif lspci | grep -E "Radeon"; then
+    sudo  pacman -S --noconfirm xf86-video-amdgpu
+elif lspci | grep -E "Integrated Graphics Controller"; then
+    sudo  pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
+fi
+
+## Xorg packages
+sudo pacman -S --noconfirm xorg-server
 
 
 # AUR HELPER

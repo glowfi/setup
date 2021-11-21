@@ -74,9 +74,13 @@ case $formatdisk in
     echo "-----------------------------------------------------"
     echo ""
 
-
-    mkfs.fat -F32 ${DISK}1
-    mkfs.btrfs ${DISK}2
+    if [[ ${DISK} =~ "nvme" ]]; then
+    mkfs.fat -F32 "${DISK}p1"
+    mkfs.btrfs "${DISK}p2"
+    else
+    mkfs.fat -F32 "${DISK}1"
+    mkfs.btrfs "${DISK}2"
+    fi
 
 
     # MOUNT
@@ -87,18 +91,25 @@ case $formatdisk in
     echo "-----------------------------------------------------"
     echo ""
 
-
-    mount ${DISK}2 /mnt
+    if [[ ${DISK} =~ "nvme" ]]; then
+    mount "${DISK}p2" /mnt
     btrfs su cr /mnt/@
     umount /mnt
-
-
-    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ ${DISK}2 /mnt
+    
+    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}p2" /mnt
     mkdir -p /mnt/boot
-    mount ${DISK}1 /mnt/boot
-
-
-    # BASE SETUP
+    mount "${DISK}p1" /mnt/boot
+    else
+    mount "${DISK}2" /mnt
+    btrfs su cr /mnt/@
+    umount /mnt
+    
+    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}2" /mnt
+    mkdir -p /mnt/boot
+    mount "${DISK}1" /mnt/boot
+    fi
+   
+   # BASE SETUP
 
     echo ""
     echo "----------------------------------------------------"
@@ -106,7 +117,18 @@ case $formatdisk in
     echo "----------------------------------------------------"
     echo ""
 
-    pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
+    ## Determine Intel or AMD CPU
+    proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
+    case "$proc_type" in
+        GenuineIntel)
+            print "Installing Intel microcode"
+            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim
+            ;;
+        AuthenticAMD)
+            print "Installing AMD microcode"
+            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
+            ;;
+    esac
 
     # GENERATE UUID OF THE DISKS
 
