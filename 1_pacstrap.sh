@@ -81,7 +81,7 @@ case $formatdisk in
     umount /mnt
 
 
-    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ ${DISK}1 /mnt
+    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ ${DISK}2 /mnt
     mkdir -p /mnt/boot
     mount ${DISK}1 /mnt/boot
 
