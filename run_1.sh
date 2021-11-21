@@ -7,4 +7,4 @@ read uname
 echo "What would be the fullname of the user?"
 read fname
 
-sh setup/1_pacstrap.sh $uname $fname
+sh setup/1_pacstrap.sh $uname "$fname"
