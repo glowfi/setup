@@ -2,18 +2,22 @@
 
 # SET LOCATION AND SYNCHRONIZE HARDWARE CLOCK
 
+echo ""
 echo "---------------------------------------------------------------------------------------"
 echo "--------------Setting Location and Synchronizing hardware clock...---------------------"
 echo "---------------------------------------------------------------------------------------"
+echo ""
 
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
 
 # OPTIMIZE MAKEPKG
 
+echo ""
 echo "--------------------------------------------------------------"
 echo "--------------Optimizing makepkg flags...---------------------"
 echo "--------------------------------------------------------------"
+echo ""
 
 nc=$(grep -c ^processor /proc/cpuinfo)
 echo "You have " $nc" cores."
@@ -28,9 +32,11 @@ fi
 
 # LOCALE GENERATION
 
+echo ""
 echo "-----------------------------------------------------"
 echo "--------------Setting Locales...---------------------"
 echo "-----------------------------------------------------"
+echo ""
 
 sed -i '177s/.//' /etc/locale.gen
 locale-gen
@@ -38,20 +44,25 @@ echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
 # SET HOSTNAME
 
+echo ""
 echo "------------------------------------------------------"
 echo "--------------Setting hostname...---------------------"
 echo "------------------------------------------------------"
+echo ""
 
 echo "arch" >> /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 arch.localdomain arch" >> /etc/hosts
+echo "Done setting hostname!"
 
 # SET USER
 
+echo ""
 echo "----------------------------------------------------------"
 echo "--------------Adding you as user...-----------------------"
 echo "----------------------------------------------------------"
+echo ""
 
 uname=$1 
 fname=$2
@@ -61,13 +72,16 @@ useradd -mG wheel $uname
 usermod -c "$fname" $uname
 echo $uname:password | chpasswd
 echo "$uname ALL=(ALL) ALL" >> /etc/sudoers.d/$uname
+echo "Done adding user!"
 
 
 # PACAKGES
 
+echo ""
 echo "----------------------------------------------------------------"
 echo "--------------Installing some packages...-----------------------"
 echo "----------------------------------------------------------------"
+echo ""
 
 pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync
 
@@ -77,9 +91,11 @@ pacman -S --noconfirm exa bat ripgrep fd bottom
 
 # GRUB
 
+echo ""
 echo "-------------------------------------------------------"
 echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
+echo ""
 
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -93,9 +109,11 @@ mkinitcpio -p linux-zen
 
 # ENABLE PACKAGES
 
+echo ""
 echo "---------------------------------------------------------"
 echo "--------------Enabling Services...-----------------------"
 echo "---------------------------------------------------------"
+echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer

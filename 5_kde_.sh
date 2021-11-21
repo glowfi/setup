@@ -1,6 +1,12 @@
 #!/bin/sh
 
-# DE
+# CORE PACKAGES
+
+echo ""
+echo "---------------------------------------------------------------------------------"
+echo "--------------Installing CORE PACKAGES FOR KDE...--------------------------------"
+echo "---------------------------------------------------------------------------------"
+echo ""
 
 sudo pacman -S --noconfirm plasma-desktop plasma-workspace plasma-nm plasma-pa qt5-tools
 
@@ -21,14 +27,32 @@ sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
 
 # ENABLE SDDM
 
+echo ""
+echo "---------------------------------------------------------------------------------"
+echo "--------------ENABLE LOGIN MANAGER SDDM...---------------------------------------"
+echo "---------------------------------------------------------------------------------"
+echo ""
+
 sudo systemctl enable sddm
 
 # REGISTER KITTY IN DOLPHIN
+
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "--------------Register Kitty in Dolphin...--------------------------------------"
+echo "--------------------------------------------------------------------------------"
+echo ""
 
 mkdir -p ~/.local/share/kservices5
 cp -r ~/setup/configs/kittyhere.desktop ~/.local/share/kservices5
 
 # SETUP DXHD
+
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "--------------Installing Hotkey Daemon...--------------------------------------"
+echo "-------------------------------------------------------------------------------"
+echo ""
 
 yay -S --noconfirm dxhd-bin
 mkdir -p ~/.config/dxhd
