@@ -25,8 +25,8 @@ then
     ~/setup/5_kde_.sh
 elif [[ $choice == "2" ]]
 then
-    chmod +x ~/setup/5_wm_.sh
-    ~/setup/5_wm_.sh $uname
+    chmod +x ~/setup/5_dwm_.sh
+    ~/setup/5_dwm_.sh $uname
 else
   echo "Wrong choice!"
 fi
