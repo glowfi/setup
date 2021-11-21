@@ -56,7 +56,7 @@ case $formatdisk in
       echo "Arch Linux";
       echo w;
       echo Y;
-    ) | gdisk /dev/${DISK}
+    ) | gdisk ${DISK}
 
     # FORMAT
 
@@ -65,8 +65,8 @@ case $formatdisk in
     echo "-----------------------------------------------------"
 
 
-    mkfs.fat -F32 /dev/${DISK}1
-    mkfs.btrfs /dev/${DISK}2
+    mkfs.fat -F32 ${DISK}1
+    mkfs.btrfs ${DISK}2
 
 
     # MOUNT
@@ -76,14 +76,14 @@ case $formatdisk in
     echo "-----------------------------------------------------"
 
 
-    mount /dev/${DISK}2 /mnt
+    mount ${DISK}2 /mnt
     btrfs su cr /mnt/@
     umount /mnt
 
 
-    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ /dev/${DISK}1 /mnt
+    mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ ${DISK}1 /mnt
     mkdir -p /mnt/boot
-    mount /dev/${DISK}1 /mnt/boot
+    mount ${DISK}1 /mnt/boot
 
 
     # BASE SETUP
