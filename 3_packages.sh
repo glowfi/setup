@@ -67,6 +67,7 @@ sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
 yay -S --noconfirm mongodb-bin
 
 ### PACK
+sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
 
 ### TERMINAL TOMFOOLERY
