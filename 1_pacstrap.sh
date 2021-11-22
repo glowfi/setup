@@ -119,16 +119,13 @@ case $formatdisk in
 
     ## Determine Intel or AMD CPU
     proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
-    case "$proc_type" in
-        GenuineIntel)
+    if [[ ${proc_type} =~ "GenuineIntel" ]]; then
             print "Installing Intel microcode"
             pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim
-            ;;
-        AuthenticAMD)
+    elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
             print "Installing AMD microcode"
             pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
-            ;;
-    esac
+    fi
 
     # GENERATE UUID OF THE DISKS
 
