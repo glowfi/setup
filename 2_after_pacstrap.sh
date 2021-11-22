@@ -135,5 +135,3 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
-
-printf "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m\n"
