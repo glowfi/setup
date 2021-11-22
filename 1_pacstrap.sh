@@ -138,6 +138,8 @@ case $formatdisk in
     # GO TO MAIN SYSTEM
 
     arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $1 \"$2\";rm -rf setup;"
+    umount -a 
+    reboot
     ;;
 
     n|N|no|No|NO)
