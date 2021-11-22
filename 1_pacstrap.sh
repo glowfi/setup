@@ -120,10 +120,14 @@ case $formatdisk in
     ## Determine Intel or AMD CPU
     proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
     if [[ ${proc_type} =~ "GenuineIntel" ]]; then
-            printf "Installing Intel microcode ..."
+            echo ""
+            echo "Installing Intel microcode ..."
+            echo ""
             pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim
     elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
-            printf "Installing AMD microcode ..."
+            echo ""
+            echo "Installing AMD microcode ..."
+            echo ""
             pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
     fi
 
