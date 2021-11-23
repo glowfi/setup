@@ -151,7 +151,7 @@ case $formatdisk in
 
     n|N|no|No|NO)
         echo ""
-        echo "Installation Cancelled !"
+        printf '\e[1;31m%-6s\e[m' "Installation Cancelled!"
         echo ""
     ;;
 
