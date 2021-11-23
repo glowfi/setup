@@ -14,7 +14,7 @@ echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
 read -p "are you sure you want to continue (Y/N):" formatdisk
 
 
-# FORMATTING DISK
+# PACSTRAP BASE SYSTEM
 
 case $formatdisk in
     y|Y|yes|Yes|YES)
@@ -33,13 +33,14 @@ case $formatdisk in
     reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
     pacman -Syyy
 
+    # ALIGN DISK 
+
     echo ""
-    echo "--------------------------------------"
-    echo -e "\nFormatting disk...\n"
-    echo "--------------------------------------"
+    echo "--------------------------------------------------"
+    echo "-------Aligning new GPT partition...--------------"
+    echo "--------------------------------------------------"
     echo ""
 
-    # ALIGN DISK
     sgdisk -Z ${DISK} 
     sgdisk -a 2048 -o ${DISK} 
 
@@ -115,7 +116,7 @@ case $formatdisk in
     mount "${DISK}1" /mnt/boot
     fi
    
-   # BASE SETUP
+   # INSTALL BASE SETUP
 
     echo ""
     echo "----------------------------------------------------"
