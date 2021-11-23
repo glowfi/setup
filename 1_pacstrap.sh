@@ -8,8 +8,10 @@ echo "-------Select your disk to format----------------"
 echo "-------------------------------------------------"
 echo ""
 lsblk
+echo ""
 echo "Please enter disk to work on: (example /dev/sda)"
 read DISK
+echo ""
 echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
 read -p "are you sure you want to continue (Y/N):" formatdisk
 

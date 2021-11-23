@@ -11,6 +11,7 @@ echo ""
 echo "What is your username?"
 read uname
 
+echo ""
 echo "Press 1 to install KDE"
 echo "Press 2 to install DWM"
 read choice
