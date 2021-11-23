@@ -13,33 +13,35 @@ read DISK
 echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
 read -p "are you sure you want to continue (Y/N):" formatdisk
 
-# SYNCHRONIZE
-
-echo ""
-echo -e "-------------------------------------------------------------------------"
-echo -e "-----------Setting up mirrors for faster downloads-----------------------"
-echo -e "-------------------------------------------------------------------------"
-echo ""
-
-timedatectl set-ntp true
-sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
-reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
-pacman -Syyy
 
 # FORMATTING DISK
 
 case $formatdisk in
     y|Y|yes|Yes|YES)
+   
+   # SYNCHRONIZE
+
+    echo ""
+    echo -e "-------------------------------------------------------------------------"
+    echo -e "-----------Setting up mirrors for faster downloads-----------------------"
+    echo -e "-------------------------------------------------------------------------"
+    echo ""
+
+    timedatectl set-ntp true
+    sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+    sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+    reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+    pacman -Syyy
+
     echo ""
     echo "--------------------------------------"
     echo -e "\nFormatting disk...\n"
     echo "--------------------------------------"
     echo ""
 
-    # Align Disk
-    sgdisk -Z ${DISK} # zap all on disk
-    sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
+    # ALIGN DISK
+    sgdisk -Z ${DISK} 
+    sgdisk -a 2048 -o ${DISK} 
 
     # PARTITION
 
