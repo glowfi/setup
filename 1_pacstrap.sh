@@ -23,6 +23,7 @@ case $formatdisk in
 
     # ACCEPT USERNAME AND FULLNAME
 
+    echo ""
     echo "What would be the username?"
     read uname
     echo "What would be the fullname of the user?"
