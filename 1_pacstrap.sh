@@ -1,5 +1,18 @@
 #!/bin/sh
 
+# SELECT DISK TO FORMAT
+
+echo ""
+echo "-------------------------------------------------"
+echo "-------Select your disk to format----------------"
+echo "-------------------------------------------------"
+echo ""
+lsblk
+echo "Please enter disk to work on: (example /dev/sda)"
+read DISK
+echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
+read -p "are you sure you want to continue (Y/N):" formatdisk
+
 # SYNCHRONIZE
 
 echo ""
@@ -14,16 +27,7 @@ sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
 reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syyy
 
-echo ""
-echo "-------------------------------------------------"
-echo "-------Select your disk to format----------------"
-echo "-------------------------------------------------"
-echo ""
-lsblk
-echo "Please enter disk to work on: (example /dev/sda)"
-read DISK
-echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
-read -p "are you sure you want to continue (Y/N):" formatdisk
+# FORMATTING DISK
 
 case $formatdisk in
     y|Y|yes|Yes|YES)
