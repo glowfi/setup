@@ -96,11 +96,11 @@ echo "--------------Installing some packages...-----------------------"
 echo "----------------------------------------------------------------"
 echo ""
 
-pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync
+pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
 
-pacman -S --noconfirm exa bat ripgrep fd bottom
+pacman -S --noconfirm exa bat ripgrep fd bottom || exit 0
 
 # GRUB
 
