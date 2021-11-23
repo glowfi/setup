@@ -18,6 +18,13 @@ read -p "are you sure you want to continue (Y/N):" formatdisk
 
 case $formatdisk in
     y|Y|yes|Yes|YES)
+
+    # ACCEPT USERNAME AND FULLNAME
+
+    echo "What would be the username?"
+    read uname
+    echo "What would be the fullname of the user?"
+    read fname
    
    # SYNCHRONIZE
 
@@ -144,7 +151,7 @@ case $formatdisk in
 
     # GO TO MAIN SYSTEM
 
-    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $1 \"$2\";rm -rf setup;"
+    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;"
     umount -a 
     reboot
     ;;
