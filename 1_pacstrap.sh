@@ -154,7 +154,7 @@ case $formatdisk in
 
     # GO TO MAIN SYSTEM
 
-    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;"
+    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;" || exit 0
     umount -a 
     reboot
     ;;
