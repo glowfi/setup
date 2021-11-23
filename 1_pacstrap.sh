@@ -150,7 +150,9 @@ case $formatdisk in
     ;;
 
     n|N|no|No|NO)
-        echo "Disk partitioning cancelled!Exiting from further installation....."
+        echo ""
+        echo "Installation Cancelled !"
+        echo ""
     ;;
 
 esac
