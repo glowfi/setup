@@ -155,13 +155,11 @@ case $formatdisk in
     # GO TO MAIN SYSTEM
 
     arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;"
-    umount -a 
-    reboot
     ;;
 
     n|N|no|No|NO)
         echo ""
-        printf '\e[1;31m%-6s\e[m' "Installation Cancelled!"
+        printf '\e[1;31m%-6s\e[m' "Installation Cancelled!\n"
         echo ""
     ;;
 
