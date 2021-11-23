@@ -140,12 +140,12 @@ case $formatdisk in
             echo ""
             echo "Installing Intel microcode ..."
             echo ""
-            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim
+            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim || exit 0
     elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
             echo ""
             echo "Installing AMD microcode ..."
             echo ""
-            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim
+            pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim || exit 0
     fi
 
     # GENERATE UUID OF THE DISKS
@@ -155,6 +155,8 @@ case $formatdisk in
     # GO TO MAIN SYSTEM
 
     arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;"
+    umount -a 
+    reboot
     ;;
 
     n|N|no|No|NO)
