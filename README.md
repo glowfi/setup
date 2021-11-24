@@ -28,13 +28,13 @@
 -   vanity gaps
 -   always center
 
-Emoji support by installing libxft-bgra
+**Emoji support added by installing libxft-bgra**
 
 **DMENU PATCHES**
 
 No patches (Vanilla)
 
-Emoji support by installing libxft-bgra
+**Emoji support by added installing libxft-bgra**
 
 **SLOCK PATCHES**
 
@@ -47,3 +47,28 @@ Emoji support by installing libxft-bgra
 -   Brightness
 -   Network
 -   Date and Time
+
+## INSTALLATION STEPS
+
+**Connect to the Internet.Use iwctl if you are using wifi.
+Your PC will restart after the below script finishes.**
+
+```sh
+
+pacman -Sy git
+git clone https://github.com/glowfi/setup
+sh ./setup/run_1.sh
+
+```
+
+**After PC restarts login with your username and password .
+Again connect to Internet.Use nmtui if you are using wifi.
+Then,run the below command.**
+
+```sh
+
+git clone https://github.com/glowfi/setup
+chmod +x ./setup/run_2.sh
+./setup/run_2.sh
+
+```
