@@ -28,6 +28,32 @@ case $formatdisk in
     read uname
     echo "What would be the fullname of the user?"
     read fname
+
+
+    # ACCEPT USER AND ROOT PASSWORD
+
+    echo ""
+    echo "What would be the password for $uname account?"
+    read -s passu1
+    echo "Type password for $uname account again"
+    read -s passu2
+    if [[ "$passu1" == "$passu2" ]]; then
+        upass=$passu2
+    else 
+        echo "Try running the script again!"
+        exit 0 
+    fi
+    
+    echo "What would be the password for root account?"
+    read -s passr1
+    echo "Type password for root account again"
+    read -s passr2
+    if [[ "$passr1" == "$passr2" ]]; then
+        rpass=$passr2
+    else 
+        echo "Try running the script again!"
+        exit 0 
+    fi
    
    # SYNCHRONIZE
 
@@ -154,7 +180,7 @@ case $formatdisk in
 
     # GO TO MAIN SYSTEM
 
-    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\";rm -rf setup;" || exit 0
+    arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\" \"$upass\" \"$rpass\";rm -rf setup;" || exit 0
     umount -a 
     reboot
     ;;
