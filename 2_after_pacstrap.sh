@@ -79,11 +79,13 @@ echo ""
 
 uname=$1 
 fname=$2
+upass=$3
+rpass=$4
 
-echo root:password | chpasswd
+echo root:$4 | chpasswd
 useradd -mG wheel $uname
 usermod -c "$fname" $uname
-echo $uname:password | chpasswd
+echo $uname:$3 | chpasswd
 echo "$uname ALL=(ALL) ALL" >> /etc/sudoers.d/$uname
 echo "Done adding user!"
 
