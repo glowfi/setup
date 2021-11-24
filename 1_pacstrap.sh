@@ -40,7 +40,7 @@ case $formatdisk in
     if [[ "$passu1" == "$passu2" ]]; then
         upass=$passu2
     else 
-        echo "Password wrong.Try running the script again!"
+        echo "Password do not match.Try running the script again!"
         exit 0 
     fi
    
@@ -52,7 +52,7 @@ case $formatdisk in
     if [[ "$passr1" == "$passr2" ]]; then
         rpass=$passr2
     else 
-        echo "Password wrong.Try running the script again!"
+        echo "Password do not match.Try running the script again!"
         exit 0 
     fi
    
