@@ -10,7 +10,7 @@ echo ""
 
 sudo timedatectl set-ntp true
 sudo hwclock --systohc
-sudo reflector --verbose --protocol https -a 48 -c DE -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syy
 
 # DISPLAY
