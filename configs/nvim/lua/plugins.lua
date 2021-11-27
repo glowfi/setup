@@ -174,14 +174,14 @@ return require('packer').startup(function(use)
 
 
     --   Refactor
-    -- use {"ThePrimeagen/refactoring.nvim",
-    --     requires = {
-    --         {"nvim-lua/plenary.nvim"},
-    --         {"nvim-treesitter/nvim-treesitter"},
-    --         {"nvim-lua/popup.nvim"}
-    --     },
-    --     config=[[require('core.refactor')]]
-    --     }
+    use {"ThePrimeagen/refactoring.nvim",
+        requires = {
+            {"nvim-lua/plenary.nvim"},
+            {"nvim-treesitter/nvim-treesitter"},
+            {"nvim-lua/popup.nvim"}
+        },
+        config=[[require('core.refactor')]]
+        }
 
 
 
