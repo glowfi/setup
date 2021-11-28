@@ -1,20 +1,8 @@
 #!/bin/sh
 
-## TAKE INPUT AFTER RESTART
-
-echo ""
-echo "-------------------------------------------------------------"
-echo "--------------DE/WM INSTALLATION...--------------------------"
-echo "-------------------------------------------------------------"
-echo ""
-
-echo "What is your username?"
-read uname
-
-echo ""
-echo "Press 1 to install KDE"
-echo "Press 2 to install DWM"
-read choice
+## READ ARGS
+uname=$1
+choice=$2
 
 ## MAKE SCRIPTS EXECUTABLE
 

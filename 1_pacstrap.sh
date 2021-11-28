@@ -55,6 +55,18 @@ case $formatdisk in
         echo "Password do not match.Try running the script again!"
         exit 0 
     fi
+
+    # INSTALL DE/WM 
+    echo ""
+    echo "-------------------------------------------------------------"
+    echo "--------------DE/WM INSTALLATION...--------------------------"
+    echo "-------------------------------------------------------------"
+    echo ""
+
+    echo ""
+    echo "Press 1 to install KDE"
+    echo "Press 2 to install DWM"
+    read choice
    
    # SYNCHRONIZE
 
@@ -182,6 +194,7 @@ case $formatdisk in
     # GO TO MAIN SYSTEM
 
     arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\" \"$upass\" \"$rpass\";rm -rf setup;" || exit 0
+    arch-chroot /mnt /usr/bin/runuser -u $uname /bin/bash -c "cd /home/$uname;git clone https://github.com/glowfi/setup;chmod +x ./setup/run_2.sh;./setup/run_2.sh \"$uname\" \"$choice\";rm -rf setup;" || exit 0
     umount -a 
     reboot
     ;;
