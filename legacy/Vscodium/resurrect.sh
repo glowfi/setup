@@ -7,7 +7,7 @@ yay -S --noconfirm vscodium-bin
 vscodium --list-extensions
 
 # COPY API
-cp -r ~/install/legacy/Vscodium/product.json ~/.config/VSCodium/
+cp -r ~/setup/legacy/Vscodium/product.json ~/.config/VSCodium/
 
 
 # VSCODIUM EXTENSIONS
@@ -36,4 +36,4 @@ vscodium --install-extension mtxr.sqltools-driver-pg
 
 
 # COPY VSCODIUM SETTINGS
-cp -r ~/install/legacy/Vscodium/settings.json ~/.config/VSCodium/User/
+cp -r ~/setup/legacy/Vscodium/settings.json ~/.config/VSCodium/User/
