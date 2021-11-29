@@ -239,7 +239,7 @@ function searchContents
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"
-        echo "Exited from searching contents of current working directory files!"
+        echo "Exited from searching contents inside files in the current working directory!"
     else
         nvim -c ".+$ln" $fl
     end
