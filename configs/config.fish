@@ -215,7 +215,7 @@ set node_loc_var (echo $node_loc_var | cut -d '/' -f4 )
 function searchFilesCurrent
     fd --exclude "$node_loc_var" --type f . | fzf --reverse --height 10 | read -t args
     if test -z "$args"
-        echo "Exited from searching current files in current working directory!"
+        echo "Exited from searching files in current working directory!"
     else
         nvim $args
     end
