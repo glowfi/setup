@@ -12,7 +12,7 @@ cp -r aerial-sddm-theme/playlists ~
 rm -rf aerial-sddm-theme
 
 # ADDED TO CLIPBOARD
-sed 's:^#\(.*\)$:\1:g' ~/install/scripts/krohnkite.sh | tail -3 | xclip
+sed 's:^#\(.*\)$:\1:g' ~/setup/scripts/krohnkite.sh | tail -3 | xclip
 nvim -c ".+57" ~/.local/share/plasma/wallpapers/org.kde.video/contents/ui/main.qml
 
 # for (var k = 0; k < Math.ceil(Math.random() * 10) ; k++) {
