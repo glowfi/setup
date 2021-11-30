@@ -48,18 +48,10 @@
 #super + b
     brave
 
-## File Manager
-#alt + f
-    kitty -e "nnn" -e "-d" -e "-e"
-
-## Code Editor
-#super + n
-    kitty -e "nvim"
-
 ## Screenshot
 #alt + s
     flameshot gui
 
 ## Dmenu
 #super + w
-    dmenu_run -l 3 -fn "Fantasque Sans Mono Bold"
+    dmenu_run -p "Run:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee"
