@@ -110,6 +110,9 @@ alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {1}' | xargs
 alias bu="brightnessctl s 30+"
 alias bd="brightnessctl s 30-"
 
+# DWM compile
+alias dwc="sudo cp config.def.h config.h;sudo make clean install"
+
 # Find files in current location and open in editor
 alias sf="searchFilesCurrent"
 

@@ -6,7 +6,7 @@
 
 ## Logout/Restart/Shutdown
 #super+x 
-    chosen=$(echo -e "[Cancel]\nShutdown\nReboot\nLock" | dmenu -p "Choose:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#98971a" -sf "#eeeeee")
+    chosen=$(echo -e "[Cancel]\nShutdown\nReboot\nLock" | dmenu -p "Choose:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee")
 
     if [[ $chosen = "Shutdown" ]]; then
         systemctl poweroff
@@ -42,7 +42,7 @@
 
 ## Dmenu
 #super + w
-    dmenu_run -fn "Fantasque Sans Mono Bold" -nb "#32302f" -nf "#bbbbbb" -sb "#98971a" -sf "#eeeeee" -p "Run:"
+    dmenu_run -fn "Fantasque Sans Mono Bold" -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee" -p "Run:"
 
 ## Random Wallpaper
 #super + z
