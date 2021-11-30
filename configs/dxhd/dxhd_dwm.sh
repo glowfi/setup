@@ -41,7 +41,7 @@
     flameshot gui
 
 ## Video Editor
-#super + k
+#super + w
     kdenlive --platformtheme qt5ct
 
 ## Random Wallpaper
