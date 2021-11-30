@@ -115,13 +115,13 @@ echo ""
 
 cd ~/setup/configs/dwm-6.2
 sudo cp config.def.h config.h
-sudo make clean setup
+sudo make clean install
 cd ..
 
 # INSTALL DEMNU
 
 cd ~/setup/configs/dmenu
-sudo make clean setup
+sudo make clean install
 cd ..
 
 # INSTALL SLOCK
@@ -133,7 +133,7 @@ sudo sed -i "2s/.*/static const char *user  = "$uname";/" ~/setup/configs/slock/
 sudo sed -i "3s/.*/static const char *group = "$uname";/" ~/setup/configs/slock/config.def.h
 sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
 sudo cp config.def.h config.h
-sudo make clean setup
+sudo make clean install
 sudo systemctl enable slock@$uname.service
 cd ..
 
