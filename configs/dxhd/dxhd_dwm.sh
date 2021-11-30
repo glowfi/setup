@@ -40,6 +40,10 @@
 #alt + s
     flameshot gui
 
+## Video Editor
+#super + k
+    kdenlive --platformtheme qt5ct
+
 ## Random Wallpaper
 #super + z
     find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}

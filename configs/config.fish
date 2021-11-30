@@ -418,3 +418,10 @@ export NNN_PLUG='f:fzcd;o:fzopen;p:preview-tui;'
 export NNN_FCOLORS='c1e20406006033f7c6d6abc4'
 export NNN_FIFO='/tmp/nnn.fifo'
 export NNN_TRASH=1
+
+# QT Platform
+set plat (echo "$XDG_CURRENT_DESKTOP")
+if test -n "$plat"
+else
+    export QT_QPA_PLATFORMTHEME=qt5ct
+end
