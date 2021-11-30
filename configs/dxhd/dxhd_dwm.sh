@@ -40,10 +40,6 @@
 #alt + s
     flameshot gui
 
-## Dmenu
-#super + w
-    dmenu_run -fn "Fantasque Sans Mono Bold" -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee" -p "Run:"
-
 ## Random Wallpaper
 #super + z
     find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}
