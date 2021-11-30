@@ -21,7 +21,7 @@ yay -S --noconfirm jmtpfs
 
 # APPEARANCE
 
-sudo pacman -S --noconfirm lxappearance-gtk3 breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
+sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
 yes | yay -S libxft-bgra
 
 # SETUP DXHD
