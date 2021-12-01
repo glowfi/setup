@@ -9,7 +9,7 @@ echo ""
 # PYTHON MODULES
 
 pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-pip install virtualenv
+pip install virtualenv twine wheel
 
 # JUPYTER SETUP
 
@@ -64,14 +64,19 @@ chmod +x ~/.local/bin/checkur.py
 
 # INSTALL xhibit
 
-pip install tcolorpy
-sudo pacman -S --noconfirm wmctrl
-git clone https://github.com/glowfi/xhibit
-cd xhibit
-cp -r ./xhibit.py ~/.local/bin/
+pip install xhibit
+
+# INSTALL sYT
+
+sudo pacman -S --noconfirm jq
+git clone https://github.com/glowfi/sYT
+cd sYT
+cp -r ./sYT.py ~/.local/bin/
+cp -r ./sYT.sh ~/.local/bin/
 cd ..
-rm -rf xhibit
-chmod +x ~/.local/bin/xhibit.py
+rm -rf sYT
+chmod +x ~/.local/bin/sYT.py
+chmod +x ~/.local/bin/sYT.sh
 
 # SETUP POSTGRES
 

@@ -83,7 +83,14 @@ alias upgrade='mirru;sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm'
 alias checkur="checkur.py"
 
 # xhibit alias
-alias xbt="xhibit.py -cs gruvbox -rcn t"
+alias xbt="xhibit -cs gruvbox -rcn t"
+
+# sYT alais
+alias sYT="sYT.sh"
+
+# PyPI package alias 
+alias pC="python3 setup.py sdist bdist_wheel"
+alias tW="twine upload dist/*"
 
 # Browser-sync
 alias bs='browser-sync start --index $argv --server --files "./*.*"'
