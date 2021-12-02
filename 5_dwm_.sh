@@ -140,7 +140,16 @@ cd ..
 # INSTALL TOPBAR
 
 cp -r ~/setup/configs/dwm-bar ~
+
+# COPY DUNST SETTINGS
+
+cp -r ~/setup/configs/dunst/ ~/.config
+mkdir -p ~/.local/share/sounds
+cp -r ~/setup/scripts/audio.ogg ~/.local/share/sounds
+cp -r ~/setup/scripts/audio.sh ~/.local/bin/
+chmod +x ~/.local/bin/audio.sh
 cd
+
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
