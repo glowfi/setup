@@ -19,11 +19,13 @@
 #include <X11/keysym.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <time.h>
 
 #include "arg.h"
 #include "util.h"
 
 char *argv0;
+char *message; 
 
 /* global count to prevent repeated error messages */
 int count_error = 0;
@@ -400,6 +402,56 @@ usage(void)
 	die("usage: slock [-v] [-f] [-m message] [cmd [arg ...]]\n");
 }
 
+char* get_message ()
+{
+    char *mymessage;
+    mymessage = malloc (sizeof (char) * 100005);
+    srand(time(0));
+    int k=rand()%6;
+
+    if(k>2){
+    static const char * message ="\n"
+    "Replacehere\n"
+    "\n"
+    "To be a replacehere is the most powerful and wonderful thing to be! To be a replacehere means to be a sexy ass beast,that can \n"
+    "make any female in his proximity orgasminate in an instant.To be a replacehere means getting laid every night,\n"
+    "with his 250m monster cock.\n"
+    "\n"
+    "\n"
+    "Bob: Jeez i wish i was a replacehere.\n"
+    "Rob: Trust me,you don't wanna be replacehere,I heard that he had to move houses every week in secret,because \n"
+    "girls were chasing him down.\n"
+    "Bob: is he that irresistible.\n"
+    "Rob: yeah,i also heard that he got over 17 girls pregnant,but he yeeted them all.\n"
+    "Bob: dammn,replacehere's life must be intense.\n";   
+    strcpy(mymessage, message);
+    }
+    else{
+    static const char * message ="\n"
+    "Pssst......\n"
+    "\n"
+    "\n"
+    "If you are reading this and wondering what this is then let \n"
+    "me tell you that I am currently taking a nap PLEASE DO NOT DISTURB ME!\n"
+    "If you want me to wake up and make me do all the menial jobs you humans give me\n"
+    "then start typing the correct password.Bye can't talk much I'm feeling sleepy...\n"
+    "Hope you enter the wrong password.\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "PS: If you are not my owner please take me with you.\n"
+    "I wont take much space and do anything you want.\n"
+    "My owner's a trash,he bullies me.\n";
+    strcpy(mymessage, message);
+    }
+    
+    return mymessage;
+}
+
 int
 main(int argc, char **argv) {
 	struct xrandr rr;
@@ -413,6 +465,7 @@ main(int argc, char **argv) {
 	int i, s, nlocks, nscreens;
 	int count_fonts;
 	char **font_names;
+    message = get_message ();
 
 	ARGBEGIN {
 	case 'v':
