@@ -180,21 +180,21 @@ require'lspconfig'.cssls.setup {
 }
 
 -- Emmet
--- local lspconfig = require'lspconfig'
--- local configs = require'lspconfig/configs'
+local lspconfig = require'lspconfig'
+local configs = require'lspconfig.configs'
 
--- configs.ls_emmet = {
---   default_config = {
---     cmd = {'ls_emmet', '--stdio'};
---     filetypes = {'html', 'css'};
---     root_dir = function(fname)
---       return vim.loop.cwd()
---       end;
---     settings = {};
---   };
--- }
+configs.ls_emmet = {
+  default_config = {
+    cmd = {'ls_emmet', '--stdio'};
+    filetypes = {'html', 'css'};
+    root_dir = function(fname)
+      return vim.loop.cwd()
+      end;
+    settings = {};
+  };
+}
 
--- lspconfig.ls_emmet.setup{ capabilities = capabilities }
+lspconfig.ls_emmet.setup{ capabilities = capabilities }
 
 -- JSON
 require'lspconfig'.jsonls.setup {
