@@ -44,6 +44,10 @@
 #super + w
     kdenlive --platformtheme qt5ct
 
+## Scrap YT
+#super + y
+    sYT "dmenu"
+
 ## Random Wallpaper
 #super + z
     find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}
