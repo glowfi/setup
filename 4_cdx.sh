@@ -35,10 +35,26 @@ rm -rf ~/node.tar.xz
 npm i -g yarn
 
 echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------Installing Rust...----------------------------------------"
+echo "------------------------------------------------------------------------"
+echo ""
+
+# RUST
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+git clone https://github.com/rust-analyzer/rust-analyzer.git 
+cd rust-analyzer 
+cargo xtask install --server
+cd .. 
+rm -rf rust-analyzer
+
+
+echo ""
 echo "-------------------------------------------------------------------------------"
 echo "--------------Installing a Fuzzy File Finder...--------------------------------"
 echo "-------------------------------------------------------------------------------"
 echo ""
+
 
 # FZF TERMINAL INTEGRATION
 

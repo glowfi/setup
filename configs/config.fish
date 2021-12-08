@@ -12,6 +12,7 @@
 
 ## Path
 set PATH ~/node-v17.1.0-linux-x64/bin/ $PATH # Sets NodeJS path
+set PATH $HOME/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 
 ## Enhancements
