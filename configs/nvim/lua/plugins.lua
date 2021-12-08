@@ -88,7 +88,7 @@ return require('packer').startup(function(use)
         }
 
     -- Emmet
-    use{'mattn/emmet-vim',ft={'javascript','javascriptreact','typescript','typescriptreact','htmldjango'}}
+    -- use{'mattn/emmet-vim',ft={'javascript','javascriptreact','typescript','typescriptreact','htmldjango'}}
 
 
 

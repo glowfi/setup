@@ -186,7 +186,7 @@ local configs = require'lspconfig.configs'
 configs.ls_emmet = {
   default_config = {
     cmd = {'ls_emmet', '--stdio'};
-    filetypes = {'html', 'css'};
+    filetypes = {'html', 'css','javascript','javascriptreact','typescript','typescriptreact','htmldjango'};
     root_dir = function(fname)
       return vim.loop.cwd()
       end;
