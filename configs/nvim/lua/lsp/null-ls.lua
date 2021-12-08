@@ -24,7 +24,7 @@ local sources = {
         filetypes = {"python"},
     },
         b.formatting.rustfmt.with {
-        filetypes = {"python"},
+        filetypes = {"rust"},
     },
         b.diagnostics.flake8.with {
         filetypes = {"python"},
