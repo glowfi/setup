@@ -169,6 +169,13 @@ require'lspconfig'.pyright.setup{
   capabilities = capabilities,
 }
 
+-- Rust LSP 
+require'lspconfig'.rust_analyzer.setup{
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+    end
+}
 
 -- HTML CSS
 require'lspconfig'.html.setup {
