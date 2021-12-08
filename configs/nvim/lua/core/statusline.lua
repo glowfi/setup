@@ -216,7 +216,7 @@ local function available_LS_Formatter_Linter()
     a=''
   
   else
-    a='LS:'..a..client..' '
+    a='LS:'..a..client
   end
 
   -- Get configured formatter
