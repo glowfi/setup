@@ -31,6 +31,7 @@ set line (echo "set PATH ~/node-v$ver-linux-x64/bin/ \$PATH # Sets NodeJS paths"
 echo $line | xargs -t -I {} awk 'NR==14{print "{}"}1' ~/.config/fish/config.fish > ~/config.fish 
 sed -i '15d' ~/config.fish
 cp -r ~/config.fish ~/.config/fish/config.fish
+rm -rf ~/config.fish
 echo ""
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
