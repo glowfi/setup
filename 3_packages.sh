@@ -110,6 +110,7 @@ echo "-------------------------------------------------------------------------"
 echo ""
 
 sudo sed -i '71s/.*/Defaults insults/' /etc/sudoers
+echo "Done adding insults!"
 
 # SETUP APPARMOR
 
@@ -157,3 +158,4 @@ cp -r ~/setup/configs/kitty ~/.config/
 # CHANGE DEFAULT SHELL
 
 sudo usermod --shell /bin/fish $1
+echo "Changed default shell!"
