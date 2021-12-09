@@ -10,6 +10,7 @@ echo ""
 
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
+echo "Done setting location and synchronizing hardware clock!"
 
 # OPTIMIZE MAKEPKG
 
