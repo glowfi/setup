@@ -26,7 +26,13 @@ echo ""
 
 # DOWNLOAD NODEJS
 
-wget https://nodejs.org/dist/v17.1.0/node-v17.1.0-linux-x64.tar.xz -O ~/node.tar.xz
+set ver (curl -s https://nodejs.org/en/ | grep -e "Current" -e | tail -1|xargs| cut -d " " -f 1)
+set line (echo "set PATH ~/node-v$ver-linux-x64/bin/ \$PATH # Sets NodeJS paths")
+echo $line | xargs -t -I {} awk 'NR==14{print "{}"}1' ~/.config/fish/config.fish > ~/config.fish 
+sed -i '15d' ~/config.fish
+cp -r ~/config.fish ~/.config/fish/config.fish
+echo ""
+wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
 
