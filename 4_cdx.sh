@@ -36,7 +36,7 @@ echo ""
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
-exec fish
+source ~/.config/fish/config.fish
 
 # NODE MODULES
 
