@@ -157,5 +157,10 @@ cp -r ~/setup/configs/kitty ~/.config/
 
 # CHANGE DEFAULT SHELL
 
+echo ""
+echo "------------------------------------------------------------------------------"
+echo "--------------CHANGING DEFAULT SHELL...---------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo ""
 sudo usermod --shell /bin/fish $1
 echo "Changed default shell!"
