@@ -130,7 +130,7 @@ echo ""
 
 pip install neovim ueberzug black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
-npx npm-check-updates -g | tail -2 | xargs -t -I {} fish -c "{}" 
+# npx npm-check-updates -g | tail -2 | xargs -t -I {} fish -c "{}" 
 sudo pacman -S --noconfirm cmake unzip ninja tree-sitter xclip
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
