@@ -33,7 +33,9 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 yay -S --noconfirm dxhd-bin
-cp -r ~/setup/configs/dxhd ~/.config 
+mkdir -p ~/.config/dxhd
+mv ~/setup/configs/dxhd/dxhd_dwm.sh ~/.config/dxhd
+mv ~/.config/dxhd/dxhd_dwm.sh ~/.config/dxhd/dxhd.sh
 
 
 echo ""
