@@ -46,7 +46,7 @@
 
 ## Scrap YT
 #super + y
-    sYT "dmenu"
+    sYT -p "dmenu"
 
 ## Random Wallpaper
 #super + z
