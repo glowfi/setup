@@ -83,8 +83,8 @@ return require('packer').startup(function(use)
 
     -- Colorizer
     use {'norcalli/nvim-colorizer.lua',
-    ft = { 'css', 'javascript', 'vim', 'html','cpp' },
-    config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html','cpp'}]],
+    ft = { 'css', 'javascript', 'vim', 'html','cpp','conf' },
+    config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html','cpp','conf'}]],
         }
 
     -- Emmet
