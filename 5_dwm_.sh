@@ -142,12 +142,10 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cd ~/setup/configs/slock
-new1=static const char *user  = "${uname}";
-new2=static const char *group = "${uname}";
 output=$(getent passwd "$uname" | cut -d ':' -f 5 | awk -F" " '{print $1}')
 output1=$(echo $output|awk '{ print toupper($0) }')
-sudo sed -i "2s/.*/static const char *user  = "$uname";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "3s/.*/static const char *group = "$uname";/" ~/setup/configs/slock/config.def.h
+sudo sed -i "2s/.*/static const char *user  = \""$uname"\";/" ~/setup/configs/slock/config.def.h
+sudo sed -i "3s/.*/static const char *group = \""$uname"\";/" ~/setup/configs/slock/config.def.h
 sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
 sudo sed -i "s/Replacehere/"$output1"/g" ~/setup/configs/slock/slock.c
 sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
