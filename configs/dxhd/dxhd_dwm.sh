@@ -45,8 +45,8 @@
     kdenlive --platformtheme qt5ct
 
 ## Scrap YT
-#super + y
-    sYT -p "dmenu"
+#super + y 
+    fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
