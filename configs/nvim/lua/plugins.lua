@@ -83,8 +83,8 @@ return require('packer').startup(function(use)
 
     -- Colorizer
     use {'norcalli/nvim-colorizer.lua',
-    ft = { 'css', 'javascript', 'vim', 'html' },
-    config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html'}]],
+    ft = { 'css', 'javascript', 'vim', 'html','cpp' },
+    config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html','cpp'}]],
         }
 
     -- Emmet
@@ -117,25 +117,25 @@ return require('packer').startup(function(use)
         }
 
     -- Indentline
---     use {
---     "lukas-reineke/indent-blankline.nvim",
---     event = "BufRead",
---     setup = function()
---     vim.g.indentLine_enabled = 1
---     vim.g.indent_blankline_char = "▏"
+    use {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead",
+    setup = function()
+    vim.g.indentLine_enabled = 1
+    vim.g.indent_blankline_char = "▏"
 
---     vim.g.indent_blankline_filetype_exclude = {
---     "help",
---     "terminal",
---     "dashboard",
---     "packer",
---     }
---     vim.g.indent_blankline_buftype_exclude = { "terminal" }
+    vim.g.indent_blankline_filetype_exclude = {
+    "help",
+    "terminal",
+    "dashboard",
+    "packer",
+    }
+    vim.g.indent_blankline_buftype_exclude = { "terminal" }
 
---     vim.g.indent_blankline_show_trailing_blankline_indent = false
---     vim.g.indent_blankline_show_first_indent_level = true
---     end,
---     }
+    vim.g.indent_blankline_show_trailing_blankline_indent = false
+    vim.g.indent_blankline_show_first_indent_level = true
+    end,
+    }
 
 
 -- Treesitter integrations
