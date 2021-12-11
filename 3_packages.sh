@@ -68,6 +68,7 @@ yay -S --noconfirm mongodb-bin
 
 ### PACK
 yay -S --noconfirm brave-bin onlyoffice-bin
+yay -S --noconfirm sc-im libxlsxwriter
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay
