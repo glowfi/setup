@@ -105,26 +105,39 @@ exec dwm
 " >> ~/.xinitrc
 
 
-echo ""
-echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing DWM DMENU SLOCK AND TOPBAR...---------------------------------------------"
-echo "---------------------------------------------------------------------------------------------------"
-echo ""
-
 # INSTALL DWM
+echo ""
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Installing DWM ...-------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo ""
 
 cd ~/setup/configs/dwm-6.2
 sudo cp config.def.h config.h
 sudo make clean install
 cd ..
+echo "Done Installing DWM!"
+echo ""
 
 # INSTALL DEMNU
+echo ""
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Installing DMENU ...-----------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo ""
 
 cd ~/setup/configs/dmenu
 sudo make clean install
 cd ..
+echo "Done Installing DEMNU!"
+echo ""
 
 # INSTALL SLOCK
+echo ""
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Installing SLOCK ...-----------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo ""
 
 cd ~/setup/configs/slock
 new1=static const char *user  = "${uname}";
@@ -140,12 +153,26 @@ sudo cp config.def.h config.h
 sudo make clean install
 sudo systemctl enable slock@$uname.service
 cd ..
+echo "Done Installing SLOCK!"
+echo ""
 
-# INSTALL TOPBAR
+# COPY TOPBAR SETTINGS
+echo ""
+echo "----------------------------------------------------------------------------------------------------"
+echo "--------------Copying TOPBAR settings...------------------------------------------------------------"
+echo "----------------------------------------------------------------------------------------------------"
+echo ""
 
 cp -r ~/setup/configs/dwm-bar ~
+echo "Done Copying TOPBAR settings!"
+echo ""
 
 # COPY DUNST SETTINGS
+echo ""
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Copying DUNST settings...------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo ""
 
 cp -r ~/setup/configs/dunst/ ~/.config
 mkdir -p ~/.local/share/sounds
@@ -153,6 +180,8 @@ cp -r ~/setup/scripts/audio.ogg ~/.local/share/sounds
 cp -r ~/setup/scripts/audio.sh ~/.local/bin/
 chmod +x ~/.local/bin/audio.sh
 cd
+echo "Done Copying DUNST settings!"
+echo ""
 
 
 echo ""
@@ -185,4 +214,7 @@ xdg-mime default sxiv.desktop image/png
 xdg-mime default sxiv.desktop image/jpg
 xdg-mime default sxiv.desktop image/jpeg
 xdg-mime default zathura.desktop application/pdf
+
+echo "Done seting default application!"
+echo ""
 
