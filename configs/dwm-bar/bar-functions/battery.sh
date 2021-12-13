@@ -14,9 +14,3 @@ dwm_battery () {
 }
 
 dwm_battery
-
-CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
-STATUS=$(cat /sys/class/power_supply/BAT1/status)
-if [ "$STATUS" = "Discharging" ] || ["$CHARGE" -lt 35]; then
-    notify-send "Low Battery!"
-fi
