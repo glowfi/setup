@@ -13,7 +13,7 @@ pip install virtualenv twine wheel
 
 # JUPYTER SETUP
 
-pip install notebook-as-pdf  jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
+pip install notebook-as-pdf  jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
 jupyter contrib nbextension install --user
 jupyter nbextensions_configurator enable --user
 pyppeteer-install
