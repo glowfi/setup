@@ -1,10 +1,13 @@
 -- Settings
-local null_ls = require("null-ls")
-local b = null_ls.builtins
+local M = {}
+M.setup = function()
+  local null_ls = require "null-ls"
+  local b = null_ls.builtins
+  vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
 
-vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
-
-local sources = {
+  null_ls.setup {
+    debounce = 150,
+    sources = {
         b.formatting.prettierd.with {
         filetypes = {
           "typescriptreact",
@@ -29,16 +32,11 @@ local sources = {
         b.diagnostics.flake8.with {
         filetypes = {"python"},
     }
-       
-}
-
-local M = {}
-M.setup = function(on_attach)
-    null_ls.config({
-        debounce = 150,
-        sources = sources,
-    })
-    require("lspconfig")["null-ls"].setup({ on_attach = on_attach })
+    },
+    on_attach = function(client)
+        vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_seq_sync()]])
+  end,
+  }
 end
 
 return M

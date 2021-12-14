@@ -1,7 +1,4 @@
 -- Settings
--- Load Null-ls
-local null_ls = require("lsp.null-ls")
-
 
 -- Lsp Diagnostic signs
 vim.fn.sign_define(
@@ -127,29 +124,6 @@ function lsp_config.common_on_attach(client, bufnr)
     documentHighlight(client, bufnr)
 end
 
--- Format on Save
-local buf_augroup = function(name, event, fn)
-    vim.api.nvim_exec(
-        string.format(
-            [[
-    augroup %s
-        autocmd! * <buffer>
-        autocmd %s <buffer> %s
-    augroup END
-    ]],
-            name,
-            event,
-            fn
-        ),
-        false
-    )
-end
-
-local format_ = function(client, bufnr)
-    if client.resolved_capabilities.document_formatting then
-        buf_augroup("LspFormatOnSave", "BufWritePre", "lua vim.lsp.buf.formatting_sync()")
-    end
-end
 
 -- CMP SUPPORT
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -260,4 +234,4 @@ nvim_lsp.tsserver.setup {
 
 
 -- Null-ls Integration
- null_ls.setup(format_)
+local null_ls = require("lsp.null-ls").setup()
