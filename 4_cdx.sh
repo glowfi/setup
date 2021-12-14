@@ -93,7 +93,7 @@ pip install xhibit
 
 # INSTALL sYT
 
-sudo pacman -S --noconfirm jq
+sudo pacman -S --noconfirm jq aria2
 git clone https://github.com/glowfi/sYT
 cd sYT
 cp -r ./sYT.py ~/.local/bin/
