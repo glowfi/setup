@@ -93,3 +93,10 @@ xdg-mime default sxiv.desktop image/png
 xdg-mime default sxiv.desktop image/jpg
 xdg-mime default sxiv.desktop image/jpeg
 xdg-mime default zathura.desktop application/pdf
+
+wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
+sh ./default-media-player.sh mpv.desktop
+rm -rf default-media-player.sh
+
+echo "Done seting default application!"
+echo ""
