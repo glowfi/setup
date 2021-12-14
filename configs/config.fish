@@ -11,7 +11,7 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.1.0-linux-x64/bin/ $PATH # Sets NodeJS path
+set PATH ~/node-v17.2.0-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH $HOME/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 
@@ -228,7 +228,16 @@ function searchFilesCurrent
     if test -z "$args"
         echo "Exited from searching files in current working directory!"
     else
-        nvim $args
+        set ft (xdg-mime query filetype $args)
+        set def (xdg-mime query default $ft)
+        switch $def
+            case "nvim.desktop"
+                nvim $args
+            case ""
+                nvim $args
+            case '*'
+                setsid xdg-open $args
+        end
     end
 end
 
