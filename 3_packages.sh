@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# CACHE PASSWORD 
+sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
+
 # SYNCHRONIZING
 
 echo ""

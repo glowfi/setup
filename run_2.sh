@@ -54,6 +54,9 @@ printf "Cleaned Cache!\n";
 sudo pacman -Rns $(pacman -Qtdq)  2> /dev/null;
 yes | printf "Cleaned Orphans!"
 
+## DELETE CACHED PASSWORD
+sudo sed -i '72d' /etc/sudoers
+
 ## REFETCHING SETUP
 
 echo ""
