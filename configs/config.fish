@@ -19,6 +19,38 @@ set PATH ~/.local/bin/ $PATH # Sets Universal path
 set fish_greeting # Supresses fish's greeting message
 set TERM xterm-256color # Sets the terminal type
 
+# Start X at login
+if status --is-login
+    if test -z "$DISPLAY" -a $XDG_VTNR = 1
+        set greetings bonjour halo hola nomoskar
+        set random_greet (random 1 (count $greetings))
+
+        echo "                                      " | lolcat
+        echo "                 ▄█▄                  " | lolcat
+        echo "                ▄███▄                 " | lolcat
+        echo "               ▄█████▄                " | lolcat
+        echo "              ▄███████▄               " | lolcat
+        echo "             ▄ ▀▀██████▄              " | lolcat
+        echo "            ▄██▄▄ ▀█████▄             " | lolcat
+        echo "           ▄█████████████▄            " | lolcat
+        echo "          ▄███████████████▄           " | lolcat
+        echo "         ▄█████████████████▄          " | lolcat
+        echo "        ▄███████████████████▄         " | lolcat
+        echo "       ▄█████████▀▀▀▀████████▄        " | lolcat
+        echo "      ▄████████▀      ▀███████▄       " | lolcat
+        echo "     ▄█████████        ████▀▀██▄      " | lolcat
+        echo "    ▄██████████        █████▄▄▄       " | lolcat
+        echo "   ▄██████████▀        ▀█████████▄    " | lolcat
+        echo "  ▄██████▀▀▀              ▀▀██████▄   " | lolcat
+        echo " ▄███▀▀                       ▀▀███▄  " | lolcat
+        echo "▄▀▀                               ▀▀▄ " | lolcat
+        echo ""
+
+        echo "$greetings[$random_greet] $USER!" | figlet | lolcat
+        exec startx -- -keeptty
+    end
+end
+
 # ===================================================================
 #                        Aliases
 # ===================================================================
