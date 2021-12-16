@@ -146,9 +146,6 @@ nvim -c "PackerSync"
 nvim -c "PackerSync"
 nvim -c "PackerSync"
 
-# COPY VIMRC
-cp -r ~/setup/configs/.vimrc ~
-
 
 # CONFIGURING GIT ALIASES
 
