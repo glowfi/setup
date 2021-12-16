@@ -222,6 +222,7 @@ end
 set node_loc_var (whereis node)
 set node_loc_var (echo $node_loc_var | cut -d '/' -f4 )
 
+
 # Search Files in current working directory
 function searchFilesCurrent
     fd --exclude "$node_loc_var" --type f . | fzf --reverse --height 10 | read -t args
@@ -234,7 +235,11 @@ function searchFilesCurrent
             case "nvim.desktop"
                 nvim $args
             case ""
-                nvim $args
+                if nvim $args
+                else
+                    clear
+                    vim $args
+                end
             case '*'
                 setsid xdg-open $args
         end
