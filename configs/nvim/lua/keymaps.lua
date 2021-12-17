@@ -14,7 +14,8 @@ vim.api.nvim_set_keymap('n', '<c-q>', ':quit<cr>', {silent = true})
 vim.api.nvim_set_keymap('n', '<S-s>', ':w<cr>', {silent = true})
 
 -- Replace all instance in normal mode of selected word.
-vim.api.nvim_set_keymap('n', '<Leader>r', ':%s///g<Left><Left>', {silent = true})
+vim.api
+    .nvim_set_keymap('n', '<Leader>r', ':%s///g<Left><Left>', {silent = true})
 
 -- Replace all instance in visual mode of selected word.Can be used to select a range of lines to replace words.
 vim.cmd('vnoremap <Leader>r "hy:%s/<C-r>h//gc<left><left><left>')
@@ -35,24 +36,29 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {silent = true})
 -- Resize split windows using arrow keys by pressing.
 vim.api.nvim_set_keymap('n', '<M-Up>', ':resize +2<CR>', {silent = true})
 vim.api.nvim_set_keymap('n', '<M-Down>', ':resize -2<CR>', {silent = true})
-vim.api.nvim_set_keymap('n', '<M-Left>', ':vertical resize -2<CR>', {silent = true})
-vim.api.nvim_set_keymap('n', '<M-Right>', ':vertical resize +2<CR>', {silent = true})
+vim.api.nvim_set_keymap('n', '<M-Left>', ':vertical resize -2<CR>',
+                        {silent = true})
+vim.api.nvim_set_keymap('n', '<M-Right>', ':vertical resize +2<CR>',
+                        {silent = true})
 
 -- Move selected line / block of text in visual mode
-vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv',
+                        {noremap = true, silent = true})
+vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv',
+                        {noremap = true, silent = true})
 
 -- Copy all to clipboard
-vim.api.nvim_set_keymap('n', '<Leader>y', ':%y+<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>y', ':%y+<cr>',
+                        {noremap = true, silent = true})
 
 -- Select all
 vim.api.nvim_set_keymap('n', '<c-a>', 'ggVG', {noremap = true, silent = true})
 
 -- Insert special characters
-vim.cmd("inoremap <c-a> ä") 
-vim.cmd("inoremap <m-a> Ä") 
-vim.cmd("inoremap <c-o> ö") 
-vim.cmd("inoremap <m-o> Ö") 
-vim.cmd("inoremap <c-u> ü") 
-vim.cmd("inoremap <m-u> Ü") 
+vim.cmd("inoremap <c-a> ä")
+vim.cmd("inoremap <m-a> Ä")
+vim.cmd("inoremap <c-o> ö")
+vim.cmd("inoremap <m-o> Ö")
+vim.cmd("inoremap <c-u> ü")
+vim.cmd("inoremap <m-u> Ü")
 vim.cmd("inoremap <c-b> ß")
