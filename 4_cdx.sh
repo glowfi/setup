@@ -57,6 +57,30 @@ cargo xtask install --server
 cd .. 
 rm -rf rust-analyzer
 
+echo ""
+echo "---------------------------------------------------------------------------------------------"
+echo "--------------Installing LUA LSP AND LUA FORMATTER...----------------------------------------"
+echo "---------------------------------------------------------------------------------------------"
+echo ""
+
+# INSTALL LUA LSP
+
+wget https://github.com/sumneko/lua-language-server/releases/download/2.5.5/lua-language-server-2.5.5-linux-x64.tar.gz -O ~/lua-ls.tar.gz
+mkdir -p ~/lua-ls
+tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
+rm -rf lua-ls.tar.gz 
+
+# INSTALL LUA FORAMTTER
+
+git clone --recurse-submodules https://github.com/Koihik/LuaFormatter.git
+cd LuaFormatter
+cmake .
+make
+sudo make install
+cd ..
+rm -rf LuaFormatter
+
+
 
 echo ""
 echo "-------------------------------------------------------------------------------"

@@ -82,16 +82,17 @@ vim.cmd('set history=1000')
 vim.cmd('set wildmenu')
 
 -- Wildmenu will ignore files with these extensions.
-vim.cmd('set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx')
+vim.cmd(
+    'set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx')
 
 -- Required to keep multiple buffers open multiple buffers
 vim.o.hidden = true
 
 -- Title settings
 vim.o.title = true
-vim.o.titlestring="%<%F%=%l/%L - nvim"
+vim.o.titlestring = "%<%F%=%l/%L - nvim"
 TERMINAL = vim.fn.expand('$TERMINAL')
-vim.cmd('let &titleold="'..TERMINAL..'"')
+vim.cmd('let &titleold="' .. TERMINAL .. '"')
 
 -- Modifying split bars to transparent
 vim.cmd('set fillchars+=vert:\\ ')
