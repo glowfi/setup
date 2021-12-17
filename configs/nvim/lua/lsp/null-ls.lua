@@ -16,6 +16,7 @@ M.setup = function()
             }, b.formatting.fish_indent.with {filetypes = {"fish"}},
             b.formatting.black.with {filetypes = {"python"}},
             b.formatting.rustfmt.with {filetypes = {"rust"}},
+            b.formatting.lua_format.with {filetypes = {"lua"}},
             b.diagnostics.flake8.with {filetypes = {"python"}}
         },
         on_attach = function(client)
