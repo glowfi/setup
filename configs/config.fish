@@ -268,11 +268,7 @@ function searchFilesCurrent
             case "nvim.desktop"
                 nvim $args
             case ""
-                if nvim $args
-                else
-                    clear
-                    vim $args
-                end
+                nvim $args
             case '*'
                 setsid xdg-open $args
         end
