@@ -65,7 +65,8 @@ echo ""
 
 # INSTALL LUA LSP
 
-wget https://github.com/sumneko/lua-language-server/releases/download/2.5.5/lua-language-server-2.5.5-linux-x64.tar.gz -O ~/lua-ls.tar.gz
+set lua_ver (curl https://github.com/sumneko/lua-language-server| grep "releases" | tail -2 | head -1 | awk '{print $6}'|awk -F "\/" '{print $NF}' | awk '{$0=substr($0,1,length($0)-2); print $0}')
+wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
 rm -rf lua-ls.tar.gz 
