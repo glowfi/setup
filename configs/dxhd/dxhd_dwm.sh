@@ -2,52 +2,55 @@
 
 ## File Manager
 #super + f
-    pcmanfm
+pcmanfm
 
 ## Logout/Restart/Shutdown
-#super+x 
-    chosen=$(echo -e "[Cancel]\nShutdown\nReboot\nLock" | dmenu -p "Choose:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee")
+#super+x
+case "$(readlink -f /sbin/init)" in
+*systemd*) ctl='systemctl' ;;
+*) ctl='loginctl' ;;
+esac
 
-    if [[ $chosen = "Shutdown" ]]; then
-        systemctl poweroff
-    elif [[ $chosen = "Reboot" ]]; then
-        systemctl reboot
-    elif [[ $chosen = "Lock" ]]; then
-        slock
-    elif [[ $chosen = "[Cancel]" ]]; then
-        notify-send -t 1000 "Program terminated!" 
-    fi
+case "$(printf "Lock\nDisplay off\nLogout\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee")" in
+'Lock') slock ;;
+'Display off') xset dpms force off ;;
+'Logout') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
+'Sleep') slock $ctl suspend ;;
+'Reboot') $ctl reboot ;;
+'Shutdown') $ctl poweroff ;;
+*) exit 1 ;;
+esac
 
 ### Global bindings
 
 ## Terminal
 #super + t
-    kitty
+kitty
 
 ## Browser
 #super + b
-    brave
+brave
 
 ## Network
 #super + n
-    kitty -e "nmtui"
+kitty -e "nmtui"
 
 ## Network
 #super + v
-    kitty -e "pulsemixer"
+kitty -e "pulsemixer"
 
 ## Screenshot
 #alt + s
-    flameshot gui
+flameshot gui
 
 ## Video Editor
 #super + w
-    kdenlive --platformtheme qt5ct
+kdenlive --platformtheme qt5ct
 
 ## Scrap YT
-#super + y 
-    fish -c "sYT -p "dmenu""
+#super + y
+fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-    find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}
+find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}
