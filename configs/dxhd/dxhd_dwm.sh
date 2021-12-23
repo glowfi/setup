@@ -13,7 +13,6 @@ esac
 
 case "$(printf "Lock\nDisplay off\nLogout\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee")" in
 'Lock') slock ;;
-'Display off') xset dpms force off ;;
 'Logout') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
 'Sleep') slock $ctl suspend ;;
 'Reboot') $ctl reboot ;;
