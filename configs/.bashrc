@@ -11,6 +11,7 @@ alias ls='ls --color=auto'
 alias sf='searchFilesCurrent'
 alias sd='searchDirCurrent'
 alias sg='searchContents'
+alias v='nvim'
 
 # ===================================================================
 #                           Prompt
