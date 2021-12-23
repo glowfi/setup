@@ -476,3 +476,6 @@ if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
+
+# Terminal Schenanigans
+#bash -c 'find $HOME/terminal_pics/ -type f -name "*.jpg" -o -name "*.png" -name "*.gif" | shuf -n 1' | xargs -I {} kitty +kitten icat --align=left {} && fortune -sn80
