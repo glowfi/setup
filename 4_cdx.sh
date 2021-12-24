@@ -133,12 +133,13 @@ rm -rf ytdlautoformat.lua.1;
 cp -r ./ytdlautoformat.lua ~/.config/mpv/scripts/;
 rm -rf ytdlautoformat.lua
 
-# INSTALL RECORD SCRIPT 
+# ADDITIONAL SCRIPTS
 
 cp -r ~/setup/scripts/record.sh ~/.local/bin/
 chmod +x ~/.local/bin/record.sh
 
-# ADDITIONAL SCRIPTS
+cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
+chmod +x ~/.local/bin/sgrec.sh
 
 git clone https://github.com/pystardust/ani-cli;
 cd ani-cli
