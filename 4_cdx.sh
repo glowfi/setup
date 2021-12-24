@@ -133,6 +133,11 @@ rm -rf ytdlautoformat.lua.1;
 cp -r ./ytdlautoformat.lua ~/.config/mpv/scripts/;
 rm -rf ytdlautoformat.lua
 
+# INSTALL RECORD SCRIPT 
+
+cp -r ~/setup/scripts/record.sh ~/.local/bin/
+chmod +x ~/.local/bin/record.sh
+
 # SETUP POSTGRES
 
 echo ""
