@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# CACHE PASSWORD 
+# CACHE PASSWORD
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
 # SYNCHRONIZING
@@ -24,18 +24,17 @@ echo "--------------Installing display driver...------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-## Determine GPU  
+## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
-     sudo pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+	sudo pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
 elif lspci | grep -E "Radeon"; then
-    sudo  pacman -S --noconfirm xf86-video-amdgpu
+	sudo pacman -S --noconfirm xf86-video-amdgpu
 elif lspci | grep -E "Integrated Graphics Controller"; then
-    sudo  pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
+	sudo pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
 fi
 
 ## Xorg packages
 sudo pacman -S --noconfirm xorg-server
-
 
 # AUR HELPER
 
@@ -80,7 +79,7 @@ yay -S --noconfirm toilet toilet-fonts
 git clone https://github.com/xero/figlet-fonts
 sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
 rm -rf figlet-fonts
-git clone https://github.com/pipeseroni/pipes.sh 
+git clone https://github.com/pipeseroni/pipes.sh
 cd pipes.sh
 sudo make clean install
 cd ..
@@ -92,7 +91,7 @@ cd ..
 rm -rf tty-clock
 
 ### EDIT
-sudo pacman -S --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl simplescreenrecorder mpv
+sudo pacman -S --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv
 yay -S --noconfirm gimp-plugin-registry
 
 # ENABLE ZRAM
