@@ -138,6 +138,18 @@ rm -rf ytdlautoformat.lua
 cp -r ~/setup/scripts/record.sh ~/.local/bin/
 chmod +x ~/.local/bin/record.sh
 
+# ADDITIONAL SCRIPTS
+
+git clone https://github.com/pystardust/ani-cli;
+cd ani-cli
+sudo make
+cd ..
+rm -rf ani-cli  
+
+git clone https://github.com/pystardust/waldl
+cp -r ./waldl/waldl .local/bin/
+rm -rf waldl
+
 # SETUP POSTGRES
 
 echo ""
