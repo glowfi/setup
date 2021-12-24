@@ -147,10 +147,6 @@ sudo make
 cd ..
 rm -rf ani-cli  
 
-git clone https://github.com/pystardust/waldl
-cp -r ./waldl/waldl .local/bin/
-rm -rf waldl
-
 # SETUP POSTGRES
 
 echo ""
