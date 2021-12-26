@@ -6,7 +6,7 @@ configs.setup {
 
     -- Treesitter
     ensure_installed = "maintained",
-    highlight = {enable = true},
+    highlight = {enable = true, additional_vim_regex_highlighting = true},
     incremental_selection = {
         enable = true,
         disable = {"cpp", "lua"},
