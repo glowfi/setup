@@ -1,5 +1,8 @@
 -- Settings
-require'nvim-treesitter.configs'.setup {
+local status_ok, configs = pcall(require, "nvim-treesitter.configs")
+if not status_ok then return end
+
+configs.setup {
 
     -- Treesitter
     ensure_installed = "maintained",

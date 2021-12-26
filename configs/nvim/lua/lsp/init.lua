@@ -95,13 +95,19 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {'documentation', 'detail', 'additionalTextEdits'}
 }
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+
+local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not status_ok then return end
+capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+
+local status_ok_, lspconfig = pcall(require, "lspconfig")
+if not status_ok_ then return end
 
 -- Python LSP
-require'lspconfig'.pyright.setup {capabilities = capabilities}
+lspconfig.pyright.setup {capabilities = capabilities}
 
 -- Rust LSP 
-require'lspconfig'.rust_analyzer.setup {
+lspconfig.rust_analyzer.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
@@ -113,7 +119,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-require'lspconfig'.sumneko_lua.setup {
+lspconfig.sumneko_lua.setup {
     settings = {
         Lua = {
             runtime = {version = 'LuaJIT', path = runtime_path},
@@ -125,13 +131,13 @@ require'lspconfig'.sumneko_lua.setup {
 }
 
 -- HTML CSS
-require'lspconfig'.html.setup {capabilities = capabilities}
+lspconfig.html.setup {capabilities = capabilities}
 
-require'lspconfig'.cssls.setup {capabilities = capabilities}
+lspconfig.cssls.setup {capabilities = capabilities}
 
 -- Emmet
-local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig.configs'
+local status_ok__, configs = pcall(require, "lspconfig.configs")
+if not status_ok__ then return end
 
 configs.ls_emmet = {
     default_config = {
@@ -148,7 +154,7 @@ configs.ls_emmet = {
 lspconfig.ls_emmet.setup {capabilities = capabilities}
 
 -- JSON
-require'lspconfig'.jsonls.setup {
+lspconfig.jsonls.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
@@ -156,8 +162,7 @@ require'lspconfig'.jsonls.setup {
 }
 
 -- TS TSX JS JSX
-local nvim_lsp = require("lspconfig")
-nvim_lsp.tsserver.setup {
+lspconfig.tsserver.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
@@ -205,4 +210,7 @@ nvim_lsp.tsserver.setup {
 }
 
 -- Null-ls Integration
-local null_ls = require("lsp.null-ls").setup()
+local status_ok___, null_ls = pcall(require, "lsp.null-ls")
+if not status_ok___ then return end
+
+null_ls.setup()

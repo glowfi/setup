@@ -5,7 +5,10 @@ vim.cmd "nnoremap <silent>fb <cmd>Telescope buffers<cr>"
 vim.cmd "nnoremap <silent>fh <cmd>Telescope help_tags<cr>"
 
 -- Settings
-require('telescope').setup {
+local status_ok, telescope = pcall(require, "telescope")
+if not status_ok then return end
+
+telescope.setup {
     defaults = {
         find_command = {
             "rg", "--no-heading", "--with-filename", "--line-number",

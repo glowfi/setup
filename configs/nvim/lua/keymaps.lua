@@ -1,3 +1,4 @@
+
 -- Leader key
 vim.cmd("let mapleader = ' '")
 
