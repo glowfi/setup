@@ -135,8 +135,12 @@ rm -rf ytdlautoformat.lua
 
 # ADDITIONAL SCRIPTS
 
-cp -r ~/setup/scripts/record.sh ~/.local/bin/
-chmod +x ~/.local/bin/record.sh
+cp -r ~/setup/dmenu-scripts/dm-wifi.sh ~/.local/bin/
+chmod +x ~/.local/bin/dm-wifi.sh
+
+sudo pacman -S --noconfirm xorg-xdpyinfo
+cp -r ~/setup/dmenu-scripts/dm-record.sh ~/.local/bin/
+chmod +x ~/.local/bin/dm-record.sh
 
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
