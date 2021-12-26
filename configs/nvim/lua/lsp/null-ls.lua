@@ -1,7 +1,9 @@
 -- Settings
 local M = {}
 M.setup = function()
-    local null_ls = require "null-ls"
+    local status_ok, null_ls = pcall(require, "null-ls")
+    if not status_ok then return end
+
     local b = null_ls.builtins
     vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
 

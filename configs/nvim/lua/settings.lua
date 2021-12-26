@@ -1,3 +1,4 @@
+
 -- Disable compatibility with vi which can cause unexpected issues.
 vim.cmd('set nocompatible')
 

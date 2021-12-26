@@ -1,5 +1,8 @@
 -- Settings
-require('nvim_comment').setup({
+local status_ok, comments = pcall(require, "nvim_comment")
+if not status_ok then return end
+
+comments.setup({
     comment_empty = false,
     hook = function()
         require("ts_context_commentstring.internal").update_commentstring()

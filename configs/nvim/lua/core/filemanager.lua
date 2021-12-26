@@ -1,5 +1,8 @@
 -- Settings
-require("nnn").setup({
+local status_ok, filemanager = pcall(require, "nnn")
+if not status_ok then return end
+
+filemanager.setup({
     command = "nnn -d -e",
     session = "local",
     set_default_mappings = 0,

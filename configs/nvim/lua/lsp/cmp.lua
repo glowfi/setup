@@ -8,7 +8,11 @@ local function T(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-local cmp = require 'cmp'
+local cmp_status_ok, cmp = pcall(require, "cmp")
+if not cmp_status_ok then
+  return
+end
+
 
 cmp.setup {
 
