@@ -18,7 +18,9 @@ alias gt='gitui'
 # ===================================================================
 #                           Prompt
 # ===================================================================
-. ~/.config/synth-shell/synth-shell-prompt.sh
+if [ -f /home/ayush/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$(echo $- | grep i)" ]; then
+	source /home/ayush/.config/synth-shell/synth-shell-prompt.sh
+fi
 
 # ===================================================================
 #                          Miscellaneous
@@ -92,9 +94,3 @@ function searchContents() {
 		echo "Exited from searching contents inside files in the current working directory!"
 	fi
 }
-
-##-----------------------------------------------------
-## synth-shell-prompt.sh
-if [ -f /home/ayush/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$(echo $- | grep i)" ]; then
-	source /home/ayush/.config/synth-shell/synth-shell-prompt.sh
-fi
