@@ -7,7 +7,7 @@
 # ===================================================================
 #                           Aliases
 # ===================================================================
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --group-directories-first -1'
 alias sf='searchFilesCurrent'
 alias sd='searchDirCurrent'
 alias sg='searchContents'
