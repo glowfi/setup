@@ -14,6 +14,11 @@ alias sg='searchContents'
 alias v='nvim'
 
 # ===================================================================
+#                           Prompt
+# ===================================================================
+. ~/.config/synth-shell/synth-shell-prompt.sh
+
+# ===================================================================
 #                 Do nothing if not running interactively
 # ===================================================================
 [[ $- != *i* ]] && return
@@ -80,3 +85,9 @@ function searchContents() {
 		echo "Exited from searching contents inside files in the current working directory!"
 	fi
 }
+
+##-----------------------------------------------------
+## synth-shell-prompt.sh
+if [ -f /home/ayush/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$(echo $- | grep i)" ]; then
+	source /home/ayush/.config/synth-shell/synth-shell-prompt.sh
+fi
