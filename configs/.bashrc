@@ -12,6 +12,8 @@ alias sf='searchFilesCurrent'
 alias sd='searchDirCurrent'
 alias sg='searchContents'
 alias v='nvim'
+alias n='nnn -d -e'
+alias gt='gitui'
 
 # ===================================================================
 #                           Prompt
@@ -19,9 +21,14 @@ alias v='nvim'
 . ~/.config/synth-shell/synth-shell-prompt.sh
 
 # ===================================================================
-#                 Do nothing if not running interactively
+#                          Miscellaneous
 # ===================================================================
+# Do nothing if not running interactively
 [[ $- != *i* ]] && return
+
+# Bash-completion
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+	. /usr/share/bash-completion/bash_completion
 
 # ===================================================================
 #                           Environment Variables
