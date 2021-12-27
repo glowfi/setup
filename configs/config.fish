@@ -118,7 +118,7 @@ alias checkur="checkur.py"
 
 # xhibit alias
 alias xbt="xhibit -cs gruvbox -rcn t"
-alias xi='set img (fd --type f --full-path ~/wall | shuf -n 1);xhibit -img "$img"'
+alias xi="randomImagexhibit"
 
 # sYT alais
 alias sYT="sYT.sh"
@@ -306,6 +306,12 @@ end
 # Terminal Schenanigans
 function suprise
     bash -c 'find $HOME/terminal_pics/ -type f -name "*.jpg" -o -name "*.png" -name "*.gif" | shuf -n 1' | xargs -I {} kitty +kitten icat --align=left {} && fortune -sn80
+end
+
+# Generate random image and show in xhibit
+function randomImagexhibit
+    set img (fd --type f --full-path $argv[1] | shuf -n 1)
+    xhibit -img "$img"
 end
 
 
