@@ -118,6 +118,7 @@ alias checkur="checkur.py"
 
 # xhibit alias
 alias xbt="xhibit -cs gruvbox -rcn t"
+alias xi='set img (fd --type f --full-path ~/wall | shuf -n 1);xhibit -img "$img"'
 
 # sYT alais
 alias sYT="sYT.sh"
