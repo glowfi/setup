@@ -157,6 +157,9 @@ return require('packer').startup(function(use)
     -- Treesitter text-objects
     use {'nvim-treesitter/nvim-treesitter-textobjects'}
 
+    -- Treesitter playground
+    use {'nvim-treesitter/playground'}
+
     -- Treesitter(integrated) Rainbow pairs
     use {'p00f/nvim-ts-rainbow'}
 
