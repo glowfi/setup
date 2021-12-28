@@ -311,7 +311,7 @@ end
 # Generate random image and show in xhibit
 function randomImagexhibit
     set img (fd --type f --full-path $argv[1] | shuf -n 1)
-    xhibit -img "$img"
+    xhibit -img "$img" -imb kitty
 end
 
 
