@@ -16,13 +16,6 @@ alias n='nnn -d -e'
 alias gt='gitui'
 
 # ===================================================================
-#                           Prompt
-# ===================================================================
-if [ -f /home/ayush/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$(echo $- | grep i)" ]; then
-	source /home/ayush/.config/synth-shell/synth-shell-prompt.sh
-fi
-
-# ===================================================================
 #                          Miscellaneous
 # ===================================================================
 # Do nothing if not running interactively
