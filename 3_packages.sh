@@ -140,8 +140,7 @@ echo ""
 fish -c "exit"
 cp -r ~/setup/configs/config.fish ~/.config/fish/
 
-# CPOY BASHRC
-cp -r ~/setup/configs/synth-shell/ ~/.config
+# COPY BASHRC
 cp -r ~/setup/configs/.bashrc ~
 
 # INSTALL AND COPY NNN FM SETTINGS
