@@ -71,7 +71,7 @@ yay -S --noconfirm mongodb-bin
 ### PACK
 sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
-yay -S --noconfirm sc-im libxlsxwriter
+yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay

@@ -10,6 +10,7 @@ echo ""
 
 pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
 pip install virtualenv twine wheel
+pip install lookatme lookatme.contrib.qrcode lookatme.contrib.image_ueberzug lookatme.contrib.render
 
 # JUPYTER SETUP
 
