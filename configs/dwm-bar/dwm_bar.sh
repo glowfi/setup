@@ -34,12 +34,12 @@ while true
 do
     # Append results of each func one by one to the upperbar string
     upperbar=""
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/resources.sh)"
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/volume.sh)"
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/brightness.sh)"
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/network.sh)"
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/battery.sh)"
-    upperbar="$upperbar$(~/dwm-bar/bar-functions/time_date.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/resources.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/volume.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/brightness.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/network.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/battery.sh)"
+    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/time_date.sh)"
    
     xsetroot -name "$upperbar"
     sleep 1
