@@ -3,7 +3,6 @@
 # READ ARGUMENT
 uname=$1
 
-
 # CORE PACAKAGES
 
 echo ""
@@ -12,12 +11,12 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst 
-sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock 
+sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst
+sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
-sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils  
+sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
-yay -S --noconfirm jmtpfs 
+yay -S --noconfirm jmtpfs
 
 # APPEARANCE
 
@@ -37,7 +36,6 @@ mkdir -p ~/.config/dxhd
 mv ~/setup/configs/dxhd/dxhd_dwm.sh ~/.config/dxhd
 mv ~/.config/dxhd/dxhd_dwm.sh ~/.config/dxhd/dxhd.sh
 
-
 echo ""
 echo "----------------------------------------------------------------------------------------"
 echo "--------------Creating wallpaper and pipewire scripts...--------------------------------"
@@ -46,24 +44,23 @@ echo ""
 
 # WALLPAPER SCRIPT
 
-touch ~/.wall.sh
+touch ~/.local/bin/wall.sh
 echo '#!/bin/bash
 while true;
 do
     feh --bg-fill "$(find $HOME/wall -type f -name '*.jpg' -o -name '*.png' | shuf -n 1)"
     sleep 900s
 done &
-' >> ~/.wall.sh
-
+' >>~/.local/bin/wall.sh
 
 # PIPEWIRE SCRIPT
 
-touch ~/.pw.sh
+touch ~/.local/bin/pw.sh
 echo "#!/bin/sh
 /usr/bin/pipewire &
 /usr/bin/pipewire-pulse &
 /usr/bin/pipewire-media-session
-" >> ~/.pw.sh
+" >>~/.local/bin/pw.sh
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -86,16 +83,16 @@ picom -f --experimental-backends --backend glx &
 dxhd -b &
 
 # Pipewire
-sh ~/.pw.sh &
+sh ~/.local/bin/pw.sh &
 
 # Wallpaper
-sh ~/.wall.sh &
+sh ~/.local/bin/wall.sh &
 
 # Autolock
 xautolock -time 5 -locker slock &
 
 # dwm-bar
-~/dwm-bar/dwm_bar.sh &
+~/.local/bin/dwm-bar/dwm_bar.sh &
 
 # Infinte loop
 while true;do 
@@ -104,8 +101,7 @@ done
 
 # DWM Execute
 exec dwm
-" >> ~/.xinitrc
-
+" >>~/.xinitrc
 
 # INSTALL DWM
 echo ""
@@ -143,7 +139,7 @@ echo ""
 
 cd ~/setup/configs/slock
 output=$(getent passwd "$uname" | cut -d ':' -f 5 | awk -F" " '{print $1}')
-output1=$(echo $output|awk '{ print toupper($0) }')
+output1=$(echo $output | awk '{ print toupper($0) }')
 sudo sed -i "2s/.*/static const char *user  = \""$uname"\";/" ~/setup/configs/slock/config.def.h
 sudo sed -i "3s/.*/static const char *group = \""$uname"\";/" ~/setup/configs/slock/config.def.h
 sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
@@ -163,7 +159,7 @@ echo "--------------Copying TOPBAR settings...----------------------------------
 echo "----------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/dwm-bar ~
+cp -r ~/setup/configs/dwm-bar ~/.local/bin
 echo "Done Copying TOPBAR settings!"
 echo ""
 
@@ -182,7 +178,6 @@ chmod +x ~/.local/bin/audio.sh
 cd
 echo "Done Copying DUNST settings!"
 echo ""
-
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -206,9 +201,8 @@ Exec=zathura %f
 Terminal=false
 Categories=Office;Viewer;
 MimeType=application/pdf;
-" >> ~/zathura.desktop
+" >>~/zathura.desktop
 sudo mv ~/zathura.desktop /usr/share/applications
-
 
 xdg-mime default sxiv.desktop image/png
 xdg-mime default sxiv.desktop image/jpg
