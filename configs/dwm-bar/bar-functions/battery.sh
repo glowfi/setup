@@ -1,8 +1,8 @@
 #!/bin/sh
 
 dwm_battery () {
-    CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
-    STATUS=$(cat /sys/class/power_supply/BAT1/status)
+    CHARGE=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0|grep "percentage"|xargs|awk -F":" '{print $2}'|xargs)
+    STATUS=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0|grep "state"|xargs|awk -F":" '{print $2}'|xargs )
 
     printf "%s" "$SEP1"
     if [ "$STATUS" = "Charging" ]; then
