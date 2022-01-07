@@ -26,7 +26,7 @@ echo ""
 
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
-	sudo pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+	sudo pacman -S --noconfirm nvidia-dkms nvidia-utils nvidia-settings
 elif lspci | grep -E "Radeon"; then
 	sudo pacman -S --noconfirm xf86-video-amdgpu
 elif lspci | grep -E "Integrated Graphics Controller"; then
