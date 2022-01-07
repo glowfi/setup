@@ -117,10 +117,10 @@ y | Y | yes | Yes | YES)
 	echo ""
 
 	if [[ ${DISK} =~ "nvme" ]]; then
-		mkfs.fat -F32 -f "${DISK}p1"
+		mkfs.fat -f -F32 "${DISK}p1"
 		mkfs.btrfs -f "${DISK}p2"
 	else
-		mkfs.fat -F32 -f "${DISK}1"
+		mkfs.fat -f -F32 "${DISK}1"
 		mkfs.btrfs -f "${DISK}2"
 	fi
 
