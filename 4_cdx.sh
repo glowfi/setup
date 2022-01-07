@@ -74,6 +74,7 @@ rm -rf lua-ls.tar.gz
 
 # INSTALL LUA FORAMTTER
 
+sudo pacman -S --noconfirm cmake
 git clone --recurse-submodules https://github.com/Koihik/LuaFormatter.git
 cd LuaFormatter
 cmake .
@@ -175,7 +176,7 @@ echo ""
 pip install neovim ueberzug black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
 # npx npm-check-updates -g | tail -2 | xargs -t -I {} fish -c "{}" 
-sudo pacman -S --noconfirm cmake unzip ninja tree-sitter xclip shfmt
+sudo pacman -S --noconfirm unzip ninja tree-sitter xclip shfmt
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install

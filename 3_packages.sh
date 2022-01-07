@@ -16,23 +16,6 @@ sudo hwclock --systohc
 sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syy
 
-# DISPLAY
-
-echo ""
-echo "------------------------------------------------------------------------"
-echo "--------------Installing display driver...------------------------------"
-echo "------------------------------------------------------------------------"
-echo ""
-
-## Determine GPU
-if lspci | grep -E "NVIDIA|GeForce"; then
-	sudo pacman -S --noconfirm nvidia-dkms nvidia-utils nvidia-settings
-elif lspci | grep -E "Radeon"; then
-	sudo pacman -S --noconfirm xf86-video-amdgpu
-elif lspci | grep -E "Integrated Graphics Controller"; then
-	sudo pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
-fi
-
 ## Xorg packages
 sudo pacman -S --noconfirm xorg-server
 
@@ -62,7 +45,8 @@ echo ""
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack
-yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
+# yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
+yay -S --noconfirm nerd-fonts-fantasque-sans-mono
 
 ### CDX
 sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
@@ -94,16 +78,16 @@ rm -rf tty-clock
 sudo pacman -S --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo stellarium
 yay -S --noconfirm gimp-plugin-registry
 
-# ENABLE ZRAM
+# # ENABLE ZRAM
 
-echo ""
-echo "------------------------------------------------------------------------"
-echo "--------------Enabling ZRAM...------------------------------------------"
-echo "------------------------------------------------------------------------"
-echo ""
+# echo ""
+# echo "------------------------------------------------------------------------"
+# echo "--------------Enabling ZRAM...------------------------------------------"
+# echo "------------------------------------------------------------------------"
+# echo ""
 
-sudo sed -i '8s/.*/MAX_SIZE=724/' /etc/default/zramd
-sudo systemctl enable --now zramd
+# sudo sed -i '8s/.*/MAX_SIZE=724/' /etc/default/zramd
+# sudo systemctl enable --now zramd
 
 # ADD FEATURES TO sudoers
 
@@ -118,16 +102,16 @@ echo "Done adding insults!"
 
 # SETUP APPARMOR
 
-echo ""
-echo "------------------------------------------------------------------------"
-echo "--------------Enabling APPARMOR...--------------------------------------"
-echo "------------------------------------------------------------------------"
-echo ""
+# echo ""
+# echo "------------------------------------------------------------------------"
+# echo "--------------Enabling APPARMOR...--------------------------------------"
+# echo "------------------------------------------------------------------------"
+# echo ""
 
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo pacman -S --noconfirm apparmor
-sudo systemctl enable --now apparmor.service
+# sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+# sudo grub-mkconfig -o /boot/grub/grub.cfg
+# sudo pacman -S --noconfirm apparmor
+# sudo systemctl enable --now apparmor.service
 
 echo ""
 echo "------------------------------------------------------------------------"

@@ -74,7 +74,7 @@ cp /etc/X11/xinit/xinitrc ~/.xinitrc
 sed -i '51,55d' ~/.xinitrc
 
 echo "# Resolution
-xrandr --output eDP-1 --mode 1336x768 &
+xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom 
 picom -f --experimental-backends --backend glx &
