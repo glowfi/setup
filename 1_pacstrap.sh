@@ -138,16 +138,16 @@ y | Y | yes | Yes | YES)
 		umount /mnt
 
 		mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}p2" /mnt
-		mkdir -p /mnt/boot
-		mount "${DISK}p1" /mnt/boot
+		mkdir -p /mnt/boot/efi
+		mount "${DISK}p1" /mnt/boot/efi
 	else
 		mount "${DISK}2" /mnt
 		btrfs su cr /mnt/@
 		umount /mnt
 
 		mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}2" /mnt
-		mkdir -p /mnt/boot
-		mount "${DISK}1" /mnt/boot
+		mkdir -p /mnt/boot/efi
+		mount "${DISK}1" /mnt/boot/efi
 	fi
 
 	# INSTALL BASE SETUP
