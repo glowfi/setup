@@ -79,13 +79,9 @@ echo ""
 
 uname=$1
 fname=$2
-upass=$3
-rpass=$4
 
-echo root:$4 | chpasswd
 useradd -mG wheel $uname
 usermod -c "$fname" $uname
-echo $uname:$3 | chpasswd
 echo "$uname ALL=(ALL) ALL" >>/etc/sudoers.d/$uname
 echo "Done adding user!"
 
@@ -114,7 +110,12 @@ echo "--------------Installing some packages...-----------------------"
 echo "----------------------------------------------------------------"
 echo ""
 
-pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
+hdd=$3
+if [[ "$hdd" ="" ]]; then
+    pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
+else
+    pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0    
+fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
 
@@ -128,8 +129,13 @@ echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
 echo ""
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
-grub-mkconfig -o /boot/grub/grub.cfg
+if [[ "$hdd" ="" ]]; then
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
+    grub-mkconfig -o /boot/grub/grub.cfg
+else
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+    grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 # UPDATING mkinitcpio.conf
 
@@ -151,3 +157,8 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
+
+
+passwd "$uname"
+passwd root
+echo "Type exit then umount -a then reboot..."
