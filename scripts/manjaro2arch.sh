@@ -7,7 +7,7 @@ if [ "$(id -u)" == "0" ]; then
 	exit 1
 fi
 # Bash runs commands on sync but parallelly, so this exits every subshell already running in the shell if running as root.
-[ $? == 1 ] && exit 1;
+[ $? == 1 ] && exit 1
 
 ## User-wide jobs. Precaution notice, nothing else fancy for now.
 printf "This script comes with ABSOLUTELY NO WARRANTY!\n"
@@ -258,7 +258,7 @@ fi
 # I use yash btw.
 printf "Would you like to change the shell?\nManjaro\'s default zsh plugins have all been uninstalled, so zsh would look bad. (Y/n)"
 read -r shell
-[ "$(tr '[:upper:]' '[:lower:]' <<< "$shell")" = "n" ] || chsh -s "/bin/bash"
+[ "$(tr '[:upper:]' '[:lower:]' <<<"$shell")" = "n" ] || chsh -s "/bin/bash"
 # Deletes sway config cuz sway edition saves its configs in a packages and sway gets borked after deleteing those.
 # And yes sway will look like plain i3.
 if pacman -Qq | grep -q sway; then
@@ -286,7 +286,7 @@ printf "Would you like to reboot? Make sure you have read the above carefully! (
 read -r reboot
 #Thanks to YTG1234 for this line.
 # If we're already using Bash (#!/usr/bin/env bash), why not make use of its neat features
-[ "$(tr '[:upper:]' '[:lower:]' <<< "$reboot")" = "y" ] && reboot
+[ "$(tr '[:upper:]' '[:lower:]' <<<"$reboot")" = "y" ] && reboot
 
 # Sometimes the script gives out a non-0 exit code even when there are no errors.
-[ $? != 0 ] && exit 0;
+[ $? != 0 ] && exit 0
