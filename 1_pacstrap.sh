@@ -28,32 +28,6 @@ y | Y | yes | Yes | YES)
 	echo "What would be the fullname of the user?"
 	read fname
 
-	# ACCEPT USER AND ROOT PASSWORD
-
-	echo ""
-	echo "What would be the password for $uname account?"
-	read -s passu1
-	echo "Type password for $uname account again"
-	read -s passu2
-	if [[ "$passu1" == "$passu2" ]]; then
-		upass=$passu2
-	else
-		echo "Password do not match.Try running the script again!"
-		exit 0
-	fi
-
-	echo ""
-	echo "What would be the password for root account?"
-	read -s passr1
-	echo "Type password for root account again"
-	read -s passr2
-	if [[ "$passr1" == "$passr2" ]]; then
-		rpass=$passr2
-	else
-		echo "Password do not match.Try running the script again!"
-		exit 0
-	fi
-
 	# SYNCHRONIZE
 
 	echo ""
@@ -117,10 +91,10 @@ y | Y | yes | Yes | YES)
 	echo ""
 
 	if [[ ${DISK} =~ "nvme" ]]; then
-		mkfs.fat -f -F32 "${DISK}p1"
+		mkfs.fat -F32 "${DISK}p1"
 		mkfs.btrfs -f "${DISK}p2"
 	else
-		mkfs.fat -f -F32 "${DISK}1"
+		mkfs.fat -F32 "${DISK}1"
 		mkfs.btrfs -f "${DISK}2"
 	fi
 
@@ -140,14 +114,16 @@ y | Y | yes | Yes | YES)
 		mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}p2" /mnt
 		mkdir -p /mnt/boot/efi
 		mount "${DISK}p1" /mnt/boot/efi
+		hdd=""
 	else
 		mount "${DISK}2" /mnt
 		btrfs su cr /mnt/@
 		umount /mnt
 
 		mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}2" /mnt
-		mkdir -p /mnt/boot/efi
-		mount "${DISK}1" /mnt/boot/efi
+		mkdir -p /mnt/boot
+		mount "${DISK}1" /mnt/boot
+		hdd="t"
 	fi
 
 	# INSTALL BASE SETUP
@@ -178,9 +154,7 @@ y | Y | yes | Yes | YES)
 
 	# GO TO MAIN SYSTEM
 
-	arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\" \"$upass\" \"$rpass\";rm -rf setup;" || exit 0
-	umount -a
-	reboot
+	arch-chroot /mnt /bin/bash -c "git clone https://github.com/glowfi/setup;chmod +x /setup/2_after_pacstrap.sh;/setup/2_after_pacstrap.sh $uname \"$fname\" \"$hdd\";rm -rf setup;" || exit 0
 	;;
 
 n | N | no | No | NO)
