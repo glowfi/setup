@@ -85,9 +85,8 @@ usermod -c "$fname" $uname
 echo "$uname ALL=(ALL) ALL" >>/etc/sudoers.d/$uname
 echo "Done adding user!"
 
-# PACAKGES
 
-# DISPLAY
+# DISPLAY DRIVERS
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -97,12 +96,17 @@ echo ""
 
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
+    echo "Installing NVIDIA drivers ..."
 	sudo pacman -S --noconfirm nvidia-dkms nvidia-utils nvidia-settings
 elif lspci | grep -E "Radeon"; then
+    echo "Installing AMD Radeon drivers ..."
 	sudo pacman -S --noconfirm xf86-video-amdgpu
 elif lspci | grep -E "Integrated Graphics Controller"; then
+    echo "Installing Intel drivers ..."
 	sudo pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
 fi
+
+# PACAKGES
 
 echo ""
 echo "----------------------------------------------------------------"
@@ -159,6 +163,14 @@ systemctl enable NetworkManager
 systemctl enable reflector.timer
 
 
+# ACCEPT ROOT AND USER PASSWORD
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------Enter password for user and root...-----------------------"
+echo "------------------------------------------------------------------------"
+echo ""
+
 passwd "$uname"
 passwd root
-echo "Type exit then umount -a then reboot..."
+echo "Type umount -a then reboot..."
