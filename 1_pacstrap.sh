@@ -140,12 +140,12 @@ y | Y | yes | Yes | YES)
 		echo ""
 		echo "Installing Intel microcode ..."
 		echo ""
-		pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim bc || exit 0
+		pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim || exit 0
 	elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
 		echo ""
 		echo "Installing AMD microcode ..."
 		echo ""
-		pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim bc || exit 0
+		pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim || exit 0
 	fi
 
 	# GENERATE UUID OF THE DISKS
