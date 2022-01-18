@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+# FILES
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
 # SET LOCATION AND SYNCHRONIZE HARDWARE CLOCK
 
@@ -8,9 +12,14 @@ echo "--------------Setting Location and Synchronizing hardware clock...--------
 echo "---------------------------------------------------------------------------------------"
 echo ""
 
-ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+LOCATION=$(sed -n '2p' <"$CONFIG_FILE")
+ln -sf /usr/share/zoneinfo/"$LOCATION"/etc/localtime
 hwclock --systohc
 echo "Done setting location and synchronizing hardware clock!"
+
+# Set keymaps
+KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
+localectl --no-ask-password set-keymap ${KEYMAP}
 
 # OPTIMIZE MAKEPKG
 
@@ -63,10 +72,11 @@ echo "--------------Setting hostname...---------------------"
 echo "------------------------------------------------------"
 echo ""
 
-echo "arch" >>/etc/hostname
+hostname=$(sed -n '10p' <"$CONFIG_FILE")
+echo "$hostname" >>/etc/hostname
 echo "127.0.0.1 localhost" >>/etc/hosts
 echo "::1       localhost" >>/etc/hosts
-echo "127.0.1.1 arch.localdomain arch" >>/etc/hosts
+echo "127.0.1.1 arch.localdomain $hostname" >>/etc/hosts
 echo "Done setting hostname!"
 
 # SET USER
@@ -77,13 +87,18 @@ echo "--------------Adding you as user...-----------------------"
 echo "----------------------------------------------------------"
 echo ""
 
-uname=$1
-fname=$2
+uname=$(sed -n '6p' <"$CONFIG_FILE")
+fname=$(sed -n '7p' <"$CONFIG_FILE")
 
 useradd -mG wheel $uname
 usermod -c "$fname" $uname
 echo "$uname ALL=(ALL) ALL" >>/etc/sudoers.d/$uname
 echo "Done adding user!"
+
+upass=$(sed -n '8p' <"$CONFIG_FILE")
+rpass=$(sed -n '9p' <"$CONFIG_FILE")
+echo "$uname:$upass" | chpasswd
+echo "root:$rpass" | chpasswd
 
 
 # DISPLAY DRIVERS
@@ -114,10 +129,10 @@ echo "--------------Installing some packages...-----------------------"
 echo "----------------------------------------------------------------"
 echo ""
 
-hdd=$3
-if [[ "$hdd" ="" ]]; then
+driveType=$(sed -n '4p' <"$CONFIG_FILE")
+if [[ "$driveType" ="ssd" ]]; then
     pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
-else
+elif [[ "$driveType" ="non-ssd" ]]; then
     pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0    
 fi
 
@@ -133,10 +148,10 @@ echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
 echo ""
 
-if [[ "$hdd" ="" ]]; then
+if [[ "$driveType" ="ssd" ]]; then
     grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
     grub-mkconfig -o /boot/grub/grub.cfg
-else
+elif [[ "$driveType" ="non-ssd" ]]; then
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
@@ -161,16 +176,3 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
-
-
-# ACCEPT ROOT AND USER PASSWORD
-
-echo ""
-echo "------------------------------------------------------------------------"
-echo "--------------Enter password for user and root...-----------------------"
-echo "------------------------------------------------------------------------"
-echo ""
-
-passwd "$uname"
-passwd root
-echo "Type umount -a then reboot..."
