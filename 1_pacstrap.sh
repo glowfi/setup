@@ -160,4 +160,4 @@ genfstab -U /mnt >>/mnt/etc/fstab
 
 # COPY SCRIPTS
 
-cp -R ${SCRIPT_DIR} /mnt/root/setup
+cp -R ${SCRIPT_DIR} /mnt/setup
