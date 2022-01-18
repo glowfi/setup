@@ -130,9 +130,9 @@ echo "----------------------------------------------------------------"
 echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
-if [[ "$driveType" ="ssd" ]]; then
+if [[ "$driveType" = "ssd" ]]; then
     pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
-elif [[ "$driveType" ="non-ssd" ]]; then
+elif [[ "$driveType" = "non-ssd" ]]; then
     pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0    
 fi
 
