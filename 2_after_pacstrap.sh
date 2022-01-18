@@ -152,10 +152,10 @@ echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
 echo ""
 
-if [[ "$driveType" ="ssd" ]]; then
+if [[ "$driveType" = "ssd" ]]; then
     grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
     grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ "$driveType" ="non-ssd" ]]; then
+elif [[ "$driveType" = "non-ssd" ]]; then
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
