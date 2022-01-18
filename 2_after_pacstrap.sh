@@ -4,6 +4,10 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
+# Read Username
+USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
+
+
 # SET LOCATION AND SYNCHRONIZE HARDWARE CLOCK
 
 echo ""
@@ -176,3 +180,6 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
+
+# COPY 
+cp -R /setup /home/$USERNAME/

@@ -2,7 +2,7 @@
 
 # READ FILES
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-CONFIG_FILE=$SCRIPT_DIR/setup.conf
+CONFIG_FILE=/home/$USERNAME/setup/setup.conf
 
 # Read Username
 USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
