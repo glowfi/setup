@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+# READ FILES
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+CONFIG_FILE=$SCRIPT_DIR/setup.conf
+
+# Read Username
+USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
 
 # CACHE PASSWORD
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
@@ -153,5 +160,5 @@ echo "--------------------------------------------------------------------------
 echo "--------------CHANGING DEFAULT SHELL...---------------------------------------"
 echo "------------------------------------------------------------------------------"
 echo ""
-sudo usermod --shell /bin/fish $1
+sudo usermod --shell /bin/fish $USERNAME
 echo "Changed default shell!"
