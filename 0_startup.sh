@@ -202,7 +202,7 @@ diskpart() {
 Please enter full path to disk: (example /dev/sda):
 "
 	read option
-	echo "$option" >>setup.conf
+	echo "$option" >> "$CONFIG_FILE"
 }
 
 # Handle userinfo
