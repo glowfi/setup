@@ -37,7 +37,7 @@ echo ""
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin/
 makepkg -si --noconfirm
-cd ~
+cd /home/$USERNAME
 rm -rf yay-bin
 
 # PACKAGES
@@ -129,10 +129,10 @@ echo ""
 # COPY FISH SHELL SETTINGS
 
 fish -c "exit"
-cp -r ~/setup/configs/config.fish ~/.config/fish/
+cp -r /home/$USERNAME/setup/configs/config.fish /home/$USERNAME/.config/fish/
 
 # COPY BASHRC
-cp -r ~/setup/configs/.bashrc ~
+cp -r /home/$USERNAME/setup/configs/.bashrc /home/$USERNAME
 
 # INSTALL AND COPY NNN FM SETTINGS
 
@@ -146,12 +146,12 @@ rm -rf nnn
 mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
-sed -i '204 a                      --theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &' ~/.config/nnn/plugins/preview-tui
-sed -i '204d' ~/.config/nnn/plugins/preview-tui
+sed -i '204 a                      --theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &' /home/$USERNAME/.config/nnn/plugins/preview-tui
+sed -i '204d' /home/$USERNAME/.config/nnn/plugins/preview-tui
 
 # COPY KITTY SETTINGS
 
-cp -r ~/setup/configs/kitty ~/.config/
+cp -r /home/$USERNAME/setup/configs/kitty /home/$USERNAME/.config/
 
 # CHANGE DEFAULT SHELL
 
