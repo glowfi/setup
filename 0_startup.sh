@@ -69,7 +69,7 @@ filesystem() {
 	elif [[ "$FS" = "2" ]]; then
 		echo "ext4" >>"$CONFIG_FILE"
 	elif [[ "$FS" = "0" ]]; then
-	    rm -rf "$CONFIG_FILE"
+		rm -rf "$CONFIG_FILE"
 		exit
 	else
 		echo "Wrong option entered!"
@@ -202,7 +202,7 @@ diskpart() {
 Please enter full path to disk: (example /dev/sda):
 "
 	read option
-	echo "$option" >> "$CONFIG_FILE"
+	echo "$option" >>"$CONFIG_FILE"
 }
 
 # Handle userinfo
@@ -257,33 +257,6 @@ userinfo() {
 	echo "$nameofmachine" >>"$CONFIG_FILE"
 }
 
-de_wm() {
-
-	echo ""
-	echo "-------------------------------------------------------------"
-	echo "--------------DE/WM INSTALLATION...--------------------------"
-	echo "-------------------------------------------------------------"
-	echo ""
-
-	echo ""
-	echo "Type 1 to install KDE"
-	echo "Type 2 to install DWM"
-	read de_wm_
-
-	case $de_wm_ in
-	1)
-		echo "kde" >>"$CONFIG_FILE"
-		;;
-	2)
-		echo "dwm" >>"$CONFIG_FILE"
-		;;
-	*)
-		echo "Wrong option. Try again"
-		de_wm
-		;;
-	esac
-
-}
 
 logo
 filesystem
@@ -292,4 +265,3 @@ keymap
 drivetype
 diskpart
 userinfo
-de_wm
