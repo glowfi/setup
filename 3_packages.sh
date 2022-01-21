@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# READ FILES
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-CONFIG_FILE=/home/$USERNAME/setup/setup.conf
-
-# Read Username
-USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
-
 # CACHE PASSWORD
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
@@ -37,7 +30,7 @@ echo ""
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin/
 makepkg -si --noconfirm
-cd /home/$USERNAME
+cd ~
 rm -rf yay-bin
 
 # PACKAGES
@@ -129,10 +122,10 @@ echo ""
 # COPY FISH SHELL SETTINGS
 
 fish -c "exit"
-cp -r /home/$USERNAME/setup/configs/config.fish /home/$USERNAME/.config/fish/
+cp -r ~/setup/configs/config.fish ~/.config/fish/
 
 # COPY BASHRC
-cp -r /home/$USERNAME/setup/configs/.bashrc /home/$USERNAME
+cp -r ~/setup/configs/.bashrc ~
 
 # INSTALL AND COPY NNN FM SETTINGS
 
@@ -146,12 +139,12 @@ rm -rf nnn
 mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
-sed -i '204 a                      --theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &' /home/$USERNAME/.config/nnn/plugins/preview-tui
-sed -i '204d' /home/$USERNAME/.config/nnn/plugins/preview-tui
+sed -i '204 a                      --theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &' ~/.config/nnn/plugins/preview-tui
+sed -i '204d' ~/.config/nnn/plugins/preview-tui
 
 # COPY KITTY SETTINGS
 
-cp -r /home/$USERNAME/setup/configs/kitty /home/$USERNAME/.config/
+cp -r ~/setup/configs/kitty ~/.config/
 
 # CHANGE DEFAULT SHELL
 
@@ -160,5 +153,5 @@ echo "--------------------------------------------------------------------------
 echo "--------------CHANGING DEFAULT SHELL...---------------------------------------"
 echo "------------------------------------------------------------------------------"
 echo ""
-sudo usermod --shell /bin/fish $USERNAME
+sudo usermod --shell /bin/fish $1
 echo "Changed default shell!"

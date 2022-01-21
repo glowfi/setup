@@ -4,10 +4,6 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
-# Read Username
-USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
-
-
 # SET LOCATION AND SYNCHRONIZE HARDWARE CLOCK
 
 echo ""
@@ -21,7 +17,14 @@ ln -sf /usr/share/zoneinfo/"$LOCATION"/etc/localtime
 hwclock --systohc
 echo "Done setting location and synchronizing hardware clock!"
 
-# Set keymaps
+# SET KEYMAP
+
+echo ""
+echo "---------------------------------------------------------------------------------------"
+echo "--------------Setting Keyboard layout...-----------------------------------------------"
+echo "---------------------------------------------------------------------------------------"
+echo ""
+
 KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
 localectl --no-ask-password set-keymap ${KEYMAP}
 
@@ -104,7 +107,6 @@ rpass=$(sed -n '9p' <"$CONFIG_FILE")
 echo "$uname:$upass" | chpasswd
 echo "root:$rpass" | chpasswd
 
-
 # DISPLAY DRIVERS
 
 echo ""
@@ -115,13 +117,13 @@ echo ""
 
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
-    echo "Installing NVIDIA drivers ..."
+	echo "Installing NVIDIA drivers ..."
 	sudo pacman -S --noconfirm nvidia-dkms nvidia-utils nvidia-settings
 elif lspci | grep -E "Radeon"; then
-    echo "Installing AMD Radeon drivers ..."
+	echo "Installing AMD Radeon drivers ..."
 	sudo pacman -S --noconfirm xf86-video-amdgpu
 elif lspci | grep -E "Integrated Graphics Controller"; then
-    echo "Installing Intel drivers ..."
+	echo "Installing Intel drivers ..."
 	sudo pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
 fi
 
@@ -135,9 +137,9 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-    pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
+	pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
 elif [[ "$driveType" = "non-ssd" ]]; then
-    pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0    
+	pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync || exit 0
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
@@ -153,11 +155,11 @@ echo "-------------------------------------------------------"
 echo ""
 
 if [[ "$driveType" = "ssd" ]]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
-    grub-mkconfig -o /boot/grub/grub.cfg
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
+	grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "$driveType" = "non-ssd" ]]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
-    grub-mkconfig -o /boot/grub/grub.cfg
+	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+	grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
 # UPDATING mkinitcpio.conf
@@ -180,6 +182,3 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
-
-# COPY 
-cp -R /setup /home/$USERNAME/
