@@ -57,7 +57,7 @@ Your PC will restart after the below script finishes.**
 
 pacman -Sy git
 git clone https://github.com/glowfi/setup
-sh ./setup/run_1.sh
+./setup/run_1.sh
 
 ```
 
@@ -68,7 +68,6 @@ Then,run the below command.**
 ```sh
 
 git clone https://github.com/glowfi/setup
-chmod +x ./setup/run_2.sh
 ./setup/run_2.sh
 
 ```
