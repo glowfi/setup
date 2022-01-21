@@ -157,7 +157,3 @@ fi
 # GENERATE UUID OF THE DISKS
 
 genfstab -U /mnt >>/mnt/etc/fstab
-
-# COPY SCRIPTS
-
-cp -R ${SCRIPT_DIR} /mnt/setup
