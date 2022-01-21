@@ -59,6 +59,24 @@ cd ..
 rm -rf rust-analyzer
 
 echo ""
+echo "--------------------------------------------------------------------------"
+echo "--------------Installing Golang...----------------------------------------"
+echo "--------------------------------------------------------------------------"
+echo ""
+
+# INSTALL GOLANG
+
+curl https://go.dev/dl/ |grep -e "linux" | head -2 | grep -e "href" | awk -F "href" '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget  https://go.dev{} -O go.tar.gz
+tar -xzf go.tar.gz
+rm -rf go.tar.gz
+
+# GOLANG MODULES 
+
+go get github.com/ericchiang/pup
+go install golang.org/x/tools/gopls@latest
+
+
+echo ""
 echo "---------------------------------------------------------------------------------------------"
 echo "--------------Installing LUA LSP AND LUA FORMATTER...----------------------------------------"
 echo "---------------------------------------------------------------------------------------------"
@@ -66,7 +84,7 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "2.5.6")
+set lua_ver (echo "2.6.0")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/

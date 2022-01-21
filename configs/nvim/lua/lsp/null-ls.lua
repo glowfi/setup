@@ -18,6 +18,7 @@ M.setup = function()
             }, b.formatting.fish_indent.with {filetypes = {"fish"}},
             b.formatting.black.with {filetypes = {"python"}},
             b.formatting.rustfmt.with {filetypes = {"rust"}},
+            b.formatting.gofmt.with {filetypes = {"go"}},
             b.formatting.lua_format.with {filetypes = {"lua"}},
             b.formatting.shfmt.with {filetypes = {"sh"}},
             b.diagnostics.flake8.with {filetypes = {"python"}}

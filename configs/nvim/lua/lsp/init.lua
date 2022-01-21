@@ -106,7 +106,7 @@ if not status_ok_ then return end
 -- Python LSP
 lspconfig.pyright.setup {capabilities = capabilities}
 
--- Rust LSP 
+-- Rust LSP
 lspconfig.rust_analyzer.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
@@ -114,7 +114,15 @@ lspconfig.rust_analyzer.setup {
     end
 }
 
--- Lua LSP 
+-- Golang LSP
+require'lspconfig'.gopls.setup {
+    capabilities = capabilities,
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+    end
+}
+
+-- Lua LSP
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
