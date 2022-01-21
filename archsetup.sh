@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-setfont ter-v22b
 # Read Username
 USERNAME=$(sed -n '6p' <"$CONFIG_FILE")
 
