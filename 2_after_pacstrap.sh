@@ -182,3 +182,7 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
+
+# REMOVE SCRIPT DIRECTORY
+
+rm -rf setup
