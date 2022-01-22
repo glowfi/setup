@@ -11,7 +11,7 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.2.0-linux-x64/bin/ $PATH # Sets NodeJS paths
+set PATH ~/node-v17.4.0-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH ~/lua-ls/bin/ $PATH # Sets lua path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/go/bin/ $PATH # Sets golang path
@@ -311,8 +311,13 @@ end
 
 # Generate random image and show in xhibit
 function randomImagexhibit
-    set img (fd --type f --full-path $argv[1] | shuf -n 1)
-    xhibit -img "$img" -imb kitty -rcs t
+    if test -z $argv[1]
+        set img ( fd  --type f -g "*.jpg" -g "*.png" $HOME/wall 2>/dev/null| shuf -n 1)
+        xhibit -img "$img" -imb kitty -rcs t
+    else
+        set img (fd --type f --full-path $argv[1] | shuf -n 1)
+        xhibit -img "$img" -imb kitty -rcs t
+    end
 end
 
 
