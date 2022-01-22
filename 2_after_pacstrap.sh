@@ -12,8 +12,9 @@ echo "--------------Setting Location and Synchronizing hardware clock...--------
 echo "---------------------------------------------------------------------------------------"
 echo ""
 
-LOCATION=$(sed -n '2p' <"$CONFIG_FILE")
-ln -sf /usr/share/zoneinfo/"$LOCATION"/etc/localtime
+TIMEZONE=$(sed -n '2p' <"$CONFIG_FILE")
+timedatectl --no-ask-password set-timezone ${TIMEZONE}
+timedatectl --no-ask-password set-ntp 1
 hwclock --systohc
 echo "Done setting location and synchronizing hardware clock!"
 
