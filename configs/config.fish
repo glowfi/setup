@@ -127,6 +127,9 @@ alias sYT="sYT.sh"
 # Terminal Schenanigans
 alias suprise="suprise"
 
+# Set Wallpaper
+alias wl="setWall"
+
 # PyPI package alias 
 alias pC="python3 setup.py sdist bdist_wheel"
 alias tW="twine upload dist/*"
@@ -320,6 +323,9 @@ function randomImagexhibit
     end
 end
 
+function setWall
+    feh --bg-fill $argv[1]
+end
 
 # Bang-Bang Function
 function __history_previous_command
