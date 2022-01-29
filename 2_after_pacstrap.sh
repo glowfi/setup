@@ -13,8 +13,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 TIMEZONE=$(sed -n '2p' <"$CONFIG_FILE")
-timedatectl --no-ask-password set-timezone ${TIMEZONE}
-timedatectl --no-ask-password set-ntp 1
+ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
 hwclock --systohc
 echo "Done setting location and synchronizing hardware clock!"
 
@@ -27,7 +26,8 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
-localectl --no-ask-password set-keymap ${KEYMAP}
+localectl --no-ask-password set-keymap "$KEYMAP"
+echo "Keyboard layout set!"
 
 # OPTIMIZE MAKEPKG
 
@@ -156,10 +156,10 @@ echo "-------------------------------------------------------"
 echo ""
 
 if [[ "$driveType" = "ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 	grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "$driveType" = "non-ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 	grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
