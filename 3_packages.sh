@@ -45,8 +45,7 @@ echo ""
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack
-# yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
-yay -S --noconfirm nerd-fonts-fantasque-sans-mono
+yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
 
 ### CDX
 sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
@@ -80,14 +79,14 @@ yay -S --noconfirm gimp-plugin-registry
 
 # # ENABLE ZRAM
 
-# echo ""
-# echo "------------------------------------------------------------------------"
-# echo "--------------Enabling ZRAM...------------------------------------------"
-# echo "------------------------------------------------------------------------"
-# echo ""
+echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------Enabling ZRAM...------------------------------------------"
+echo "------------------------------------------------------------------------"
+echo ""
 
 # sudo sed -i '8s/.*/MAX_SIZE=724/' /etc/default/zramd
-# sudo systemctl enable --now zramd
+sudo systemctl enable --now zramd
 
 # ADD FEATURES TO sudoers
 
