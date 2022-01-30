@@ -30,11 +30,15 @@ kitty
 #super + b
 brave
 
+## Web search
+#super + q
+fish -c "~/.local/bin/dm-search.sh"
+
 ## Network
 #super + n
 kitty -e "nmtui"
 
-## Network
+## Audio
 #super + v
 kitty -e "pulsemixer"
 
