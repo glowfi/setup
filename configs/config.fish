@@ -173,7 +173,7 @@ alias sg="searchContents"
 
 # Bluetooth alias
 alias bst='sudo systemctl enable bluetooth.service;sudo systemctl start bluetooth.service'
-alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetooth.service'
+alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetooth.service;killall blueman-tray;killall blueman-applet'
 
 
 # ===================================================================
