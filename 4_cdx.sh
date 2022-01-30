@@ -169,7 +169,13 @@ git clone https://github.com/pystardust/ani-cli;
 cd ani-cli
 sudo make
 cd ..
-rm -rf ani-cli  
+rm -rf ani-cli 
+
+git clone https://github.com/thameera/vimv
+cd vimv
+cp -r vimv ~/.local/bin/
+cd ..
+rm -rf vimv 
 
 # SETUP POSTGRES
 
