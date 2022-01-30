@@ -26,7 +26,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
-localectl --no-ask-password set-keymap "$KEYMAP"
+echo "$KEYMAP" >>/etc/vconsole.conf
 echo "Keyboard layout set!"
 
 # OPTIMIZE MAKEPKG

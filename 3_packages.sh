@@ -86,7 +86,7 @@ echo "--------------Enabling ZRAM...------------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-# sudo sed -i '8s/.*/MAX_SIZE=724/' /etc/default/zramd
+sudo sed -i '8s/.*/MAX_SIZE=8192/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
 # ADD FEATURES TO sudoers
@@ -102,16 +102,16 @@ echo "Done adding insults!"
 
 # SETUP APPARMOR
 
-# echo ""
-# echo "------------------------------------------------------------------------"
-# echo "--------------Enabling APPARMOR...--------------------------------------"
-# echo "------------------------------------------------------------------------"
-# echo ""
+echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------Enabling APPARMOR...--------------------------------------"
+echo "------------------------------------------------------------------------"
+echo ""
 
-# sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
-# sudo grub-mkconfig -o /boot/grub/grub.cfg
-# sudo pacman -S --noconfirm apparmor
-# sudo systemctl enable --now apparmor.service
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo pacman -S --noconfirm apparmor
+sudo systemctl enable --now apparmor.service
 
 echo ""
 echo "------------------------------------------------------------------------"
