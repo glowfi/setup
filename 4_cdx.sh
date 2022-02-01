@@ -169,9 +169,7 @@ cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
 
 git clone https://github.com/pystardust/ani-cli;
-cd ani-cli
-sudo make
-cd ..
+cp -r ani-cli/ani-cli ~/.local/bin
 rm -rf ani-cli 
 
 git clone https://github.com/thameera/vimv
