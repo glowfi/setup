@@ -13,7 +13,7 @@ pip install protonup
 ## Clients
 sudo pacman -S --noconfirm steam
 # sudo pacman -S --noconfirm lutris steam
-yay -S --noconfirm mangohud
+yay -S --noconfirm mangohud dxvk-bin
 # yay -S --noconfirm heroic-games-launcher-bin mangohud
 
 ## Feral gamemode
