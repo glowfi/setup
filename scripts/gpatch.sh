@@ -11,7 +11,7 @@ sudo pacman -S --noconfirm wine-staging giflib lib32-giflib libpng lib32-libpng 
 
 ## Clients
 sudo pacman -S --noconfirm steam
-yay -S --noconfirm mangohud dxvk-bin
+yay -S --noconfirm mangohud
 # sudo pacman -S --noconfirm lutris steam
 # yay -S --noconfirm heroic-games-launcher-bin mangohud
 
@@ -26,4 +26,3 @@ rm -rf gamemode
 
 ## Protonup [Proton GE]
 pip install protonup
-protonup
