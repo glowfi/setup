@@ -1,14 +1,14 @@
 -- Global Paths
-CONFIG_PATH = vim.fn.stdpath('config')
-DATA_PATH = vim.fn.stdpath('data')
-CACHE_PATH = vim.fn.stdpath('cache')
+CONFIG_PATH = vim.fn.stdpath("config")
+DATA_PATH = vim.fn.stdpath("data")
+CACHE_PATH = vim.fn.stdpath("cache")
 
 -- General Settings
-require('settings')
-require('keymaps')
+require("settings")
+require("keymaps")
 
 -- Plugins
-require('plugins')
+require("plugins")
 
 -- LSP
-require('lsp')
+require("lsp")
