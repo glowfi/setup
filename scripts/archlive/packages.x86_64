@@ -43,7 +43,6 @@ irssi
 iw
 iwd
 jfsutils
-kitty-terminfo
 less
 lftp
 libfido2
@@ -119,7 +118,7 @@ wvdial
 xfsprogs
 xl2tpd
 zsh
-kitty
+konsole
 networkmanager
 network-manager-applet
 nvidia
