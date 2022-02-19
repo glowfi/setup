@@ -11,12 +11,12 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark sxiv zathura zathura-pdf-poppler flameshot dunst
+sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
-yay -S --noconfirm jmtpfs
+yay -S --noconfirm jmtpfs nsxiv
 
 # APPEARANCE
 
@@ -204,9 +204,9 @@ MimeType=application/pdf;
 " >>~/zathura.desktop
 sudo mv ~/zathura.desktop /usr/share/applications
 
-xdg-mime default sxiv.desktop image/png
-xdg-mime default sxiv.desktop image/jpg
-xdg-mime default sxiv.desktop image/jpeg
+xdg-mime default nsxiv.desktop image/png
+xdg-mime default nsxiv.desktop image/jpg
+xdg-mime default nsxiv.desktop image/jpeg
 xdg-mime default zathura.desktop application/pdf
 
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
