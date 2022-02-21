@@ -80,6 +80,7 @@ alias dxrel='dxhd -r'
 
 # Git aliases
 alias gt='gitui'
+alias nsxiv='nsxiv -a'
 
 # Neovim aliases
 alias v='nvim'
@@ -333,6 +334,12 @@ end
 
 function trad
     ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
+end
+
+function mado
+    ffmpeg -i $argv[1] -i $argv[2] \
+        -filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' \
+        -map '[out]' output.mp3
 end
 
 # Bang-Bang Function
