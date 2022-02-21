@@ -11,7 +11,7 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.4.0-linux-x64/bin/ $PATH # Sets NodeJS paths
+set PATH ~/node-v17.5.0-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH ~/lua-ls/bin/ $PATH # Sets lua path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/go/bin/ $PATH # Sets golang path
@@ -329,6 +329,10 @@ end
 
 function setWall
     feh --bg-fill $argv[1]
+end
+
+function trad
+    ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
 end
 
 # Bang-Bang Function
