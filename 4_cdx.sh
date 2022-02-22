@@ -84,7 +84,7 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "2.6.3")
+set lua_ver (echo "2.6.6")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
