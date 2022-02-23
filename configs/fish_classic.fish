@@ -376,25 +376,26 @@ end
 # ===================================================================
 #                            Theme
 # ===================================================================
-function fish_mode_prompt
-    if [ $fish_key_bindings = fish_vi_key_bindings ]
-        switch $fish_bind_mode
-            case default
-                set_color -b red
-            case insert
-                set_color -b green
-            case visual
-                set_color -b yellow
-            case replace-one
-                set_color -b magenta
-        end
-        echo -n " "
-    end
-end
+
 
 function fish_prompt
-    set -l last_status $status
-    set -l cwd (pwd | sed "s|^$HOME|~|")
+    set -l last_command_status $status
+
+    set_color red --bold
+    printf "["
+    set_color blue
+    printf "%s" "$USER"
+    set_color green
+    printf "@"
+    set_color yellow
+    printf "%s" "$hostname "
+    set_color C7ECEC
+    printf (pwd | sed "s|^$HOME|~|")
+    set_color red --bold
+    printf "] "
+    set_color ffc04d
+    printf '%s' '-> '
+
     set -l normal_color (set_color normal)
     set -l branch_color (set_color yellow)
     set -l meta_color (set_color brgreen)
@@ -402,20 +403,8 @@ function fish_prompt
     set -l error_color (set_color red -o)
     set -l purple (set_color -o purple)
 
-    # Show error message
-    if not test $last_status -eq 0
-        set_color --bold ffffff -b fb4934
-        echo -n ' ! '
-        set_color normal
-    end
-
-    # Display current path
-    set_color black -b blue
-    echo -n " $cwd "
-
-    # Show git branch and dirty state
     if git_is_repo
-        echo -n -s (set_color ffffff -b 297600) (git_branch_name) $normal_color
+        echo -n -s $branch_color (git_branch_name) $normal_color
         set -l git_meta ""
         if test (command git ls-files --others --exclude-standard | wc -w 2> /dev/null) -gt 0
             set git_meta "$symbol_color?"
@@ -445,9 +434,11 @@ function fish_prompt
         end
     end
 
-    # Add a space
-    set_color normal
-    echo -n ' '
+    if test $last_command_status -eq 0
+        echo -n -s $symbol_color $symbol " " $normal_color
+    else
+        echo -n -s $error_color $symbol " " $normal_color
+    end
 end
 
 
