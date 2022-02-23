@@ -277,6 +277,12 @@ function searchFilesCurrent
     else
         set ft (xdg-mime query filetype $args)
         set def (xdg-mime query default $ft)
+
+        if [ $def = "nsxiv.desktop" ]
+            nsxiv $args
+            return
+        end
+
         switch $def
             case "nvim.desktop"
                 nvim $args
