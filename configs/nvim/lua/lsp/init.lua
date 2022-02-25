@@ -12,8 +12,12 @@ vim.cmd("nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>")
 vim.cmd("nnoremap <silent> ga    <cmd>lua vim.lsp.buf.declaration()<CR>")
 vim.cmd("nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>")
 vim.cmd("nnoremap <silent> K     :lua vim.lsp.buf.hover()<CR>")
-vim.cmd("nnoremap <silent> <S-p> :lua vim.diagnostic.goto_prev({popup_opts = {border = 'rounded',max_width = 65,min_width = 35,max_height = math.floor(vim.o.lines * 0.3),min_height = 1}})<CR>")
-vim.cmd("nnoremap <silent> <S-n> :lua vim.diagnostic.goto_next({popup_opts = {border = 'rounded',max_width = 65,min_width = 35,max_height = math.floor(vim.o.lines * 0.3),min_height = 1}})<CR>")
+vim.cmd(
+	"nnoremap <silent> <S-p> :lua vim.diagnostic.goto_prev({popup_opts = {border = 'rounded',max_width = 65,min_width = 35,max_height = math.floor(vim.o.lines * 0.3),min_height = 1}})<CR>"
+)
+vim.cmd(
+	"nnoremap <silent> <S-n> :lua vim.diagnostic.goto_next({popup_opts = {border = 'rounded',max_width = 65,min_width = 35,max_height = math.floor(vim.o.lines * 0.3),min_height = 1}})<CR>"
+)
 vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()')
 
 -- Set Default Prefix.
