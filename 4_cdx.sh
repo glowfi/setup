@@ -75,6 +75,29 @@ rm -rf go.tar.gz
 go get github.com/ericchiang/pup
 go install golang.org/x/tools/gopls@latest
 
+echo ""
+echo "--------------------------------------------------------------------------"
+echo "--------------Installing Clangd...----------------------------------------"
+echo "--------------------------------------------------------------------------"
+echo ""
+
+# INSTALL CLANGD LSP
+
+set clangd_ver (echo "13.0.0")
+sudo pacman -S --noconfirm clang
+wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
+mkdir -p ~/clangd
+unzip ~/clangd.zip -d ~
+rm -rf clangd.zip
+
+set line (echo "set PATH ~/clangd_$clangd_ver/bin \$PATH # Sets clangd path")
+echo $line | xargs -t -I {} awk 'NR==18{print "{}"}1' ~/.config/fish/config.fish > ~/config.fish 
+sed -i '19d' ~/config.fish
+cp -r ~/config.fish ~/.config/fish/config.fish
+rm -rf ~/config.fish
+source ~/.config/fish/config.fish
+
+
 
 echo ""
 echo "---------------------------------------------------------------------------------------------"
