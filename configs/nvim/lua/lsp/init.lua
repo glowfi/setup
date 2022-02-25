@@ -143,6 +143,9 @@ require("lspconfig").gopls.setup({
 	end,
 })
 
+-- Clangd LSP
+require("lspconfig").clangd.setup({})
+
 -- Lua LSP
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
