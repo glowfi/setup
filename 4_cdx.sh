@@ -86,7 +86,6 @@ echo ""
 set clangd_ver (echo "13.0.0")
 sudo pacman -S --noconfirm clang
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
-mkdir -p ~/clangd
 unzip ~/clangd.zip -d ~
 rm -rf clangd.zip
 
