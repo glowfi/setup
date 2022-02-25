@@ -407,7 +407,7 @@ function fish_prompt
 
     # Show git branch and dirty state
     if git_is_repo
-        echo -n -s (set_color 000000 -b d65d0e) (string join '' ' ' (git_branch_name) ' ') $normal_color
+        echo -n -s (set_color 000000 -b d65d0e) (string join '' '  ' (git_branch_name) ' ') $normal_color
         set -l git_meta ""
         if test (command git ls-files --others --exclude-standard | wc -w 2> /dev/null) -gt 0
             set git_meta "$symbol_color?"
