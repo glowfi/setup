@@ -15,6 +15,7 @@ set PATH ~/node-v17.5.0-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH ~/lua-ls/bin/ $PATH # Sets lua path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/go/bin/ $PATH # Sets golang path
+set PATH ~/clangd_13.0.0/bin $PATH # Sets clangd path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 
 ## Enhancements
