@@ -257,11 +257,20 @@ userinfo() {
 	echo "$nameofmachine" >>"$CONFIG_FILE"
 }
 
+clear
+logo
+
+filesystem
+clear
+timezone
+clear
+keymap
+clear
+drivetype
+clear
+diskpart
+clear
+userinfo
+clear
 
 logo
-filesystem
-timezone
-keymap
-drivetype
-diskpart
-userinfo
