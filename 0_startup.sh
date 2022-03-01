@@ -226,7 +226,8 @@ timezone() {
 		echo "Please enter your desired timezone e.g. Europe/London :"
 		read new_timezone
 		if [[ "$new_timezone" == "" ]]; then
-			echo "No timezone entered.Enter correct timezone format!"
+			echo ""
+			echo "No timezone entered. Enter correct timezone format!"
 			timezone
 		else
 			echo "$time_zone" >>"$CONFIG_FILE"
