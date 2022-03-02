@@ -127,7 +127,6 @@ nvidia-utils
 nvidia-dkms
 nvidia-settings
 xorg
-sddm
 firefox
 plasma-desktop
 plasma-workspace
