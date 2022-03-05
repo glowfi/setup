@@ -268,8 +268,13 @@ end
 set node_loc_var (whereis node)
 set node_loc_var (echo $node_loc_var | cut -d '/' -f4 )
 
-set clangd_loc (clangd --version | head -1 | cut -d " " -f3)
-set clangd_loc_var (echo "clangd_$clangd_loc")
+set check_clangd (whereis clangd)
+if test -z "$check_clangd"
+    set clangd_loc (clangd --version | head -1 | cut -d " " -f3)
+    set clangd_loc_var (echo "clangd_$clangd_loc")
+else
+    set clangd_loc_var (echo "")
+end
 
 set lua_loc_var (echo "lua-ls")
 
