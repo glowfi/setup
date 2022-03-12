@@ -18,29 +18,29 @@ export SEP2=" "
 . "$DIR/bar-functions/volume.sh"
 . "$DIR/bar-functions/network.sh"
 . "$DIR/bar-functions/time_date.sh"
+. "$DIR/bar-functions/networkTraffic.sh"
 
 parallelize() {
-    while true
-    do
-        printf "Running parallel processes\n"
-        ~/dwm-bar/bar-functions/network.sh &
-        sleep 5
-    done
+	while true; do
+		printf "Running parallel processes\n"
+		~/dwm-bar/bar-functions/network.sh &
+		sleep 5
+	done
 }
 parallelize &
 
 # Update dwm status bar every second
-while true
-do
-    # Append results of each func one by one to the upperbar string
-    upperbar=""
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/resources.sh)"
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/volume.sh)"
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/brightness.sh)"
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/network.sh)"
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/battery.sh)"
-    upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/time_date.sh)"
-   
-    xsetroot -name "$upperbar"
-    sleep 1
+while true; do
+	# Append results of each func one by one to the upperbar string
+	upperbar=""
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/networkTraffic.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/resources.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/volume.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/brightness.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/network.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/battery.sh)"
+	upperbar="$upperbar$(~/.local/bin/dwm-bar/bar-functions/time_date.sh)"
+
+	xsetroot -name "$upperbar"
+	sleep 1
 done
