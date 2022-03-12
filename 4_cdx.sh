@@ -183,6 +183,9 @@ chmod +x ~/.local/bin/dm-search.sh
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
 
+cp -r ~/setup/scripts/opa.sh ~/.local/bin/
+chmod +x ~/.local/bin/opa.sh
+
 git clone https://github.com/pystardust/ani-cli;
 cp -r ani-cli/ani-cli ~/.local/bin
 rm -rf ani-cli 
