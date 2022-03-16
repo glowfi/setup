@@ -356,6 +356,10 @@ function mado
         -map '[out]' output.mp3
 end
 
+function kut
+    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -t $argv[3] out.mp4
+end
+
 # Bang-Bang Function
 function __history_previous_command
     switch (commandline -t)
