@@ -357,7 +357,7 @@ function mado
 end
 
 function kut
-    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -t $argv[3] out.mp4
+    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
 end
 
 # Bang-Bang Function
