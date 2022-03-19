@@ -11,7 +11,7 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.6.0-linux-x64/bin/ $PATH # Sets NodeJS paths
+set PATH ~/node-v17.7.2-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH ~/lua-ls/bin/ $PATH # Sets lua path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/go/bin/ $PATH # Sets golang path
@@ -175,6 +175,9 @@ alias sg="searchContents"
 # Bluetooth alias
 alias bst='sudo systemctl enable bluetooth.service;sudo systemctl start bluetooth.service'
 alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetooth.service;killall blueman-tray;killall blueman-applet'
+
+# Virtualization 
+alias von='sudo systemctl start libvirtd'
 
 
 # ===================================================================
