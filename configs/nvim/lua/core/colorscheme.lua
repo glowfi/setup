@@ -46,5 +46,5 @@ vim.cmd("hi! GitSignsChange  ctermbg=none guibg=none guifg=#83a598")
 vim.cmd("hi! GitSignsDelete  ctermbg=none guibg=none guifg=#fb4934")
 
 -- CursorLine
-vim.cmd("set cursorline")
-vim.cmd("hi CursorLine gui=underline cterm=underline")
+-- vim.cmd("set cursorline")
+-- vim.cmd("hi CursorLine gui=underline cterm=underline")
