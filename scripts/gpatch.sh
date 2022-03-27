@@ -25,4 +25,4 @@ cd ..
 rm -rf gamemode
 
 ## Protonup [Proton GE]
-pip install protonup
+fish -c "pip install protonup;exit"
