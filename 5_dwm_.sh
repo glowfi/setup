@@ -225,3 +225,7 @@ rm -rf default-media-player.sh
 
 echo "Done seting default application!"
 echo ""
+
+# REMOVE KWALLET
+
+sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
