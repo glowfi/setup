@@ -45,18 +45,18 @@ video() {
 
 webcamhidef() {
 	ffmpeg \
-		-f v4l2 \
+		-f alsa -i default \
 		-i /dev/video0 \
-		-video_size 1920x1080 \
+		-video_size 1280x720 \
 		"$HOME/webcam-$(date '+%y%m%d-%H%M-%S').mkv" &
 	echo $! >/tmp/recordingpid
 }
 
 webcam() {
 	ffmpeg \
-		-f v4l2 \
+		-f alsa -i default \
 		-i /dev/video0 \
-		-video_size 640x480 \
+		-video_size 1280x720 \
 		"$HOME/webcam-$(date '+%y%m%d-%H%M-%S').mkv" &
 	echo $! >/tmp/recordingpid
 }
