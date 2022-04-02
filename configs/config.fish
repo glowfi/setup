@@ -73,6 +73,10 @@ alias find='fd'
 # Changing top to bottom
 alias top='btm --mem_as_value --color gruvbox'
 
+# Kitty aliases
+alias disp='kitty +kitten icat'
+alias diff='kitty +kitten diff'
+
 # NNN alias
 alias n='nnn -d -e'
 
