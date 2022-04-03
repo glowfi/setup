@@ -75,7 +75,8 @@ cd ..
 rm -rf tty-clock
 
 ### EDIT
-sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo stellarium
+sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo
+# sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo stellarium
 yay -S --noconfirm gimp-plugin-registry
 
 # # ENABLE ZRAM

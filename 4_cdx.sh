@@ -6,6 +6,10 @@ echo "--------------Installing Python Modules...------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
+# UPGRADE PIP TO LATEST VERSION
+
+python -m ensurepip --upgrade
+
 # PYTHON MODULES
 
 pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
