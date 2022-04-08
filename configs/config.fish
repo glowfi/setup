@@ -402,7 +402,77 @@ end
 #                            Theme
 # ===================================================================
 
-function fish_prompt
+
+function chooseTheme
+    set choosen (printf "classic\nminimal" | fzf)
+    sed -i "536s/.*/    $choosen/" ~/.config/fish/config.fish
+end
+
+
+function classic
+    set -l last_command_status $status
+
+    set_color red --bold
+    printf "["
+    set_color blue
+    printf "%s" "$USER"
+    set_color green
+    printf "@"
+    set_color yellow
+    printf "%s" "$hostname "
+    set_color C7ECEC
+    printf (pwd | sed "s|^$HOME|~|")
+    set_color red --bold
+    printf "] "
+    set_color ffc04d
+    printf '%s' '-> '
+
+    set -l normal_color (set_color normal)
+    set -l branch_color (set_color yellow)
+    set -l meta_color (set_color brgreen)
+    set -l symbol_color (set_color blue -o)
+    set -l error_color (set_color red -o)
+    set -l purple (set_color -o purple)
+
+    if git_is_repo
+        echo -n -s $branch_color (git_branch_name) $normal_color
+        set -l git_meta ""
+        if test (command git ls-files --others --exclude-standard | wc -w 2> /dev/null) -gt 0
+            set git_meta "$symbol_color?"
+        end
+        if test (command git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+            set git_meta "$git_meta\$"
+        end
+        if git_is_touched
+            git_is_dirty && set git_meta "$error_color✘"
+            git_is_staged && set git_meta "$git_meta●"
+        end
+        set -l commit_count (command git rev-list --count --left-right (git remote)/(git_branch_name)"...HEAD" 2> /dev/null)
+        if test $commit_count
+            set -l behind (echo $commit_count | cut -f 1)
+            set -l ahead (echo $commit_count | cut -f 2)
+            if test $behind -gt 0
+                set git_meta "$purple↓"
+            end
+            if test $ahead -gt 0
+                set git_meta "$purple↑"
+            end
+        end
+        if test $git_meta
+            echo -n -s $meta_color " " $git_meta " " $normal_color
+        else
+            echo -n -s ""
+        end
+    end
+
+    if test $last_command_status -eq 0
+        echo -n -s $symbol_color $symbol " " $normal_color
+    else
+        echo -n -s $error_color $symbol " " $normal_color
+    end
+end
+
+function minimal
 
     # Status
     set -l last_status $status
@@ -459,6 +529,11 @@ function fish_prompt
     # Add a space and restore normal color
     set_color normal
     echo -n ' '
+end
+
+
+function fish_prompt
+    classic
 end
 
 
