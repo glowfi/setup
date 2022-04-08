@@ -181,9 +181,6 @@ sudo pacman -S --noconfirm xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo
 cp -r ~/setup/dmenu-scripts/dm-record.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-record.sh
 
-cp -r ~/setup/dmenu-scripts/dm-search.sh ~/.local/bin/
-chmod +x ~/.local/bin/dm-search.sh
-
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
 
