@@ -30,7 +30,6 @@ kitty
 #super + b
 brave
 
-
 ## Network
 #super + n
 kitty -e "nmtui"
@@ -53,4 +52,13 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1 | xargs -I {} feh --bg-fill {}
+feh --bg-fill "$(find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1)"
+cd
+cat .fehbg | tail -1 | awk '{print $NF}' | awk -F"/" '{print $5}' | tr -d "'" | xargs -I {} wal -s -q -t -i ~/wall/{}
+sed -i '9,11d' ~/.cache/wal/colors-wal-dwm.h
+sed -i '14d' ~/.cache/wal/colors-wal-dwm.h
+cd ~/.config/dwm/
+cp config.def.h config.h
+make
+cd
+xdotool key super+shift+q
