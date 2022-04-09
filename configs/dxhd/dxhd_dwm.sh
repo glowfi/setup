@@ -54,7 +54,7 @@ fish -c "sYT -p "dmenu""
 #super + z
 feh --bg-fill "$(find $HOME/wall -type f -name *.jpg -o -name *.png | shuf -n 1)"
 cd
-cat .fehbg | tail -1 | awk '{print $NF}' | awk -F"/" '{print $5}' | tr -d "'" | xargs -I {} wal -s -q -t -i ~/wall/{}
+cat .fehbg | tail -1 | awk '{print $NF}' | awk -F"/" '{print $5}' | tr -d "'" | xargs -I {} wal -s -q -t --backend haishoku -i ~/wall/{}
 sed -i '9,11d' ~/.cache/wal/colors-wal-dwm.h
 sed -i '14d' ~/.cache/wal/colors-wal-dwm.h
 cd ~/.config/dwm/
