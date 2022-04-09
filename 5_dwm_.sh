@@ -11,12 +11,16 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst python-pywal
+sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
+
+# PYWAL
+sudo pacman -S --noconfirm python-pywal
+fish -c "pip install haishoku;exit"
 
 # APPEARANCE
 
