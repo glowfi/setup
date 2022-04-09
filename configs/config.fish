@@ -165,7 +165,7 @@ alias bu="brightnessctl s 30+"
 alias bd="brightnessctl s 30-"
 
 # DWM compile
-alias dwc="sudo cp config.def.h config.h;sudo make clean install"
+alias dwc="cp config.def.h config.h;make"
 
 # Find files in current location and open in editor
 alias sf="searchFilesCurrent"
@@ -533,7 +533,7 @@ end
 
 
 function fish_prompt
-    classic
+    minimal
 end
 
 

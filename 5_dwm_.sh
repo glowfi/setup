@@ -11,7 +11,7 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst
+sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst python-pywal
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
@@ -44,14 +44,7 @@ echo ""
 
 # WALLPAPER SCRIPT
 
-touch ~/.local/bin/wall.sh
-echo '#!/bin/bash
-while true;
-do
-    feh --bg-fill "$(find $HOME/wall -type f -name '*.jpg' -o -name '*.png' | shuf -n 1)"
-    sleep 900s
-done &
-' >>~/.local/bin/wall.sh
+cp -r ~/setup/scripts/wall.sh ~/.local/bin/
 
 # PIPEWIRE SCRIPT
 
@@ -110,9 +103,11 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cd ~/setup/configs/dwm-6.2
-sudo cp config.def.h config.h
-sudo make clean install
+sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.def.h
+mv ~/setup/configs/dwm-6.2/ ~/.config/dwm
+cd ~/.config/dwm/
+cp config.def.h config.h
+make
 cd ..
 echo "Done Installing DWM!"
 echo ""
