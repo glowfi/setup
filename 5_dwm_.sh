@@ -109,8 +109,7 @@ echo ""
 
 sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.h
 cp -r ~/setup/configs/dwm-6.2/ ~/.config/
-cd ~/.config/dwm/
-cp config.def.h config.h
+cd ~/.config/dwm-6.2/
 make
 cd ..
 echo "Done Installing DWM!"
