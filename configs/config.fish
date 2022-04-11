@@ -11,7 +11,7 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.7.2-linux-x64/bin/ $PATH # Sets NodeJS paths
+set PATH ~/node-v17.9.0-linux-x64/bin/ $PATH # Sets NodeJS paths
 set PATH ~/lua-ls/bin/ $PATH # Sets lua path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 set PATH ~/go/bin/ $PATH # Sets golang path
@@ -165,7 +165,7 @@ alias bu="brightnessctl s 30+"
 alias bd="brightnessctl s 30-"
 
 # DWM compile
-alias dwc="cp config.def.h config.h;make"
+alias dwc="make clean;make"
 
 # Find files in current location and open in editor
 alias sf="searchFilesCurrent"
@@ -355,8 +355,8 @@ function setWall
     cat .fehbg | tail -1 | awk '{print $NF}' | awk -F/ '{print $5}' | tr -d "'" | xargs -I {} wal -s -q -t --backend haishoku -i ~/wall/{}
     sed -i '9,11d' ~/.cache/wal/colors-wal-dwm.h
     sed -i 14d ~/.cache/wal/colors-wal-dwm.h
-    cd ~/.config/dwm/
-    cp config.def.h config.h
+    cd ~/.config/dwm-6.2/
+    make clean
     make
     cd
     xdotool key super+shift+q
