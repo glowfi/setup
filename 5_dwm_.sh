@@ -93,11 +93,11 @@ xautolock -time 5 -locker slock &
 
 # Infinte loop
 while true;do 
-    dwm >/dev/null 2>&1 
+    ~/.config/dwm-6.2/dwm >/dev/null 2>&1 
 done
 
 # DWM Execute
-exec dwm
+exec ~/.config/dwm-6.2/dwm
 " >>~/.xinitrc
 
 # INSTALL DWM
@@ -107,8 +107,8 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.def.h
-mv ~/setup/configs/dwm-6.2/ ~/.config/dwm
+sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.h
+cp -r ~/setup/configs/dwm-6.2/ ~/.config/
 cd ~/.config/dwm/
 cp config.def.h config.h
 make
