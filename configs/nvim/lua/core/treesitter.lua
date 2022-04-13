@@ -7,7 +7,7 @@ end
 configs.setup({
 
 	-- Treesitter
-	ensure_installed = "maintained",
+	ensure_installed = "all",
 	highlight = { enable = true, additional_vim_regex_highlighting = true },
 	incremental_selection = {
 		enable = true,
