@@ -109,6 +109,9 @@ echo ""
 
 sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.h
 cp -r ~/setup/configs/dwm-6.2/ ~/.config/
+wal -i ~/setup/pacman.png
+mkdir -p ~/wall
+cp -r ~/setup/pacman.png ~/wall
 cd ~/.config/dwm-6.2/
 make
 cd ..

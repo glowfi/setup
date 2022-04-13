@@ -8,8 +8,7 @@ echo "--------------DE/WM INSTALLATION...--------------------------"
 echo "-------------------------------------------------------------"
 echo ""
 
-echo "What is your username?"
-read uname
+uname=$(echo "$USER")
 
 echo ""
 echo "Press 1 to install KDE"
