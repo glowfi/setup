@@ -62,6 +62,11 @@ cargo xtask install --server
 cd .. 
 rm -rf rust-analyzer
 
+# RUST MODULES 
+
+cargo install fireworks
+
+
 echo ""
 echo "--------------------------------------------------------------------------"
 echo "--------------Installing Golang...----------------------------------------"

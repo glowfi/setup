@@ -58,7 +58,7 @@ yay -S --noconfirm brave-bin onlyoffice-bin
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 
 ### TERMINAL TOMFOOLERY
-sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay
+sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
 yay -S --noconfirm toilet toilet-fonts
 git clone https://github.com/xero/figlet-fonts
 sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
