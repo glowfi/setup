@@ -78,6 +78,7 @@ rm -rf go.tar.gz
 
 go get github.com/ericchiang/pup
 go install golang.org/x/tools/gopls@latest
+go install github.com/mholt/archiver/v3/cmd/arc@latest
 
 echo ""
 echo "--------------------------------------------------------------------------"
