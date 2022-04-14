@@ -542,7 +542,7 @@ end
 
 
 function fish_prompt
-    minimal
+    classic
 end
 
 
