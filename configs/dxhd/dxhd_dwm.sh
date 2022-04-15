@@ -60,5 +60,4 @@ sed -i '14d' ~/.cache/wal/colors-wal-dwm.h
 cd ~/.config/dwm-6.2/
 make clean
 make
-cd
 xdotool key super+shift+q

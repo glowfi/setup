@@ -358,7 +358,7 @@ function setWall
     cd ~/.config/dwm-6.2/
     make clean
     make
-    cd
+    cd ~/wall/
     xdotool key super+shift+q
 end
 
