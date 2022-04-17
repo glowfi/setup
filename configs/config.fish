@@ -11,12 +11,12 @@
 # ===================================================================
 
 ## Path
-set PATH ~/node-v17.9.0-linux-x64/bin/ $PATH # Sets NodeJS paths
-set PATH ~/lua-ls/bin/ $PATH # Sets lua path
-set PATH ~/.cargo/bin/ $PATH # Sets rust path
-set PATH ~/go/bin/ $PATH # Sets golang path
-set PATH ~/clangd_13.0.0/bin $PATH # Sets clangd path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
+set PATH ~/.local/bin/nodeJS/bin/ $PATH # Sets NodeJS paths
+set PATH ~/.local/bin/luaLSP/bin/ $PATH # Sets lua path
+set PATH ~/.local/bin/go/bin/ $PATH # Sets golang path
+set PATH ~/.local/bin/clangd/bin $PATH # Sets clangd path
+set PATH ~/.cargo/bin/ $PATH # Sets rust path
 
 ## Enhancements
 set fish_greeting # Supresses fish's greeting message
@@ -118,6 +118,10 @@ yes | printf "Cleaned Orphans!"'
 
 # Upgrade
 alias upgrade='mirru;sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm'
+
+# Archive Unarchive aliases 
+alias arca='arc archive'
+alias arcu='arc unarchive'
 
 # Check-ur-requests alias
 alias checkur="checkur.py"
@@ -272,26 +276,10 @@ end
 # ===================================================================
 
 # Utility variable
-set node_loc_var (whereis node)
-set node_loc_var (echo $node_loc_var | cut -d '/' -f4 )
-
-set check_clangd (whereis clangd)
-if test -z "$check_clangd"
-    set clangd_loc_var (echo ".cache")
-else
-    set clangd_loc (clangd --version | head -1 | cut -d " " -f3)
-    set clangd_loc_var (echo "clangd_$clangd_loc")
-end
-
-set lua_loc_var (echo "lua-ls")
-
-set go_loc_var (echo "go")
-
-
 
 # Search Files in current working directory
 function searchFilesCurrent
-    fd --exclude "$node_loc_var" --exclude "$clangd_loc_var" --exclude "$lua_loc_var" --exclude "$go_loc_var" --type f . | fzf --reverse --height 10 | read -t args
+    fd --type f . | fzf --reverse --height 10 | read -t args
     if test -z "$args"
         echo "Exited from searching files in current working directory!"
     else
@@ -312,7 +300,7 @@ end
 
 # Search Directories in current working directory
 function searchDirCurrent
-    fd --exclude "$node_loc_var" --exclude "$clangd_loc_var" --exclude "$lua_loc_var" --exclude "$go_loc_var" --type d . | fzf --reverse --height 10 | read -t args
+    fd --type d . | fzf --reverse --height 10 | read -t args
     if test -z "$args"
         echo "Exited from searching directories in current working directory!"
     else
@@ -323,7 +311,7 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!$node_loc_var" -g "!$clangd_loc_var" -g "!$lua_loc_var" -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
+    rg --line-number -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"

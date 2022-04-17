@@ -32,15 +32,10 @@ echo ""
 # DOWNLOAD NODEJS
 
 set ver (curl -s https://nodejs.org/en/ | grep -e "Current" -e | tail -1|xargs| cut -d " " -f 1)
-set line (echo "set PATH ~/node-v$ver-linux-x64/bin/ \$PATH # Sets NodeJS paths")
-echo $line | xargs -t -I {} awk 'NR==14{print "{}"}1' ~/.config/fish/config.fish > ~/config.fish 
-sed -i '15d' ~/config.fish
-cp -r ~/config.fish ~/.config/fish/config.fish
-rm -rf ~/config.fish
-echo ""
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
+mv ~/node-v"$ver"-linux-x64 ~/.local/bin/nodeJS
 source ~/.config/fish/config.fish
 
 # NODE MODULES
@@ -78,6 +73,7 @@ echo ""
 curl https://go.dev/dl/ |grep -e "linux" | head -2 | grep -e "href" | awk -F "href" '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget  https://go.dev{} -O go.tar.gz
 tar -xzf go.tar.gz
 rm -rf go.tar.gz
+mv ~/go ~/.local/bin/go
 
 # GOLANG MODULES 
 
@@ -93,17 +89,12 @@ echo ""
 
 # INSTALL CLANGD LSP
 
-set clangd_ver (echo "13.0.0")
+set clangd_ver (echo "14.0.0")
 sudo pacman -S --noconfirm clang
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
 unzip ~/clangd.zip -d ~
 rm -rf clangd.zip
-
-set line (echo "set PATH ~/clangd_$clangd_ver/bin \$PATH # Sets clangd path")
-echo $line | xargs -t -I {} awk 'NR==18{print "{}"}1' ~/.config/fish/config.fish > ~/config.fish 
-sed -i '19d' ~/config.fish
-cp -r ~/config.fish ~/.config/fish/config.fish
-rm -rf ~/config.fish
+mv ~/clangd_"$clangd_ver" ~/.local/bin/clangd
 source ~/.config/fish/config.fish
 
 
@@ -116,11 +107,12 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "2.6.6")
+set lua_ver (echo "3.0.2")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
 rm -rf lua-ls.tar.gz 
+mv ~/lua-ls ~/.local/bin/luaLSP
 
 # INSTALL LUA FORAMTTER
 
