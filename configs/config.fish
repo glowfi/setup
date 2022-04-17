@@ -14,7 +14,7 @@
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 set PATH ~/.local/bin/nodeJS/bin/ $PATH # Sets NodeJS paths
 set PATH ~/.local/bin/luaLSP/bin/ $PATH # Sets lua path
-set PATH ~/.local/bin/go/bin/ $PATH # Sets golang path
+set PATH ~/go/bin $PATH # Sets golang path
 set PATH ~/.local/bin/clangd/bin $PATH # Sets clangd path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 

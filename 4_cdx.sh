@@ -73,7 +73,6 @@ echo ""
 curl https://go.dev/dl/ |grep -e "linux" | head -2 | grep -e "href" | awk -F "href" '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget  https://go.dev{} -O go.tar.gz
 tar -xzf go.tar.gz
 rm -rf go.tar.gz
-mv ~/go ~/.local/bin/go
 
 # GOLANG MODULES 
 
