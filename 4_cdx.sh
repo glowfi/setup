@@ -77,7 +77,6 @@ mv ~/go ~/.local/bin/go
 
 # GOLANG MODULES 
 
-go get github.com/ericchiang/pup
 go install golang.org/x/tools/gopls@latest
 go install github.com/mholt/archiver/v3/cmd/arc@latest
 
