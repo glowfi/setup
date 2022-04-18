@@ -170,6 +170,9 @@ rm -rf ytdlautoformat.lua
 
 # ADDITIONAL SCRIPTS
 
+cp -r ~/setup/scripts/revSearch.py ~/.local/bin/
+chmod +x ~/.local/bin/revSearch.py
+
 cp -r ~/setup/dmenu-scripts/dm-wifi.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-wifi.sh
 
