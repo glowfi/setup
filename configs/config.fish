@@ -275,11 +275,14 @@ end
 #                           Custom Functions
 # ===================================================================
 
+### Ignore golang directory
+set go_loc_var (echo "go")
+
 # Utility variable
 
 # Search Files in current working directory
 function searchFilesCurrent
-    fd --type f . | fzf --reverse --height 10 | read -t args
+    fd --exclude "$go_loc_var" --type f . | fzf --reverse --height 10 | read -t args
     if test -z "$args"
         echo "Exited from searching files in current working directory!"
     else
@@ -300,7 +303,7 @@ end
 
 # Search Directories in current working directory
 function searchDirCurrent
-    fd --type d . | fzf --reverse --height 10 | read -t args
+    fd --exclude "$go_loc_var" --type d . | fzf --reverse --height 10 | read -t args
     if test -z "$args"
         echo "Exited from searching directories in current working directory!"
     else
@@ -311,7 +314,7 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
+    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"
