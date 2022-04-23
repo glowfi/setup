@@ -31,6 +31,7 @@ M.setup = function()
 			b.formatting.gofmt.with({ filetypes = { "go" } }),
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
 			b.formatting.shfmt.with({ filetypes = { "sh" } }),
+			b.formatting.clang_format.with({ filetypes = { "c", "cpp" } }),
 			b.diagnostics.flake8.with({ filetypes = { "python" } }),
 		},
 		on_attach = function(client)
