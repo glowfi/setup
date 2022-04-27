@@ -44,7 +44,13 @@ echo ""
 
 # WALLPAPER SCRIPT
 
-cp -r ~/setup/scripts/wall.sh ~/.local/bin/
+touch ~/.local/bin/wall.sh
+echo '#!/bin/sh
+while true; do
+	feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
+	sleep 900s
+done
+' >>~/.local/bin/wall.sh
 
 # PIPEWIRE SCRIPT
 
