@@ -272,6 +272,11 @@ return require("packer").startup(function(use)
 	--   Graphql
 	use({ "jparise/vim-graphql", ft = { "graphql" } })
 
+	-- Org
+	use({ "nvim-neorg/neorg", 
+		config = [[require('core.neorg')]],
+})
+
 	--   Markdown
 	use({
 		"iamcco/markdown-preview.nvim",
