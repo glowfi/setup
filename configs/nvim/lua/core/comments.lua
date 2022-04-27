@@ -12,5 +12,5 @@ comments.setup({
 })
 
 -- Keymappings
-vim.api.nvim_set_keymap("n", "<C-_>", ":CommentToggle<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<C-_>", ":CommentToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-/>", ":CommentToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<C-/>", ":CommentToggle<CR>", { noremap = true, silent = true })
