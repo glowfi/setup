@@ -18,10 +18,6 @@ sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-des
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
 
-# PYWAL
-sudo pacman -S --noconfirm python-pywal
-fish -c "pip install haishoku;exit"
-
 # APPEARANCE
 
 sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
@@ -107,12 +103,6 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-### Generate fake colorscheme and create a wallpaper directory at home folder to prevent dwm bug at first run
-wal -i ~/setup/pacman.png
-mkdir -p ~/wall
-cp -r ~/setup/pacman.png ~/wall
-
-sed -i "21s/.*/#include \"\/home\/"$USER"\/.cache\/wal\/colors-wal-dwm.h\"/" ~/setup/configs/dwm-6.2/config.h
 cp -r ~/setup/configs/dwm-6.2/ ~/.config/
 cd ~/.config/dwm-6.2/
 make
