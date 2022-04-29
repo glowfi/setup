@@ -146,6 +146,7 @@ return require("packer").startup(function(use)
                 "terminal",
                 "dashboard",
                 "packer",
+                "norg",
             }
             vim.g.indent_blankline_buftype_exclude = { "terminal" }
 
