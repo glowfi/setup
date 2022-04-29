@@ -20,7 +20,7 @@ vim.cmd("syntax on")
 vim.cmd("set number")
 
 -- Enable relative numbering
-vim.wo.relativenumber = true
+-- vim.wo.relativenumber = true
 
 -- Set shift width to 4 spaces.
 vim.cmd("set shiftwidth=4")
