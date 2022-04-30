@@ -135,7 +135,7 @@ cp -r ~/setup/configs/.tmux.conf ~
 
 # INSTALL AND COPY NNN FM SETTINGS
 
-sudo pacman -S --noconfirm trash-cli
+sudo pacman -S --noconfirm trash-cli tree
 git clone https://github.com/jarun/nnn
 cd nnn
 sudo make O_NERD=1 install
