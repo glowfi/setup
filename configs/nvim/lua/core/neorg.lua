@@ -7,4 +7,4 @@ require("neorg").setup({
 })
 
 -- CodeBlock Highlighting
-vim.cmd("highlight! NeorgCodeBlock guibg=#3c3836")
+vim.cmd("autocmd VimEnter * highlight! NeorgCodeBlock guibg=#3c3836")
