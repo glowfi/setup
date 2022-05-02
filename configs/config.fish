@@ -345,15 +345,6 @@ end
 
 function setWall
     feh --bg-fill $argv[1]
-    cd
-    cat .fehbg | tail -1 | awk '{print $NF}' | awk -F/ '{print $5}' | tr -d "'" | xargs -I {} wal -s -q -t --backend haishoku -i ~/wall/{}
-    sed -i '9,11d' ~/.cache/wal/colors-wal-dwm.h
-    sed -i 14d ~/.cache/wal/colors-wal-dwm.h
-    cd ~/.config/dwm-6.2/
-    make clean
-    make
-    cd ~/wall/
-    xdotool key super+shift+q
 end
 
 function trad
@@ -413,7 +404,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "544s/.*/    $choosen/" ~/.config/fish/config.fish
+    sed -i "535s/.*/    $choosen/" ~/.config/fish/config.fish
 end
 
 
