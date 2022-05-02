@@ -187,6 +187,9 @@ alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetoot
 # Virtualization 
 alias von='sudo systemctl start libvirtd'
 
+# Go to Mounted drive
+alias jd='gotoMounteddrive'
+
 
 # ===================================================================
 #                         Git Functions
@@ -367,6 +370,11 @@ function kut
     ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
 end
 
+function gotoMounteddrive
+    set choice (exa /run/media/$USER | fzf)
+    cd /run/media/$USER/"$choice"
+end
+
 # Bang-Bang Function
 function __history_previous_command
     switch (commandline -t)
@@ -405,7 +413,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "536s/.*/    $choosen/" ~/.config/fish/config.fish
+    sed -i "544s/.*/    $choosen/" ~/.config/fish/config.fish
 end
 
 
