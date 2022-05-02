@@ -34,7 +34,7 @@ M.setup = function()
 			b.diagnostics.flake8.with({ filetypes = { "python" } }),
 		},
 		on_attach = function(client)
-			vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_seq_sync()]])
+			vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.format()]])
 		end,
 	})
 end
