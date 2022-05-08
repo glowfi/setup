@@ -82,7 +82,7 @@ vim.lsp.protocol.CompletionItemKind = {
 }
 
 local function documentHighlight(client, bufnr)
-	if client.resolved_capabilities.document_highlight then
+	if client.server_capabilities.document_highlight then
 		vim.api.nvim_exec(
 			[[
       hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
@@ -131,7 +131,7 @@ lspconfig.pyright.setup({ capabilities = capabilities })
 lspconfig.rust_analyzer.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 	end,
 })
 
@@ -139,7 +139,7 @@ lspconfig.rust_analyzer.setup({
 require("lspconfig").gopls.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 	end,
 })
 
@@ -198,7 +198,7 @@ lspconfig.ls_emmet.setup({ capabilities = capabilities })
 lspconfig.jsonls.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 	end,
 })
 
@@ -206,7 +206,7 @@ lspconfig.jsonls.setup({
 lspconfig.tsserver.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 
 		local ts_utils = require("nvim-lsp-ts-utils")
 		ts_utils.setup({
