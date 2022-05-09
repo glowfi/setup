@@ -186,6 +186,7 @@ alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetoot
 
 # Virtualization 
 alias von='sudo systemctl start libvirtd'
+alias voff='sudo systemctl stop libvirtd'
 
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
