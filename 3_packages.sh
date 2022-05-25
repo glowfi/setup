@@ -114,6 +114,14 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo pacman -S --noconfirm apparmor
 sudo systemctl enable --now apparmor.service
 
+# SECURITY FEATURES
+
+touch ~/blacklist.conf
+echo "# Disable webcam
+blacklist uvcvideo" >> ~/blacklist.conf
+sudo cp -r ~/blacklist.conf /etc/modprobe.d/
+rm ~/blacklist.conf
+
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------COPYING SETTINGS...---------------------------------------"
