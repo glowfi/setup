@@ -191,6 +191,9 @@ alias voff='sudo systemctl stop libvirtd'
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
 
+# sudo preserving environment variable
+alias se='sudo -E'
+
 
 # ===================================================================
 #                         Git Functions
@@ -405,7 +408,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "536s/.*/    $choosen/" ~/.config/fish/config.fish
+    sed -i "539s/.*/    $choosen/" ~/.config/fish/config.fish
 end
 
 
