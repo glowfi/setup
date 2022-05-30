@@ -191,8 +191,11 @@ alias voff='sudo systemctl stop libvirtd'
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
 
-# sudo preserving environment variable
+# Execute as sudo preserving environment variable of current user
 alias se='sudo -E'
+
+# Find and replace with specific word
+alias rep="replaceWithSpecificWord"
 
 
 # ===================================================================
@@ -347,27 +350,41 @@ function randomImagexhibit
     end
 end
 
+# Set Wallpaper
 function setWall
     feh --bg-fill $argv[1]
 end
 
+# Trim a audio file's time 
 function trad
     ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
 end
 
+# Merge two audio files
 function mado
     ffmpeg -i $argv[1] -i $argv[2] \
         -filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' \
         -map '[out]' output.mp3
 end
 
+# Trim a video files's time
 function kut
     ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
 end
 
+# Jump to Mounted drive
 function gotoMounteddrive
     set choice (exa /run/media/$USER | fzf)
     cd /run/media/$USER/"$choice"
+end
+
+# Find and replace with specific word
+function replaceWithSpecificWord
+    set name $argv[1]
+    set queryString $argv[2]
+    set tobeRepacedWith $argv[3]
+    echo "$name" | sad "$queryString" "$tobeRepacedWith"
+
 end
 
 # Bang-Bang Function
@@ -408,7 +425,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "539s/.*/    $choosen/" ~/.config/fish/config.fish
+    sed -i "556s/.*/    $choosen/" ~/.config/fish/config.fish
 end
 
 
@@ -599,7 +616,7 @@ set -U fish_pager_color_progress brwhite --background=cyan
 # ===================================================================
 
 # Git Pager
-export GIT_PAGER="diff-so-fancy"
+export GIT_PAGER=diff-so-fancy
 
 # Default Editor
 export EDITOR=nvim
