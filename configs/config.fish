@@ -598,6 +598,9 @@ set -U fish_pager_color_progress brwhite --background=cyan
 #                     Miscellaneous
 # ===================================================================
 
+# Git Pager
+export GIT_PAGER="diff-so-fancy"
+
 # Default Editor
 export EDITOR=nvim
 
