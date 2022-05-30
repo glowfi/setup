@@ -145,7 +145,7 @@ fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
 
-pacman -S --noconfirm exa bat ripgrep fd bottom hyperfine || exit 0
+pacman -S --noconfirm exa bat ripgrep fd bottom hyperfine sad diff-so-fancy || exit 0
 
 # GRUB
 
