@@ -53,7 +53,7 @@ sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli tmux
 yay -S --noconfirm mongodb-bin
 
 ### PACK
-sudo pacman -S --noconfirm kdeconnect
+sudo pacman -S --noconfirm kdeconnect screenkey
 yay -S --noconfirm brave-bin onlyoffice-bin
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 
