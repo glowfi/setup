@@ -56,6 +56,6 @@ if [[ "$DISK" && "$NAME" ]]; then
 	sudo mkntfs -Q -v -F -L "${NAME}" "${DISK}1"
 
 else
-	echo "Provide the Disk partition and a Disk Label name!"
+	echo "Provide a Disk partition and a Disk Label name!"
 
 fi
