@@ -173,6 +173,9 @@ rm -rf ytdlautoformat.lua
 cp -r ~/setup/scripts/revSearch.py ~/.local/bin/
 chmod +x ~/.local/bin/revSearch.py
 
+cp -r ~/setup/scripts/formatDisk.sh ~/.local/bin/
+chmod +x ~/.local/bin/formatDisk.sh
+
 cp -r ~/setup/scripts/rename.sh ~/.local/bin/
 chmod +x ~/.local/bin/rename.sh
 
