@@ -52,20 +52,8 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-sed -i '19s/.*/static const char col_cyan[]        = "#477D6F";/' ~/.config/dwm-6.2/config.h
-cd ~/.config/dwm-6.2/ 
-make clean 
-make
-cd
 feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
-xdotool key super+shift+q
 
 ## Favourite Wallpaper
 #super + c
-sed -i '19s/.*/static const char col_cyan[]        = "#676085";/' ~/.config/dwm-6.2/config.h
-cd ~/.config/dwm-6.2/ 
-make clean 
-make
-cd
 feh --bg-fill ~/wall/228.png
-xdotool key super+shift+q
