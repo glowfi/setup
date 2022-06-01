@@ -5,6 +5,39 @@
 DISK="$1"
 NAME="$2"
 
+usage() {
+	cat <<EOF
+    -p   | --pname         Provide the partition name
+    -l   | --label         Provide the partition label name
+    -h   | --help          Prints help 
+
+    ## Creating a Microsoft Basic data partition and Format to NTFS
+    formatDisk.sh -p "/dev/sda" -l "Hello"
+
+EOF
+}
+
+while [[ $# > 0 ]]; do
+	case "$1" in
+
+	-p | --pname)
+		DISK="$2"
+		shift
+		;;
+
+	-l | --label)
+		NAME="$2"
+		shift
+		;;
+
+	--help | *)
+		usage
+		exit 1
+		;;
+	esac
+	shift
+done
+
 if [[ "$DISK" && "$NAME" ]]; then
 
 	sudo sgdisk -Z ${DISK}
