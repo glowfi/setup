@@ -198,9 +198,13 @@ chmod +x ~/.local/bin/send.sh
 cp -r ~/setup/scripts/get.sh ~/.local/bin/
 chmod +x ~/.local/bin/get.sh
 
-git clone https://github.com/pystardust/ani-cli;
+git clone https://github.com/pystardust/ani-cli
 cp -r ani-cli/ani-cli ~/.local/bin
 rm -rf ani-cli 
+
+git clone https://github.com/mov-cli/mov-cli
+cp -r mov-cli/mov-cli ~/.local/bin
+rm -rf mov-cli
 
 git clone https://github.com/thameera/vimv
 cd vimv
