@@ -138,9 +138,9 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-	pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace || exit 0
+	pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
 elif [[ "$driveType" = "non-ssd" ]]; then
-	pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace || exit 0
+	pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
@@ -183,6 +183,7 @@ echo ""
 
 systemctl enable NetworkManager
 systemctl enable reflector.timer
+systemctl enable acpid
 
 # REMOVE SCRIPT DIRECTORY
 
