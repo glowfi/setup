@@ -37,7 +37,7 @@ if [[ "$choice" == "1" || "$choice" == "2" ]]; then
 	fi
 
 else
-	echo "Wrong choice entered! Run the script again."
+	printf $'\e[31mWrong choice entered! Run the script again.\e[0m :'
 	exit 0
 fi
 
