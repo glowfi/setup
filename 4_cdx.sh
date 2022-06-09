@@ -195,9 +195,6 @@ chmod +x ~/.local/bin/opa.sh
 cp -r ~/setup/scripts/send.sh ~/.local/bin/
 chmod +x ~/.local/bin/send.sh
 
-cp -r ~/setup/scripts/get.sh ~/.local/bin/
-chmod +x ~/.local/bin/get.sh
-
 git clone https://github.com/pystardust/ani-cli
 cp -r ani-cli/ani-cli ~/.local/bin
 rm -rf ani-cli 
