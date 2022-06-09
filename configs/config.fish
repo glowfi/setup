@@ -197,6 +197,9 @@ alias se='sudo -E'
 # Find and replace with specific word
 alias rep="replaceWithSpecificWord"
 
+# Download a file with aria2c
+alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
+
 
 # ===================================================================
 #                         Git Functions
