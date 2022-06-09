@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## TAKE INPUT AFTER RESTART
+#### RUN THIS SCRIPT AFTER RESTART
 
 echo ""
 echo "-------------------------------------------------------------"
@@ -8,6 +8,7 @@ echo "--------------DE/WM INSTALLATION...--------------------------"
 echo "-------------------------------------------------------------"
 echo ""
 
+## GET THE NAME OF CURRENTLY LOGGED IN USER
 uname=$(echo "$USER")
 
 echo ""
@@ -15,24 +16,29 @@ echo "Press 1 to install KDE"
 echo "Press 2 to install DWM"
 read choice
 
-## MAKE SCRIPTS EXECUTABLE
+if [[ "$choice" == "1" || "$choice" == "2" ]]; then
 
-cd
+	## MAKE SCRIPTS EXECUTABLE
 
-chmod +x ~/setup/3_packages.sh
-~/setup/3_packages.sh $uname
+	cd
 
-chmod +x ~/setup/4_cdx.sh
-~/setup/4_cdx.sh
+	chmod +x ~/setup/3_packages.sh
+	~/setup/3_packages.sh $uname
 
-if [[ $choice == "1" ]]; then
-	chmod +x ~/setup/5_kde_.sh
-	~/setup/5_kde_.sh
-elif [[ $choice == "2" ]]; then
-	chmod +x ~/setup/5_dwm_.sh
-	~/setup/5_dwm_.sh $uname
+	chmod +x ~/setup/4_cdx.sh
+	~/setup/4_cdx.sh
+
+	if [[ $choice == "1" ]]; then
+		chmod +x ~/setup/5_kde_.sh
+		~/setup/5_kde_.sh
+	elif [[ $choice == "2" ]]; then
+		chmod +x ~/setup/5_dwm_.sh
+		~/setup/5_dwm_.sh $uname
+	fi
+
 else
-	echo "Wrong choice!"
+	echo "Wrong choice entered! Run the script again."
+	exit 0
 fi
 
 ## CLEANUP
