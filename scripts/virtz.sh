@@ -3,7 +3,7 @@
 # VIRTUALIZATION SUPPORT
 
 #--INSTALL
-yes | sudo pacman -S dnsmasq virt-manager qemu ebtables edk2-ovmf
+sudo pacman -S --noconfirm dnsmasq virt-manager qemu ebtables edk2-ovmf
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 
