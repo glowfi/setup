@@ -1,5 +1,7 @@
 #!/bin/sh
 
+clear
+
 #### RUN THIS SCRIPT AFTER RESTART
 
 echo ""
