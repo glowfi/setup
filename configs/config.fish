@@ -203,6 +203,10 @@ alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
 # Fetch contents of a file
 alias fk='getFileContent'
 
+# Copy current path
+alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
+
+
 
 # ===================================================================
 #                         Git Functions
