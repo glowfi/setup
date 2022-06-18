@@ -245,6 +245,7 @@ cp -r ~/setup/configs/nvim ~/.config
 nvim -c "PackerSync"
 nvim -c "PackerSync"
 nvim -c "PackerSync"
+xdg-mime default nvim.desktop text/plain
 
 
 # CONFIGURING GIT ALIASES
