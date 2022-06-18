@@ -44,7 +44,7 @@ echo ""
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
-sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack qjackctl
+sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack
 sudo pacman -S --noconfirm bluez bluez-utils bluedevil
 yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
 
@@ -53,7 +53,7 @@ sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli tmux
 yay -S --noconfirm mongodb-bin
 
 ### PACK
-sudo pacman -S --noconfirm kdeconnect screenkey
+sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 
@@ -118,7 +118,7 @@ sudo systemctl enable --now apparmor.service
 
 touch ~/blacklist.conf
 echo "# Disable webcam
-blacklist uvcvideo" >> ~/blacklist.conf
+blacklist uvcvideo" >>~/blacklist.conf
 sudo cp -r ~/blacklist.conf /etc/modprobe.d/
 rm ~/blacklist.conf
 
