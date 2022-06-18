@@ -49,3 +49,6 @@ db.custom_center = {
 	},
 }
 db.custom_footer = custom_footer
+
+-- STATUSLINE VISIBILITY
+db.hide_statusline = false
