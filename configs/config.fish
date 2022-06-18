@@ -383,6 +383,11 @@ function mado
         -map '[out]' output.mp3
 end
 
+# Increase Volume
+function incv
+    ffmpeg -i $argv[1] -filter:a "volume=$argv[2]" out.mp3
+end
+
 # Trim a video files's time
 function kut
     ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
