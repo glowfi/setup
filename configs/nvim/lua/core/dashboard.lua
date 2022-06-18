@@ -1,4 +1,10 @@
 -- Settings
+
+local db_status_ok, db = pcall(require, "dashboard")
+if not db_status_ok then
+	return
+end
+
 -- CUSTOM HEADER
 local custom_header = {
 	"               ,   ,                             ",
@@ -22,6 +28,7 @@ local custom_header = {
 	'        ,"     $  $$$$$$$$$$$$$$$$####s          ',
 	'                .s$$$$$$$$$$$$$$$$$####"         ',
 	'              $$$$$$$$$$$$$$$$$$$$####"          ',
+	"                                                 ",
 }
 
 -- CUSTOM FOOTER
@@ -31,10 +38,14 @@ handle:close()
 local s = var:sub(1, -2)
 local custom_footer = { s }
 
--- SETTING CUSTOM HEADER AND FOOTER
-vim.g.dashboard_custom_header = custom_header
-vim.g.dashboard_custom_footer = custom_footer
-
--- CHANGE START SCREEN
-vim.g.dashboard_default_executive = "telescope"
-vim.g.dashboard_custom_section = { a = { description = { "" }, command = "" } }
+-- SETTING CUSTOM HEADER,CENTER AND FOOTER
+db.custom_header = custom_header
+db.custom_center = {
+	{
+		icon = "",
+		desc = "",
+		action = "",
+		shortcut = ".",
+	},
+}
+db.custom_footer = custom_footer
