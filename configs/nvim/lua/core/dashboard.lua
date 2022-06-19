@@ -45,10 +45,15 @@ db.custom_center = {
 		icon = "",
 		desc = "",
 		action = "",
-		shortcut = ".",
+		shortcut = " ɖʀǟɢօռ ռʋɨʍ",
 	},
 }
 db.custom_footer = custom_footer
 
 -- STATUSLINE VISIBILITY
 db.hide_statusline = false
+
+-- HIGHLIGHT COLORS
+vim.cmd("hi! DashboardHeader guifg=#83a598")
+vim.cmd("hi! DashboardCenter guifg=#fb4934")
+vim.cmd("hi! DashboardFooter guifg=#8ec07c")
