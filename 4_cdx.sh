@@ -14,7 +14,6 @@ python -m ensurepip --upgrade
 
 pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
 pip install virtualenv twine wheel
-pip install lookatme lookatme.contrib.qrcode lookatme.contrib.image_ueberzug lookatme.contrib.render
 
 # JUPYTER SETUP
 
@@ -22,6 +21,10 @@ pip install notebook-as-pdf  jupyter_contrib_nbextensions jupyter_nbextensions_c
 jupyter contrib nbextension install --user
 jupyter nbextensions_configurator enable --user
 pyppeteer-install
+
+# PYTHON MISC
+
+pip install lookatme lookatme.contrib.qrcode lookatme.contrib.image_ueberzug lookatme.contrib.render
 
 echo ""
 echo "------------------------------------------------------------------------"
