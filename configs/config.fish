@@ -446,7 +446,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "556s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "577s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 
@@ -517,7 +517,7 @@ function minimal
 
     # Status
     set -l last_status $status
-    set -l cwd (pwd | sed "s | ^$HOME | ~ | ")
+    set -l cwd (pwd | sed "s|^$HOME|~|")
 
     # Colors
     set -l normal_color (set_color normal)
