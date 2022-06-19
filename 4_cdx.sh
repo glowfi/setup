@@ -238,6 +238,10 @@ sudo make CMAKE_BUILD_TYPE=Release install
 cd ..
 sudo rm -r neovim
 
+# MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
+
+xdg-mime default nvim.desktop text/plain
+
 
 # COPY NEOVIM SETTINGS
 
@@ -245,7 +249,6 @@ cp -r ~/setup/configs/nvim ~/.config
 nvim -c "PackerSync"
 nvim -c "PackerSync"
 nvim -c "PackerSync"
-xdg-mime default nvim.desktop text/plain
 
 
 # CONFIGURING GIT ALIASES
