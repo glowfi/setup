@@ -15,24 +15,6 @@ vim.cmd("hi! NormalNC ctermbg=none guibg=none")
 vim.cmd("hi! MsgArea ctermbg=none guibg=none")
 vim.cmd("hi! TelescopeBorder ctermbg=none guibg=none")
 
--- Bufferline
-vim.cmd("hi BufferTabpageFill guibg=none")
-
--- vim.cmd "hi BufferInactive guibg=none"
--- vim.cmd "hi BufferInactiveIndex guibg=none"
--- vim.cmd "hi BufferInactiveMod guibg=none"
--- vim.cmd "hi BufferInactiveSign guibg=none"
--- vim.cmd "hi BufferInactiveTarget guibg=none"
-
--- vim.cmd "hi BufferCurrentIndex guibg=none"
--- vim.cmd "hi BufferCurrentMod guibg=none"
--- vim.cmd "hi BufferCurrentSign guibg=none"
--- vim.cmd "hi BufferCurrentTarget guibg=none"
--- vim.cmd "hi BufferVisible guibg=none"
--- vim.cmd "hi BufferVisibleIndex guibg=none"
--- vim.cmd "hi BufferVisibleMod guibg=none"
--- vim.cmd "hi BufferVisibleSign guibg=none"
--- vim.cmd "hi BufferVisibleTarget guibg=none"
 
 -- LspDiagnostics
 vim.cmd("hi! DiagnosticSignError  ctermbg=none guibg=none guifg=#fb4934")
