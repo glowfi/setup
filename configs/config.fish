@@ -529,7 +529,7 @@ function minimal
 
 
     # Display current path and left pointing arrow symbol
-    set_color black -b 477D6F
+    set_color black -b 458588
     echo -n " $cwd "
     set_color normal
     set_color ffc04d
