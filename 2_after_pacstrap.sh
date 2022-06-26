@@ -119,13 +119,13 @@ echo ""
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
-	sudo pacman -S --noconfirm nvidia-dkms nvidia-utils nvidia-settings
+	pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings
 elif lspci | grep -E "Radeon"; then
 	echo "Installing AMD Radeon drivers ..."
-	sudo pacman -S --noconfirm xf86-video-amdgpu
+	pacman -Syyy --noconfirm xf86-video-amdgpu
 elif lspci | grep -E "Integrated Graphics Controller"; then
 	echo "Installing Intel drivers ..."
-	sudo pacman -S --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
+	pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
 fi
 
 # PACAKGES
@@ -138,14 +138,14 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-	pacman -S --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
+	pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
 elif [[ "$driveType" = "non-ssd" ]]; then
-	pacman -S --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
+	pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
 
-pacman -S --noconfirm exa bat ripgrep fd bottom hyperfine sad diff-so-fancy || exit 0
+pacman -Syyy --noconfirm exa bat ripgrep fd bottom hyperfine sad diff-so-fancy || exit 0
 
 # GRUB
 
