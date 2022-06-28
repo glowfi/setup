@@ -45,7 +45,7 @@ db.custom_center = {
 		icon = "",
 		desc = " ",
 		action = "",
-		shortcut = "^",
+		shortcut = "",
 	},
 }
 db.custom_footer = custom_footer
@@ -54,4 +54,5 @@ db.custom_footer = custom_footer
 db.hide_statusline = false
 
 -- HIGHLIGHT COLORS
+vim.cmd("hi! DashboardHeader guifg=#fabd2f")
 vim.cmd("hi! DashboardFooter guifg=#d3869b")
