@@ -222,6 +222,8 @@ wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a
 sh ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
 
+xdg-mime default pcmanfm.desktop inode/directory
+
 echo "Done seting default application!"
 echo ""
 
