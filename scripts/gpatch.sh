@@ -11,9 +11,16 @@ sudo pacman -S --noconfirm wine-staging giflib lib32-giflib libpng lib32-libpng 
 
 ## Clients
 sudo pacman -S --noconfirm steam
-yay -S --noconfirm goverlay-bin
-# sudo pacman -S --noconfirm lutris steam
-# yay -S --noconfirm heroic-games-launcher-bin mangohud
+
+## MangoHud
+yay -S --noconfirm mangohud goverlay-bin
+wget https://github.com/flightlessmango/MangoHud/releases/download/v0.6.6-1/MangoHud-0.6.6.1.r0.gda573e8.tar.gz -O mghud32.tar.gz
+tar -xzvf mghud32.tar.gz
+cd MangoHud
+./mangohud-setup.sh install
+cd ..
+rm -rf MangoHud
+rm -rf mghud32.tar.gz
 
 ## Feral gamemode
 sudo pacman -S --noconfirm meson systemd git dbus libinih
