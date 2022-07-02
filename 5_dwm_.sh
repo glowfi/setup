@@ -58,7 +58,7 @@ touch ~/.local/bin/pw.sh
 echo "#!/bin/sh
 /usr/bin/pipewire &
 /usr/bin/pipewire-pulse &
-/usr/bin/pipewire-media-session
+/usr/bin/wireplumber &
 " >>~/.local/bin/pw.sh
 
 echo ""
