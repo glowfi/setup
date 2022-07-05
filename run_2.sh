@@ -21,7 +21,6 @@ read choice
 if [[ "$choice" == "1" || "$choice" == "2" ]]; then
 
 	## MAKE SCRIPTS EXECUTABLE
-
 	cd
 
 	chmod +x ~/setup/3_packages.sh
@@ -31,9 +30,11 @@ if [[ "$choice" == "1" || "$choice" == "2" ]]; then
 	~/setup/4_cdx.sh
 
 	if [[ $choice == "1" ]]; then
+		clear
 		chmod +x ~/setup/5_kde_.sh
 		~/setup/5_kde_.sh
 	elif [[ $choice == "2" ]]; then
+		clear
 		chmod +x ~/setup/5_dwm_.sh
 		~/setup/5_dwm_.sh $uname
 	fi
