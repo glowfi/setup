@@ -12,7 +12,7 @@ usage() {
     -h   | --help          Prints help 
 
     ## Creating a Microsoft Basic data partition and Format to NTFS
-    formatDisk.sh -p "/dev/sda" -l "Hello"
+    formatDisk.sh -p "/dev/sda" -l "MyDrive"
 
 EOF
 }
