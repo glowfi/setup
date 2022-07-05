@@ -64,7 +64,8 @@ sudo pacman -S --noconfirm bluez bluez-utils
 yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
 
 ### CDX
-sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli tmux
+sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli 
+# sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli tmux
 yay -S --noconfirm mongodb-bin
 
 ### PACK
@@ -175,7 +176,7 @@ cp -r ~/setup/configs/.bashrc ~
 
 # COPY TMUX CONF
 
-cp -r ~/setup/configs/.tmux.conf ~
+# cp -r ~/setup/configs/.tmux.conf ~
 
 # INSTALL AND COPY NNN FM SETTINGS
 
