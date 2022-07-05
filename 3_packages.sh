@@ -16,8 +16,20 @@ sudo hwclock --systohc
 sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syy
 
-## Xorg packages
-sudo pacman -S --noconfirm xorg-server
+echo ""
+echo "--------------------------------------------------------------"
+echo "--------------Setup GPG...------------------------------------"
+echo "--------------------------------------------------------------"
+echo ""
+
+## SETUP GPG
+sudo pacman -S --noconfirm pass
+
+## Generate GPG KEY
+gpg --full-generate-key
+key=$(gpg --list-secret-keys --keyid-format long | tail -4 | head -1 | xargs)
+pass init "$key"
+gpg-connect-agent reloadagent /bye
 
 # AUR HELPER
 
@@ -41,6 +53,9 @@ echo "--------------Installing required packages...---------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
+## Xorg packages
+sudo pacman -S --noconfirm xorg-server
+
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
@@ -56,6 +71,10 @@ yay -S --noconfirm mongodb-bin
 sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
+
+### EXTRAS
+yay -S --noconfirm openrazer-meta polychromatic
+sudo gpasswd -a $USER plugdev
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
