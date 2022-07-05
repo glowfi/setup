@@ -182,9 +182,6 @@ chmod +x ~/.local/bin/formatDisk.sh
 cp -r ~/setup/scripts/rename.sh ~/.local/bin/
 chmod +x ~/.local/bin/rename.sh
 
-cp -r ~/setup/dmenu-scripts/dm-wifi.sh ~/.local/bin/
-chmod +x ~/.local/bin/dm-wifi.sh
-
 sudo pacman -S --noconfirm xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo
 cp -r ~/setup/dmenu-scripts/dm-record.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-record.sh
