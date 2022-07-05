@@ -114,6 +114,22 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo pacman -S --noconfirm apparmor
 sudo systemctl enable --now apparmor.service
 
+# THEMING GRUB
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------THEMING GRUB...-------------------------------------------"
+echo "------------------------------------------------------------------------"
+echo ""
+
+git clone --depth=1 https://github.com/vinceliuice/grub2-themes.git
+cd grub2-themes/
+rm backgrounds/1080p/background-tela.jpg
+cp -r ~/setup/scripts/background-tela.jpg backgrounds/1080p/
+sudo ./install.sh -b -t tela
+cd ..
+rm -rf grub2-themes
+
 # SECURITY FEATURES
 
 touch ~/blacklist.conf
