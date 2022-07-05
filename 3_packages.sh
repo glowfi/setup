@@ -18,7 +18,7 @@ sudo pacman -Syy
 
 echo ""
 echo "--------------------------------------------------------------"
-echo "--------------Setup GPG...------------------------------------"
+echo "--------------Creating GPG KEY...-----------------------------"
 echo "--------------------------------------------------------------"
 echo ""
 
@@ -94,7 +94,8 @@ cd ..
 rm -rf tty-clock
 
 ### EDIT
-sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo
+sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec mediainfo
+# sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer youtube-dl mpv songrec ardour mediainfo
 # yay -S --noconfirm stellarium
 yay -S --noconfirm gimp-plugin-registry
 
