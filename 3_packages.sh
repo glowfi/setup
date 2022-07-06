@@ -16,20 +16,20 @@ sudo hwclock --systohc
 sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syy
 
-echo ""
-echo "--------------------------------------------------------------"
-echo "--------------Creating GPG KEY...-----------------------------"
-echo "--------------------------------------------------------------"
-echo ""
+# echo ""
+# echo "--------------------------------------------------------------"
+# echo "--------------Creating GPG KEY...-----------------------------"
+# echo "--------------------------------------------------------------"
+# echo ""
 
-## SETUP GPG
-sudo pacman -S --noconfirm pass
+# ## SETUP GPG
+# sudo pacman -S --noconfirm pass
 
-## Generate GPG KEY
-gpg --full-generate-key
-key=$(gpg --list-secret-keys --keyid-format long | tail -4 | head -1 | xargs)
-pass init "$key"
-gpg-connect-agent reloadagent /bye
+# ## Generate GPG KEY
+# gpg --full-generate-key
+# key=$(gpg --list-secret-keys --keyid-format long | tail -4 | head -1 | xargs)
+# pass init "$key"
+# gpg-connect-agent reloadagent /bye
 
 # AUR HELPER
 
@@ -60,11 +60,11 @@ sudo pacman -S --noconfirm xorg-server
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
-sudo pacman -S --noconfirm bluez bluez-utils
+# sudo pacman -S --noconfirm bluez bluez-utils
 yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
 
 ### CDX
-sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli 
+sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
 # sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli tmux
 yay -S --noconfirm mongodb-bin
 
