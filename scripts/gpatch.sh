@@ -24,12 +24,13 @@ rm -rf mghud32.tar.gz
 
 ## Feral gamemode
 sudo pacman -S --noconfirm meson systemd git dbus libinih
-git clone https://github.com/FeralInteractive/gamemode.git
-cd gamemode
-git checkout 1.6.1
-yes | ./bootstrap.sh
-cd ..
-rm -rf gamemode
+sudo pacman -S --noconfirm gamemode
+# git clone https://github.com/FeralInteractive/gamemode.git
+# cd gamemode
+# git checkout 1.6.1
+# yes | ./bootstrap.sh
+# cd ..
+# rm -rf gamemode
 
 ## Protonup [Proton GE]
 fish -c "pip install protonup;exit"
