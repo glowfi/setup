@@ -98,6 +98,7 @@ sudo make CMAKE_BUILD_TYPE=Release install;
 cd ..;
 sudo rm -r neovim;
 cp -r ~/setup/configs/nvim ~/.config;
+mv ~/setup/configs/nvim/.vsnip/ ~;
 nvim -c "PackerSync";
 nvim -c "PackerSync";
 nvim -c "PackerSync"'
