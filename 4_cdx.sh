@@ -1,9 +1,9 @@
 #!/bin/fish
 
 echo ""
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo "--------------Installing Python Modules...------------------------------"
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo ""
 
 # UPGRADE PIP TO LATEST VERSION
@@ -17,7 +17,7 @@ pip install virtualenv twine wheel
 
 # JUPYTER SETUP
 
-pip install notebook-as-pdf  jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
+pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
 jupyter contrib nbextension install --user
 jupyter nbextensions_configurator enable --user
 pyppeteer-install
@@ -27,9 +27,9 @@ pyppeteer-install
 pip install lookatme lookatme.contrib.qrcode lookatme.contrib.image_ueberzug lookatme.contrib.render
 
 echo ""
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo "--------------Installing Node Modules...--------------------------------"
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo ""
 
 # DOWNLOAD NODEJS
@@ -46,18 +46,18 @@ source ~/.config/fish/config.fish
 npm i -g yarn
 
 echo ""
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo "--------------Installing Rust...----------------------------------------"
-echo "------------------------------------------------------------------------"
+echo ------------------------------------------------------------------------
 echo ""
 
 # INSTALL RUST
 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-git clone https://github.com/rust-analyzer/rust-analyzer.git 
-cd rust-analyzer 
+git clone https://github.com/rust-analyzer/rust-analyzer.git
+cd rust-analyzer
 cargo xtask install --server
-cd .. 
+cd ..
 rm -rf rust-analyzer
 
 # RUST MODULES 
@@ -66,14 +66,14 @@ cargo install fireworks
 
 
 echo ""
-echo "--------------------------------------------------------------------------"
+echo --------------------------------------------------------------------------
 echo "--------------Installing Golang...----------------------------------------"
-echo "--------------------------------------------------------------------------"
+echo --------------------------------------------------------------------------
 echo ""
 
 # INSTALL GOLANG
 
-curl https://go.dev/dl/ |grep -e "linux" | head -2 | grep -e "href" | awk -F "href" '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget  https://go.dev{} -O go.tar.gz
+curl https://go.dev/dl/ | grep -e linux | head -2 | grep -e href | awk -F href '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget https://go.dev{} -O go.tar.gz
 tar -xzf go.tar.gz
 rm -rf go.tar.gz
 
@@ -83,9 +83,9 @@ go install golang.org/x/tools/gopls@latest
 go install github.com/mholt/archiver/v3/cmd/arc@latest
 
 echo ""
-echo "--------------------------------------------------------------------------"
+echo --------------------------------------------------------------------------
 echo "--------------Installing Clangd...----------------------------------------"
-echo "--------------------------------------------------------------------------"
+echo --------------------------------------------------------------------------
 echo ""
 
 # INSTALL CLANGD LSP
@@ -101,9 +101,9 @@ source ~/.config/fish/config.fish
 
 
 echo ""
-echo "---------------------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------------------
 echo "--------------Installing LUA LSP AND LUA FORMATTER...----------------------------------------"
-echo "---------------------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------------------
 echo ""
 
 # INSTALL LUA LSP
@@ -112,19 +112,27 @@ set lua_ver (echo "3.2.4")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
-rm -rf lua-ls.tar.gz 
+rm -rf lua-ls.tar.gz
 mv ~/lua-ls ~/.local/bin/luaLSP
 
 # INSTALL LUA FORAMTTER
 
 cargo install stylua
 
+# SCRATCHPAD
+
+set Lorienver (echo "0.5.0")
+wget https://github.com/mbrlabs/Lorien/releases/download/v0.5.0/Lorien_"$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
+tar -xf ~/Lorien.tar.gz
+rm -rf Lorien.tar.gz
+mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
+rm -rf Lorien_"$Lorienver"_Linux
 
 
 echo ""
-echo "-----------------------------------------------------------------------------------"
+echo -----------------------------------------------------------------------------------
 echo "--------------Installing Fuzzy File Finder (fzf)...--------------------------------"
-echo "-----------------------------------------------------------------------------------"
+echo -----------------------------------------------------------------------------------
 echo ""
 
 
@@ -134,9 +142,9 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
 
 echo ""
-echo "-------------------------------------------------------------------------------"
+echo -------------------------------------------------------------------------------
 echo "--------------Installing terminal utilities...---------------------------------"
-echo "-------------------------------------------------------------------------------"
+echo -------------------------------------------------------------------------------
 echo ""
 
 # INSTALL CHECKUR
@@ -165,10 +173,10 @@ cd ..
 rm -rf sYT
 chmod +x ~/.local/bin/sYT.py
 chmod +x ~/.local/bin/sYT.sh
-mkdir -p .config/mpv/scripts;
-wget https://raw.githubusercontent.com/Samillion/mpv-ytdlautoformat/master/ytdlautoformat.lua -O ytdlautoformat.lua;
-rm -rf ytdlautoformat.lua.1;
-cp -r ./ytdlautoformat.lua ~/.config/mpv/scripts/;
+mkdir -p .config/mpv/scripts
+wget https://raw.githubusercontent.com/Samillion/mpv-ytdlautoformat/master/ytdlautoformat.lua -O ytdlautoformat.lua
+rm -rf ytdlautoformat.lua.1
+cp -r ./ytdlautoformat.lua ~/.config/mpv/scripts/
 rm -rf ytdlautoformat.lua
 
 # ADDITIONAL SCRIPTS
@@ -208,14 +216,14 @@ git clone https://github.com/thameera/vimv
 cd vimv
 cp -r vimv ~/.local/bin/
 cd ..
-rm -rf vimv 
+rm -rf vimv
 
 # SETUP POSTGRES
 
 echo ""
-echo "---------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------
 echo "--------------Setting up Database...---------------------------------------------"
-echo "---------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------
 echo ""
 
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
@@ -225,9 +233,9 @@ sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|crea
 # DOWNLOAD NEOVIM
 
 echo ""
-echo "---------------------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------------------
 echo "--------------Installing the best text editor in the world...--------------------------------"
-echo "---------------------------------------------------------------------------------------------"
+echo ---------------------------------------------------------------------------------------------
 echo ""
 
 pip install neovim ueberzug black flake8
@@ -247,11 +255,12 @@ xdg-mime default nvim.desktop text/plain
 # COPY NEOVIM SETTINGS
 
 cp -r ~/setup/configs/nvim ~/.config
-nvim -c "PackerSync"
-nvim -c "PackerSync"
-nvim -c "PackerSync"
+nvim -c PackerSync
+nvim -c PackerSync
+nvim -c PackerSync
 
 
 # CONFIGURING GIT ALIASES
 
-git config --global user.name "-";git config --global user.email "-"
+git config --global user.name -
+git config --global user.email -
