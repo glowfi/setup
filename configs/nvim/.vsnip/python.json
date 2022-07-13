@@ -1,6 +1,11 @@
 {
-    "Class": {
-        "prefix": ["tm"],
+    "Space&Time": {
+        "prefix": ["st"],
+        "body": ["# T.C. - ", "# S.C  - "],
+        "description": "Space&Time Complexity template."
+    },
+    "Space&Time DP": {
+        "prefix": ["dpst"],
         "body": [
             "# Recursion",
             "# T.C. - ",
@@ -18,6 +23,6 @@
             "# T.C. - ",
             "# S.C  - "
         ],
-        "description": "Class definition template."
+        "description": "DP template."
     }
 }

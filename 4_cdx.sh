@@ -255,7 +255,7 @@ xdg-mime default nvim.desktop text/plain
 # COPY NEOVIM SETTINGS
 
 cp -r ~/setup/configs/nvim ~/.config
-mv ~/setup/configs/nvim/.vsnip/ ~
+cp -r ~/setup/configs/nvim/.vsnip/ ~
 nvim -c PackerSync
 nvim -c PackerSync
 nvim -c PackerSync
