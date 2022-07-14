@@ -14,9 +14,17 @@ echo ""
 sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
-sudo pacman -S --noconfirm lxrandr brightnessctl picom feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
+sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
+
+sudo pacman -S --noconfirm libev libconfig meson ninja
+git clone https://github.com/pijulius/picom
+cd picom
+git submodule update --init --recursive;meson --buildtype=release . build;ninja -C build 
+sudo ninja -C build install 
+cd ..
+rm -rf picom
 
 # APPEARANCE
 
@@ -75,8 +83,8 @@ sed -i '51,55d' ~/.xinitrc
 echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
-# Picom 
-picom -f --experimental-backends --backend glx &
+# Picom
+picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 &
 
 # Hotkey daemon
 dxhd -b &
