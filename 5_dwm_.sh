@@ -18,6 +18,8 @@ sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-p
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
 
+# PICOM DISPLAY COMPOSITOR
+
 sudo pacman -S --noconfirm libev libconfig meson ninja
 git clone https://github.com/pijulius/picom
 cd picom
