@@ -166,16 +166,14 @@ pip install xhibit
 
 sudo pacman -S --noconfirm jq aria2
 git clone https://github.com/glowfi/sYT
-cd sYT
-cp -r ./sYT.py ~/.local/bin/
-cp -r ./sYT.sh ~/.local/bin/
-cd ..
+cp -r sYT/sYT.py ~/.local/bin/
+cp -r sYT/sYT.sh ~/.local/bin/
 rm -rf sYT
 chmod +x ~/.local/bin/sYT.py
 chmod +x ~/.local/bin/sYT.sh
 mkdir -p .config/mpv/scripts
 touch ~/.config/mpv/mpv.conf
-echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >> ~/.config/mpv/mpv.conf
+echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 
 # ADDITIONAL SCRIPTS
 
