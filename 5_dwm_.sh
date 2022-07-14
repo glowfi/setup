@@ -21,8 +21,10 @@ yay -S --noconfirm jmtpfs nsxiv-git
 sudo pacman -S --noconfirm libev libconfig meson ninja
 git clone https://github.com/pijulius/picom
 cd picom
-git submodule update --init --recursive;meson --buildtype=release . build;ninja -C build 
-sudo ninja -C build install 
+git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+sudo ninja -C build install
 cd ..
 rm -rf picom
 
@@ -84,7 +86,7 @@ echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
-picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 &
+picom -b -f --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 --experimental-backends &
 
 # Hotkey daemon
 dxhd -b &
