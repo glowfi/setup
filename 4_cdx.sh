@@ -174,10 +174,8 @@ rm -rf sYT
 chmod +x ~/.local/bin/sYT.py
 chmod +x ~/.local/bin/sYT.sh
 mkdir -p .config/mpv/scripts
-wget https://raw.githubusercontent.com/Samillion/mpv-ytdlautoformat/master/ytdlautoformat.lua -O ytdlautoformat.lua
-rm -rf ytdlautoformat.lua.1
-cp -r ./ytdlautoformat.lua ~/.config/mpv/scripts/
-rm -rf ytdlautoformat.lua
+touch ~/.config/mpv/mpv.conf
+echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >> ~/.config/mpv/mpv.conf
 
 # ADDITIONAL SCRIPTS
 
