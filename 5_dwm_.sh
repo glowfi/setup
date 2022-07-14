@@ -86,7 +86,7 @@ echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
-picom -b -f --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 --experimental-backends &
+picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 --experimental-backends &
 
 # Hotkey daemon
 dxhd -b &
