@@ -447,7 +447,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "577s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "578s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 
