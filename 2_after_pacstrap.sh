@@ -69,7 +69,7 @@ echo "----------------------------------------------------------------"
 echo ""
 
 sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 sudo pacman -Syy
 
 # SET HOSTNAME
