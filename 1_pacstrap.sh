@@ -14,7 +14,7 @@ echo ""
 
 timedatectl set-ntp true
 sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syyy
 
