@@ -658,3 +658,8 @@ if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
+
+# Pywal
+if test -f /usr/bin/wal
+    wal -R -q -n
+end
