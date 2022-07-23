@@ -16,12 +16,10 @@ rename() {
 if [[ -d "$1" ]]; then
 	checkForwardSlash="${inputDirectory:0-1}"
 	if [[ "$checkForwardSlash" == "/" ]]; then
-		echo "entered 1"
 		inputDirectory="$1"
 		directoryPath="$inputDirectory*.*"
 		rename
 	else
-		echo "entered 2"
 		inputDirectory="$1/"
 		directoryPath="$inputDirectory*.*"
 		rename
