@@ -108,9 +108,6 @@ rpass=$(sed -n '9p' <"$CONFIG_FILE")
 echo "$uname:$upass" | chpasswd
 echo "root:$rpass" | chpasswd
 
-# Temporary Fix
-ln -s /usr/bin/sha512sum /usr/bin/sha512
-
 # DISPLAY DRIVERS
 
 echo ""
