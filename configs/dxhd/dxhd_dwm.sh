@@ -42,10 +42,6 @@ kitty -e "pulsemixer"
 #alt + s
 flameshot gui
 
-## Video Editor
-#super + w
-kdenlive --platformtheme qt5ct
-
 ## Scrap YT
 #super + y
 fish -c "sYT -p "dmenu""
