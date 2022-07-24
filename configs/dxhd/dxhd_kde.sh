@@ -54,4 +54,4 @@ flameshot gui
 
 ## Dmenu
 #super + w
-dmenu_run -p "Run:" -i -nb "#32302f" -nf "#bbbbbb" -sb "#477D6F" -sf "#eeeeee"
+dmenu_run -p "Run:" -i
