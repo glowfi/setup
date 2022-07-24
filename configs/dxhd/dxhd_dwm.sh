@@ -52,7 +52,7 @@ feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
 
 ## Favourite Wallpaper
 #super + w
-feh --bg-fill ~/wall/110.png
+feh --bg-fill ~/wall/12.png
 
 ## Change Colorscheme
 #super + c
