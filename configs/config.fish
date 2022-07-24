@@ -663,3 +663,7 @@ end
 if test -f /usr/bin/wal
     wal -R -q -n
 end
+
+function xpyl
+    awk '{print $2}' ~/.cache/wal/colors.css | tail -17 | awk '{print $1}' | tr -d ";" | head -9 | sed -n '1!p' | tr "\n" "," | awk '{print substr($0, 1,length($0)-1)}' | xargs -I {} xhibit -rcn t -ccs "{}"
+end
