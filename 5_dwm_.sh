@@ -11,7 +11,7 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst
+sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-poppler flameshot dunst clipmenu
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
@@ -103,6 +103,9 @@ sh ~/.local/bin/pw.sh &
 
 # Wallpaper
 sh ~/.local/bin/wall.sh &
+
+# Clipboard
+clipmenud &
 
 # Autolock
 xautolock -time 5 -locker slock &
