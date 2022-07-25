@@ -14,6 +14,7 @@ echo ""
 sudo timedatectl set-ntp true
 sudo hwclock --systohc
 sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+sudo pacman -S archlinux-keyring
 sudo pacman -Syy
 
 # AUR HELPER
@@ -150,8 +151,6 @@ echo ""
 
 fish -c "exit"
 cp -r ~/setup/configs/config.fish ~/.config/fish/
-
-
 
 # INSTALL AND COPY NNN FM SETTINGS
 
