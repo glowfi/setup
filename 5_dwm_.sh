@@ -20,7 +20,7 @@ yay -S --noconfirm jmtpfs nsxiv-git
 
 # PICOM DISPLAY COMPOSITOR
 
-sudo pacman -S --noconfirm libev libconfig meson ninja
+sudo pacman -S --noconfirm libev libconfig meson ninja uthash
 git clone https://github.com/pijulius/picom
 cd picom
 git submodule update --init --recursive
