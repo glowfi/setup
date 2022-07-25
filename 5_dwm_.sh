@@ -30,11 +30,6 @@ sudo ninja -C build install
 cd ..
 rm -rf picom
 
-# PYWAL
-sudo pacman -S --noconfirm python-pywal
-fish -c "pip install haishoku;exit"
-wal -i ~/setup/pacman.png
-
 # APPEARANCE
 
 sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
