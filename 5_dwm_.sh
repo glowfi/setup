@@ -159,6 +159,7 @@ sudo sed -i "3s/.*/static const char *group = \""$uname"\";/" ~/setup/configs/sl
 sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
 sudo sed -i "s/Replacehere/"$output1"/g" ~/setup/configs/slock/slock.c
 sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
+sudo cp config.def.h config.h
 sudo make clean install
 sudo systemctl enable slock@$uname.service
 cd ..
