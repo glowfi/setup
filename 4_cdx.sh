@@ -187,7 +187,7 @@ cp -r ~/setup/scripts/rename.sh ~/.local/bin/
 chmod +x ~/.local/bin/rename.sh
 
 sudo pacman -S --noconfirm xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo
-cp -r ~/setup/dmenu-scripts/dm-record.sh ~/.local/bin/
+cp -r ~/setup/scripts/dm-record.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-record.sh
 
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
@@ -199,9 +199,6 @@ chmod +x ~/.local/bin/opa.sh
 cp -r ~/setup/scripts/send.sh ~/.local/bin/
 chmod +x ~/.local/bin/send.sh
 
-# git clone https://github.com/pystardust/ani-cli
-# cp -r ani-cli/bin/ani-cli ~/.local/bin
-# rm -rf ani-cli 
 yay -S --noconfirm ani-cli-git
 
 git clone https://github.com/mov-cli/mov-cli
