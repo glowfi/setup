@@ -1,40 +1,40 @@
 # Arch Setup
 
-> My streamline arch install script for installing KDE or DWM
+> Arch Linux install script for installing KDE or DWM
 
 ![Coverpic](./pacman.png)
 
 ## Features
 
--   linux-zen kernel
--   btrfs
--   zram
--   apparmor
+-   Zen kernel
+-   Btrfs
+-   Zram
+-   Apparmor
 
-## KDE Build
+## KDE
 
-> Minimal KDE with less bloat.
+> Minimal KDE setup with less packages.
 
-## DWM Build
+## DWM
 
-> Minimal DWM build with less patches.
+> Minimal DWM setup with less patches.
 
 **DWM PATCHES**
+
+> Enabled Emoji support
 
 -   3 column Layout
 -   Fibonacci Layout
 -   Cycle across layouts
 -   Move Stack
--   vanity gaps
--   always center
-
-**Emoji support added by installing libxft-bgra**
+-   Vanity gaps
+-   Always center
 
 **DMENU PATCHES**
 
-No patches (Vanilla)
+> Enabled Emoji support
 
-**Emoji support by added installing libxft-bgra**
+-   No Patches
 
 **SLOCK PATCHES**
 
@@ -42,28 +42,30 @@ No patches (Vanilla)
 
 **DWM BAR**
 
--   Cpu Ram Disk usage
--   Sound
--   Brightness
--   Network
--   Date and Time
+-   network (Connection status,upload and download speeds)
+-   cpu ram disk usage
+-   sound
+-   brightness
+-   battery
+-   date and time
 
 ## INSTALLATION STEPS
 
-**Connect to the Internet.Use iwctl if you are using wifi.
-Your PC will restart after the below script finishes.**
+**Base install**
+
+> Ethernet or Wifi must be up before running the script below
 
 ```sh
 
-pacman -Sy git
+pacman -Sy archlinux-keyring git
 git clone https://github.com/glowfi/setup
 ./setup/run_1.sh
 
 ```
 
-**After PC restarts login with your username and password .
-Again connect to Internet.Use nmtui if you are using wifi.
-Then,run the below command.**
+**DE/WM install**
+
+> Restart before running the script below
 
 ```sh
 
