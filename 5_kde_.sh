@@ -18,9 +18,7 @@ sudo pacman -S --noconfirm kwrited kwin kgamma5 khotkeys kinfocenter kscreen sys
 
 # PACKAGES
 
-# sudo pacman -S --noconfirm dolphin ark gwenview okular flameshot
-sudo pacman -S --noconfirm dolphin ark zathura zathura-pdf-poppler flameshot
-yay -S --noconfirm nsxiv-git
+sudo pacman -S --noconfirm dolphin ark gwenview okular flameshot mpv
 
 # REMOVE KWALLET
 
@@ -71,28 +69,6 @@ echo ""
 
 # UPDATE MIMETYPE
 
-touch ~/zathura.desktop
-sudo touch zathura.desktop
-cp -r ~/setup/configs/zathura ~/.config
-
-sudo echo "[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Zathura
-Comment=A minimalistic PDF viewer
-Comment[de]=Ein minimalistischer PDF-Betrachter
-Exec=zathura %f
-Terminal=false
-Categories=Office;Viewer;
-MimeType=application/pdf;
-" >>~/zathura.desktop
-sudo mv ~/zathura.desktop /usr/share/applications
-
-xdg-mime default nsxiv.desktop image/png
-xdg-mime default nsxiv.desktop image/jpg
-xdg-mime default nsxiv.desktop image/jpeg
-xdg-mime default mpv.desktop image/gif
-xdg-mime default zathura.desktop application/pdf
 
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
 bash ./default-media-player.sh mpv.desktop
