@@ -6,7 +6,7 @@ sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 
 #--UNINSTALL
-sudo pacman -Rns dnsmasq virt-manager qemu edk2-ovmf
+sudo pacman -Rns dnsmasq virt-manager qemu-full edk2-ovmf
 sudo gpasswd -d "$USER" libvirt
 
 # UNINSTALL NNN FM
