@@ -32,6 +32,9 @@ M.setup = function()
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
 			b.formatting.shfmt.with({ filetypes = { "sh" } }),
 			b.diagnostics.flake8.with({ filetypes = { "python" } }),
+			-- b.diagnostics.eslint_d.with({
+			-- 	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+			-- }),
 		},
 		on_attach = function(client)
 			vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.format()]])
