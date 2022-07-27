@@ -165,8 +165,7 @@ mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 cd
-sed -i '226d' ~/.config/nnn/plugins/preview-tui
-sed -i '225 a                      --theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &' ~/.config/nnn/plugins/preview-tui
+cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
 
 # COPY KITTY SETTINGS
 
