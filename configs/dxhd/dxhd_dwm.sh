@@ -53,3 +53,7 @@ feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
 ## Favourite Wallpaper
 #super + c
 feh --bg-fill ~/wall/12.png
+
+## Clipboard
+#super + e
+clipmenu
