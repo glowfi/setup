@@ -105,8 +105,8 @@ clipmenud &
 # Autolock
 xautolock -time 5 -locker slock &
 
-# dwm-bar
-~/.local/bin/dwm-bar/dwm_bar.sh &
+# dwmblocks
+dwmblocks &
 
 # Infinte loop
 while true;do 
