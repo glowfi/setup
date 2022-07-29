@@ -46,7 +46,7 @@ sudo pacman -S --noconfirm xorg-server
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
-yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono
+yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-fonts
 
 ### CDX
 sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
