@@ -202,7 +202,11 @@ chmod +x ~/.local/bin/send.sh
 yay -S --noconfirm ani-cli-git
 
 git clone https://github.com/mov-cli/mov-cli
-cp -r mov-cli/mov-cli ~/.local/bin
+cd mov-cli
+cp -r ~/setup/scripts/scraper.py ./mov_cli/utils/
+pip install -r requirements.txt
+python setup.py install --user
+cd ..
 rm -rf mov-cli
 
 git clone https://github.com/thameera/vimv
