@@ -61,11 +61,7 @@ class WebScraper:
         self, url: str, name: str, path: str = determine_path(), subtitle: str = None
     ):
         subprocess.Popen(
-            f"echo {url}|xclip -sel c",
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            f"echo {url} | xclip -sel c", stdout=subprocess.PIPE, shell=True
         )
         CRED = "\033[91m"
         CEND = "\033[0m"
