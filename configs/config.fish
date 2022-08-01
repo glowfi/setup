@@ -198,14 +198,8 @@ alias se='sudo -E'
 # Find and replace with specific word
 alias rep="replaceWithSpecificWord"
 
-# Download a file with aria2c or yt-dlp
+# Download a file with aria2c
 alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
-function dlp
-    cd ~/Downloads
-    mkdir $argv[1]
-    cd $argv[1]
-    yt-dlp --external-downloader aria2c --external-downloader-args '-j 16 -x 16 -s 16 -k 1M' $argv[2]
-end
 
 # Fetch contents of a file
 alias fk='getFileContent'
@@ -453,7 +447,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "584s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "578s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 
@@ -581,7 +575,7 @@ end
 
 
 function fish_prompt
- minimal
+ classic
 end
 
 
