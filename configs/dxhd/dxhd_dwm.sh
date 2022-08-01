@@ -57,23 +57,3 @@ feh --bg-fill ~/wall/12.png
 ## Clipboard
 #super + e
 clipmenu
-
-## Increase Volume
-#super + F8
-pamixer -i 5 --allow-boost
-
-## Decrease Volume
-#super + F7
-pamixer -d 5 --allow-boost
-
-## Mute Volume
-#super + F6
-pamixer -t
-
-## Increase Brightness
-#super + F3
-brightnessctl s 30+
-
-## Decrease Brightness
-#super + F2
-brightnessctl s 30-
