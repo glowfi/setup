@@ -60,15 +60,32 @@ class WebScraper:
     def dl(
         self, url: str, name: str, path: str = determine_path(), subtitle: str = None
     ):
-        subprocess.Popen(
-            f"echo {url} | xclip -sel c", stdout=subprocess.PIPE, shell=True
-        )
+
+        # Copy URL to clipboard
+        subprocess.run("xclip", universal_newlines=True, input=url)
         CRED = "\033[91m"
         CEND = "\033[0m"
         print()
-        print()
         print("Scraped URL copied to clipboard:")
         print(CRED + f"{url}" + CEND)
+
+        # Start Download
+        name = input("Enter the name of the File:")
+        path = os.path.expanduser(f"~/Downloads/{name}/")
+        subprocess.getoutput(f'mkdir "{path}"')
+        os.chdir(path)
+        subprocess.run(
+            [
+                "yt-dlp",
+                "--external-downloader",
+                "aria2c",
+                "--external-downloader-args",
+                "-j 16 -x 16 -s 16 -k 1M",
+                url,
+                "-o",
+                f"{name}.%(ext)s",
+            ]
+        )
 
     def play(self, url: str, name: str):
         try:
