@@ -61,6 +61,6 @@ vim.cmd("inoremap <c-b> ß")
 vim.api.nvim_set_keymap(
 	"n",
 	"<Leader>l",
-	":lua require('cmp').setup { enabled = false }<CR>:LspStop<CR>",
+	":lua require('cmp').setup { enabled = false }<CR>",
 	{ noremap = true, silent = true }
 )
