@@ -6,7 +6,7 @@ dwm_resources() {
 
 	printf "%s" "$SEP1"
 	# get all the infos first to avoid high resources usage
-	free_output=$(free -h | grep Mem)
+	free_output=$(free -h --si | grep Mem)
 	df_output=$(df -h $df_check_location | tail -n 1)
 
 	# Used and total memory
