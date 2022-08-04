@@ -173,7 +173,7 @@ echo "--------------Copying TOPBAR settings...----------------------------------
 echo "----------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r setup/configs/dwmblocks/modules/*.sh ~/.local/bin/
+cp -r ~/setup/configs/dwmblocks/modules/* ~/.local/bin/
 cd ~/setup/configs/dwmblocks/
 sudo make clean install
 cd
