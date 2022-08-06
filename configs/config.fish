@@ -85,6 +85,8 @@ alias dxrel='dxhd -r'
 
 # Git aliases
 alias gt='gitui'
+alias gp='git push'
+alias gk="git clone --depth=1 $argv[1]"
 
 # Neovim aliases
 alias v='nvim'
@@ -575,7 +577,7 @@ end
 
 
 function fish_prompt
- classic
+    classic
 end
 
 
