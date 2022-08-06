@@ -203,9 +203,6 @@ alias rep="replaceWithSpecificWord"
 # Download a file with aria2c
 alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
 
-# Fetch contents of a file
-alias fk='getFileContent'
-
 # Copy current path
 alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
 
@@ -347,12 +344,6 @@ function searchContents
     end
 end
 
-# Get fileContent from a file at web 
-function getFileContent
-    set name (echo "$argv" | awk -F"/" '{print $NF}')
-    curl "$argv" -o ~/"$name"
-end
-
 # Terminal Schenanigans
 function suprise
     bash -c 'find $HOME/terminal_pics/ -type f -name "*.jpg" -o -name "*.png" -name "*.gif" | shuf -n 1' | xargs -I {} kitty +kitten icat --align=left {} && fortune -sn80
@@ -449,7 +440,7 @@ end
 
 function chooseTheme
     set choosen (printf "classic\nminimal" | fzf)
-    sed -i "578s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "571s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 
