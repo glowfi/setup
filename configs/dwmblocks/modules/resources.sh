@@ -5,7 +5,8 @@ df_check_location='/home'
 dwm_resources() {
 
 	printf "%s" "$SEP1"
-	# get all the infos first to avoid high resources usage
+
+	# Get all the infos first to avoid high resources usage
 	free_output=$(free -h --si | grep Mem)
 	df_output=$(df -h $df_check_location | tail -n 1)
 
@@ -21,7 +22,9 @@ dwm_resources() {
 	STOTOT=$(echo $df_output | awk '{print $2}')
 	STOPER=$(echo $df_output | awk '{print $5}')
 
+    # Print Output
 	printf " 🧠 %s/%s  🖥 %s  💾 %s/%s :%s" "$MEMUSED" "$MEMTOT" "$CPU" "$STOUSED" "$STOTOT" "$STOPER"
+
 	printf "%s" "$SEP2"
 }
 
