@@ -85,8 +85,6 @@ alias dxrel='dxhd -r'
 
 # Git aliases
 alias gt='gitui'
-alias gp='git push'
-alias gk="git clone --depth=1 $argv[1]"
 
 # Neovim aliases
 alias v='nvim'
@@ -440,7 +438,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "633s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "631s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
@@ -630,7 +628,7 @@ end
 
 
 function fish_prompt
- simple
+    simple
 end
 
 
