@@ -103,7 +103,7 @@ sh ~/.local/bin/wall.sh &
 clipmenud &
 
 # Autolock
-xautolock -time 5 -locker slock &
+xautolock -time 10 -locker slock &
 
 # dwmblocks
 dwmblocks &
