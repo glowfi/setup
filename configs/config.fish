@@ -59,7 +59,7 @@ end
 # ===================================================================
 
 # Changing ls to exa
-alias ls='exa --icons -l --color=never --group-directories-first -F'
+alias ls='exa --icons -l --color=always --group-directories-first -F'
 
 # Changing cat to bat
 alias cat='bat --theme=gruvbox-dark'
@@ -444,20 +444,12 @@ end
 function simple
     set -l last_command_status $status
 
-    #set_color red --bold
-    #printf "["
-    #set_color blue
-    printf "%s" "$USER"
-    #set_color green
-    printf "@"
-    #set_color yellow
-    printf "%s" "$hostname "
-    #set_color C7ECEC
+    set_color c1e566 --bold
+    printf " ● "
+    set_color normal
+    printf "%s" "$USER "
     printf (pwd | sed "s|^$HOME|~|")
-    #set_color red --bold
-    #printf "] "
-    #set_color ffc04d
-    printf '%s' ' -> '
+    printf " "
 
     set -l normal_color (set_color normal)
     set -l branch_color (set_color yellow)
