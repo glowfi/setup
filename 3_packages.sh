@@ -50,7 +50,7 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 
 ### CDX
 sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
-yay -S --noconfirm mongodb-bin
+yay -S --noconfirm mongodb-bin insomnia-bin
 
 ### PACK
 sudo pacman -S --noconfirm kdeconnect
