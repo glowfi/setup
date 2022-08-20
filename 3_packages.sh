@@ -57,6 +57,7 @@ cp -r ~/setup/configs/Insomnia/ ~/.config
 sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
+sudo pacman -S --noconfirm texlive-bin texlive-fontsextra texlive-formatsextra texlive-bibtexextra texlive-core texlive-latexextra
 
 ### EXTRAS
 yay -S --noconfirm openrazer-meta polychromatic
