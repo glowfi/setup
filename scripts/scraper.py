@@ -15,17 +15,6 @@ from colorama import Fore, Style
 
 from .httpclient import HttpClient
 
-# Not needed
-# def determine_path() -> str:
-#    plt = platform.system()
-#    if plt == "Windows":
-#        return f"C://Users//{os.getenv('username')}//Downloads"
-#    elif (plt == "Linux") or (plt == "Darwin"):
-#        return f"/home/{os.getlogin()}/Downloads"
-#    else:
-#        print("Please open an issue for your os")
-#        sys.exit(-2)
-
 
 class WebScraper:
     def __init__(self, base_url: str) -> None:
@@ -62,9 +51,7 @@ class WebScraper:
     def parse(txt: str) -> str:
         return re.sub(r"\W+", "-", txt.lower())
 
-    def dl(
-        self, url: str, name: str, path: str = determine_path(), subtitle: str = None
-    ):
+    def dl(self, url: str, name: str):
 
         # Copy URL to clipboard
         subprocess.run("xclip", universal_newlines=True, input=url)
