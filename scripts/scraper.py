@@ -1,25 +1,30 @@
 import logging
 import os
-import platform
+
+# import platform
 import re
 import subprocess
 import sys
+import mov_cli.__main__ as movcli
 
-
+# import shlex
+# required for development
+from .history import History
+from .config import config
 from colorama import Fore, Style
 
 from .httpclient import HttpClient
 
-
-def determine_path() -> str:
-    plt = platform.system()
-    if plt == "Windows":
-        return f"C://Users//{os.getenv('username')}//Downloads"
-    elif (plt == "Linux") or (plt == "Darwin"):
-        return f"/home/{os.getlogin()}/Downloads"
-    else:
-        print("Please open an issue for your os")
-        sys.exit(-2)
+# Not needed
+# def determine_path() -> str:
+#    plt = platform.system()
+#    if plt == "Windows":
+#        return f"C://Users//{os.getenv('username')}//Downloads"
+#    elif (plt == "Linux") or (plt == "Darwin"):
+#        return f"/home/{os.getlogin()}/Downloads"
+#    else:
+#        print("Please open an issue for your os")
+#        sys.exit(-2)
 
 
 class WebScraper:
@@ -145,6 +150,9 @@ class WebScraper:
         print(self.red("[q] Exit!"), end="\n\n")
         print(self.yellow("[s] Search Again!"), end="\n\n")
         print(self.cyan("[d] Download!"), end="\n\n")
+        print(self.green("[p] Switch Provider!"), end="\n\n")
+        print(self.cyan("[h] History!"), end="\n\n")
+        print(self.yellow("[c] Set Standard Provider!"), end="\n\n")
         choice = ""
         while choice not in range(len(result) + 1):
             choice = (
@@ -154,6 +162,26 @@ class WebScraper:
                 sys.exit()
             elif choice == "s":
                 return self.redo()
+            elif choice == "p":
+                return movcli.movcli()
+            elif choice == "h":
+                History.gethistory()
+            elif choice == "c":
+                print(self.red("[a] Actvid"))
+                print(self.red("[s] SFlix"))
+                print(self.red("[o] Solar"))
+                print(self.red("[t] TheFlix"))
+                print(self.green(f"{config.getprovider()} is standard"))
+                print(self.cyan("[q] Quit"))
+                provider = input(self.blue("Enter your Provider: "))
+                if provider == "a":
+                    config.setprovider("actvid")
+                elif provider == "s":
+                    config.setprovider("sflix")
+                elif provider == "o":
+                    config.setprovider("solar")
+                elif provider == "q":
+                    sys.exit()
             elif choice == "d":
                 try:
                     mov_or_tv = result[
