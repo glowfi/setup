@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 # import platform
 import re
@@ -62,7 +63,8 @@ class WebScraper:
         print(CRED + f"{url}" + CEND)
 
         # Start Download
-        name = input("Enter the name of the File:")
+        name = name.strip() + str(int(time.time()))
+        os.system("mkdir -p ~/Downloads")
         path = os.path.expanduser(f"~/Downloads/{name}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
