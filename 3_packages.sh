@@ -44,24 +44,23 @@ sudo pacman -S --noconfirm xorg-server
 
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
-sudo pacman -S --noconfirm fish kitty imagemagick ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
+sudo pacman -S --noconfirm fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
 yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-fonts
 
-### CDX
-sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
-yay -S --noconfirm mongodb-bin insomnia-bin
-cp -r ~/setup/configs/Insomnia/ ~/.config
-
-### PACK
+### PACKAGES
 sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin onlyoffice-bin
-yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
-sudo pacman -S --noconfirm texlive-bin texlive-fontsextra texlive-formatsextra texlive-bibtexextra texlive-core texlive-latexextra
+
+### AUDIO,VIDEO,IMAGE
+sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv songrec mediainfo imagemagick
+yay -S --noconfirm gimp-plugin-registry
 
 ### EXTRAS
 yay -S --noconfirm openrazer-meta polychromatic
 sudo gpasswd -a $USER plugdev
+yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
+sudo pacman -S --noconfirm texlive-bin texlive-fontsextra texlive-formatsextra texlive-bibtexextra texlive-core texlive-latexextra
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
@@ -79,10 +78,6 @@ cd tty-clock
 sudo make clean install
 cd ..
 rm -rf tty-clock
-
-### EDIT
-sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv songrec mediainfo
-yay -S --noconfirm gimp-plugin-registry
 
 # # ENABLE ZRAM
 

@@ -1,5 +1,10 @@
 #!/bin/fish
 
+### PACKAGES
+sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
+yay -S --noconfirm mongodb-bin insomnia-bin
+cp -r ~/setup/configs/Insomnia/ ~/.config
+
 echo ""
 echo ------------------------------------------------------------------------
 echo "--------------Installing Python Modules...------------------------------"
