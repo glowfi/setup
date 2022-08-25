@@ -248,10 +248,6 @@ return require("packer").startup(function(use)
 
 	--   Snippets
 	use({ "rafamadriz/friendly-snippets", event = "InsertCharPre" })
-	use({
-		"dsznajder/vscode-es7-javascript-react-snippets",
-		event = "InsertCharPre",
-	})
 	use({ "wyattferguson/jinja2-kit-vscode", event = "InsertCharPre" })
 
 	--   Typescript
