@@ -207,41 +207,17 @@ lspconfig.tsserver.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
-
-		local ts_utils = require("nvim-lsp-ts-utils")
-		ts_utils.setup({
-			debug = false,
-			disable_commands = false,
-			enable_import_on_completion = true,
-			import_all_timeout = 5000, -- ms
-
-			-- Eslint
-			eslint_enable_code_actions = true,
-			eslint_enable_disable_comments = true,
-			eslint_bin = "eslint_d",
-			eslint_config_fallback = nil,
-			eslint_enable_diagnostics = false,
-
-			-- Formatting
-			enable_formatting = true,
-			formatter = "prettierd",
-			formatter_opts = {},
-
-			-- Update imports on file move
-			import_all_scan_buffers = 100,
-			update_imports_on_move = true,
-			require_confirmation_on_move = false,
-			watch_dir = nil,
+		require("typescript").setup({
+			server = {
+				capabilities = capabilities,
+			},
 		})
 
-		-- Required to fix code action ranges
-		ts_utils.setup_client(client)
-
 		-- Keymappings
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "qq", ":TSLspFixCurrent<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>", { silent = true })
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TypescriptOrganizeImports<CR>", { silent = true })
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "qq", ":TypescriptFixAll<CR>", { silent = true })
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TypescriptRenameFile<CR>", { silent = true })
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TypescriptAddMissingImports<CR>", { silent = true })
 	end,
 	flags = { debounce_text_changes = 150 },
 })
