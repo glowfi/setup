@@ -103,6 +103,7 @@ local function env_cleanup(venv)
 	end
 	return venv
 end
+
 local PythonEnv = function()
 	if vim.bo.filetype == "python" then
 		local venv = os.getenv("CONDA_DEFAULT_ENV")
@@ -144,7 +145,7 @@ local NodeVer = function()
 		local var = handle:read("*a")
 		handle:close()
 		local s = var:sub(1, -2)
-		return " " .. s
+		return " NodeJS " .. s
 	end
 	return ""
 end
