@@ -48,6 +48,10 @@ vim.api.nvim_set_keymap("n", "<Leader>y", ":%y+<cr>", { noremap = true, silent =
 -- Select all
 vim.api.nvim_set_keymap("n", "<c-a>", "ggVG", { noremap = true, silent = true })
 
+-- Increase Decrease Numbers
+vim.cmd("nnoremap <c-i> <C-a>")
+vim.cmd("nnoremap <c-d> <C-x>")
+
 -- Insert special characters
 vim.cmd("inoremap <c-a> ä")
 vim.cmd("inoremap <m-a> Ä")

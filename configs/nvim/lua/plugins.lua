@@ -103,9 +103,6 @@ return require("packer").startup(function(use)
 		config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html','cpp','conf'}]],
 	})
 
-	-- Emmet
-	-- use{'mattn/emmet-vim',ft={'javascript','javascriptreact','typescript','typescriptreact','htmldjango'}}
-
 	-- Ricing
 
 	-- Gruvbox theme
@@ -269,9 +266,6 @@ return require("packer").startup(function(use)
 			"typescript.tsx",
 		},
 	})
-
-	--   Graphql
-	use({ "jparise/vim-graphql", ft = { "graphql" } })
 
 	-- Org
 	use({ "nvim-neorg/neorg", config = [[require('core.neorg')]] })
