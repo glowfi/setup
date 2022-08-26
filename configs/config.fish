@@ -438,13 +438,13 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "623s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "624s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
     set -l last_command_status $status
 
-    set_color fb4934 --bold
+    set_color C7F377 --bold
     printf " ● "
     set_color 83a598
     printf "%s" "$USER "
@@ -621,7 +621,7 @@ end
 
 
 function fish_prompt
-    simple
+ simple
 end
 
 
