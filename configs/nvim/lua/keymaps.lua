@@ -52,6 +52,18 @@ vim.api.nvim_set_keymap("n", "<c-a>", "ggVG", { noremap = true, silent = true })
 vim.cmd("nnoremap <c-i> <C-a>")
 vim.cmd("nnoremap <c-d> <C-x>")
 
+-- Disable Arrow keys in Normal mode
+vim.cmd"map <up> <nop>"
+vim.cmd"map <down> <nop>"
+vim.cmd"map <left> <nop>"
+vim.cmd"map <right> <nop>"
+
+-- Disable Arrow keys in Insert mode
+vim.cmd"imap <up> <nop>"
+vim.cmd"imap <down> <nop>"
+vim.cmd"imap <left> <nop>"
+vim.cmd"imap <right> <nop>"
+
 -- Insert special characters
 vim.cmd("inoremap <c-a> ä")
 vim.cmd("inoremap <m-a> Ä")
