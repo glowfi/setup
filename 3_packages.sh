@@ -61,6 +61,7 @@ yay -S --noconfirm openrazer-meta polychromatic
 sudo gpasswd -a $USER plugdev
 yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 sudo pacman -S --noconfirm texlive-bin texlive-fontsextra texlive-formatsextra texlive-bibtexextra texlive-core texlive-latexextra
+sudo pacman -S --noconfirm chromium
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
