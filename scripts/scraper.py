@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 # import platform
 import re
@@ -53,7 +54,8 @@ class WebScraper:
 
     def dl(self, url: str, name: str, subtitle: str = None):
         name = self.parse(name)
-        fixname = re.sub(r"-+", "_", name).strip()
+        name = re.sub(r"-+", "", name).strip() + "--" + str(int(time.time()))
+        print(name)
 
         # Copy URL to clipboard
         subprocess.run("xclip", universal_newlines=True, input=url)
@@ -64,7 +66,8 @@ class WebScraper:
         print(CRED + f"{url}" + CEND)
 
         # Download video
-        path = os.path.expanduser(f"{config.getdownload()}/{fixname}/")
+        os.system("mkdir -p ~/Downloads")
+        path = os.path.expanduser(f"~/Downloads/{name}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
         subprocess.run(
@@ -76,7 +79,7 @@ class WebScraper:
                 "-j 16 -x 16 -s 16 -k 1M",
                 url,
                 "-o",
-                f"{fixname}.%(ext)s",
+                f"{name}.%(ext)s",
             ]
         )
 
@@ -88,12 +91,12 @@ class WebScraper:
                 f"{url}",
                 "-vf",
                 f"subtitle={subtitle}",
-                f"{config.getdownload()}/{fixname}.srt",
+                f"{name}.srt",
             ]
             ffmpeg_process = subprocess.Popen(args)
             ffmpeg_process.wait()
 
-        return print(f"Downloaded at {config.getdownload()}")
+        return "Downloaded !"
 
     def play(self, url: str, name: str):
         try:
