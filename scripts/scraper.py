@@ -1,6 +1,5 @@
 import logging
 import os
-import time
 
 # import platform
 import re
@@ -13,9 +12,8 @@ import mov_cli.__main__ as movcli
 from .history import History
 from .config import config
 from colorama import Fore, Style
-
 from .httpclient import HttpClient
-
+from . import presence
 
 class WebScraper:
     def __init__(self, base_url: str) -> None:
@@ -52,7 +50,9 @@ class WebScraper:
     def parse(txt: str) -> str:
         return re.sub(r"\W+", "-", txt.lower())
 
-    def dl(self, url: str, name: str):
+    def dl(self, url: str, name: str, subtitle: str = None):
+        name = self.parse(name)
+        fixname = re.sub(r"-+", "_", name)
 
         # Copy URL to clipboard
         subprocess.run("xclip", universal_newlines=True, input=url)
@@ -62,10 +62,8 @@ class WebScraper:
         print("Scraped URL copied to clipboard:")
         print(CRED + f"{url}" + CEND)
 
-        # Start Download
-        name = name.strip() + str(int(time.time()))
-        os.system("mkdir -p ~/Downloads")
-        path = os.path.expanduser(f"~/Downloads/{name}/")
+        # Download video
+        path = os.path.expanduser(f"{config.getdownload()}/{name}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
         subprocess.run(
@@ -77,9 +75,24 @@ class WebScraper:
                 "-j 16 -x 16 -s 16 -k 1M",
                 url,
                 "-o",
-                f"{name}.%(ext)s",
+                f"{fixname}.%(ext)s",
             ]
         )
+
+        # Download subtitles
+        if subtitle:
+            args = [
+                "ffmpeg",
+                "-i",
+                f"{url}",
+                "-vf",
+                f"subtitle={subtitle}",
+                f"{config.getdownload()}/{fixname}.srt",
+            ]
+            ffmpeg_process = subprocess.Popen(args)
+            ffmpeg_process.wait()
+
+        return print(f"Downloaded at {config.getdownload()}")
 
     def play(self, url: str, name: str):
         try:
@@ -91,10 +104,12 @@ class WebScraper:
                     f"--force-media-title=mov-cli:{name}",
                     "--no-terminal",
                 ]
+
                 mpv_process = subprocess.Popen(
                     args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
                 )
                 mpv_process.wait()
+                presence.clear_presence()
             except ModuleNotFoundError:  # why do you even exist if you don't have MPV installed? WHY?
                 args = [
                     "vlc",
@@ -107,6 +122,7 @@ class WebScraper:
                     args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
                 )
                 vlc_process.wait()
+                presence.clear_presence()
         except Exception as e:
             txt = f"{self.red('[!]')} Could not play {name}: MPV or VLC not found | {e}"
             logging.log(logging.ERROR, txt)
@@ -131,6 +147,7 @@ class WebScraper:
         return self.results(self.search(q))
 
     def display(self, q: str = None, result_no: int = None):
+        presence.clear_presence()
         result = self.SandR(q)
         for ix, vl in enumerate(result):
             print(
@@ -142,6 +159,7 @@ class WebScraper:
         print(self.green("[p] Switch Provider!"), end="\n\n")
         print(self.cyan("[h] History!"), end="\n\n")
         print(self.yellow("[c] Set Standard Provider!"), end="\n\n")
+        print(self.green("[r] Set Discord Presence!"), end="\n\n")
         choice = ""
         while choice not in range(len(result) + 1):
             choice = (
@@ -155,6 +173,16 @@ class WebScraper:
                 return movcli.movcli()
             elif choice == "h":
                 History.gethistory()
+            elif choice == "r":
+                print(self.red("[e] Enable"))
+                print(self.red("[d] Disable"))
+                choice = input(self.blue("Enter your choice: "))
+                if choice == "e":
+                    config.setpresence("true")
+                    print(self.green("Presence Enabled!"))
+                elif choice == "d":
+                    config.setpresence("false")
+                    print(self.green("Presence Disabled!"))
             elif choice == "c":
                 print(self.red("[a] Actvid"))
                 print(self.red("[s] SFlix"))
