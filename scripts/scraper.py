@@ -15,6 +15,7 @@ from colorama import Fore, Style
 from .httpclient import HttpClient
 from . import presence
 
+
 class WebScraper:
     def __init__(self, base_url: str) -> None:
         self.client = HttpClient()
@@ -52,7 +53,7 @@ class WebScraper:
 
     def dl(self, url: str, name: str, subtitle: str = None):
         name = self.parse(name)
-        fixname = re.sub(r"-+", "_", name)
+        fixname = re.sub(r"-+", "_", name).strip()
 
         # Copy URL to clipboard
         subprocess.run("xclip", universal_newlines=True, input=url)
@@ -63,7 +64,7 @@ class WebScraper:
         print(CRED + f"{url}" + CEND)
 
         # Download video
-        path = os.path.expanduser(f"{config.getdownload()}/{name}/")
+        path = os.path.expanduser(f"{config.getdownload()}/{fixname}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
         subprocess.run(
