@@ -15,7 +15,6 @@ vim.cmd("hi! NormalNC ctermbg=none guibg=none")
 vim.cmd("hi! MsgArea ctermbg=none guibg=none")
 vim.cmd("hi! TelescopeBorder ctermbg=none guibg=none")
 
-
 -- LspDiagnostics
 vim.cmd("hi! DiagnosticSignError  ctermbg=none guibg=none guifg=#fb4934")
 vim.cmd("hi! DiagnosticSignWarn  ctermbg=none guibg=none guifg=#fabd2f")
