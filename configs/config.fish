@@ -360,7 +360,8 @@ end
 
 # Set Wallpaper
 function setWall
-    feh --bg-fill $argv[1]
+    set getWall (fzf)
+    feh --bg-fill $getWall
 end
 
 # Trim a audio file's time 
@@ -621,7 +622,7 @@ end
 
 
 function fish_prompt
- simple
+    simple
 end
 
 
