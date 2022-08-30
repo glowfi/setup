@@ -37,7 +37,7 @@ M.setup = function()
 			-- }),
 		},
 		on_attach = function(client)
-			vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.format()]])
+			vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
 		end,
 	})
 end
