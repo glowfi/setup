@@ -121,8 +121,5 @@ vim.o.clipboard = "unnamedplus"
 -- Set terminal true colors
 vim.cmd("set termguicolors")
 
--- Disable mouse support
-vim.cmd("set mouse=")
-
 -- Disables a sql error
 vim.cmd("let g:omni_sql_no_default_maps = 1")
