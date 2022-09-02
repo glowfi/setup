@@ -49,7 +49,7 @@ kitty
 brave
 
 ## Screenshot
-#alt + s
+#alt + a
 flameshot gui
 
 ## Dmenu

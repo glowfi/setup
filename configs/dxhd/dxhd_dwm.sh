@@ -39,7 +39,7 @@ kitty -e "nmtui"
 kitty -e "pulsemixer"
 
 ## Screenshot
-#alt + s
+#alt + a
 flameshot gui
 
 ## Scrap YT
