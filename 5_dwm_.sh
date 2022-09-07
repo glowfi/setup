@@ -18,6 +18,10 @@ sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-p
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
 
+# Setup nsxiv key-handler
+mkdir -p ~/.config/nsxiv/exec
+cp -r /usr/share/doc/nsxiv/examples/key-handler ~/.config/nsxiv/exec
+
 # PICOM DISPLAY COMPOSITOR
 
 sudo pacman -S --noconfirm libev libconfig meson ninja uthash
