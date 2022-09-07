@@ -40,7 +40,7 @@ kitty -e "pulsemixer"
 
 ## Screenshot
 #alt + a
-flameshot gui
+windowshot.sh
 
 ## Scrap YT
 #super + y

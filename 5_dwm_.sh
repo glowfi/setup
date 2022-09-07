@@ -11,7 +11,7 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-mupdf flameshot dunst clipmenu
+sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu
 sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
 sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils

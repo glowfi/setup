@@ -198,6 +198,9 @@ chmod +x ~/.local/bin/dm-record.sh
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
 
+cp -r ~/setup/scripts/windowshot.sh ~/.local/bin/
+chmod +x ~/.local/bin/windowshot.sh
+
 cp -r ~/setup/scripts/opa.sh ~/.local/bin/
 chmod +x ~/.local/bin/opa.sh
 

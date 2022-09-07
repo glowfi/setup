@@ -50,7 +50,7 @@ brave
 
 ## Screenshot
 #alt + a
-flameshot gui
+windowshot.sh
 
 ## Dmenu
 #super + w

@@ -18,7 +18,7 @@ sudo pacman -S --noconfirm kwrited kwin kgamma5 khotkeys kinfocenter kscreen sys
 
 # PACKAGES
 
-sudo pacman -S --noconfirm dolphin ark gwenview okular flameshot mpv
+sudo pacman -S --noconfirm dolphin ark gwenview okular mpv
 
 # REMOVE KWALLET
 
@@ -68,7 +68,6 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 # UPDATE MIMETYPE
-
 
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
 bash ./default-media-player.sh mpv.desktop
