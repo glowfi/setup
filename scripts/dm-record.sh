@@ -70,7 +70,7 @@ audio() {
 }
 
 askrecording() {
-	choice=$(printf "screencast\\nvideo\\nvideo selected\\naudio\\nwebcam\\nwebcam (hi-def)" | dmenu -i -nb "#32302f" -nf "#bbbbbb" -sb "#458588" -sf "#eeeeee" -p "Select recording style:")
+	choice=$(printf "screencast\\nvideo\\nvideo selected\\naudio\\nwebcam\\nwebcam (hi-def)" | dmenu -i -p "Select recording style:")
 	case "$choice" in
 	screencast) screencast ;;
 	audio) audio ;;
@@ -82,7 +82,7 @@ askrecording() {
 }
 
 asktoend() {
-	response=$(printf "No\\nYes" | dmenu -i -nb "#32302f" -nf "#bbbbbb" -sb "#458588" -sf "#eeeeee" -p "Recording still active. End recording?") &&
+	response=$(printf "No\\nYes" | dmenu -i -p "Recording still active. End recording?") &&
 		[ "$response" = "Yes" ] && killrecording
 }
 
