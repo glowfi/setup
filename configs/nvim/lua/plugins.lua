@@ -190,17 +190,6 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	--   Refactor
-	use({
-		"ThePrimeagen/refactoring.nvim",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-			{ "nvim-treesitter/nvim-treesitter" },
-			{ "nvim-lua/popup.nvim" },
-		},
-		config = [[require('core.refactor')]],
-	})
-
 	-- Native LSP (ENGINE)
 
 	--   Nvim native LSP
@@ -262,9 +251,6 @@ return require("packer").startup(function(use)
 			"typescript.tsx",
 		},
 	})
-
-	-- Org
-	use({ "nvim-neorg/neorg", config = [[require('core.neorg')]] })
 
 	--   Markdown
 	use({
