@@ -51,6 +51,7 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 
 ### PACKAGES
 sudo pacman -S --noconfirm kdeconnect
+sudo pacman -S --noconfirm tesseract tesseract-data-eng
 yay -S --noconfirm brave-bin
 
 ### IMAGE
