@@ -53,13 +53,21 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin
 
-### AUDIO,VIDEO,IMAGE
-sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv songrec mediainfo imagemagick
+### IMAGE
+sudo pacman -Syyy --noconfirm gimp imagemagick
 yay -S --noconfirm gimp-plugin-registry
 
-### EXTRAS
+### VIDEO
+sudo pacman -Syyy --noconfirm kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv
+
+### AUDIO
+sudo pacman -Syyy --noconfirm songrec mediainfo
+
+### PERIPHERAL
 yay -S --noconfirm openrazer-meta polychromatic
 sudo gpasswd -a $USER plugdev
+
+### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
 
 ### TERMINAL TOMFOOLERY
