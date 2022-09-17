@@ -79,7 +79,7 @@ sudo make clean install
 cd ..
 rm -rf tty-clock
 
-# # ENABLE ZRAM
+# ENABLE ZRAM
 
 echo ""
 echo "------------------------------------------------------------------------"
