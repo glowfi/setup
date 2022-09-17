@@ -51,7 +51,7 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 
 ### PACKAGES
 sudo pacman -S --noconfirm kdeconnect
-yay -S --noconfirm brave-bin onlyoffice-bin
+yay -S --noconfirm brave-bin
 
 ### AUDIO,VIDEO,IMAGE
 sudo pacman -Syyy --noconfirm gimp kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv songrec mediainfo imagemagick
@@ -60,9 +60,7 @@ yay -S --noconfirm gimp-plugin-registry
 ### EXTRAS
 yay -S --noconfirm openrazer-meta polychromatic
 sudo gpasswd -a $USER plugdev
-yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
-sudo pacman -S --noconfirm texlive-bin texlive-fontsextra texlive-formatsextra texlive-bibtexextra texlive-core texlive-latexextra
-sudo pacman -S --noconfirm chromium
+yay -S --noconfirm onlyoffice-bin tectonic
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
