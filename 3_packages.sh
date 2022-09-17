@@ -54,11 +54,11 @@ sudo pacman -S --noconfirm kdeconnect
 yay -S --noconfirm brave-bin
 
 ### IMAGE
-sudo pacman -Syyy --noconfirm gimp imagemagick
+sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
 yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
-sudo pacman -Syyy --noconfirm kdenlive ffmpeg ffmpegthumbnailer yt-dlp mpv
+sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mpv
 
 ### AUDIO
 sudo pacman -Syyy --noconfirm songrec mediainfo
