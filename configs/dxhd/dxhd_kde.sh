@@ -55,3 +55,7 @@ windowshot.sh
 ## Dmenu
 #super + w
 dmenu_run -p "Run:" -i
+
+## Intelligent Tools
+#alt + i
+int.sh
