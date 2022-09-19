@@ -182,8 +182,8 @@ echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 
 # ADDITIONAL SCRIPTS
 
-cp -r ~/setup/scripts/revSearch.py ~/.local/bin/
-chmod +x ~/.local/bin/revSearch.py
+cp -r ~/setup/scripts/int.sh ~/.local/bin/
+chmod +x ~/.local/bin/int.sh
 
 cp -r ~/setup/scripts/formatDisk.sh ~/.local/bin/
 chmod +x ~/.local/bin/formatDisk.sh
