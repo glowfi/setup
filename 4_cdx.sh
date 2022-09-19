@@ -124,7 +124,7 @@ mv ~/lua-ls ~/.local/bin/luaLSP
 
 cargo install stylua
 
-# SCRATCHPAD
+# SCRATCHPAD AND ANNOTATION TOOL
 
 set Lorienver (echo "0.5.0")
 wget https://github.com/mbrlabs/Lorien/releases/download/v0.5.0/Lorien_"$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
@@ -132,6 +132,8 @@ tar -xf ~/Lorien.tar.gz
 rm -rf Lorien.tar.gz
 mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
 rm -rf Lorien_"$Lorienver"_Linux
+
+yay -S --noconfirm gromit-mpx
 
 
 echo ""
