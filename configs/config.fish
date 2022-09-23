@@ -64,12 +64,6 @@ alias ls='exa --icons -l --color=always --group-directories-first -F'
 # Changing cat to bat
 alias cat='bat --theme=gruvbox-dark'
 
-# Changing grep to ripgrep
-alias grep='rg'
-
-# Changing find to fd
-alias find='fd'
-
 # Changing top to bottom
 alias top='btm --mem_as_value --color gruvbox'
 
@@ -98,6 +92,7 @@ sudo make CMAKE_BUILD_TYPE=Release install;
 cd ..;
 sudo rm -r neovim;
 cp -r ~/setup/configs/nvim ~/.config;
+cp -r ~/setup/configs/nvim/.vsnip/ ~;
 nvim -c "PackerSync";
 nvim -c "PackerSync";
 nvim -c "PackerSync"'
@@ -408,7 +403,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "595s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "589s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
