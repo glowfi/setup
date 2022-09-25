@@ -173,6 +173,12 @@ curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | s
 cd
 cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
 
+git clone https://github.com/mwh/dragon
+cd dragon
+make clean install
+cd ..
+rm -rf dragon
+
 # COPY KITTY SETTINGS
 
 cp -r ~/setup/configs/kitty ~/.config/
