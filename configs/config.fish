@@ -194,6 +194,7 @@ alias rep="replaceWithSpecificWord"
 
 # Download a file with aria2c
 alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
+alias dyt='dytdlp'
 
 # Copy current path
 alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
@@ -326,7 +327,10 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
+    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {}
+set loc1 (string split ":" {} -f2)
+set loc (string split ":" {} -f1)
+bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"
@@ -358,7 +362,7 @@ function setWall
     feh --bg-fill $getWall
 end
 
-# Trim a audio file's time 
+# Trim a audio file's time
 function trad
     ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
 end
@@ -395,6 +399,23 @@ function replaceWithSpecificWord
 
 end
 
+# Download with Youtube-dlp
+function dytdlp
+    set pt (echo "/home/$USER/Downloads/$argv[2]")
+    mkdir -p "$pt"
+    cd "$pt"
+    yt-dlp \
+        --external-downloader \
+        aria2c \
+        --external-downloader-args \
+        "-j 16 -x 16 -s 16 -k 1M" \
+        "$argv[1]" \
+        -o \
+        "$argv[2].%(ext)s"
+    cd
+end
+
+
 
 # ===================================================================
 #                            Theme
@@ -403,7 +424,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "589s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "610s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
