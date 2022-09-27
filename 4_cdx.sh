@@ -1,7 +1,7 @@
 #!/bin/fish
 
 ### PACKAGES
-sudo pacman -S --noconfirm postgresql redis python-pip gitui github-cli
+sudo pacman -S --noconfirm postgresql python-pip gitui github-cli
 yay -S --noconfirm mongodb-bin insomnia-bin
 cp -r ~/setup/configs/Insomnia/ ~/.config
 
@@ -29,7 +29,7 @@ pyppeteer-install
 
 # PYTHON MISC
 
-pip install lookatme lookatme.contrib.qrcode lookatme.contrib.image_ueberzug lookatme.contrib.render
+pip install ueberzug
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -124,7 +124,7 @@ mv ~/lua-ls ~/.local/bin/luaLSP
 
 cargo install stylua
 
-# SCRATCHPAD AND ANNOTATION TOOL
+# Lorien
 
 set Lorienver (echo "0.5.0")
 wget https://github.com/mbrlabs/Lorien/releases/download/v0.5.0/Lorien_"$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
@@ -132,8 +132,6 @@ tar -xf ~/Lorien.tar.gz
 rm -rf Lorien.tar.gz
 mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
 rm -rf Lorien_"$Lorienver"_Linux
-
-yay -S --noconfirm gromit-mpx
 
 
 echo ""
@@ -247,7 +245,7 @@ echo "--------------Installing the best text editor in the world...-------------
 echo ---------------------------------------------------------------------------------------------
 echo ""
 
-pip install neovim ueberzug black flake8
+pip install neovim black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
 sudo pacman -S --noconfirm cmake unzip ninja tree-sitter xclip shfmt
 git clone https://github.com/neovim/neovim --depth 1
