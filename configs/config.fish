@@ -189,12 +189,8 @@ alias jd='gotoMounteddrive'
 # Execute as sudo preserving environment variable of current user
 alias se='sudo -E'
 
-# Find and replace with specific word
-alias rep="replaceWithSpecificWord"
-
 # Download a file with aria2c
 alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
-alias dyt='dytdlp'
 
 # Copy current path
 alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
@@ -390,33 +386,6 @@ function gotoMounteddrive
     cd /run/media/$USER/"$choice"
 end
 
-# Find and replace with specific word
-function replaceWithSpecificWord
-    set name $argv[1]
-    set queryString $argv[2]
-    set tobeRepacedWith $argv[3]
-    echo "$name" | sad "$queryString" "$tobeRepacedWith"
-
-end
-
-# Download with Youtube-dlp
-function dytdlp
-    set pt (echo "/home/$USER/Downloads/$argv[2]")
-    mkdir -p "$pt"
-    cd "$pt"
-    yt-dlp \
-        --external-downloader \
-        aria2c \
-        --external-downloader-args \
-        "-j 16 -x 16 -s 16 -k 1M" \
-        "$argv[1]" \
-        -o \
-        "$argv[2].%(ext)s"
-    cd
-end
-
-
-
 # ===================================================================
 #                            Theme
 # ===================================================================
@@ -424,7 +393,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "610s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "579s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
@@ -668,9 +637,6 @@ set -U fish_pager_color_progress brwhite --background=cyan
 # ===================================================================
 #                     Miscellaneous
 # ===================================================================
-
-# Git Pager
-export GIT_PAGER=diff-so-fancy
 
 # Default Editor
 export EDITOR=nvim
