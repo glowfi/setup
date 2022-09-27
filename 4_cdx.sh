@@ -65,10 +65,6 @@ cargo xtask install --server
 cd ..
 rm -rf rust-analyzer
 
-# RUST MODULES 
-
-cargo install fireworks
-
 
 echo ""
 echo --------------------------------------------------------------------------
@@ -124,16 +120,6 @@ mv ~/lua-ls ~/.local/bin/luaLSP
 
 cargo install stylua
 
-# Lorien
-
-set Lorienver (echo "0.5.0")
-wget https://github.com/mbrlabs/Lorien/releases/download/v0.5.0/Lorien_"$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
-tar -xf ~/Lorien.tar.gz
-rm -rf Lorien.tar.gz
-mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
-rm -rf Lorien_"$Lorienver"_Linux
-
-
 echo ""
 echo -----------------------------------------------------------------------------------
 echo "--------------Installing Fuzzy File Finder (fzf)...--------------------------------"
@@ -152,7 +138,7 @@ echo "--------------Installing terminal utilities...----------------------------
 echo -------------------------------------------------------------------------------
 echo ""
 
-# INSTALL CHECKUR
+# INSTALL checkur
 
 mkdir -p ~/.local/bin
 pip install rich

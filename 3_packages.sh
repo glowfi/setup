@@ -72,21 +72,7 @@ sudo gpasswd -a $USER plugdev
 yay -S --noconfirm onlyoffice-bin tectonic
 
 ### TERMINAL TOMFOOLERY
-sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay ponysay sl
-yay -S --noconfirm toilet toilet-fonts
-git clone https://github.com/xero/figlet-fonts
-sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
-rm -rf figlet-fonts
-git clone https://github.com/pipeseroni/pipes.sh
-cd pipes.sh
-sudo make clean install
-cd ..
-rm -rf pipes.sh
-git clone https://github.com/xorg62/tty-clock
-cd tty-clock
-sudo make clean install
-cd ..
-rm -rf tty-clock
+sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl
 
 # ENABLE ZRAM
 
@@ -96,6 +82,7 @@ echo "--------------Enabling ZRAM...------------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
+sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
 sudo sed -i '8s/.*/MAX_SIZE=8192/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
