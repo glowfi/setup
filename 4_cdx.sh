@@ -39,7 +39,7 @@ echo ""
 
 # DOWNLOAD NODEJS
 
-set ver (curl -s https://nodejs.org/en/ | grep -e "Current" -e | tail -1|xargs| cut -d " " -f 1)
+set ver (curl -s https://nodejs.org/en/ | grep -e "Current" | tail -1|xargs| cut -d " " -f 1)
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
