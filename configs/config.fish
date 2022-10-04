@@ -353,7 +353,7 @@ end
 
 # Set Wallpaper
 function setWall
-    set getWall (fzf)
+    set getWall (prev.sh -p .)
     feh --bg-fill $getWall
 end
 
@@ -575,7 +575,7 @@ end
 
 
 function fish_prompt
-    minimal
+    simple
 end
 
 
