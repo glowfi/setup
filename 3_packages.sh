@@ -73,6 +73,7 @@ wget "https://github.com/noisetorch/NoiseTorch/releases/download/v0.12.2/NoiseTo
 tar -C $HOME -h -xzf NoiseTorch_x64_"$ver".tgz
 gtk-update-icon-cache
 sudo setcap 'CAP_SYS_RESOURCE=+ep' ~/.local/bin/noisetorch
+rm -rf NoiseTorch_x64_"$ver".tgz
 
 ### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
