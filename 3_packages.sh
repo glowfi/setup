@@ -68,8 +68,15 @@ sudo pacman -Syyy --noconfirm songrec mediainfo
 yay -S --noconfirm openrazer-meta polychromatic
 sudo gpasswd -a $USER plugdev
 
+ver=$(echo "v0.12.2")
+wget "https://github.com/noisetorch/NoiseTorch/releases/download/v0.12.2/NoiseTorch_x64_$ver.tgz"
+tar -C $HOME -h -xzf NoiseTorch_x64_"$ver".tgz
+gtk-update-icon-cache
+sudo setcap 'CAP_SYS_RESOURCE=+ep' ~/.local/bin/noisetorch
+
 ### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
+sudo pacman -S --noconfirm obs-studio
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl
