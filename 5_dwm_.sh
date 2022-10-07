@@ -54,7 +54,7 @@ mv ~/.config/dxhd/dxhd_dwm.sh ~/.config/dxhd/dxhd.sh
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
-echo "--------------Creating wallpaper and pipewire scripts...--------------------------------"
+echo "--------------Creating wallpaper script...----------------------------------------------"
 echo "----------------------------------------------------------------------------------------"
 echo ""
 
@@ -67,15 +67,6 @@ while true; do
 	sleep 900s
 done
 ' >>~/.local/bin/wall.sh
-
-# PIPEWIRE SCRIPT
-
-touch ~/.local/bin/pw.sh
-echo "#!/bin/sh
-/usr/bin/pipewire &
-/usr/bin/pipewire-pulse &
-/usr/bin/wireplumber &
-" >>~/.local/bin/pw.sh
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -97,9 +88,6 @@ picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zo
 # Hotkey daemon
 dxhd -b &
 
-# Pipewire
-sh ~/.local/bin/pw.sh &
-
 # Wallpaper
 sh ~/.local/bin/wall.sh &
 
@@ -114,11 +102,11 @@ dwmblocks &
 
 # Infinte loop
 while true;do 
-    ~/.config/dwm-6.2/dwm >/dev/null 2>&1 
+    ~/.config/dwm-6.3/dwm >/dev/null 2>&1 
 done
 
 # DWM Execute
-exec ~/.config/dwm-6.2/dwm
+exec ~/.config/dwm-6.3/dwm
 " >>~/.xinitrc
 
 # INSTALL DWM
@@ -128,8 +116,8 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/dwm-6.2/ ~/.config/
-cd ~/.config/dwm-6.2/
+cp -r ~/setup/configs/dwm-6.3/ ~/.config/
+cd ~/.config/dwm-6.3/
 make
 cd ..
 echo "Done Installing DWM!"
