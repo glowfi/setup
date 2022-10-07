@@ -42,9 +42,6 @@ echo ""
 ## Xorg packages
 sudo pacman -S --noconfirm xorg-server
 
-## Custom kernel
-yay -S --noconfirm linux-xanmod linux-xanmod-headers && sudo grub-mkconfig -o /boot/grub/grub.cfg
-
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
