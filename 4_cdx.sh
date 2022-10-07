@@ -91,7 +91,7 @@ echo ""
 
 # INSTALL CLANGD LSP
 
-set clangd_ver (echo "14.0.3")
+set clangd_ver (echo "15.0.1")
 sudo pacman -S --noconfirm clang
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
 unzip ~/clangd.zip -d ~
@@ -109,7 +109,7 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "3.2.4")
+set lua_ver (echo "3.5.6")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/

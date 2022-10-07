@@ -80,7 +80,6 @@ rm -rf NoiseTorch_x64_"$ver".tgz
 
 ### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
-sudo pacman -S --noconfirm obs-studio
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl
