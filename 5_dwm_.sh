@@ -78,7 +78,6 @@ echo ""
 
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 sed -i '51,55d' ~/.xinitrc
-: >~/.xinitrc
 
 echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
