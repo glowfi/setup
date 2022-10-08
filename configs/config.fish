@@ -354,7 +354,9 @@ end
 # Set Wallpaper
 function setWall
     set getWall (prev.sh -p .)
-    feh --bg-fill $getWall
+    if test -n "$getWall"
+        feh --bg-fill $getWall
+    end
 end
 
 # Trim a audio file's time
