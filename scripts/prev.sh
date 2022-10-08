@@ -2,7 +2,7 @@
 
 export FIFO="/tmp/image-preview.fifo"
 
-cache=$XDG_CACHE_HOME/amogu.sh
+cache=$XDG_CACHE_HOME/prev.sh
 mkdir -p "$cache"
 
 start_ueberzug() {
