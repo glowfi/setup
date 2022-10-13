@@ -102,11 +102,11 @@ dwmblocks &
 
 # Infinte loop
 while true;do 
-    ~/.config/dwm-6.3/dwm >/dev/null 2>&1 
+    ~/.config/dwm-6.4/dwm >/dev/null 2>&1 
 done
 
 # DWM Execute
-exec ~/.config/dwm-6.3/dwm
+exec ~/.config/dwm-6.4/dwm
 " >>~/.xinitrc
 
 # INSTALL DWM
@@ -116,8 +116,8 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/dwm-6.3/ ~/.config/
-cd ~/.config/dwm-6.3/
+cp -r ~/setup/configs/dwm-6.4/ ~/.config/
+cd ~/.config/dwm-6.4/
 make
 cd ..
 echo "Done Installing DWM!"

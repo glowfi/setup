@@ -55,6 +55,10 @@
 #include <pango/pango.h>
 #endif // BAR_PANGO_PATCH
 
+#if RESTARTSIG_PATCH
+#include <poll.h>
+#endif // RESTARTSIG_PATCH
+
 #if XKB_PATCH
 #include <X11/XKBlib.h>
 #endif // XKB_PATCH
@@ -819,7 +823,11 @@ static Atom clientatom[ClientLast];
 #if ON_EMPTY_KEYS_PATCH
 static int isempty = 0;
 #endif // ON_EMPTY_KEYS_PATCH
+#if RESTARTSIG_PATCH
+static volatile sig_atomic_t running = 1;
+#else
 static int running = 1;
+#endif // RESTARTSIG_PATCH
 static Cur *cursor[CurLast];
 static Clr **scheme;
 static Display *dpy;
@@ -1236,6 +1244,10 @@ cleanup(void)
 	Monitor *m;
 	Layout foo = { "", NULL };
 	size_t i;
+
+	#if ALT_TAB_PATCH
+	alttabend();
+	#endif // ALT_TAB_PATCH
 
 	#if SEAMLESS_RESTART_PATCH
 	for (m = mons; m; m = m->next)
@@ -2482,8 +2494,6 @@ manage(Window w, XWindowAttributes *wa)
 	#endif // BAR_FLEXWINTITLE_PATCH
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatesizehints(c);
-	if (getatomprop(c, netatom[NetWMState], XA_ATOM) == netatom[NetWMFullscreen])
-		setfullscreen(c, 1);
 	updatewmhints(c);
 	#if DECORATION_HINTS_PATCH
 	updatemotifhints(c);
@@ -2512,6 +2522,9 @@ manage(Window w, XWindowAttributes *wa)
 		c->sfh = c->h;
 	}
 	#endif // SAVEFLOATS_PATCH / EXRESIZE_PATCH
+
+	if (getatomprop(c, netatom[NetWMState], XA_ATOM) == netatom[NetWMFullscreen])
+		setfullscreen(c, 1);
 
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
@@ -3186,6 +3199,30 @@ run(void)
 		}
 	}
 }
+#elif RESTARTSIG_PATCH
+void
+run(void)
+{
+	XEvent ev;
+	XSync(dpy, False);
+	/* main event loop */
+	while (running) {
+		struct pollfd pfd = {
+			.fd = ConnectionNumber(dpy),
+			.events = POLLIN,
+		};
+		int pending = XPending(dpy) > 0 || poll(&pfd, 1, -1) > 0;
+
+		if (!running)
+			break;
+		if (!pending)
+			continue;
+
+		XNextEvent(dpy, &ev);
+		if (handler[ev.type])
+			handler[ev.type](&ev); /* call handler */
+	}
+}
 #else
 void
 run(void)
@@ -3208,7 +3245,7 @@ run(void)
 			handler[ev.type](&ev); /* call handler */
 	}
 }
-#endif // IPC_PATCH
+#endif // IPC_PATCH | RESTARTSIG_PATCH
 
 void
 scan(void)
@@ -3445,6 +3482,10 @@ setfullscreen(Client *c, int fullscreen)
 		c->bw = 0;
 		c->isfloating = 1;
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
+		#if ROUNDED_CORNERS_PATCH
+		XRectangle rect = { .x = 0, .y = 0, .width = c->w, .height = c->h };
+		XShapeCombineRectangles(dpy, c->win, ShapeBounding, 0, 0, &rect, 1, ShapeSet, 1);
+		#endif // ROUNDED_CORNERS_PATCH
 		XRaiseWindow(dpy, c->win);
 	} else if (restorestate && (c->oldstate & (1 << 1))) {
 		c->bw = c->oldbw;
@@ -3479,6 +3520,10 @@ setfullscreen(Client *c, int fullscreen)
 		c->bw = 0;
 		c->isfloating = 1;
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
+		#if ROUNDED_CORNERS_PATCH
+		XRectangle rect = { .x = 0, .y = 0, .width = c->w, .height = c->h };
+		XShapeCombineRectangles(dpy, c->win, ShapeBounding, 0, 0, &rect, 1, ShapeSet, 1);
+		#endif // ROUNDED_CORNERS_PATCH
 		XRaiseWindow(dpy, c->win);
 		#endif // !FAKEFULLSCREEN_PATCH
 	} else if (!fullscreen && c->isfullscreen){
@@ -3921,10 +3966,6 @@ spawn(const Arg *arg)
 	#if RIODRAW_PATCH
 	pid_t pid;
 	#endif // RIODRAW_PATCH
-	#if !NODMENU_PATCH
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
-	#endif // NODMENU_PATCH
 
 	#if RIODRAW_PATCH
 	if ((pid = fork()) == 0)
@@ -5044,7 +5085,6 @@ main(int argc, char *argv[])
 		else if (!strcmp("-sf", argv[i])) /* selected foreground color */
 			colors[SchemeSel][0] = argv[++i];
 		#endif // !BAR_VTCOLORS_PATCH
-		#if NODMENU_PATCH
 		else if (!strcmp("-df", argv[i])) /* dmenu font */
 			dmenucmd[2] = argv[++i];
 		else if (!strcmp("-dnb", argv[i])) /* dmenu normal background color */
@@ -5055,18 +5095,6 @@ main(int argc, char *argv[])
 			dmenucmd[8] = argv[++i];
 		else if (!strcmp("-dsf", argv[i])) /* dmenu selected foreground color */
 			dmenucmd[10] = argv[++i];
-		#else
-		else if (!strcmp("-df", argv[i])) /* dmenu font */
-			dmenucmd[4] = argv[++i];
-		else if (!strcmp("-dnb", argv[i])) /* dmenu normal background color */
-			dmenucmd[6] = argv[++i];
-		else if (!strcmp("-dnf", argv[i])) /* dmenu normal foreground color */
-			dmenucmd[8] = argv[++i];
-		else if (!strcmp("-dsb", argv[i])) /* dmenu selected background color */
-			dmenucmd[10] = argv[++i];
-		else if (!strcmp("-dsf", argv[i])) /* dmenu selected foreground color */
-			dmenucmd[12] = argv[++i];
-		#endif // NODMENU_PATCH
 		else die(help());
 	#else
 	if (argc == 2 && !strcmp("-v", argv[1]))
