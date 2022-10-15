@@ -1,13 +1,33 @@
 # VIRTUALIZATION SUPPORT
 
 #--INSTALL
-sudo pacman -S --noconfirm dnsmasq virt-manager qemu ebtables edk2-ovmf
+sudo pacman -S --noconfirm dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 
 #--UNINSTALL
-sudo pacman -Rns dnsmasq virt-manager qemu-full edk2-ovmf
+sudo pacman -Rns dnsmasq virt-manager qemu-base edk2-ovmf qemu-ui-sdl
 sudo gpasswd -d "$USER" libvirt
+
+# BOOT VIRTUAL MACHINE
+# Help : http://odi.ch/prog/uefi.php
+
+qemu-system-x86_64 -enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-boot menu=on \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-boot menu=on \
+	-drive file=Image.img \
+	-m 8G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl,gl=on \
+	-cdrom ./archlinux-2022.10.01-x86_64.iso
+
 
 # UNINSTALL NNN FM
 
