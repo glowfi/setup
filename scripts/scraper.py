@@ -12,6 +12,7 @@ from .config import config
 from colorama import Fore, Style
 from .httpclient import HttpClient
 from . import presence
+import time
 
 
 class WebScraper:
