@@ -1,17 +1,14 @@
 import logging
 import os
-import time
-
-# import platform
+#import platform
 import re
 import subprocess
 import sys
 import mov_cli.__main__ as movcli
-
 # import shlex
 # required for development
 from .history import History
-from .config import config
+from .config import config 
 from colorama import Fore, Style
 from .httpclient import HttpClient
 from . import presence
@@ -39,7 +36,7 @@ class WebScraper:
     @staticmethod
     def lmagenta(txt: str) -> str:
         return f"{Fore.LIGHTMAGENTA_EX}{txt}{Style.RESET_ALL}"
-
+    
     @staticmethod
     def cyan(txt: str) -> str:
         return f"{Fore.CYAN}{txt}{Style.RESET_ALL}"
@@ -159,7 +156,7 @@ class WebScraper:
         presence.clear_presence()
         result = self.SandR(q)
         for ix, vl in enumerate(result):
-            print(
+            print(  
                 self.green(f"[{ix + 1}] {vl[self.title]} {vl[self.mv_tv]}"), end="\n\n"
             )
         print(self.red("[q] Exit!"), end="\n\n")
