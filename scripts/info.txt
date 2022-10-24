@@ -6,7 +6,7 @@
 sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl
 
 ### FULL
-sudo pacman -S --noconfirm dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl
+sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 
