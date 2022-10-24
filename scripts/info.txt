@@ -19,6 +19,7 @@ sudo gpasswd -d "$USER" libvirt
 # Help : http://odi.ch/prog/uefi.php
 # Help : https://wiki.qemu.org/Hosts/BSD
 
+cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd . 
 qemu-img create -f qcow2 Image.img 20G
 
 qemu-system-x86_64 -enable-kvm \
