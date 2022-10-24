@@ -38,6 +38,63 @@ qemu-system-x86_64 -enable-kvm \
 	-display sdl,gl=on \
 	-cdrom ISO_NAME
 
+##### EXTRA
+
+VFIO Link : https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
+
+# GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"
+
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+sudo -E nvim /etc/modprobe.d/vfio.conf
+options vfio-pci ids=10de:25a2,10de:2291
+softdep nvidia pre: vfio-pci
+sudo mkinitcpio -p linux-zen
+
+sudo qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl,gl=on \
+	-boot menu=on \
+	-device vfio-pci,host=01:00.0,multifunction=on \
+	-device vfio-pci,host=01:00.1 \
+	-boot menu=on \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
+	-drive file=win10.iso,index=1,media=cdrom \
+	-drive file=virtio.iso,index=2,media=cdrom
+
+sudo qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl,gl=on \
+	-boot menu=on \
+	-device vfio-pci,host=01:00.0,multifunction=on \
+	-device vfio-pci,host=01:00.1 \
+	-boot menu=on \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
+	-cdrom win10.iso
+
 
 # UNINSTALL NNN FM
 
