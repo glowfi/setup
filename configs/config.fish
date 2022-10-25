@@ -179,8 +179,8 @@ alias bst='sudo systemctl enable bluetooth.service;sudo systemctl start bluetoot
 alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetooth.service;killall blueman-tray;killall blueman-applet'
 
 # Virtualization 
-alias von='sudo systemctl start libvirtd'
-alias voff='sudo systemctl stop libvirtd'
+alias von='sudo systemctl start libvirtd;sudo virsh net-start default'
+alias voff='sudo systemctl stop libvirtd;sudo virsh net-destroy default '
 
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
@@ -394,7 +394,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "578s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "580s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
