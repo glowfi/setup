@@ -98,7 +98,35 @@ sudo qemu-system-x86_64 \
 	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
 	-drive file=Image.img \
 	-cdrom win10.iso
-Win10_22H2_English_x64.iso
+
+    Win10_22H2_English_x64.iso
+
+### SCRIPT TO AUTOMATE
+#!/bin/bash
+
+if [[ "$1" = "pass" ]]; then
+
+	## EDIT GRUB
+	sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"/' /etc/default/grub
+	sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+	## EDIT vfio.conf
+	sudo -E nvim -c ":q" /etc/modprobe.d/vfio.conf
+	sudo echo | sudo tee /etc/modprobe.d/vfio.conf >/dev/null
+	sudo echo "options vfio-pci ids=10de:25a2,10de:2291" | sudo tee -a /etc/modprobe.d/vfio.conf >/dev/null
+	sudo echo "softdep nvidia pre: vfio-pci" | sudo tee -a /etc/modprobe.d/vfio.conf >/dev/null
+	sudo sed -i "1d" /etc/modprobe.d/vfio.conf
+	sudo mkinitcpio -p linux-zen
+else
+
+	## EDIT GRUB
+	sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+	sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+	## DELETE vfio.conf
+	sudo rm -rf /etc/modprobe.d/vfio.conf
+	sudo mkinitcpio -p linux-zen
+fi
 
 
 # UNINSTALL NNN FM
