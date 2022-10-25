@@ -47,7 +47,7 @@ VFIO Link : https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/REA
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-sudo -E nvim /etc/modprobe.d/vfio.conf
+sudo -E nvim /etc/modprobe.d/vfio.conf  
 options vfio-pci ids=10de:25a2,10de:2291
 softdep nvidia pre: vfio-pci
 sudo mkinitcpio -p linux-zen
