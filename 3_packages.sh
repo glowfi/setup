@@ -105,7 +105,7 @@ echo "--------------Enabling APPARMOR...--------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo pacman -S --noconfirm apparmor
 sudo systemctl enable --now apparmor.service
