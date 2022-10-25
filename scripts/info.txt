@@ -82,8 +82,12 @@ sudo qemu-system-x86_64 \
 	-m 10G \
 	-smp 6 \
 	-vga virtio \
-	-display sdl,gl=on \
+	-display sdl \
 	-boot menu=on \
+    -audiodev id=audio1,driver=spice \
+    -spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
+    -device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \
+    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \
 	-device vfio-pci,host=01:00.0,multifunction=on \
 	-device vfio-pci,host=01:00.1 \
 	-boot menu=on \
@@ -94,6 +98,7 @@ sudo qemu-system-x86_64 \
 	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
 	-drive file=Image.img \
 	-cdrom win10.iso
+Win10_22H2_English_x64.iso
 
 
 # UNINSTALL NNN FM
