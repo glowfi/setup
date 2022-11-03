@@ -70,6 +70,7 @@ sudo gpasswd -a $USER plugdev
 
 ### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
+yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl
