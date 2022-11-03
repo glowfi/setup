@@ -151,6 +151,7 @@ chmod +x ~/.local/bin/checkur.py
 
 # INSTALL xhibit
 
+sudo pacman -S --noconfirm lsb-release
 pip install xhibit
 
 # INSTALL sYT
