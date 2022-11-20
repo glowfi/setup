@@ -67,3 +67,7 @@ int.sh
 #alt + k
 process=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:" | awk '{print $NF}')
 killall "$process"
+
+## Annotation Tool
+#alt + g
+gromit-mpx
