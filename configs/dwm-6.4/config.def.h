@@ -854,6 +854,7 @@ static const char *xkb_layouts[]  = {
 /* commands */
 static const char *dmenucmd[] = {
 	"dmenu_run",
+	"-i",
 	"-p","Run:",
 	/* "-fn", dmenufont, */
 	/* "-nb", normbgcolor, */
