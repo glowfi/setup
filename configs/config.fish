@@ -130,8 +130,9 @@ alias sYT="sYT.sh"
 # Terminal Schenanigans
 alias suprise="suprise"
 
-# Set Wallpaper
-alias wl="setWall"
+# Set Wallpaper and Preview Image
+alias wl="nsxiv -t ."
+alias pri="setWall"
 
 # PyPI package alias 
 alias pC="python3 setup.py sdist bdist_wheel"
@@ -394,7 +395,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "580s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "581s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple

@@ -20,7 +20,7 @@ yay -S --noconfirm jmtpfs nsxiv-git
 
 # Setup nsxiv key-handler
 mkdir -p ~/.config/nsxiv/exec
-cp -r /usr/share/doc/nsxiv/examples/key-handler ~/.config/nsxiv/exec
+cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
 
 # PICOM DISPLAY COMPOSITOR
 
