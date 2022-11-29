@@ -159,10 +159,6 @@ alias saur="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro yay -S"
 # Uninstall Packages
 alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {1}' | xargs -ro sudo pacman -Rns"
 
-# Brightness up 
-alias bu="brightnessctl s 30+"
-alias bd="brightnessctl s 30-"
-
 # DWM compile
 alias dwc="make clean;make"
 
