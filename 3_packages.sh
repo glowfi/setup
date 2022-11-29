@@ -70,10 +70,22 @@ sudo gpasswd -a $USER plugdev
 
 ### EXTRAS
 yay -S --noconfirm onlyoffice-bin tectonic
-yay -S --noconfirm sc-im libxlsxwriter pandoc-bin
+yay -S --noconfirm pandoc-bin
 
 ### TERMINAL TOMFOOLERY
 sudo pacman -S --noconfirm fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl
+
+git clone https://github.com/pipeseroni/pipes.sh
+cd pipes.sh
+sudo make clean install
+cd ..
+rm -rf pipes.sh
+
+git clone https://github.com/xorg62/tty-clock
+cd tty-clock
+sudo make clean install
+cd ..
+rm -rf tty-clock
 
 # ENABLE ZRAM
 

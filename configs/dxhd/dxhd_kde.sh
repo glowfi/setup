@@ -64,3 +64,43 @@ int.sh
 #alt + k
 process=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:" | awk '{print $NF}')
 killall "$process"
+
+## Increase Volume
+#super + F8
+pamixer -i 5 --allow-boost
+pkill -RTMIN+10 dwmblocks
+
+## Decrease Volume
+#super + F7
+pamixer -d 5 --allow-boost
+pkill -RTMIN+10 dwmblocks
+
+## Mute/Unmute Mic Volume
+#super + F6
+pamixer -t
+pkill -RTMIN+10 dwmblocks
+
+## Increase Brightness
+#super + F3
+brightnessctl s 30+
+pkill -RTMIN+10 dwmblocks
+
+## Decrease Brightness
+#super + F2
+brightnessctl s 30-
+pkill -RTMIN+10 dwmblocks
+
+## Decrease Mic Volume
+#super + F9
+amixer sset Capture 5%-
+pkill -RTMIN+10 dwmblocks
+
+## Increase Mic Volume
+#super + F11
+amixer sset Capture 5%+
+pkill -RTMIN+10 dwmblocks
+
+## Mute/Unmute Mic Volume
+#super + F10
+amixer -D pulse sset Capture toggle
+pkill -RTMIN+10 dwmblocks

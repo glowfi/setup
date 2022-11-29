@@ -1,18 +1,17 @@
 import logging
 import os
-#import platform
+import time
+
+# import platform
 import re
 import subprocess
 import sys
 import mov_cli.__main__ as movcli
+
 # import shlex
 # required for development
-from .history import History
-from .config import config 
 from colorama import Fore, Style
 from .httpclient import HttpClient
-from . import presence
-import time
 
 
 class WebScraper:
@@ -37,7 +36,7 @@ class WebScraper:
     @staticmethod
     def lmagenta(txt: str) -> str:
         return f"{Fore.LIGHTMAGENTA_EX}{txt}{Style.RESET_ALL}"
-    
+
     @staticmethod
     def cyan(txt: str) -> str:
         return f"{Fore.CYAN}{txt}{Style.RESET_ALL}"
@@ -51,14 +50,13 @@ class WebScraper:
         return re.sub(r"\W+", "-", txt.lower())
 
     def dl(self, url: str, name: str, subtitle: str = None, season=None, episode=None):
+
         name = self.parse(name).strip() + "--" + str(int(time.time()))
         name = re.sub(r"-+", " ", name)
         if season is None:
             pass
         else:
             name = f"{name}S{season}E{episode}".strip() + "--" + str(int(time.time()))
-
-        print(name)
 
         # Copy URL to clipboard
         subprocess.run("xclip", universal_newlines=True, input=url)
@@ -116,7 +114,6 @@ class WebScraper:
                     args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
                 )
                 mpv_process.wait()
-                presence.clear_presence()
             except ModuleNotFoundError:  # why do you even exist if you don't have MPV installed? WHY?
                 args = [
                     "vlc",
@@ -129,7 +126,6 @@ class WebScraper:
                     args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
                 )
                 vlc_process.wait()
-                presence.clear_presence()
         except Exception as e:
             txt = f"{self.red('[!]')} Could not play {name}: MPV or VLC not found | {e}"
             logging.log(logging.ERROR, txt)
@@ -154,19 +150,15 @@ class WebScraper:
         return self.results(self.search(q))
 
     def display(self, q: str = None, result_no: int = None):
-        presence.clear_presence()
         result = self.SandR(q)
         for ix, vl in enumerate(result):
-            print(  
+            print(
                 self.green(f"[{ix + 1}] {vl[self.title]} {vl[self.mv_tv]}"), end="\n\n"
             )
         print(self.red("[q] Exit!"), end="\n\n")
         print(self.yellow("[s] Search Again!"), end="\n\n")
         print(self.cyan("[d] Download!"), end="\n\n")
         print(self.green("[p] Switch Provider!"), end="\n\n")
-        print(self.cyan("[h] History!"), end="\n\n")
-        print(self.yellow("[c] Set Standard Provider!"), end="\n\n")
-        print(self.green("[r] Set Discord Presence!"), end="\n\n")
         print(self.green("[sd] Download Whole Show!"), end="\n\n")
         choice = ""
         while choice not in range(len(result) + 1):
@@ -179,34 +171,6 @@ class WebScraper:
                 return self.redo()
             elif choice == "p":
                 return movcli.movcli()
-            elif choice == "h":
-                History.gethistory()
-            elif choice == "r":
-                print(self.red("[e] Enable"))
-                print(self.red("[d] Disable"))
-                choice = input(self.blue("Enter your choice: "))
-                if choice == "e":
-                    config.setpresence("true")
-                    print(self.green("Presence Enabled!"))
-                elif choice == "d":
-                    config.setpresence("false")
-                    print(self.green("Presence Disabled!"))
-            elif choice == "c":
-                print(self.red("[a] Actvid"))
-                print(self.red("[s] SFlix"))
-                print(self.red("[o] Solar"))
-                print(self.red("[t] TheFlix"))
-                print(self.green(f"{config.getprovider()} is standard"))
-                print(self.cyan("[q] Quit"))
-                provider = input(self.blue("Enter your Provider: "))
-                if provider == "a":
-                    config.setprovider("actvid")
-                elif provider == "s":
-                    config.setprovider("sflix")
-                elif provider == "o":
-                    config.setprovider("solar")
-                elif provider == "q":
-                    sys.exit()
             elif choice == "d":
                 try:
                     mov_or_tv = result[
