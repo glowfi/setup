@@ -17,6 +17,7 @@ sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
+yay -S --noconfirm volnoti
 
 # Setup nsxiv key-handler
 mkdir -p ~/.config/nsxiv/exec
@@ -93,6 +94,9 @@ sh ~/.local/bin/wall.sh &
 
 # Clipboard
 clipmenud &
+
+# Volume Notification
+volnoti &
 
 # Autolock
 xautolock -time 10 -locker slock &

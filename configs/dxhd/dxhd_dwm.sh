@@ -72,38 +72,122 @@ killall "$process"
 #super + F8
 pamixer -i 5 --allow-boost
 pkill -RTMIN+10 dwmblocks
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
+fi
 
 ## Decrease Volume
 #super + F7
 pamixer -d 5 --allow-boost
 pkill -RTMIN+10 dwmblocks
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
+fi
 
-## Mute/Unmute Mic Volume
+## Mute/Unmute Volume
 #super + F6
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
 pamixer -t
 pkill -RTMIN+10 dwmblocks
+if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+	volnoti-show $VOL
+else
+	volnoti-show -m
+fi
 
 ## Increase Brightness
 #super + F3
 brightnessctl s 30+
 pkill -RTMIN+10 dwmblocks
+currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%" | xargs)
+cap=100
+if [ "$currBrightness" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $currBrightness
+	fi
+fi
 
 ## Decrease Brightness
 #super + F2
 brightnessctl s 30-
 pkill -RTMIN+10 dwmblocks
+currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%")
+cap=100
+if [ "$currBrightness" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $currBrightness
+	fi
+fi
 
 ## Decrease Mic Volume
 #super + F9
 amixer sset Capture 5%-
 pkill -RTMIN+10 dwmblocks
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
+fi
 
 ## Increase Mic Volume
 #super + F11
 amixer sset Capture 5%+
 pkill -RTMIN+10 dwmblocks
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
+fi
 
 ## Mute/Unmute Mic Volume
 #super + F10
 amixer -D pulse sset Capture toggle
 pkill -RTMIN+10 dwmblocks
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+if [ "$MSTATE" = "[on]" ] || [ "$VOL" -eq 0 ]; then
+	volnoti-show $MVOL
+else
+	volnoti-show -m
+fi
