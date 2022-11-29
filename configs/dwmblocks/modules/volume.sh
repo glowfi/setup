@@ -4,6 +4,9 @@ dwm_pulse() {
 	VOL=$(pamixer --get-volume)
 	STATE=$(pamixer --get-mute)
 
+	MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+	MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+
 	printf "%s" "$SEP1"
 
 	# Print Output
@@ -15,6 +18,12 @@ dwm_pulse() {
 		printf "🔉 %s%%" "$VOL"
 	else
 		printf "🔊 %s%%" "$VOL"
+	fi
+
+	if [ "$MSTATE" = "[off]" ] || [ "$VOL" -eq 0 ]; then
+		printf "  🎤🔇"
+	else
+		printf "  🎤 %s%" "$MVOL"
 	fi
 
 	printf "%s" "$SEP2"
