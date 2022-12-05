@@ -185,6 +185,9 @@ alias jd='gotoMounteddrive'
 # Execute as sudo preserving environment variable of current user
 alias se='sudo -E'
 
+# Find and replace with specific word
+alias rep="replaceWithSpecificWord"
+
 # Download a file with aria2c
 alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
 
@@ -384,6 +387,14 @@ function gotoMounteddrive
     cd /run/media/$USER/"$choice"
 end
 
+# Find and replace with specific word
+function replaceWithSpecificWord
+    set name $argv[1]
+    set queryString $argv[2]
+    set tobeRepacedWith $argv[3]
+    fd . "$name" | sad "$queryString" "$tobeRepacedWith"
+end
+
 # ===================================================================
 #                            Theme
 # ===================================================================
@@ -391,7 +402,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "577s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "588s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
