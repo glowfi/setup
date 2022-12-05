@@ -119,7 +119,7 @@ echo ""
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
-	pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings
+	pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime
 elif lspci | grep -E "Radeon"; then
 	echo "Installing AMD Radeon drivers ..."
 	pacman -Syyy --noconfirm xf86-video-amdgpu
