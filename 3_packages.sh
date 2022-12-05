@@ -53,7 +53,6 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 sudo pacman -S --noconfirm kdeconnect
 sudo pacman -S --noconfirm tesseract tesseract-data-eng
 sudo pacman -S --noconfirm firefox
-yay -S --noconfirm firefox-profile-switcher-connector-bin
 
 ### IMAGE
 sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
