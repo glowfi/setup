@@ -11,6 +11,7 @@ sudo pacman -S --noconfirm wine-staging giflib lib32-giflib libpng lib32-libpng 
 
 ## Clients
 sudo pacman -S --noconfirm steam
+yay -S --noconfirm heroic-games-launcher-bin
 
 ## MangoHud
 yay -S --noconfirm mangohud goverlay-bin
