@@ -50,7 +50,7 @@ sudo pacman -S --noconfirm bluez bluez-utils bluedevil
 yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-fonts
 
 ### PACKAGES
-sudo pacman -S --noconfirm kdeconnect
+sudo pacman -S --noconfirm kdeconnect kcolorchooser
 sudo pacman -S --noconfirm tesseract tesseract-data-eng
 sudo pacman -S --noconfirm firefox
 
