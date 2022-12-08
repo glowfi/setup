@@ -62,5 +62,8 @@ int.sh
 
 ## Kill Process
 #alt + k
-process=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:" | awk '{print $NF}')
-killall "$process"
+getProcess=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:")
+pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
+kill -9 "$pid"
+processName=$(echo "$getProcess" | awk '{print $NF}' | xargs)
+killall -9 "$processName"
