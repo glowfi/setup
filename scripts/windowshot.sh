@@ -16,7 +16,7 @@ mkdir -p "${SCREENSHOTDIR}"
 _end() {
 	note
 	xdg-open "${SCREENSHOTNAME}"
-	xclip -in -selection clipboard -target image/png ${SCREENSHOTNAME}
+	xclip -selection clipboard -t image/png -i "${SCREENSHOTNAME}"
 	exit 0
 }
 
