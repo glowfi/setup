@@ -30,6 +30,10 @@ kitty
 #super + b
 firefox
 
+## Alternate Browser Profile
+#super + shift + b
+firefox -p "surf"
+
 ## Network
 #super + n
 kitty -e "nmtui"

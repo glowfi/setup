@@ -48,6 +48,10 @@ kitty
 #super + b
 firefox
 
+## Alternate Browser Profile
+#super + shift + b
+firefox -p "surf"
+
 ## Screenshot
 #alt + a
 windowshot.sh
