@@ -55,7 +55,7 @@ sudo pacman -S --noconfirm tesseract tesseract-data-eng
 sudo pacman -S --noconfirm firefox
 
 ### IMAGE
-sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
+sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer krita
 yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
