@@ -28,11 +28,7 @@ kitty
 
 ## Browser
 #super + b
-firefox
-
-## Alternate Browser Profile
-#super + shift + b
-firefox -p "surf"
+brave
 
 ## Network
 #super + n

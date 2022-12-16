@@ -52,7 +52,7 @@ yay -S --noconfirm zramd nerd-fonts-fantasque-sans-mono ttf-ms-fonts ttf-vista-f
 ### PACKAGES
 sudo pacman -S --noconfirm kdeconnect kcolorchooser
 sudo pacman -S --noconfirm tesseract tesseract-data-eng
-sudo pacman -S --noconfirm firefox
+yay -S --noconfirm brave-bin
 
 ### IMAGE
 sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer krita
