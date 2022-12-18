@@ -14,6 +14,7 @@ echo ""
 # UPGRADE PIP TO LATEST VERSION
 
 python -m ensurepip --upgrade
+pip install setuptools
 
 # PYTHON MODULES
 
@@ -29,7 +30,11 @@ pyppeteer-install
 
 # PYTHON MISC
 
-pip install ueberzug
+git clone https://github.com/glowfi/ueberzug
+cd ueberzug
+python3 setup.py install --user
+cd ..
+rm -rf ueberzug
 
 echo ""
 echo ------------------------------------------------------------------------
