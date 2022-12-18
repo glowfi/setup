@@ -195,11 +195,7 @@ alias d="aria2c -j 16 -x 16 -s 16 -k 1M $argv"
 alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
 
 # Adjust Microphone Volume 
-alias mvol='bash -c "while :
-do amixer sset Capture 6000
-pkill -RTMIN+10 dwmblocks
-sleep 1
-done" > /dev/null'
+alias mvol='micVOl'
 
 
 
@@ -402,6 +398,24 @@ function replaceWithSpecificWord
     fd . "$name" | sad "$queryString" "$tobeRepacedWith"
 end
 
+# Microphone Volume 
+function micVOl
+    if test -z $argv[1]
+        bash -c "while :
+        do amixer sset Capture 6000
+        pkill -RTMIN+10 dwmblocks
+        sleep 1
+        done" >/dev/null
+    else
+
+        bash -c "while :
+        do amixer sset Capture $argv[1]
+        pkill -RTMIN+10 dwmblocks
+        sleep 1
+        done" >/dev/null
+    end
+end
+
 # ===================================================================
 #                            Theme
 # ===================================================================
@@ -409,7 +423,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "595s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "609s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
@@ -592,7 +606,7 @@ end
 
 
 function fish_prompt
-    simple
+    classic
 end
 
 
