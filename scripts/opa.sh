@@ -7,3 +7,6 @@ if [[ "$line_check" == "## Tabs" ]]; then
 else
 	sed -i '46,50d' ~/.config/kitty/kitty.conf
 fi
+
+# Reload Kitty Config
+kill -SIGUSR1 $(pgrep kitty)
