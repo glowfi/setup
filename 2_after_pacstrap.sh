@@ -26,7 +26,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
-echo "$KEYMAP" >>/etc/vconsole.conf
+echo "KEYMAP=$KEYMAP" >>/etc/vconsole.conf
 echo "Keyboard layout set!"
 
 # OPTIMIZE MAKEPKG
