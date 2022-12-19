@@ -197,6 +197,8 @@ alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
 # Adjust Microphone Volume 
 alias mvol='micVOl'
 
+# Open Carbon
+alias cbn='xdg-open "https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=monokai&wt=none&l=auto&width=680&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code="'
 
 
 # ===================================================================
@@ -423,7 +425,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "609s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "611s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
@@ -606,7 +608,7 @@ end
 
 
 function fish_prompt
-    classic
+    simple
 end
 
 
