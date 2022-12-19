@@ -36,6 +36,13 @@ python3 setup.py install --user
 cd ..
 rm -rf ueberzug
 
+git clone https://github.com/glowfi/carbon
+cd carbon
+pip install -r requirements.txt
+python setup.py install --user
+cd ..
+rm -rf carbon
+
 echo ""
 echo ------------------------------------------------------------------------
 echo "--------------Installing Node Modules...--------------------------------"
