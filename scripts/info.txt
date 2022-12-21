@@ -22,8 +22,12 @@ sudo gpasswd -d "$USER" libvirt
 # Help : http://odi.ch/prog/uefi.php
 # Help : https://wiki.qemu.org/Hosts/BSD
 
+## CREATE QCOW
+
 cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd . 
 qemu-img create -f qcow2 Image.img 20G
+
+## VIRTUALIZE
 
 qemu-system-x86_64 -enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -169,6 +173,52 @@ sudo qemu-system-x86_64 \
 	-drive file=Image.img \
     -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
 	-cdrom NAME
+
+### TODO
+
+qemu-system-x86_64 \
+	-name ghostbsd-22.01.12-mate,process=ghostbsd-22.01.12-mate \
+	-enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
+	-smp cores=4,threads=2,sockets=1 -m 4G -device virtio-balloon \
+	-vga none \
+	-device qxl-vga,ram_size=65536,vram_size=65536,vgamem_mb=64 \
+	-display none \
+	-audiodev spice,id=audio0 \
+	-device intel-hda \
+	-device hda-duplex,audiodev=audio0 \
+	-rtc base=localtime,clock=host,driftfix=slew \
+	-spice disable-ticketing=on,port=5930,addr=127.0.0.1 \
+	-device virtio-serial-pci \
+	-chardev socket,id=agent0,path=ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-agent.sock,server=on,wait=off \
+	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \
+	-chardev spicevmc,id=vdagent0,name=vdagent \
+	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \
+	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \
+	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \
+	-device virtio-rng-pci,rng=rng0 \
+	-object rng-random,id=rng0,filename=/dev/urandom \
+	-device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \
+	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \
+	-chardev spicevmc,id=usbredirchardev2,name=usbredir \
+	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
+	-chardev spicevmc,id=usbredirchardev3,name=usbredir \
+	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
+	-device pci-ohci,id=smartpass -device usb-ccid \
+	-chardev spicevmc,id=ccid,name=smartcard \
+	-device ccid-card-passthru,chardev=ccid \
+	-device usb-ehci,id=input \
+	-device usb-kbd,bus=input.0 \
+	-k en-us \
+	-device usb-mouse,bus=input.0 -device virtio-net,netdev=nic \
+	-netdev user,hostname=ghostbsd-22.01.12-mate,hostfwd=tcp::22220-:22,id=nic \
+	-global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=ghostbsd-22.01.12-mate/OVMF_VARS.fd \
+	-drive media=cdrom,index=0,file=ghostbsd-22.01.12-mate/GhostBSD-22.01.12.iso \
+	-device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=ghostbsd-22.01.12-mate/disk.qcow2 \
+	-fsdev local,id=fsdev0,path=/home/ayush/Public,security_model=mapped-xattr \
+	-device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-ayush \
+	-monitor unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-monitor.socket,server,nowait \
+	-serial unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-serial.socket,server,nowait # -pidfile ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate.pid \
 
 
 
