@@ -2,6 +2,9 @@
 
 #--INSTALL
 
+### ULTRA MINIMAL 
+yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
+
 ### MINIMAL
 sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl
 
