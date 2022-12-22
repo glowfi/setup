@@ -6,10 +6,10 @@
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
 
 ### MINIMAL
-sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl
+sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 
 ### FULL
-sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl
+sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 
@@ -173,6 +173,31 @@ sudo qemu-system-x86_64 \
 	-drive file=Image.img \
     -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
 	-cdrom NAME
+
+setsid qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-device qxl-vga,ram_size=65536,vram_size=65536,vgamem_mb=64 \
+	-display none \
+	-boot menu=on \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
+	-audiodev spice,id=audio0 \
+	-device intel-hda \
+	-device hda-duplex,audiodev=audio0 \
+	-spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
+	-device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
+	-cdrom gbsd.iso
+
+spicy -p 5900
 
 ### TODO
 
