@@ -2,7 +2,6 @@
 
 ### PACKAGES
 sudo pacman -S --noconfirm postgresql python-pip gitui github-cli
-# yay -S --noconfirm mongodb-bin insomnia-bin
 yay -S --noconfirm insomnia-bin
 cp -r ~/setup/configs/Insomnia/ ~/.config
 
