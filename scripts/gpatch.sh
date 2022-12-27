@@ -47,13 +47,6 @@ fish -c "pip install protonup;exit"
 ### MANGOHUD AND GOVERLAY INSTALL
 
 # yay -S --noconfirm mangohud lib32-mangohud goverlay-bin
-# wget https://github.com/flightlessmango/MangoHud/releases/download/v0.6.6-1/MangoHud-0.6.6.1.r0.gda573e8.tar.gz -O mghud.tar.gz
-# tar -xzvf mghud.tar.gz
-# cd MangoHud
-# ./mangohud-setup.sh install
-# cd ..
-# rm -rf MangoHud
-# rm -rf mghud.tar.gz
 
 ### QUICK UNINSTALL MANGOHUD AND GOVERLAY
 
