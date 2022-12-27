@@ -15,14 +15,25 @@ sudo pacman -S --noconfirm steam
 yay -S --noconfirm heroic-games-launcher-bin
 
 ## MangoHud
-yay -S --noconfirm mangohud goverlay-bin
-wget https://github.com/flightlessmango/MangoHud/releases/download/v0.6.6-1/MangoHud-0.6.6.1.r0.gda573e8.tar.gz -O mghud32.tar.gz
-tar -xzvf mghud32.tar.gz
+mangoVer=$(echo "0.6.5")
+wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
+tar -xzvf mghud.tar.gz
 cd MangoHud
 ./mangohud-setup.sh install
 cd ..
 rm -rf MangoHud
-rm -rf mghud32.tar.gz
+rm -rf mghud.tar.gz
+
+## Goverlay
+govlyVer1=$(echo "0.9.1")
+govlyVer2=$(echo "0_9_1")
+mkdir gov
+cd gov
+wget "https://github.com/benjamimgois/goverlay/releases/download/$govlyVer1/goverlay_$govlyVer2.tar.xz"
+tar -xf "goverlay_$govlyVer2.tar.xz"
+cp -r ./goverlay ~/.local/bin/
+cd ..
+rm -rf gov
 
 ## Feral gamemode
 sudo pacman -S --noconfirm meson systemd git dbus libinih
@@ -30,3 +41,42 @@ sudo pacman -S --noconfirm gamemode
 
 ## Protonup [Proton GE]
 fish -c "pip install protonup;exit"
+
+########### NOTES ###########
+
+### MANGOHUD AND GOVERLAY INSTALL
+
+# yay -S --noconfirm mangohud lib32-mangohud goverlay-bin
+# wget https://github.com/flightlessmango/MangoHud/releases/download/v0.6.6-1/MangoHud-0.6.6.1.r0.gda573e8.tar.gz -O mghud.tar.gz
+# tar -xzvf mghud.tar.gz
+# cd MangoHud
+# ./mangohud-setup.sh install
+# cd ..
+# rm -rf MangoHud
+# rm -rf mghud.tar.gz
+
+### QUICK UNINSTALL MANGOHUD AND GOVERLAY
+
+# mangoVer=$(echo "0.6.5")
+# wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
+# tar -xzvf mghud.tar.gz
+# cd MangoHud
+# ./mangohud-setup.sh uninstall
+# cd ..
+# rm -rf MangoHud
+# rm -rf mghud.tar.gz
+
+# rm -rf $HOME/.local/bin/goverlay
+
+### SCRIPT TO EXTRACT SAVE GAME FROM HEROIC LAUNCHER
+
+#!/bin/bash
+
+## Choose Game
+# gameList=$(ls $HOME/Games/Heroic/Prefixes/ | fzf)
+
+## Get savegame location
+# scrapeSave=$(find "$HOME/Games/Heroic/Prefixes/$gameList/pfx/drive_c/users/steamuser/AppData" -maxdepth 2 -type d | fzf)
+
+## Get savegame
+# cp -r "$scrapeSave" "$HOME"
