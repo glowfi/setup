@@ -72,4 +72,6 @@ fish -c "pip install protonup;exit"
 # scrapeSave=$(find "$HOME/Games/Heroic/Prefixes/$gameList/pfx/drive_c/users/steamuser/AppData" -maxdepth 2 -type d | fzf)
 
 ## Get savegame
-# cp -r "$scrapeSave" "$HOME"
+# if [[ "$scrapeSave" ]]; then
+# 	cp -r "$scrapeSave" "$HOME"
+# fi
