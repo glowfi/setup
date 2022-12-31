@@ -55,7 +55,7 @@ sudo pacman -S --noconfirm tesseract community/tesseract-data-afr community/tess
 yay -S --noconfirm brave-bin
 
 ### IMAGE
-sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer krita
+sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
 yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
