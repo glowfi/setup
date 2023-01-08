@@ -25,6 +25,7 @@ rm -rf MangoHud
 rm -rf mghud.tar.gz
 
 ## Goverlay
+sudo pacman -S --noconfirm qt5pas
 govlyVer1=$(echo "0.9.1")
 govlyVer2=$(echo "0_9_1")
 mkdir gov
