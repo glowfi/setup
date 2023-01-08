@@ -28,6 +28,10 @@ kitty
 
 ## Browser
 #super + b
+firefox
+
+## Alternate Browser
+#super + shift + b
 brave
 
 ## Network

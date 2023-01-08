@@ -241,6 +241,8 @@ xdg-mime default pcmanfm.desktop inode/directory
 echo "Done seting default application!"
 echo ""
 
+xdg-settings set default-web-browser firefox.desktop
+
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
