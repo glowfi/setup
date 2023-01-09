@@ -303,3 +303,34 @@ sudo rm -rf .config/nnn
 
 sudo rm /usr/local/bin/nvim
 sudo rm -r /usr/local/share/nvim/
+
+
+### INSTALL
+sudo pacman -S --noconfirm android-tools scrcpy
+yay -S --noconfirm miraclecast-git
+
+# git clone https://github.com/albfan/miraclecast
+# cd miraclecast
+# mkdir build
+# cd build
+# cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+# make
+# sudo make install
+# cd ..
+# cd ..
+# rm -rf miraclecast
+
+### RUN
+systemctl stop NetworkManager.service
+systemctl stop wpa_supplicant.service
+sudo miracled
+sudo miracle-wifid &
+sudo miracle-sinkctl
+
+### UNINSTALL
+ls | fd miracle | xargs sudo rm -rf
+sudo rm -rf /usr/bin/gstplayer
+sudo rm -rf /usr/bin/uibc-viewer
+sudo rm -rf /usr/share/bash-completion/completions/miracle-sinkctl
+sudo rm -rf /usr/share/bash-completion/completions/miracle-wifictl
+sudo rm -rf /usr/share/bash-completion/completions/miracle-wifid
