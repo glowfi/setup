@@ -328,6 +328,8 @@ sudo miracle-wifid &
 sudo miracle-sinkctl
 
 ### UNINSTALL
+sudo pacman -Rns android-tools scrcpy
+yay -Rns miraclecast-git
 ls | fd miracle | xargs sudo rm -rf
 sudo rm -rf /usr/bin/gstplayer
 sudo rm -rf /usr/bin/uibc-viewer
