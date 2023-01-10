@@ -327,10 +327,14 @@ sudo miracled
 sudo miracle-wifid &
 sudo miracle-sinkctl
 
+### RESTART
+systemctl start NetworkManager.service
+systemctl start wpa_supplicant.service
+
 ### UNINSTALL
 sudo pacman -Rns android-tools scrcpy
 yay -Rns miraclecast-git
-ls | fd miracle | xargs sudo rm -rf
+fd "miracle" /usr/bin/ | xargs sudo rm -rf
 sudo rm -rf /usr/bin/gstplayer
 sudo rm -rf /usr/bin/uibc-viewer
 sudo rm -rf /usr/share/bash-completion/completions/miracle-sinkctl
