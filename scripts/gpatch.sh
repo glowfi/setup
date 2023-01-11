@@ -15,26 +15,10 @@ sudo pacman -S --noconfirm steam
 yay -S --noconfirm heroic-games-launcher-bin
 
 ## MangoHud
-mangoVer=$(echo "0.6.5")
-wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
-tar -xzvf mghud.tar.gz
-cd MangoHud
-./mangohud-setup.sh install
-cd ..
-rm -rf MangoHud
-rm -rf mghud.tar.gz
+yay -S --noconfirm mangohud lib32-mangohud
 
 ## Goverlay
-sudo pacman -S --noconfirm qt5pas
-govlyVer1=$(echo "0.9.1")
-govlyVer2=$(echo "0_9_1")
-mkdir gov
-cd gov
-wget "https://github.com/benjamimgois/goverlay/releases/download/$govlyVer1/goverlay_$govlyVer2.tar.xz"
-tar -xf "goverlay_$govlyVer2.tar.xz"
-cp -r ./goverlay ~/.local/bin/
-cd ..
-rm -rf gov
+yay -S --noconfirm goverlay-bin
 
 ## Feral gamemode
 sudo pacman -S --noconfirm meson systemd git dbus libinih
@@ -48,6 +32,26 @@ fish -c "pip install protonup;exit"
 ### MANGOHUD AND GOVERLAY INSTALL
 
 # yay -S --noconfirm mangohud lib32-mangohud goverlay-bin
+
+# mangoVer=$(echo "0.6.5")
+# wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
+# tar -xzvf mghud.tar.gz
+# cd MangoHud
+# ./mangohud-setup.sh install
+# cd ..
+# rm -rf MangoHud
+# rm -rf mghud.tar.gz
+
+# sudo pacman -S --noconfirm qt5pas
+# govlyVer1=$(echo "0.9.1")
+# govlyVer2=$(echo "0_9_1")
+# mkdir gov
+# cd gov
+# wget "https://github.com/benjamimgois/goverlay/releases/download/$govlyVer1/goverlay_$govlyVer2.tar.xz"
+# tar -xf "goverlay_$govlyVer2.tar.xz"
+# cp -r ./goverlay ~/.local/bin/
+# cd ..
+# rm -rf gov
 
 ### QUICK UNINSTALL MANGOHUD AND GOVERLAY
 
