@@ -145,7 +145,7 @@ fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
 
-pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad || exit 0
+pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc || exit 0
 
 # GRUB
 
