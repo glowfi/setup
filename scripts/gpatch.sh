@@ -12,7 +12,7 @@ sudo pacman -S --noconfirm extra/mesa-utils vulkan-tools
 
 ## Clients
 sudo pacman -S --noconfirm steam
-yay -S --noconfirm heroic-games-launcher-bin
+# yay -S --noconfirm heroic-games-launcher-bin
 yay -S --noconfirm protonup-qt-bin
 
 ## MangoHud
