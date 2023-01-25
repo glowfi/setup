@@ -220,6 +220,8 @@ cp -r vimv ~/.local/bin/
 cd ..
 rm -rf vimv
 
+cp -r ~/setup/scripts/dex.sh ~/.local/bin/
+
 # SETUP POSTGRES
 
 echo ""
