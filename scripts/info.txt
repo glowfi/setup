@@ -340,3 +340,9 @@ sudo rm -rf /usr/bin/uibc-viewer
 sudo rm -rf /usr/share/bash-completion/completions/miracle-sinkctl
 sudo rm -rf /usr/share/bash-completion/completions/miracle-wifictl
 sudo rm -rf /usr/share/bash-completion/completions/miracle-wifid
+
+
+#### HDMI
+
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf nvidia-drm.modeset=1"
+xrandr --output "HDMI-1-0" --mode 1920x1080
