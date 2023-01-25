@@ -256,7 +256,8 @@ sudo rm -rf .config/nnn
 # UNINSTALL NEOVIM
 
 sudo rm /usr/local/bin/nvim
-sudo rm -r /usr/local/share/nvim/
+sudo rm -rf /usr/local/share/nvim/
+sudo rm -rf ~/.config/nvim
 
 
 ### FIREFOX SUPPORT
