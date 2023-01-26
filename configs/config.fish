@@ -203,6 +203,12 @@ alias cbn='setsid xdg-open "https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2
 # Refresh dwmblocks 
 alias rb='pkill -RTMIN+10 dwmblocks'
 
+# Reset Git Head 
+alias gres="git reset --hard HEAD~1"
+
+# Get Dotfiles
+alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
+
 
 # ===================================================================
 #                         Git Functions
@@ -428,7 +434,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "614s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "620s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
