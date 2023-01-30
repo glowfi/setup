@@ -1,17 +1,22 @@
 import logging
 import os
-import time
-
-# import platform
+#import platform
 import re
 import subprocess
 import sys
 import mov_cli.__main__ as movcli
-
 # import shlex
 # required for development
 from colorama import Fore, Style
+
 from .httpclient import HttpClient
+from fzf import fzf_prompt
+from platform import system
+
+from .player import PlayerNotFound
+from ..players.mpv import Mpv
+from ..players.vlc import Vlc
+
 
 
 class WebScraper:
@@ -36,7 +41,7 @@ class WebScraper:
     @staticmethod
     def lmagenta(txt: str) -> str:
         return f"{Fore.LIGHTMAGENTA_EX}{txt}{Style.RESET_ALL}"
-
+    
     @staticmethod
     def cyan(txt: str) -> str:
         return f"{Fore.CYAN}{txt}{Style.RESET_ALL}"
@@ -99,35 +104,17 @@ class WebScraper:
 
         return "Downloaded !"
 
-    def play(self, url: str, name: str):
+    def play(self, url: str, name: str, referrer = None):
+        if referrer is None: referrer == self.base_url
         try:
             try:
-                args = [
-                    "mpv",
-                    f"--referrer={self.base_url}",
-                    f"{url}",
-                    f"--force-media-title=mov-cli:{name}",
-                    "--no-terminal",
-                ]
-
-                mpv_process = subprocess.Popen(
-                    args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
-                )
+                mpv_process = Mpv(self).play(url, referrer, name)
                 mpv_process.wait()
-            except ModuleNotFoundError:  # why do you even exist if you don't have MPV installed? WHY?
-                args = [
-                    "vlc",
-                    f"--http-referrer={self.base_url}",
-                    f"{url}",
-                    f"--meta-title=mov-cli{name}",
-                    "--no-terminal",
-                ]
-                vlc_process = subprocess.Popen(
-                    args  # stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL
-                )
+            except PlayerNotFound:  # why do you even exist if you don't have MPV installed? WHY?
+                vlc_process = Vlc(self).play(url, referrer, name)
                 vlc_process.wait()
         except Exception as e:
-            txt = f"{self.red('[!]')} Could not play {name}: MPV or VLC not found | {e}"
+            txt = f"{self.red('[!]')} Could not play {name}: MPV not found | {e}"
             logging.log(logging.ERROR, txt)
             # print(txt)  # TODO implement logging to a file
             sys.exit(1)
@@ -151,19 +138,16 @@ class WebScraper:
 
     def display(self, q: str = None, result_no: int = None):
         result = self.SandR(q)
+        r = [] 
         for ix, vl in enumerate(result):
-            print(
-                self.green(f"[{ix + 1}] {vl[self.title]} {vl[self.mv_tv]}"), end="\n\n"
-            )
-        print(self.red("[q] Exit!"), end="\n\n")
-        print(self.yellow("[s] Search Again!"), end="\n\n")
-        print(self.cyan("[d] Download!"), end="\n\n")
-        print(self.green("[p] Switch Provider!"), end="\n\n")
-        print(self.green("[sd] Download Whole Show!"), end="\n\n")
+            r.append(f"[{ix + 1}] {vl[self.title]} {vl[self.mv_tv]}")
+        r.extend(["[q] Exit!","[s] Search Again!","[d] Download!","[p] Switch Provider!","[sd] Download Whole Show!"])
+        r = r[::-1]
         choice = ""
         while choice not in range(len(result) + 1):
+            pre = fzf_prompt(r)
             choice = (
-                input(self.blue("Enter your choice: ")) if not result_no else result_no
+                re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
             )
             if choice == "q":
                 sys.exit()
@@ -173,16 +157,9 @@ class WebScraper:
                 return movcli.movcli()
             elif choice == "d":
                 try:
-                    mov_or_tv = result[
-                        int(
-                            input(
-                                self.yellow(
-                                    "[!] Please enter the number of the movie you want to download: "
-                                )
-                            )
-                        )
-                        - 1
-                    ]
+                    pre = fzf_prompt(r)
+                    choice = re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    mov_or_tv = result[int(choice) - 1]
                     if mov_or_tv[self.mv_tv] == "TV":
                         self.TV_PandDP(mov_or_tv, "d")
                     else:
@@ -201,16 +178,9 @@ class WebScraper:
                     sys.exit(2)
             elif choice == "sd":
                 try:
-                    mov_or_tv = result[
-                        int(
-                            input(
-                                self.yellow(
-                                    "[!] Please enter the number of the movie you want to download: "
-                                )
-                            )
-                        )
-                        - 1
-                    ]
+                    pre = fzf_prompt(r)
+                    choice = re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    mov_or_tv = result[int(choice) - 1]
                     if mov_or_tv[self.mv_tv] == "TV":
                         self.TV_PandDP(mov_or_tv, "sd")
                     else:
@@ -237,3 +207,17 @@ class WebScraper:
     def redo(self, search: str = None, result: int = None):
         print(result)
         return self.display(search, result)
+    
+    def askseason(self, seasons: int):
+        texts = []
+        for i in range(seasons):
+            texts.append(f"Season {i+1}")
+        choice = fzf_prompt(texts).split(" ")[-1]
+        return choice
+    
+    def askepisode(self, episodes: int):
+        texts = []
+        for i in range(episodes):
+            texts.append(f"Episode {i+1}")
+        choice = fzf_prompt(texts).split(" ")[-1]
+        return choice
