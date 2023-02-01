@@ -65,6 +65,7 @@ class WebScraper:
         subprocess.run(
             [
                 "yt-dlp",
+                "-i",
                 "--external-downloader",
                 "aria2c",
                 "--external-downloader-args",
