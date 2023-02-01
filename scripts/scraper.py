@@ -5,9 +5,9 @@ import re
 import subprocess
 import sys
 import mov_cli.__main__ as movcli
+import time
 # import shlex
 # required for development
-from colorama import Fore, Style
 
 from .httpclient import HttpClient
 from fzf import fzf_prompt
@@ -17,6 +17,16 @@ from .player import PlayerNotFound
 from ..players.mpv import Mpv
 from ..players.vlc import Vlc
 
+# Not needed
+# def determine_path() -> str:
+#    plt = platform.system()
+#    if plt == "Windows":
+#        return f"C://Users//{os.getenv('username')}//Downloads"
+#    elif (plt == "Linux") or (plt == "Darwin"):
+#        return f"/home/{os.getlogin()}/Downloads"
+#    else:
+#        print("Please open an issue for your os")
+#        sys.exit(-2)
 
 
 class WebScraper:
@@ -25,30 +35,6 @@ class WebScraper:
         self.base_url = base_url
         self.title, self.url, self.aid, self.mv_tv = 0, 1, 2, 3
         pass
-
-    @staticmethod
-    def blue(txt: str) -> str:
-        return f"{Fore.BLUE}{txt}{Style.RESET_ALL}"
-
-    @staticmethod
-    def yellow(txt: str) -> str:
-        return f"{Fore.YELLOW}{txt}{Style.RESET_ALL}"
-
-    @staticmethod
-    def red(txt: str) -> str:
-        return f"{Fore.RED}{txt}{Style.RESET_ALL}"
-
-    @staticmethod
-    def lmagenta(txt: str) -> str:
-        return f"{Fore.LIGHTMAGENTA_EX}{txt}{Style.RESET_ALL}"
-    
-    @staticmethod
-    def cyan(txt: str) -> str:
-        return f"{Fore.CYAN}{txt}{Style.RESET_ALL}"
-
-    @staticmethod
-    def green(txt: str) -> str:
-        return f"{Fore.GREEN}{txt}{Style.RESET_ALL}"
 
     @staticmethod
     def parse(txt: str) -> str:
