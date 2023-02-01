@@ -350,6 +350,6 @@ xrandr --output "HDMI-1-0" --mode 1920x1080
 
 #### JELLYFIN
 
-yay -S --noconfirm jellyfin-bin
+yay -S --noconfirm jellyfin-bin jellyfin-media-player
 sudo chmod -R a+rx /run/media/
 sudo systemctl start jellyfin.service
