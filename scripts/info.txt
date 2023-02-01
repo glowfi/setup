@@ -347,3 +347,9 @@ sudo rm -rf /usr/share/bash-completion/completions/miracle-wifid
 
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf nvidia-drm.modeset=1"
 xrandr --output "HDMI-1-0" --mode 1920x1080
+
+#### JELLYFIN
+
+yay -S --noconfirm jellyfin-server-bin
+sudo chown -R jellyfin "/run/media/$USER/NAME/"
+sudo systemctl start jellyfin.service
