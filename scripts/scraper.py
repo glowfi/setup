@@ -65,11 +65,11 @@ class WebScraper:
         subprocess.run(
             [
                 "yt-dlp",
-                "-i",
+                "--ignore-errors",
                 "--external-downloader",
                 "aria2c",
                 "--external-downloader-args",
-                "-j 16 -x 16 -s 16 -k 1M",
+                "-j 16 -x 16 -s 16 -k 1M --max-tries=0 --retry-wait=0",
                 url,
                 "-o",
                 f"{name}.%(ext)s",
