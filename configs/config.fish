@@ -209,6 +209,9 @@ alias gres="git reset --hard HEAD~1"
 # Get Dotfiles
 alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
 
+# Eject
+alias ej="sudo eject $argv[1];sudo udisksctl power-off -b $argv[1]"
+
 
 # ===================================================================
 #                         Git Functions
@@ -434,7 +437,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "620s/.*/ $choosen/" ~/.config/fish/config.fish
+    sed -i "623s/.*/ $choosen/" ~/.config/fish/config.fish
 end
 
 function simple
