@@ -38,20 +38,30 @@ handle:close()
 local s = var:sub(1, -2)
 local custom_footer = { s }
 
--- SETTING CUSTOM HEADER,CENTER AND FOOTER
-db.custom_header = custom_header
-db.custom_center = {
-	{
-		icon = "",
-		desc = " ",
-		action = "",
-		shortcut = "",
+-- Configuration
+db.setup({
+	theme = "doom",
+	config = {
+		header = custom_header,
+		center = {
+			{
+				icon = "",
+				icon_hl = "",
+				desc = "neo",
+				desc_hl = "",
+				key = "VIM",
+				key_hl = "",
+				action = "",
+			},
+		},
+		footer = custom_footer,
+		project = { limit = 1, icon = "Projects", label = "", action = "Telescope find_files cwd=" },
+		mru = { limit = 3, icon = "Files", label = "" },
 	},
-}
-db.custom_footer = custom_footer
-
--- STATUSLINE VISIBILITY
-db.hide_statusline = false
+	hide = {
+		statusline = false,
+	},
+})
 
 -- HIGHLIGHT COLORS
 vim.cmd("hi! DashboardHeader guifg=#fabd2f")
