@@ -35,12 +35,12 @@ local custom_header = {
 local handle = io.popen("while fortune -sn80 |awk 'END { if (NR == 1) { print; exit 1 } }'; do true; done")
 local var = handle:read("*a")
 handle:close()
-local s = var:sub(1, -2)
+local s = "🚀 " .. var:sub(1, -2)
 local custom_footer = { s }
 
 -- Configuration
 db.setup({
-	theme = "doom",
+	theme = "hyper",
 	config = {
 		header = custom_header,
 		center = {
