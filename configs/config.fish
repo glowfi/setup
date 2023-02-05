@@ -310,7 +310,13 @@ set go_loc_var (echo "go")
 
 # Search Files in current working directory
 function searchFilesCurrent
-    fd --exclude "$go_loc_var" --type f . | fzf --reverse --height 10 | read -t args
+
+    if test -z "$argv[1]"
+        fd --exclude "$go_loc_var" --type f . | fzf --reverse --height 10 | read -t args
+    else
+        fd --exclude "$go_loc_var" --type f --hidden . | fzf --reverse --height 10 | read -t args
+    end
+
     if test -z "$args"
         echo "Exited from searching files in current working directory!"
     else
@@ -331,14 +337,19 @@ end
 
 # Search Directories in current working directory
 function searchDirCurrent
-    fd --exclude "$go_loc_var" --type d . | fzf --reverse --height 10 | read -t args
+
+    if test -z "$argv[1]"
+        fd --exclude "$go_loc_var" --type d . | fzf --reverse --height 10 | read -t args
+    else
+        fd --exclude "$go_loc_var" --type d --hidden . | fzf --reverse --height 10 | read -t args
+    end
+
     if test -z "$args"
         echo "Exited from searching directories in current working directory!"
     else
         cd $args
     end
 end
-
 
 # Search Inside Files
 function searchContents
@@ -440,7 +451,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "626s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "637s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
