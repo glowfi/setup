@@ -25,9 +25,6 @@ yay -S --noconfirm goverlay-bin
 sudo pacman -S --noconfirm meson systemd git dbus libinih
 sudo pacman -S --noconfirm gamemode
 
-## Protonup [Proton GE]
-fish -c "pip install protonup;exit"
-
 ########### NOTES ###########
 
 ### MANGOHUD AND GOVERLAY INSTALL
@@ -66,6 +63,9 @@ fish -c "pip install protonup;exit"
 # rm -rf mghud.tar.gz
 
 # rm -rf $HOME/.local/bin/goverlay
+
+## Protonup [Proton GE]
+# fish -c "pip install protonup;exit"
 
 ### SCRIPT TO EXTRACT SAVE GAME FROM HEROIC LAUNCHER
 
