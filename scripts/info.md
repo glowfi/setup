@@ -1,34 +1,46 @@
-# VIRTUALIZATION SUPPORT
+# VIRTUALIZATION
 
-#--INSTALL
+## INSTALL
 
-### ULTRA MINIMAL 
+#### ULTRA MINIMAL
+
+```
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
+```
 
-### MINIMAL
+#### MINIMAL
+
+```
 sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
+```
 
-### FULL
+#### FULL
+
+```
 sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
+```
 
+## UNINSTALL
 
-#--UNINSTALL
+```
 sudo pacman -Rns dnsmasq virt-manager qemu-base edk2-ovmf qemu-ui-sdl
 sudo gpasswd -d "$USER" libvirt
+```
 
-# BOOT VIRTUAL MACHINE
-# Help : http://odi.ch/prog/uefi.php
-# Help : https://wiki.qemu.org/Hosts/BSD
+## CONFIGURE
 
-## CREATE QCOW
+#### CREATE QCOW
 
-cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd . 
+```
+cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
 qemu-img create -f qcow2 Image.img 20G
+```
 
-## VIRTUALIZE
+#### QEMU CLI COMMAND (SIMPLE VIRTUALIZATION)
 
+```
 qemu-system-x86_64 -enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
 	-machine q35,accel=kvm,smm=on \
@@ -43,69 +55,19 @@ qemu-system-x86_64 -enable-kvm \
 	-vga virtio \
 	-display sdl,gl=on \
 	-cdrom ISO_NAME
+```
 
-##### EXTRA
+#### GPU PASSTHROUGH GUIDE
 
-VFIO Link : https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
+##### Virtio drivers iso By Redhat
 
-# GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"
+```
+https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
+```
 
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"
-sudo grub-mkconfig -o /boot/grub/grub.cfg
+#### SCRIPT TO AUTOMATE PASSTHROUGH
 
-sudo -E nvim /etc/modprobe.d/vfio.conf  
-options vfio-pci ids=10de:25a2,10de:2291
-softdep nvidia pre: vfio-pci
-sudo mkinitcpio -p linux-zen
-
-sudo qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl,gl=on \
-	-boot menu=on \
-	-device vfio-pci,host=01:00.0,multifunction=on \
-	-device vfio-pci,host=01:00.1 \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-	-drive file=win10.iso,index=1,media=cdrom \
-	-drive file=virtio.iso,index=2,media=cdrom
-
-sudo qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl \
-	-boot menu=on \
-    -audiodev id=audio1,driver=spice \
-    -spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
-    -device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \
-    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \
-	-device vfio-pci,host=01:00.0,multifunction=on \
-	-device vfio-pci,host=01:00.1 \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-	-cdrom win10.iso
-
-    Win10_22H2_English_x64.iso
-
-### SCRIPT TO AUTOMATE
+```
 #!/bin/bash
 
 if [[ "$1" = "pass" ]]; then
@@ -131,28 +93,13 @@ else
 	sudo rm -rf /etc/modprobe.d/vfio.conf
 	sudo mkinitcpio -p linux-zen
 fi
+```
 
-### BSD Virtualization 
+#### QEMU CLI COMMAND (PASSTHROUGH VIRTUALIZATION)
 
-qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl,gl=on \
-	-boot menu=on \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-    -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
-	-cdrom NAME
+<b>Without Audio</b>
 
+```
 sudo qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -171,10 +118,67 @@ sudo qemu-system-x86_64 \
 	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
 	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
 	-drive file=Image.img \
+	-drive file=win10.iso,index=1,media=cdrom \
+	-drive file=virtio.iso,index=2,media=cdrom
+```
+
+<b>With Audio Passthrough</b>
+
+```
+sudo qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl \
+	-boot menu=on \
+    -audiodev id=audio1,driver=spice \
+    -spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
+    -device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \
+    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \
+	-device vfio-pci,host=01:00.0,multifunction=on \
+	-device vfio-pci,host=01:00.1 \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
+	-cdrom win10.iso
+```
+
+### BSD Virtualization
+
+<b>Simple Virtualization (Audio Not Working)</b>
+
+```
+qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl,gl=on \
+	-boot menu=on \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
     -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
 	-cdrom NAME
+```
 
-setsid qemu-system-x86_64 \
+<b>Virtualization with QXL (Audio Not Working)</b>
+
+```
+qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
 	-machine q35,accel=kvm,smm=on \
@@ -196,11 +200,36 @@ setsid qemu-system-x86_64 \
 	-spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
 	-device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
 	-cdrom gbsd.iso
+```
 
-spicy -p 5900
+<b>Virtualization with Virtio (GPU Passthrough)</b>
 
-### TODO
+```
+sudo qemu-system-x86_64 \
+	-enable-kvm \
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+	-machine q35,accel=kvm,smm=on \
+	-cpu host \
+	-m 10G \
+	-smp 6 \
+	-vga virtio \
+	-display sdl,gl=on \
+	-boot menu=on \
+	-device vfio-pci,host=01:00.0,multifunction=on \
+	-device vfio-pci,host=01:00.1 \
+	-serial none \
+	-parallel none \
+	-global driver=cfi.pflash01,property=secure,value=on \
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-drive file=Image.img \
+    -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
+	-cdrom NAME
+```
 
+<b>UEFI BSD (Audio Working)</b>
+
+```
 qemu-system-x86_64 \
 	-name ghostbsd-22.01.12-mate,process=ghostbsd-22.01.12-mate \
 	-enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
@@ -240,30 +269,15 @@ qemu-system-x86_64 \
 	-drive if=pflash,format=raw,unit=1,file=ghostbsd-22.01.12-mate/OVMF_VARS.fd \
 	-drive media=cdrom,index=0,file=ghostbsd-22.01.12-mate/GhostBSD-22.01.12.iso \
 	-device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=ghostbsd-22.01.12-mate/disk.qcow2 \
-	-fsdev local,id=fsdev0,path=/home/ayush/Public,security_model=mapped-xattr \
-	-device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-ayush \
+	-fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \
+	-device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \
 	-monitor unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-monitor.socket,server,nowait \
 	-serial unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-serial.socket,server,nowait # -pidfile ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate.pid \
+```
 
+### FIREFOX
 
-
-# UNINSTALL NNN FM
-
-sudo rm -rf /usr/local/bin/nnn
-sudo rm -rf /usr/local/share/man/man1/nnn.1
-sudo rm -rf .config/nnn
-
-# UNINSTALL NEOVIM
-
-sudo rm /usr/local/bin/nvim
-sudo rm -rf /usr/local/share/nvim/
-sudo rm -rf ~/.config/nvim
-
-
-### FIREFOX SUPPORT
-
-# SCRIPT
-
+```
 #!/bin/bash
 
 # Settings
@@ -281,33 +295,29 @@ cd "$findLocation"
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
 cd
+```
 
-## Browser
-#super + b
-# firefox
+## UNINSTALL
 
-## Alternate Browser Profile
-#super + shift + b
-# firefox -p "surf"
+#### UNINSTALL NNN FM
 
-# vim.cmd("let g:mkdp_browser = '/usr/bin/brave'")
-
-### UNINSTALL
-
-# UNINSTALL NNN FM
-
+```
 sudo rm -rf /usr/local/bin/nnn
 sudo rm -rf /usr/local/share/man/man1/nnn.1
 sudo rm -rf .config/nnn
+```
 
-# UNINSTALL NEOVIM
+#### UNINSTALL NEOVIM
 
+```
 sudo rm /usr/local/bin/nvim
 sudo rm -r /usr/local/share/nvim/
+```
 
+### MIRACLE CAST
 
+```
 ### INSTALL
-sudo pacman -S --noconfirm android-tools scrcpy
 yay -S --noconfirm miraclecast-git
 
 git clone https://github.com/albfan/miraclecast
@@ -341,15 +351,19 @@ sudo rm -rf /usr/bin/uibc-viewer
 sudo rm -rf /usr/share/bash-completion/completions/miracle-sinkctl
 sudo rm -rf /usr/share/bash-completion/completions/miracle-wifictl
 sudo rm -rf /usr/share/bash-completion/completions/miracle-wifid
+```
 
+### HDMI
 
-#### HDMI
-
+```
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf nvidia-drm.modeset=1"
 xrandr --output "HDMI-1-0" --mode 1920x1080
+```
 
-#### JELLYFIN
+### JELLYFIN MEDIA SERVER
 
+```
 yay -S --noconfirm jellyfin-bin jellyfin-media-player
 pip install --upgrade jellyfin-mpv-shim
 sudo chmod -R a+rx /run/media/ && sudo systemctl start jellyfin.service
+```
