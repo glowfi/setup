@@ -40,16 +40,16 @@ local custom_footer = { s }
 
 -- Configuration
 db.setup({
-	theme = "hyper",
+	theme = "doom",
 	config = {
 		header = custom_header,
 		center = {
 			{
 				icon = "",
 				icon_hl = "",
-				desc = "neo",
+				desc = "V",
 				desc_hl = "",
-				key = "VIM",
+				key = "NeoVIM",
 				key_hl = "",
 				action = "",
 			},
