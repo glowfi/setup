@@ -222,6 +222,11 @@ rm -rf vimv
 
 cp -r ~/setup/scripts/dex.sh ~/.local/bin/
 
+wget git.io/trans
+chmod +x ./trans
+mv ./trans ~/.local/bin/
+cp -r ~/setup/scripts/tran.sh ~/.local/bin/
+
 # SETUP POSTGRES
 
 echo ""
