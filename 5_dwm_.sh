@@ -38,8 +38,12 @@ rm -rf picom
 # APPEARANCE
 
 sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
-yay -S --noconfirm gruvbox-material-gtk-theme-git gruvbox-material-icon-theme-git
-# yes | yay -S libxft-bgra
+yay -S --noconfirm bettergruvbox-gtk-theme
+git clone https://github.com/TheGreatMcPain/gruvbox-material-gtk
+cd gruvbox-material-gtk
+sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
+cd ..
+rm -rf gruvbox-material-gtk
 
 # SETUP DXHD
 
