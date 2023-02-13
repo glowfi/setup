@@ -38,6 +38,7 @@ rm -rf picom
 # APPEARANCE
 
 sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
+yay -S --noconfirm gruvbox-material-gtk-theme-git gruvbox-material-icon-theme-git
 # yes | yay -S libxft-bgra
 
 # SETUP DXHD
