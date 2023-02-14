@@ -30,10 +30,6 @@ kitty
 #super + b
 firefox --new-tab "https://duckduckgo.com/?kae=d"
 
-## Browser Custom Tab
-#alt + t
-firefox --new-tab "https://duckduckgo.com/?kae=d"
-
 ## Alternate Browser
 #super + shift + b
 brave
