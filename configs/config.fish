@@ -213,7 +213,8 @@ alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
 alias ej="sudo eject $argv[1];sudo udisksctl power-off -b $argv[1]"
 
 # Delete Multiple Files 
-alias muld="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
+alias muldf="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
+alias muldd="fd --type d . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
 
 
 # ===================================================================
@@ -451,7 +452,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "637s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "638s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple

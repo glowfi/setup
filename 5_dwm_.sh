@@ -37,13 +37,26 @@ rm -rf picom
 
 # APPEARANCE
 
-sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
-yay -S --noconfirm bettergruvbox-gtk-theme
+sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct kvantum-qt5
+sudo pacman -S --noconfirm breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
+
+git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
+cd ./Gruvbox-GTK-Theme/themes
+sudo cp -r ./* /usr/share/themes/
+cd ../../
+rm -rf Gruvbox-GTK-Theme
+
 git clone https://github.com/TheGreatMcPain/gruvbox-material-gtk
 cd gruvbox-material-gtk
 sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
 cd ..
 rm -rf gruvbox-material-gtk
+
+cd ~/Downloads/
+wget 'https://0x0.st/HryC.tar.gz'
+tar xzvf HryC.tar.gz
+rm HryC.tar.gz
+cd
 
 # SETUP DXHD
 
