@@ -1,11 +1,13 @@
 import logging
 import os
-#import platform
+import time
+
+# import platform
 import re
 import subprocess
 import sys
 import mov_cli.__main__ as movcli
-import time
+
 # import shlex
 # required for development
 
@@ -40,8 +42,15 @@ class WebScraper:
     def parse(txt: str) -> str:
         return re.sub(r"\W+", "-", txt.lower())
 
-    def dl(self, url: str, name: str, subtitle: str = None, season=None, episode=None):
-
+    def dl(
+        self,
+        url: str,
+        name: str,
+        subtitle: str = None,
+        season="",
+        episode=None,
+        referrer: str = None,
+    ):
         name = self.parse(name).strip() + "--" + str(int(time.time()))
         name = re.sub(r"-+", " ", name)
         if season is None:
@@ -91,13 +100,16 @@ class WebScraper:
 
         return "Downloaded !"
 
-    def play(self, url: str, name: str, referrer = None):
-        if referrer is None: referrer == self.base_url
+    def play(self, url: str, name: str, referrer=None):
+        if referrer is None:
+            referrer == self.base_url
         try:
             try:
                 mpv_process = Mpv(self).play(url, referrer, name)
                 mpv_process.wait()
-            except PlayerNotFound:  # why do you even exist if you don't have MPV installed? WHY?
+            except (
+                PlayerNotFound
+            ):  # why do you even exist if you don't have MPV installed? WHY?
                 vlc_process = Vlc(self).play(url, referrer, name)
                 vlc_process.wait()
         except Exception as e:
@@ -125,17 +137,25 @@ class WebScraper:
 
     def display(self, q: str = None, result_no: int = None):
         result = self.SandR(q)
-        r = [] 
+        r = []
         for ix, vl in enumerate(result):
             r.append(f"[{ix + 1}] {vl[self.title]} {vl[self.mv_tv]}")
-        r.extend(["[q] Exit!","[s] Search Again!","[d] Download!","[p] Switch Provider!","[sd] Download Whole Show!"])
+        r.extend(
+            [
+                "",
+                "[q] Exit!",
+                "[s] Search Again!",
+                "[d] Download!",
+                "[p] Switch Provider!",
+                "[sd] Download Whole Show!",
+                "[ds] Download Season!",
+            ]
+        )
         r = r[::-1]
         choice = ""
         while choice not in range(len(result) + 1):
             pre = fzf_prompt(r)
-            choice = (
-                re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
-            )
+            choice = re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
             if choice == "q":
                 sys.exit()
             elif choice == "s":
@@ -145,7 +165,9 @@ class WebScraper:
             elif choice == "d":
                 try:
                     pre = fzf_prompt(r)
-                    choice = re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    choice = (
+                        re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    )
                     mov_or_tv = result[int(choice) - 1]
                     if mov_or_tv[self.mv_tv] == "TV":
                         self.TV_PandDP(mov_or_tv, "d")
@@ -153,35 +175,62 @@ class WebScraper:
                         self.MOV_PandDP(mov_or_tv, "d")
                 except ValueError as e:
                     print(
-                        self.red(f"[!]  Invalid Choice Entered! | "),
-                        self.lmagenta(str(e)),
+                        f"[!]  Invalid Choice Entered! | ",
+                        str(e),
                     )
                     sys.exit(1)
                 except IndexError as e:
                     print(
-                        self.red(f"[!]  This Episode is coming soon! | "),
-                        self.lmagenta(str(e)),
+                        "[!]  This Episode is coming soon! | ",
+                        str(e),
                     )
                     sys.exit(2)
             elif choice == "sd":
                 try:
                     pre = fzf_prompt(r)
-                    choice = re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    choice = (
+                        re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    )
                     mov_or_tv = result[int(choice) - 1]
                     if mov_or_tv[self.mv_tv] == "TV":
                         self.TV_PandDP(mov_or_tv, "sd")
                     else:
-                        self.MOV_PandDP(mov_or_tv, "sd")
+                        print("You selected a Movie")
+                        exit(0)
                 except ValueError as e:
                     print(
-                        self.red(f"[!]  Invalid Choice Entered! | "),
-                        self.lmagenta(str(e)),
+                        f"[!]  Invalid Choice Entered! | ",
+                        str(e),
                     )
                     sys.exit(1)
                 except IndexError as e:
                     print(
-                        self.red(f"[!]  This Episode is coming soon! | "),
-                        self.lmagenta(str(e)),
+                        "[!]  This Episode is coming soon! | ",
+                        str(e),
+                    )
+                    sys.exit(2)
+            elif choice == "ds":
+                try:
+                    pre = fzf_prompt(r)
+                    choice = (
+                        re.findall(r"\[(.*?)\]", pre)[0] if not result_no else result_no
+                    )
+                    mov_or_tv = result[int(choice) - 1]
+                    if mov_or_tv[self.mv_tv] == "TV":
+                        self.TV_PandDP(mov_or_tv, "ds")
+                    else:
+                        print("You selected a Movie")
+                        exit(0)
+                except ValueError as e:
+                    print(
+                        f"[!]  Invalid Choice Entered! | ",
+                        str(e),
+                    )
+                    sys.exit(1)
+                except IndexError as e:
+                    print(
+                        "[!]  This Episode is coming soon! | ",
+                        str(e),
                     )
                     sys.exit(2)
             else:
@@ -194,14 +243,14 @@ class WebScraper:
     def redo(self, search: str = None, result: int = None):
         print(result)
         return self.display(search, result)
-    
+
     def askseason(self, seasons: int):
         texts = []
         for i in range(seasons):
             texts.append(f"Season {i+1}")
         choice = fzf_prompt(texts).split(" ")[-1]
         return choice
-    
+
     def askepisode(self, episodes: int):
         texts = []
         for i in range(episodes):
