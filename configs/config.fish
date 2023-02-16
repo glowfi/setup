@@ -431,7 +431,7 @@ end
 function micVOl
     if test -z $argv[1]
         bash -c "while :
-        do amixer sset Capture 6000
+        do amixer sset Capture 28000
         pkill -RTMIN+10 dwmblocks
         sleep 1
         done" >/dev/null

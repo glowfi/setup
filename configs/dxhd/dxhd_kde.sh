@@ -46,7 +46,7 @@ kitty
 
 ## Browser
 #super + b
-firefox --new-tab "https://duckduckgo.com/?kae=d"
+firefox
 
 ## Alternate Browser
 #super + shift + b
