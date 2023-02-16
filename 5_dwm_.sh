@@ -57,6 +57,7 @@ wget 'https://0x0.st/HryC.tar.gz'
 tar xzvf HryC.tar.gz
 rm HryC.tar.gz
 sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
+kvantummanager --set Gruvbox-Dark-Blue
 cd
 
 # SETUP DXHD
