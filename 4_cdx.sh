@@ -203,8 +203,6 @@ cp -r ~/setup/scripts/prev.sh ~/.local/bin/
 chmod +x ~/.local/bin/prev.sh
 
 yay -S --noconfirm ani-cli-git
-sudo sed -i '148s/.*/yt-dlp --external-downloader aria2c --external-downloader-args \"-j 16 -x 16 -s 16 -k 1M\" \"\$2\" -o \"\$download_dir\/\$3.mp4\";;/' /usr/bin/ani-cli
-sudo sed -i '150s/.*/yt-dlp --external-downloader aria2c --external-downloader-args \"-j 16 -x 16 -s 16 -k 1M\" \"\$2\" -o \"\$download_dir\/\$3.mp4\";;/' /usr/bin/ani-cli
 
 git clone https://github.com/mov-cli/mov-cli
 cd mov-cli
