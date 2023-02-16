@@ -38,11 +38,12 @@ rm -rf picom
 # APPEARANCE
 
 sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct kvantum-qt5
-sudo pacman -S --noconfirm breeze-icons breeze-gtk breeze ttf-joypixels papirus-icon-theme
+
+sudo pacman -S --noconfirm breeze-icons breeze-gtk breeze ttf-joypixels
 
 git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
 cd ./Gruvbox-GTK-Theme/themes
-sudo cp -r ./* /usr/share/themes/
+sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
 cd ../../
 rm -rf Gruvbox-GTK-Theme
 
