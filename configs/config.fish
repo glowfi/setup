@@ -205,6 +205,7 @@ alias rb='pkill -RTMIN+10 dwmblocks'
 
 # Reset Git Head 
 alias gres="git reset --hard HEAD~1"
+alias gck="git checkout $argv[1]"
 
 # Get Dotfiles
 alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
@@ -452,7 +453,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "638s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "639s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
