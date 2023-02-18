@@ -27,7 +27,7 @@ M.setup = function()
 			}),
 			b.formatting.fish_indent.with({ filetypes = { "fish" } }),
 			b.formatting.black.with({ filetypes = { "python" } }),
-			b.formatting.clang_format.with({ filetypes = { "c", "cpp" } }),
+			-- b.formatting.clang_format.with({ filetypes = { "c", "cpp" } }),
 			b.formatting.rustfmt.with({ filetypes = { "rust" } }),
 			b.formatting.gofmt.with({ filetypes = { "go" } }),
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
