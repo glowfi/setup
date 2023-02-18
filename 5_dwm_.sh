@@ -142,8 +142,8 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 DWM_VER=$(echo "6.2")
-cp -r "~/setup/configs/dwm-${DWM_VER}/" ~/.config/
-mv "~/.config/dwm-${DWM_VER}/" ~/.config/DWM
+cp -r ~/setup/configs/dwm-${DWM_VER}/ ~/.config/
+mv ~/.config/dwm-${DWM_VER}/ ~/.config/DWM
 cd ~/.config/DWM/
 make
 cd ..
