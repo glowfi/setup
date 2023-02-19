@@ -245,4 +245,15 @@ return require("packer").startup(function(use)
 		config = [[require('core.mkdp')]],
 		cmd = "MarkdownPreview",
 	})
+
+	use({
+		"folke/zen-mode.nvim",
+		config = [[require('core.zenmode')]],
+	})
+
+	use({
+		"lukas-reineke/headlines.nvim",
+		config = [[require('core.headlines')]],
+		ft = { "markdown" },
+	})
 end)
