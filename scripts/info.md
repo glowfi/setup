@@ -4,19 +4,19 @@
 
 #### ULTRA MINIMAL
 
-```
+```bash
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
 ```
 
 #### MINIMAL
 
-```
+```bash
 sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 ```
 
 #### FULL
 
-```
+```bash
 sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
@@ -24,7 +24,7 @@ sudo systemctl start libvirtd
 
 ## UNINSTALL
 
-```
+```bash
 sudo pacman -Rns dnsmasq virt-manager qemu-base edk2-ovmf qemu-ui-sdl
 sudo gpasswd -d "$USER" libvirt
 ```
@@ -33,14 +33,14 @@ sudo gpasswd -d "$USER" libvirt
 
 #### CREATE QCOW
 
-```
+```bash
 cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
 qemu-img create -f qcow2 Image.img 20G
 ```
 
 #### QEMU CLI COMMAND (SIMPLE VIRTUALIZATION)
 
-```
+```bash
 qemu-system-x86_64 -enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
 	-machine q35,accel=kvm,smm=on \
@@ -67,7 +67,7 @@ https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
 
 #### SCRIPT TO AUTOMATE PASSTHROUGH
 
-```
+```bash
 #!/bin/bash
 
 if [[ "$1" = "pass" ]]; then
@@ -99,7 +99,7 @@ fi
 
 <b>Without Audio</b>
 
-```
+```bash
 sudo qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -124,7 +124,7 @@ sudo qemu-system-x86_64 \
 
 <b>With Audio Passthrough</b>
 
-```
+```bash
 sudo qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -154,7 +154,7 @@ sudo qemu-system-x86_64 \
 
 <b>Simple Virtualization (Audio Not Working)</b>
 
-```
+```bash
 qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -177,7 +177,7 @@ qemu-system-x86_64 \
 
 <b>Virtualization with QXL (Audio Not Working)</b>
 
-```
+```bash
 qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -204,7 +204,7 @@ qemu-system-x86_64 \
 
 <b>Virtualization with Virtio (GPU Passthrough)</b>
 
-```
+```bash
 sudo qemu-system-x86_64 \
 	-enable-kvm \
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
@@ -229,7 +229,7 @@ sudo qemu-system-x86_64 \
 
 <b>UEFI BSD (Audio Working)</b>
 
-```
+```bash
 qemu-system-x86_64 \
 	-name ghostbsd-22.01.12-mate,process=ghostbsd-22.01.12-mate \
 	-enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
@@ -277,7 +277,7 @@ qemu-system-x86_64 \
 
 ### FIREFOX
 
-```
+```bash
 #!/bin/bash
 
 # Settings
@@ -301,7 +301,7 @@ cd
 
 #### UNINSTALL NNN FM
 
-```
+```bash
 sudo rm -rf /usr/local/bin/nnn
 sudo rm -rf /usr/local/share/man/man1/nnn.1
 sudo rm -rf .config/nnn
@@ -309,14 +309,14 @@ sudo rm -rf .config/nnn
 
 #### UNINSTALL NEOVIM
 
-```
+```bash
 sudo rm /usr/local/bin/nvim
 sudo rm -r /usr/local/share/nvim/
 ```
 
 ### MIRACLE CAST
 
-```
+```bash
 ### INSTALL
 yay -S --noconfirm miraclecast-git
 
@@ -355,14 +355,14 @@ sudo rm -rf /usr/share/bash-completion/completions/miracle-wifid
 
 ### HDMI
 
-```
+```bash
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf nvidia-drm.modeset=1"
 xrandr --output "HDMI-1-0" --mode 1920x1080
 ```
 
 ### JELLYFIN MEDIA SERVER
 
-```
+```bash
 yay -S --noconfirm jellyfin-bin jellyfin-media-player
 pip install --upgrade jellyfin-mpv-shim
 sudo chmod -R a+rx /run/media/ && sudo systemctl start jellyfin.service
