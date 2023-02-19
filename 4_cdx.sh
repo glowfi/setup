@@ -204,11 +204,13 @@ chmod +x ~/.local/bin/prev.sh
 
 yay -S --noconfirm ani-cli-git
 
+pip install poetry
 git clone https://github.com/mov-cli/mov-cli
 cd mov-cli
 cp -r ~/setup/scripts/scraper.py ./mov_cli/utils/
 pip install -r requirements.txt
-python setup.py install --user
+poetry build
+pip install dist/*.tar.gz
 cd ..
 rm -rf mov-cli
 
