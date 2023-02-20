@@ -177,6 +177,12 @@ echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 mkdir -p $HOME/.config/mpv/scripts
 wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
 
+wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
+wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
+echo "osc=no" >>~/.config/mpv/mpv.conf
+
+cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
+
 # ADDITIONAL SCRIPTS
 
 cp -r ~/setup/scripts/int.sh ~/.local/bin/
