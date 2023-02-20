@@ -86,7 +86,7 @@ if [[ "$1" = "pass" ]]; then
 else
 
 	## EDIT GRUB
-	sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+	sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
 	sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 	## DELETE vfio.conf
