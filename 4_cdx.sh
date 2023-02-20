@@ -172,6 +172,11 @@ mkdir -p .config/mpv/scripts
 touch ~/.config/mpv/mpv.conf
 echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 
+# MPV Scripts 
+
+mkdir -p $HOME/.config/mpv/scripts
+wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
+
 # ADDITIONAL SCRIPTS
 
 cp -r ~/setup/scripts/int.sh ~/.local/bin/
