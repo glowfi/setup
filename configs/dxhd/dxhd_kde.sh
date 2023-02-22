@@ -46,7 +46,7 @@ kitty
 
 ## Browser
 #super + b
-brave
+brave "https://search.brave.com/"
 
 ## Screenshot
 #alt + a

@@ -28,7 +28,7 @@ kitty
 
 ## Browser
 #super + b
-brave
+brave "https://search.brave.com/"
 
 ## Network
 #super + n
