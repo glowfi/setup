@@ -211,7 +211,7 @@ alias gck="git checkout $argv[1]"
 alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
 
 # Eject
-alias ej="sudo eject $argv[1];sudo udisksctl power-off -b $argv[1]"
+alias ej="sudo udisksctl power-off -b $argv[1]"
 
 # Delete Multiple Files 
 alias muldf="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
