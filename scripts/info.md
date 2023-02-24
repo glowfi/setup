@@ -367,3 +367,15 @@ yay -S --noconfirm jellyfin-bin jellyfin-media-player
 pip install --upgrade jellyfin-mpv-shim
 sudo chmod -R a+rx /run/media/ && sudo systemctl start jellyfin.service
 ```
+
+### PROTON ARGUMENTS
+
+##### ENABLE
+
+-   RTX
+-   DLSS
+-   Use Discrete GPU ONLY (NVIDIA)
+
+```bash
+PROTON_HIDE_NVIDIA_GPU=0 PROTON_ENABLE_NVAPI=1 __NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json gamemoderun MANGOHUD=1 %command%
+```
