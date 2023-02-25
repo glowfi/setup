@@ -1,0 +1,22 @@
+{
+    "extensions": {
+        "txt,c,cpp,js,conf,md,sh,json,map,yml,xml,py,log,cs,ini,csv": "nvim $arg",
+        "avi,mkv,flac,mp3,wav,mp4,mov": "mpv $arg",
+        "jpg,jpeg,svg,png,bmp,gif,tga": "nsxiv $arg",
+        "gz,zip,rar,zst": "ark $arg",
+        "pdf": "zathura $arg",
+        "html": "brave $arg"
+    },
+    "mimetypes": {
+        "text/*": "nvim $arg",
+        "video/*": "mpv $arg",
+        "media/video": "mpv $arg",
+        "document/pdf": "zathura $arg",
+        "inode/directory": "pcmanfm $arg"
+    },
+    "protocols": {
+        "http://": "brave $arg",
+        "https://": "brave $arg",
+        "file://": "pcmanfm $arg"
+    }
+}

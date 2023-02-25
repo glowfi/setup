@@ -81,7 +81,7 @@ rm -rf .git
 nodeLoc=$(whereis node | awk -F":" '{print $2}' | xargs)
 sed -i "1s|^.*$|\#\!$nodeLoc|" ./main.js
 rm mime.json
-wget https://0x0.st/Hskv.json -O mime.json
+cp -r ~/setup/configs/mime.json .
 sudo mv "/usr/bin/xdg-open" "/usr/bin/xdg-open.bak"
 sudo ln -s "${PWD}/main.js" "/usr/bin/xdg-open"
 sudo cp "${PWD}/mime.json" "/etc/mime.json"
