@@ -74,17 +74,5 @@ bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
 xdg-settings set default-web-browser brave-browser.desktop
 
-cd ~/.local/bin
-git clone https://github.com/karabaja4/mimejs
-cd mimejs
-rm -rf .git
-nodeLoc=$(whereis node | awk -F":" '{print $2}' | xargs)
-sed -i "1s|^.*$|\#\!$nodeLoc|" ./main.js
-rm mime.json
-cp -r ~/setup/configs/mime.json .
-sudo mv "/usr/bin/xdg-open" "/usr/bin/xdg-open.bak"
-sudo ln -s "${PWD}/main.js" "/usr/bin/xdg-open"
-sudo cp "${PWD}/mime.json" "/etc/mime.json"
-
 echo "Done seting default application!"
 echo ""
