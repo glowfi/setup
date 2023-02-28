@@ -5,7 +5,7 @@ NC='\033[0m' # No Color
 
 adb kill-server
 adb tcpip 5555
-adb connect 192.168.1.100:5555 || adb connect 192.168.1.100:5555
+adb connect 192.168.1.102:5555 || adb connect 192.168.1.102:5555
 echo ""
 echo -e "${RED}Waiting for accepting the promt ....${NC}"
 echo ""
