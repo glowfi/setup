@@ -416,8 +416,15 @@ end
 
 # Jump to Mounted drive
 function gotoMounteddrive
-    set choice (exa /run/media/$USER | fzf)
-    cd /run/media/$USER/"$choice"
+    set choice0 (exa /run/media/$USER)
+    set choice1 (exa /run/user/1000/gvfs)
+    set getChoice (echo -e "$choice0\n$choice1"|fzf)
+
+    if test -z (string match -i "$getChoice*" "$choice0")
+        cd "/run/user/1000/gvfs/$getChoice"
+    else
+        cd "/run/media/$USER/$getChoice"
+    end
 end
 
 # Find and replace with specific word
@@ -453,7 +460,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "639s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "646s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
