@@ -47,7 +47,7 @@ sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
 sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
 sudo pacman -S --noconfirm bluez bluez-utils bluedevil
-yay -S --noconfirm zramd ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts
+yay -S --noconfirm ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts
 sudo pacman -S --noconfirm android-tools scrcpy
 
 ### PACKAGES
@@ -95,7 +95,7 @@ echo "------------------------------------------------------------------------"
 echo "--------------Enabling ZRAM...------------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
-
+yay -S --noconfirm zramd
 sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
 sudo sed -i '8s/.*/MAX_SIZE=16384/' /etc/default/zramd
 sudo systemctl enable --now zramd

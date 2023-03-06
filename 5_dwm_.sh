@@ -58,7 +58,6 @@ wget 'https://0x0.st/HryC.tar.gz'
 tar xzvf HryC.tar.gz
 rm HryC.tar.gz
 sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
-kvantummanager --set Gruvbox-Dark-Blue
 cd
 
 # SETUP DXHD
@@ -141,7 +140,7 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-DWM_VER=$(echo "6.2")
+DWM_VER=$(echo "6.4")
 cp -r ~/setup/configs/dwm-${DWM_VER}/ ~/.config/
 mv ~/.config/dwm-${DWM_VER}/ ~/.config/DWM
 cd ~/.config/DWM/
