@@ -97,7 +97,7 @@ echo "------------------------------------------------------------------------"
 echo ""
 yay -S --noconfirm zramd
 sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
-sudo sed -i '8s/.*/MAX_SIZE=16384/' /etc/default/zramd
+sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
 # ADD FEATURES TO sudoers
