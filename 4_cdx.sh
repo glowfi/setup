@@ -161,6 +161,7 @@ pip install xhibit
 
 # INSTALL sYT
 
+pip install numerize
 sudo pacman -S --noconfirm jq aria2
 git clone https://github.com/glowfi/sYT
 cp -r sYT/sYT.py ~/.local/bin/
