@@ -45,7 +45,7 @@ sudo pacman -S --noconfirm xorg-server
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
-sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
+sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber easyeffects
 sudo pacman -S --noconfirm bluez bluez-utils blueman
 yay -S --noconfirm ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts
 sudo pacman -S --noconfirm android-tools scrcpy
