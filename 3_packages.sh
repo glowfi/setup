@@ -65,7 +65,7 @@ sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mpv
 ### AUDIO
 sudo pacman -Syyy --noconfirm songrec mediainfo
 
-sudo pacman -Syyy --noconfirm easyeffects
+sudo pacman -Syyy --noconfirm easyeffects lsp-plugins
 wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
 chmod +x ./install.sh
 echo | ./install.sh
