@@ -45,7 +45,7 @@ sudo pacman -S --noconfirm xorg-server
 ### CORE
 sudo pacman -S --noconfirm zip unzip unrar p7zip lzop
 sudo pacman -S --noconfirm fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts
-sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber easyeffects
+sudo pacman -S --noconfirm alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
 sudo pacman -S --noconfirm bluez bluez-utils blueman
 yay -S --noconfirm ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts
 sudo pacman -S --noconfirm android-tools scrcpy
@@ -64,6 +64,12 @@ sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mpv
 
 ### AUDIO
 sudo pacman -Syyy --noconfirm songrec mediainfo
+
+sudo pacman -Syyy --noconfirm easyeffects
+wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
+chmod +x ./install.sh
+echo | ./install.sh
+rm install.sh
 
 ### PERIPHERAL
 yay -S --noconfirm openrazer-meta polychromatic
