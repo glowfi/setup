@@ -118,6 +118,9 @@ clipmenud &
 # Volume Notification
 volnoti &
 
+# Easyeffects
+nohup easyeffects --gapplication-service &
+
 # Autolock
 xautolock -time 10 -locker slock &
 

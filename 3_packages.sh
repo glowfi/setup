@@ -60,7 +60,8 @@ sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
 yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
-sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mpv
+sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mujs
+yay -S --noconfirm mpv-git
 
 ### AUDIO
 sudo pacman -Syyy --noconfirm songrec mediainfo
