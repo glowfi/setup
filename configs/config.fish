@@ -397,6 +397,11 @@ function trad
     ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
 end
 
+# Trim a video files's time
+function trvi
+    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
+end
+
 # Merge two audio files
 function mado
     ffmpeg -i $argv[1] -i $argv[2] \
@@ -404,14 +409,9 @@ function mado
         -map '[out]' output.mp3
 end
 
-# Increase Volume
+# Increase Volume of an audio file
 function incv
     ffmpeg -i $argv[1] -filter:a "volume=$argv[2]" out.mp3
-end
-
-# Trim a video files's time
-function kut
-    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
 end
 
 # Jump to Mounted drive
@@ -429,10 +429,10 @@ end
 
 # Find and replace with specific word
 function replaceWithSpecificWord
-    set name $argv[1]
+    set directoryName $argv[1]
     set queryString $argv[2]
     set tobeRepacedWith $argv[3]
-    fd . "$name" | sad "$queryString" "$tobeRepacedWith"
+    fd . "$directoryName" | sad "$queryString" "$tobeRepacedWith"
 end
 
 # Microphone Volume 
