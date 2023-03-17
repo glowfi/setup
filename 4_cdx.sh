@@ -232,8 +232,8 @@ cp -r vimv ~/.local/bin/
 cd ..
 rm -rf vimv
 
-cp -r ~/setup/scripts/dex.sh ~/.local/bin/
-chmod +x ~/.local/bin/dex.sh
+cp -r ~/setup/scripts/dex.py ~/.local/bin/
+chmod +x ~/.local/bin/dex.py
 
 wget git.io/trans
 chmod +x ./trans
