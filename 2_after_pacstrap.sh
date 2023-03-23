@@ -119,13 +119,16 @@ echo ""
 ## Determine GPU
 if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
-	pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime
+	for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
+
 elif lspci | grep -E "Radeon"; then
 	echo "Installing AMD Radeon drivers ..."
-	pacman -Syyy --noconfirm xf86-video-amdgpu
+	for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
+
 elif lspci | grep -E "Integrated Graphics Controller"; then
 	echo "Installing Intel drivers ..."
-	pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils
+	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
+
 fi
 
 # PACAKGES
@@ -138,14 +141,15 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-	pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
+	for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+
 elif [[ "$driveType" = "non-ssd" ]]; then
-	pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid || exit 0
+	for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
-
-pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc || exit 0
+for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc && break || sleep 1; done
 
 # GRUB
 

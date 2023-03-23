@@ -60,7 +60,7 @@ sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
 yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
-for i in {1..5}; do sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mujs && break || sleep 15; done
+for i in {1..5}; do sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mujs && break || sleep 1; done
 yay -S --noconfirm mpv-git
 
 ### AUDIO
