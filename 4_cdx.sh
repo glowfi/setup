@@ -13,20 +13,26 @@ echo ""
 
 # UPGRADE PIP TO LATEST VERSION
 
-python -m ensurepip --upgrade
-pip install setuptools
+for i in (seq 2)
+    python -m ensurepip --upgrade
+    pip install setuptools
+end
 
 # PYTHON MODULES
 
-pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-pip install virtualenv twine wheel
+for i in (seq 2)
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install virtualenv twine wheel
+end
 
 # JUPYTER SETUP
 
-pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
-jupyter contrib nbextension install --user
-jupyter nbextensions_configurator enable --user
-pyppeteer-install
+for i in (seq 2)
+    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
+    jupyter contrib nbextension install --user
+    jupyter nbextensions_configurator enable --user
+    pyppeteer-install
+end
 
 # PYTHON MISC
 
