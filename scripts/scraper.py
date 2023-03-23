@@ -7,6 +7,7 @@ import subprocess
 import sys
 import mov_cli.__main__ as movcli
 from .lang import getlang, setlang
+import time
 
 # import shlex
 # required for development
