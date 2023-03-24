@@ -50,7 +50,7 @@ echo ""
 
 # DOWNLOAD NODEJS
 
-set ver (curl -s https://nodejs.org/en/ | grep -oP "Current.*\""|cut -d">" -f1|cut -d"=" -f2|tr -d \"|tr -d v|xargs)
+set ver (curl -f -L https://nodejs.org/en | grep -Eo "https?://\S+?\""|grep "dist"|tail -2|head -1|cut -d"/" -f5|tr -d "v"|xargs)
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
