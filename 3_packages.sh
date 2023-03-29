@@ -67,6 +67,7 @@ yay -S --noconfirm mpv-git
 sudo pacman -Syyy --noconfirm songrec mediainfo
 
 sudo pacman -Syyy --noconfirm easyeffects lsp-plugins
+mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
 wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
 chmod +x ./install.sh
 echo | ./install.sh
