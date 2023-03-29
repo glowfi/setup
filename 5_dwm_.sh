@@ -17,7 +17,20 @@ sudo pacman -S --noconfirm pulsemixer pamixer
 sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
 sudo pacman -S --noconfirm mtpfs gvfs-mtp
 yay -S --noconfirm jmtpfs nsxiv-git
-yay -S --noconfirm volnoti
+
+# Volnoti
+git clone https://github.com/hcchu/volnoti
+cd volnoti
+cd res
+rm display-brightness-symbolic.svg
+wget https://0x0.st/Ho5Y.svg -O display-brightness-symbolic.svg
+cd ..
+./prepare.sh
+./configure --prefix=/usr
+make
+sudo make clean install
+cd ..
+rm -rf volnoti
 
 # Setup nsxiv key-handler
 mkdir -p ~/.config/nsxiv/exec

@@ -127,7 +127,7 @@ else
 	if [ "$currBrightness" -eq 0 ]; then
 		volnoti-show -m
 	else
-		volnoti-show $currBrightness
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
 	fi
 fi
 
@@ -141,9 +141,9 @@ if [ "$currBrightness" -gt "$cap" ]; then
 	volnoti-show 100
 else
 	if [ "$currBrightness" -eq 0 ]; then
-		volnoti-show -m
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
 	else
-		volnoti-show $currBrightness
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
 	fi
 fi
 
