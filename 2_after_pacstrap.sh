@@ -169,11 +169,11 @@ fi
 
 # UPDATING mkinitcpio.conf
 
-if lspci | grep -E "Radeon"; then
-	sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
+if lspci | grep -E "NVIDIA|GeForce"; then
+	sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 	mkinitcpio -p linux-zen
-else
-	sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+elif lspci | grep -E "Radeon"; then
+	sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
 	mkinitcpio -p linux-zen
 fi
 
