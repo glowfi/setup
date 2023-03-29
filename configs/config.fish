@@ -370,7 +370,8 @@ end
 
 # Terminal Schenanigans
 function suprise
-    bash -c 'find $HOME/terminal_pics/ -type f -name "*.jpg" -o -name "*.png" -name "*.gif" | shuf -n 1' | xargs -I {} kitty +kitten icat --align=left {} && fortune -sn80
+    set getPic (find $HOME/terminal_pics/ -type f -name "*.jpg" -o -name "*.png" -name "*.gif" | shuf -n 1)
+    kitty +kitten icat --align=left "$getPic" && fortune -sn80
 end
 
 # Generate random image and show in xhibit
@@ -439,7 +440,7 @@ end
 function micVOl
     if test -z $argv[1]
         bash -c "while :
-        do amixer sset Capture 28000
+        do amixer sset Capture 30000
         pkill -RTMIN+10 dwmblocks
         sleep 1
         done" >/dev/null
