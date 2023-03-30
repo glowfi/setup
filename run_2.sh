@@ -13,35 +13,26 @@ echo ""
 ## GET THE NAME OF CURRENTLY LOGGED IN USER
 uname=$(echo "$USER")
 
-echo ""
-echo "Press 1 to install KDE"
-echo "Press 2 to install DWM"
-read choice
+echo -e "Choose DE/WM to Install :"
+choice=$(gum choose "DWM" "KDE")
 
-if [[ "$choice" == "1" || "$choice" == "2" ]]; then
+## MAKE SCRIPTS EXECUTABLE
+cd
 
-	## MAKE SCRIPTS EXECUTABLE
-	cd
+chmod +x ~/setup/3_packages.sh
+~/setup/3_packages.sh $uname
 
-	chmod +x ~/setup/3_packages.sh
-	~/setup/3_packages.sh $uname
+chmod +x ~/setup/4_cdx.sh
+~/setup/4_cdx.sh
 
-	chmod +x ~/setup/4_cdx.sh
-	~/setup/4_cdx.sh
-
-	if [[ $choice == "1" ]]; then
-		clear
-		chmod +x ~/setup/5_kde_.sh
-		~/setup/5_kde_.sh
-	elif [[ $choice == "2" ]]; then
-		clear
-		chmod +x ~/setup/5_dwm_.sh
-		~/setup/5_dwm_.sh $uname
-	fi
-
-else
-	printf $'\e[31mWrong choice entered! Run the script again.\e[0m\n'
-	exit 0
+if [[ $choice == "KDE" ]]; then
+	clear
+	chmod +x ~/setup/5_kde_.sh
+	~/setup/5_kde_.sh
+elif [[ $choice == "DWM" ]]; then
+	clear
+	chmod +x ~/setup/5_dwm_.sh
+	~/setup/5_dwm_.sh $uname
 fi
 
 ## CLEANUP
