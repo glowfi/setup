@@ -17,7 +17,7 @@ echo "------------------------------------------------------------ "
 echo ""
 
 echo ""
-pacman -S --noconfirm gum
+sudo pacman -S --noconfirm gum
 clear
 
 # Logo
