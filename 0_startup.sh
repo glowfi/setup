@@ -10,8 +10,14 @@ if [ ! -f $CONFIG_FILE ]; then # check if file exists
 fi
 
 ### Install dependency
-echo "Installing Dependency ...."
-sudo pacman -S --noconfirm gum
+echo ""
+echo "-------------------------------------------------------------"
+echo "--------------Installing Dependency ....---------------------"
+echo "------------------------------------------------------------ "
+echo ""
+
+echo ""
+pacman -S --noconfirm gum
 clear
 
 # Logo
