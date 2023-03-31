@@ -26,7 +26,11 @@ kitty
 
 ## Browser
 #super + b
-brave
+firefox
+
+## Browser
+#ctrl + shift + b
+chromium
 
 ## Network
 #super + n

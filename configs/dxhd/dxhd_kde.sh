@@ -46,7 +46,11 @@ kitty
 
 ## Browser
 #super + b
-brave
+firefox
+
+## Browser
+#ctrl + shift + b
+chromium
 
 ## Screenshot
 #alt + a
