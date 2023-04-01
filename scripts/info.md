@@ -368,6 +368,16 @@ pip install --upgrade jellyfin-mpv-shim
 sudo chmod -R a+rx /run/media/ && sudo systemctl start jellyfin.service
 ```
 
+### ARCHISO
+
+```bash
+sudo pacman -S --noconfirm archiso
+mkdir customarch
+cd customarch
+mkdir {work,out}
+sudo mkarchiso -v -w work -o out "$HOME/setup/configs/archlive"
+```
+
 ### PROTON ARGUMENTS
 
 ##### ENABLE
