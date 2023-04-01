@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Source Helper
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+source "$SCRIPT_DIR/helper.sh"
+
 # CORE PACKAGES
 
 echo ""
@@ -8,17 +12,17 @@ echo "--------------Installing CORE PACKAGES FOR KDE...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm plasma-desktop plasma-workspace plasma-nm plasma-pa qt5-tools
+install "plasma-desktop plasma-workspace plasma-nm plasma-pa qt5-tools" "pac"
 
-sudo pacman -S --noconfirm breeze breeze-gtk kde-gtk-config kdecoration
+install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
 
-sudo pacman -S --noconfirm powerdevil xdg-desktop-portal-kde
+install "powerdevil xdg-desktop-portal-kde" "pac"
 
-sudo pacman -S --noconfirm kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm
+install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm" "pac"
 
 # PACKAGES
 
-sudo pacman -S --noconfirm dolphin ark gwenview okular mpv
+install "dolphin ark gwenview okular" "pac"
 
 # REMOVE KWALLET
 
@@ -53,7 +57,7 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-yay -S --noconfirm dxhd-bin
+install "dxhd-bin" "yay"
 mkdir -p ~/.config/dxhd
 mv ~/setup/configs/dxhd/dxhd_kde.sh ~/.config/dxhd
 mv ~/.config/dxhd/dxhd_kde.sh ~/.config/dxhd/dxhd.sh

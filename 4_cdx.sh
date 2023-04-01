@@ -1,8 +1,12 @@
 #!/bin/fish
 
+# Source Helper
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+source "$SCRIPT_DIR/helper.sh"
+
 ### PACKAGES
-sudo pacman -S --noconfirm postgresql python-pip gitui github-cli
-yay -S --noconfirm insomnia-bin
+install "postgresql python-pip gitui github-cli" "pac"
+install "insomnia-bin" "yay"
 cp -r ~/setup/configs/Insomnia/ ~/.config
 
 echo ""
@@ -103,7 +107,7 @@ echo ""
 # INSTALL CLANGD LSP
 
 set clangd_ver (echo "15.0.6")
-sudo pacman -S --noconfirm clang
+install "clang" "pac"
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
 unzip ~/clangd.zip -d ~
 rm -rf clangd.zip
@@ -162,13 +166,13 @@ chmod +x ~/.local/bin/checkur.py
 
 # INSTALL xhibit
 
-sudo pacman -S --noconfirm lsb-release
+install "lsb-release" "pac"
 pip install xhibit
 
 # INSTALL sYT
 
 pip install numerize
-sudo pacman -S --noconfirm jq aria2
+install "jq aria2" "pac"
 git clone https://github.com/glowfi/sYT
 cp -r sYT/sYT.py ~/.local/bin/
 cp -r sYT/sYT.sh ~/.local/bin/
@@ -201,7 +205,7 @@ chmod +x ~/.local/bin/formatDisk.sh
 cp -r ~/setup/scripts/rename.sh ~/.local/bin/
 chmod +x ~/.local/bin/rename.sh
 
-sudo pacman -S --noconfirm xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo
+install "xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo" "pac"
 cp -r ~/setup/scripts/dm-record.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-record.sh
 
@@ -220,7 +224,7 @@ chmod +x ~/.local/bin/send.sh
 cp -r ~/setup/scripts/prev.sh ~/.local/bin/
 chmod +x ~/.local/bin/prev.sh
 
-yay -S --noconfirm ani-cli-git
+install "ani-cli-git" "yay"
 
 pip install poetry
 git clone https://github.com/mov-cli/mov-cli
@@ -269,7 +273,7 @@ echo ""
 
 pip install neovim black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
-sudo pacman -S --noconfirm cmake unzip ninja tree-sitter xclip shfmt
+install "cmake unzip ninja tree-sitter xclip shfmt" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install

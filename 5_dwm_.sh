@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Source Helper
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+source "$SCRIPT_DIR/helper.sh"
+
 # READ ARGUMENT
 uname=$1
 
@@ -11,12 +15,12 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-sudo pacman -S --noconfirm pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu
-sudo pacman -S --noconfirm xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock
-sudo pacman -S --noconfirm pulsemixer pamixer
-sudo pacman -S --noconfirm lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils
-sudo pacman -S --noconfirm mtpfs gvfs-mtp
-yay -S --noconfirm jmtpfs nsxiv-git
+install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
+install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
+install "pulsemixer pamixer" "pac"
+install "lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils" "pac"
+install "mtpfs gvfs-mtp" "pac"
+install "jmtpfs nsxiv-git" "yay"
 
 # Volnoti
 git clone https://github.com/hcchu/volnoti
@@ -38,7 +42,7 @@ cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
 
 # PICOM DISPLAY COMPOSITOR
 
-sudo pacman -S --noconfirm libev libconfig meson ninja uthash
+install "libev libconfig meson ninja uthash" "pac"
 git clone https://github.com/pijulius/picom
 cd picom
 git submodule update --init --recursive
@@ -50,9 +54,9 @@ rm -rf picom
 
 # APPEARANCE
 
-sudo pacman -S --noconfirm lxappearance-gtk3 qt5ct kvantum-qt5
+install "lxappearance-gtk3 qt5ct kvantum-qt5" "pac"
 
-sudo pacman -S --noconfirm breeze-icons breeze-gtk breeze ttf-joypixels
+install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
 git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
 cd ./Gruvbox-GTK-Theme/themes
@@ -81,7 +85,7 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-yay -S --noconfirm dxhd-bin
+install "dxhd-bin" "yay"
 mkdir -p ~/.config/dxhd
 mv ~/setup/configs/dxhd/dxhd_dwm.sh ~/.config/dxhd
 mv ~/.config/dxhd/dxhd_dwm.sh ~/.config/dxhd/dxhd.sh

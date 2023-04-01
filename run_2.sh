@@ -65,6 +65,10 @@ echo "-----------------------------------------------------------"
 echo ""
 
 cd
+if [ -s "$HOME/setup/err.txt" ]; then
+	cp -r "$HOME/Downloads/err.txt"
+fi
+
 rm -rf setup
 git clone https://github.com/glowfi/setup
 
