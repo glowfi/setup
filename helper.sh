@@ -24,6 +24,7 @@ install() {
 
 	# Check Success
 	if [[ $iteration -eq $max_iteration ]]; then
+		# Append Failed to install packages to a file
 		echo "${packages[@]}" >>"$SCRIPT_DIR/err.txt"
 	else
 		echo "All packages installed successfully!"
