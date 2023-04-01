@@ -72,7 +72,7 @@ echo ""
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
 bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
-xdg-settings set default-web-browser brave-browser.desktop
+xdg-settings set default-web-browser firefox.desktop
 
 echo "Done seting default application!"
 echo ""
