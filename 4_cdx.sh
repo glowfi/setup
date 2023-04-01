@@ -1,8 +1,8 @@
 #!/bin/fish
 
 # Source Helper
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-source "$SCRIPT_DIR/helper.sh"
+set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
+source "$SCRIPT_DIR/helperf.fish"
 
 ### PACKAGES
 install "postgresql python-pip gitui github-cli" "pac"
