@@ -110,7 +110,7 @@ set clangd_ver (echo "15.0.6")
 install "clang" "pac"
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
 unzip ~/clangd.zip -d ~
-rm -rf clangd.zip
+rm -rf ~/clangd.zip
 mv ~/clangd_"$clangd_ver" ~/.local/bin/clangd
 source ~/.config/fish/config.fish
 
@@ -128,7 +128,7 @@ set lua_ver (echo "3.6.10")
 wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
 mkdir -p ~/lua-ls
 tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
-rm -rf lua-ls.tar.gz
+rm -rf ~/lua-ls.tar.gz
 mv ~/lua-ls ~/.local/bin/luaLSP
 
 # INSTALL LUA FORAMTTER
