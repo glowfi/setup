@@ -165,17 +165,17 @@ static char c000000[]                    = "#000000"; // placeholder value
 static char normfgcolor[]                = "#bbbbbb";
 static char normbgcolor[]                = "#222222";
 static char normbordercolor[]            = "#444444";
-static char normfloatcolor[]             = "#ffffff";
+static char normfloatcolor[]             = "#ff0000";
 
 static char selfgcolor[]                 = "#eeeeee";
 static char selbgcolor[]                 = "#433c3b";
-static char selbordercolor[]             = "#ffffff";
+static char selbordercolor[]             = "#ff0000";
 static char selfloatcolor[]              = "#433c3b";
 
 static char titlenormfgcolor[]           = "#bbbbbb";
 static char titlenormbgcolor[]           = "#222222";
 static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#ffffff";
+static char titlenormfloatcolor[]        = "#ff0000";
 
 static char titleselfgcolor[]            = "#eeeeee";
 static char titleselbgcolor[]            = "#433c3b";
@@ -185,7 +185,7 @@ static char titleselfloatcolor[]         = "#433c3b";
 static char tagsnormfgcolor[]            = "#bbbbbb";
 static char tagsnormbgcolor[]            = "#222222";
 static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#ffffff";
+static char tagsnormfloatcolor[]         = "#ff0000";
 
 static char tagsselfgcolor[]             = "#eeeeee";
 static char tagsselbgcolor[]             = "#433c3b";
@@ -200,7 +200,7 @@ static char hidselbgcolor[]              = "#222222";
 static char urgfgcolor[]                 = "#bbbbbb";
 static char urgbgcolor[]                 = "#222222";
 static char urgbordercolor[]             = "#ff0000";
-static char urgfloatcolor[]              = "#ffffff";
+static char urgfloatcolor[]              = "#ff0000";
 
 #if RENAMED_SCRATCHPADS_PATCH
 static char scratchselfgcolor[]          = "#FFF7D4";

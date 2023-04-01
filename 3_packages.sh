@@ -57,8 +57,9 @@ sudo pacman -S --noconfirm firefox
 yay -S --noconfirm ungoogled-chromium-bin
 
 ### IMAGE
-sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
-yay -S --noconfirm gimp-plugin-registry
+# sudo pacman -Syyy --noconfirm gimp imagemagick ffmpegthumbnailer
+sudo pacman -Syyy --noconfirm krita imagemagick ffmpegthumbnailer
+# yay -S --noconfirm gimp-plugin-registry
 
 ### VIDEO
 for i in {1..5}; do sudo pacman -Syyy --noconfirm kdenlive ffmpeg yt-dlp mujs && break || sleep 1; done
