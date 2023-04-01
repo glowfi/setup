@@ -13,11 +13,11 @@
 
 ## KDE
 
-> Minimal KDE setup with less packages.
+> Minimal KDE setup with minimal packages.
 
 ## DWM
 
-> Minimal DWM setup with less patches.
+> Minimal DWM setup with minimal patches.
 
 **DWM PATCHES**
 
