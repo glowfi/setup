@@ -28,8 +28,8 @@ kitty
 #super + b
 firefox
 
-## Browser
-#ctrl + shift + b
+## Alternate Browser
+#shift + b
 chromium
 
 ## Network
