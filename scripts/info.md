@@ -280,6 +280,10 @@ qemu-system-x86_64 \
 ```bash
 #!/bin/bash
 
+setsid firefox
+sleep 3
+killall firefox
+
 # Settings
 
 original=$(echo 'user_pref("keyword.enabled", false);')
