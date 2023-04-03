@@ -9,16 +9,19 @@ if [ ! -f $CONFIG_FILE ]; then # check if file exists
 	touch -f $CONFIG_FILE         # create file if not exists
 fi
 
-### Install dependency
-echo ""
-echo "-------------------------------------------------------------"
-echo "--------------Installing Dependency ....---------------------"
-echo "------------------------------------------------------------ "
-echo ""
+installDependency() {
 
-echo ""
-sudo pacman -S --noconfirm gum
-clear
+	### Install dependency
+	echo ""
+	echo "-------------------------------------------------------------"
+	echo "--------------Installing Dependency ....---------------------"
+	echo "------------------------------------------------------------ "
+	echo ""
+
+	echo ""
+	sudo pacman -S --noconfirm gum
+	clear
+}
 
 # Logo
 logo() {
@@ -242,6 +245,8 @@ userinfo() {
 clear
 logo
 
+installDependency
+clear
 filesystem
 clear
 timezone
