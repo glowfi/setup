@@ -1,24 +1,24 @@
 import logging
 import os
+import time
 
 # import platform
 import re
 import subprocess
 import sys
-import mov_cli.__main__ as movcli
-from .lang import getlang, setlang
-import time
 
-# import shlex
-# required for development
+import mov_cli.__main__ as movcli
+from fzf import fzf_prompt
 
 from .httpclient import HttpClient
-from fzf import fzf_prompt
-from platform import system
-
+from .lang import getlang, setlang
 from .player import PlayerNotFound
 from ..players.mpv import Mpv
 from ..players.vlc import Vlc
+from ..extractors.doodstream import dood
+
+# import shlex
+# required for development
 
 # Not needed
 # def determine_path() -> str:
@@ -116,7 +116,7 @@ class WebScraper:
 
     def play(self, url: str, name: str, referrer=None):
         if referrer is None:
-            referrer == self.base_url
+            referrer = self.base_url
         try:
             try:
                 mpv_process = Mpv(self).play(url, referrer, name)
@@ -193,7 +193,7 @@ class WebScraper:
                         self.MOV_PandDP(mov_or_tv, "d")
                 except ValueError as e:
                     print(
-                        f"[!]  Invalid Choice Entered! | ",
+                        "[!]  Invalid Choice Entered! | ",
                         str(e),
                     )
                     sys.exit(1)
@@ -217,7 +217,7 @@ class WebScraper:
                         exit(0)
                 except ValueError as e:
                     print(
-                        f"[!]  Invalid Choice Entered! | ",
+                        "[!]  Invalid Choice Entered! | ",
                         str(e),
                     )
                     sys.exit(1)
@@ -241,7 +241,7 @@ class WebScraper:
                         exit(0)
                 except ValueError as e:
                     print(
-                        f"[!]  Invalid Choice Entered! | ",
+                        "[!]  Invalid Choice Entered! | ",
                         str(e),
                     )
                     sys.exit(1)
@@ -257,6 +257,9 @@ class WebScraper:
                     self.TV_PandDP(mov_or_tv, "p")
                 else:
                     self.MOV_PandDP(mov_or_tv, "p")
+
+    def doodstream(self, url: str):
+        return dood(url)
 
     def redo(self, search: str = None, result: int = None):
         print(result)
