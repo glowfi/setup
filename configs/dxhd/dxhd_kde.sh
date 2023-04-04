@@ -49,7 +49,7 @@ kitty
 firefox
 
 ## Alternate Browser
-#shift + b
+#ctrl + shift + b
 chromium
 
 ## Screenshot
