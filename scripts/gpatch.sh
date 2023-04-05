@@ -19,16 +19,16 @@ yay -S --noconfirm protonup-qt-bin
 ## MangoHud
 yay -S --noconfirm mangohud lib32-mangohud
 
-mkdir -p "$HOME/.config/goverlay/"
-cd "$HOME/.config/goverlay/"
-wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
-
 mkdir -p "$HOME/.config/MangoHud/"
 cd "$HOME/.config/MangoHud/"
 wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
 
 ## Goverlay
 yay -S --noconfirm goverlay-bin
+
+mkdir -p "$HOME/.config/goverlay/"
+cd "$HOME/.config/goverlay/"
+wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
 
 ## Feral gamemode
 sudo pacman -S --noconfirm meson systemd git dbus libinih
