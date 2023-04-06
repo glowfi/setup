@@ -167,10 +167,11 @@ elif [[ "$driveType" = "non-ssd" ]]; then
 	grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# UPDATING mkinitcpio.conf
+# UPDATING mkinitcpio.conf and GRUB
 
 if lspci | grep -E "NVIDIA|GeForce"; then
 	sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+	sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
 	mkinitcpio -p linux-zen
 elif lspci | grep -E "Radeon"; then
 	sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
