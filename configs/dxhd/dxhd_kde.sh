@@ -48,6 +48,10 @@ kitty
 #super + b
 firefox
 
+## Alternate Browser
+#alt + c
+chromium
+
 ## Screenshot
 #alt + a
 windowshot.sh

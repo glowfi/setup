@@ -28,6 +28,10 @@ kitty
 #super + b
 firefox
 
+## Alternate Browser
+#alt + c
+chromium
+
 ## Network
 #super + n
 kitty -e "nmtui"
