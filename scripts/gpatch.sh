@@ -34,6 +34,10 @@ wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
 sudo pacman -S --noconfirm meson systemd git dbus libinih
 sudo pacman -S --noconfirm gamemode
 
+## Save Scraper and Save Retriever from cloud
+cp -r ~/setup/scripts/saveScraper.py ~/.local/bin/
+chmod +x ~/.local/bin/saveScraper.py
+
 ########### NOTES ###########
 
 ### MANGOHUD AND GOVERLAY INSTALL
@@ -75,20 +79,3 @@ sudo pacman -S --noconfirm gamemode
 
 ## Protonup [Proton GE]
 # fish -c "pip install protonup;exit"
-
-### SCRIPT TO EXTRACT SAVE GAME FROM HEROIC LAUNCHER
-
-#!/bin/bash
-
-## Choose Game
-# gameList=$(ls $HOME/Games/Heroic/Prefixes/ | fzf)
-
-## Get savegame location
-# if [[ "$gameList" ]]; then
-# scrapeSave=$(find "$HOME/Games/Heroic/Prefixes/$gameList/pfx/drive_c/users/steamuser/AppData" -maxdepth 2 -type d | fzf)
-# fi
-
-## Get savegame
-# if [[ "$scrapeSave" ]]; then
-# cp -r "$scrapeSave" "$HOME"
-# fi
