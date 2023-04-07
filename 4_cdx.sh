@@ -45,6 +45,7 @@ cd ueberzug
 python3 setup.py install --user
 cd ..
 rm -rf ueberzug
+pip install pyfzf
 
 echo ""
 echo ------------------------------------------------------------------------
