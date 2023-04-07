@@ -252,6 +252,10 @@ mv ./trans ~/.local/bin/
 cp -r ~/setup/scripts/tran.sh ~/.local/bin/
 chmod +x ~/.local/bin/tran.sh
 
+install "atbswp" "yay"
+install "tk python-wxpython" "pac"
+pip install pyautogui pynput
+
 # SETUP POSTGRES
 
 echo ""
