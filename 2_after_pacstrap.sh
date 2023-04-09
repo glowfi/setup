@@ -182,6 +182,11 @@ elif lspci | grep -E "Radeon"; then
 	mkinitcpio -p linux-zen
 fi
 
+# DISABLE WIFI POWERSAVER MODE
+
+LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+
 # ENABLE PACKAGES
 
 echo ""

@@ -7,11 +7,6 @@ source "$SCRIPT_DIR/helper.sh"
 # CACHE PASSWORD
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
-# Disable Wifi Powersaver Mode
-LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
-echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
-sudo systemctl restart NetworkManager
-
 # SYNCHRONIZING
 
 echo ""
