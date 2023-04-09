@@ -26,6 +26,8 @@ end
 
 for i in (seq 2)
     pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install opencv-python
+    pip install labelme albumentations
     pip install virtualenv twine wheel
 end
 
@@ -36,6 +38,7 @@ for i in (seq 2)
     jupyter contrib nbextension install --user
     jupyter nbextensions_configurator enable --user
     pyppeteer-install
+    install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
 end
 
 # PYTHON MISC

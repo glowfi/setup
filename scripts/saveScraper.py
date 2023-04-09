@@ -51,7 +51,7 @@ def heroicSave():
 
 def steamSave():
     # Get Game Name
-    cmd_1 = """protontricks -l | head -3 | tail -2>>1.txt"""
+    cmd_1 = """protontricks -l|sed '$d'|sed '$d' |sed '$d'|sed '$d'|sed '$d'|sed '1d'>>1.txt"""
     os.system(f"{cmd_1}")
     if os.path.getsize("1.txt") == 0:
         os.system("rm -rf 1.txt")
@@ -71,7 +71,7 @@ def steamSave():
     os.system("rm -rf 2.txt")
     k1 = getGame[0].strip("\n").strip(" ")
     getAppid = k1.split("(")[1].replace(")", "")
-    getName = k1.split("(")[0]
+    getName = k1.split("(")[0].strip(" ")
     cmd_2 = f"""find "$HOME/.local/share/Steam/steamapps/compatdata/{getAppid}/pfx/drive_c/users/steamuser" -maxdepth 3 -type d | fzf>>3.txt"""
     os.system(f"{cmd_2}")
 
