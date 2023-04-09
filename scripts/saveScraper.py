@@ -9,7 +9,7 @@ fzf = FzfPrompt()
 data = {
     "L.A. Noire": ["https://0x0.st/HXMb.zip"],
     "Control": ["https://0x0.st/HXM9.zip"],
-    "Red Dead Redemption 2": ["https://0x0.st/HXMq.zip"],
+    "Red Dead Redemption 2": ["https://0x0.st/HX9I.zip"],
 }
 
 
