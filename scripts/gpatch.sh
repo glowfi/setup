@@ -17,7 +17,14 @@ sudo pacman -S --noconfirm steam
 yay -S --noconfirm protonup-qt-bin
 
 ## MangoHud
-yay -S --noconfirm mangohud lib32-mangohud
+mangoVer=$(echo "0.6.5")
+wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
+tar -xzvf mghud.tar.gz
+cd MangoHud
+./mangohud-setup.sh install
+cd ..
+rm -rf MangoHud
+rm -rf mghud.tar.gz
 
 mkdir -p "$HOME/.config/MangoHud/"
 cd "$HOME/.config/MangoHud/"
@@ -42,7 +49,7 @@ chmod +x ~/.local/bin/saveScraper.py
 
 ### MANGOHUD AND GOVERLAY INSTALL
 
-# yay -S --noconfirm mangohud lib32-mangohud goverlay-bin
+# yay -S --noconfirm mangohud lib32-mangohud
 
 # mangoVer=$(echo "0.6.5")
 # wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
@@ -54,6 +61,7 @@ chmod +x ~/.local/bin/saveScraper.py
 # rm -rf mghud.tar.gz
 
 # sudo pacman -S --noconfirm qt5pas
+# yay -S --noconfirm goverlay-bin
 # govlyVer1=$(echo "0.9.1")
 # govlyVer2=$(echo "0_9_1")
 # mkdir gov
