@@ -117,14 +117,8 @@ echo "------------------------------------------------------------------------"
 echo ""
 
 ## Determine GPU
-if (lspci | grep -E "NVIDIA|GeForce") && (lspci | grep -E "Radeon"); then
-	echo "Installing NVIDIA drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
 
-	echo "Installing AMD Radeon drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
-
-elif lspci | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
 	for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
 
@@ -176,11 +170,7 @@ fi
 
 # UPDATING mkinitcpio.conf and GRUB
 
-if (lspci | grep -E "NVIDIA|GeForce") && (lspci | grep -E "Radeon"); then
-	sed -i 's/MODULES=()/MODULES=(btrfs amdgpu nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-	sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
-	mkinitcpio -p linux-zen
-elif lspci | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -E "NVIDIA|GeForce"; then
 	sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 	sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
 	mkinitcpio -p linux-zen
