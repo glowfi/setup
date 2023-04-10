@@ -14,7 +14,7 @@ yay -S --noconfirm protontricks-git
 ## Clients
 sudo pacman -S --noconfirm steam
 # yay -S --noconfirm heroic-games-launcher-bin
-yay -S --noconfirm protonup-qt-bin
+# yay -S --noconfirm protonup-qt-bin
 
 ## MangoHud
 mangoVer=$(echo "0.6.5")
