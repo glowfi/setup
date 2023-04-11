@@ -43,11 +43,12 @@ end
 
 # PYTHON MISC
 
-git clone https://github.com/glowfi/ueberzug
-cd ueberzug
-python3 setup.py install --user
-cd ..
-rm -rf ueberzug
+install "libxres" "pac"
+git clone "https://github.com/glowfi/ueberzug-tabbed"
+cd ueberzug-tabbed
+python -m pip install .
+cd .. 
+rm -rf ueberzug-tabbed
 pip install pyfzf
 
 echo ""
