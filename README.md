@@ -29,6 +29,7 @@
 -   Move Stack
 -   Vanity gaps
 -   Always center
+-   Fade Inactive
 
 **DMENU PATCHES**
 
