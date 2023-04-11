@@ -71,3 +71,7 @@ pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
 kill -9 "$pid"
 processName=$(echo "$getProcess" | awk '{print $NF}' | xargs)
 killall -9 "$processName"
+
+## Annotation Tool
+#alt + g
+gromit-mpx

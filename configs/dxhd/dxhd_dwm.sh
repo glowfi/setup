@@ -196,3 +196,7 @@ if [ "$MSTATE" = "[on]" ] || [ "$VOL" -eq 0 ]; then
 else
 	volnoti-show -m
 fi
+
+## Annotation Tool
+#alt + g
+gromit-mpx
