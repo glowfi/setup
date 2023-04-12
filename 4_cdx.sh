@@ -31,6 +31,13 @@ for i in (seq 2)
     pip install virtualenv twine wheel
 end
 
+# PYTHON STUBS
+
+set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
+curl -sSL https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi -o "$loc/__init__.pyi"
+pip install -U mypy
+stubgen -m cv2
+
 # JUPYTER SETUP
 
 for i in (seq 2)
