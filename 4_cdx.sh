@@ -26,7 +26,7 @@ end
 
 for i in (seq 2)
     pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-    pip install opencv-python
+    install "python-opencv" "pac"
     pip install labelme albumentations
     pip install virtualenv twine wheel
 end
