@@ -25,30 +25,37 @@ end
 # PYTHON MODULES
 
 for i in (seq 2)
-    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-    install "python-opencv" "pac"
-    pip install labelme albumentations
     pip install virtualenv twine wheel
 end
-
-# PYTHON STUBS
-
-set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
-curl -sSL https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi -o "$loc/__init__.pyi"
-pip install -U mypy
-stubgen -m cv2
 
 # JUPYTER SETUP
 
 for i in (seq 2)
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
     pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
     jupyter contrib nbextension install --user
     jupyter nbextensions_configurator enable --user
     pyppeteer-install
-    install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
 end
 
+# PYTHON DL MODULES 
+
+install "python-opencv" "pac"
+install "python-pytorch-opt-cuda python-torchvision-cuda" "pac"
+install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
+install "numactl" "pac"
+
+# PYTHON STUBS
+
+set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
+curl -sSL "https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi" -o "$loc/__init__.pyi"
+pip install -U mypy
+stubgen -m cv2
+rm -rf out
+
 # PYTHON MISC
+
+pip install pyfzf
 
 install "libxres" "pac"
 git clone "https://github.com/glowfi/ueberzug-tabbed"
@@ -56,7 +63,6 @@ cd ueberzug-tabbed
 python -m pip install .
 cd .. 
 rm -rf ueberzug-tabbed
-pip install pyfzf
 
 echo ""
 echo ------------------------------------------------------------------------
