@@ -16,7 +16,7 @@ data = {
 def getSave():
     names = list(data.keys())
     retrieveGame = fzf.prompt(names)[0]
-    os.system(f"aria2c '{data[retrieveGame][0]}' -o '{retrieveGame}'")
+    os.system(f"aria2c '{data[retrieveGame][0]}' -o '{retrieveGame}.zip'")
 
 
 def heroicSave():

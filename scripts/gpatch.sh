@@ -17,14 +17,7 @@ sudo pacman -S --noconfirm steam
 # yay -S --noconfirm protonup-qt-bin
 
 ## MangoHud
-mangoVer=$(echo "0.6.5")
-wget "https://github.com/flightlessmango/MangoHud/releases/download/v$mangoVer/MangoHud-$mangoVer.r0.ge42002c.tar.gz" -O mghud.tar.gz
-tar -xzvf mghud.tar.gz
-cd MangoHud
-./mangohud-setup.sh install
-cd ..
-rm -rf MangoHud
-rm -rf mghud.tar.gz
+yay -S --noconfirm mangohud lib32-mangohud
 
 mkdir -p "$HOME/.config/MangoHud/"
 cd "$HOME/.config/MangoHud/"
