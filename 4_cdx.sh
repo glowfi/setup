@@ -41,9 +41,11 @@ end
 # PYTHON DL MODULES 
 
 install "python-opencv" "pac"
-install "python-pytorch-opt-cuda python-torchvision-cuda" "pac"
 install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
 install "numactl" "pac"
+for i in (seq 2)
+    pip install torch torchvision torchaudio 
+end
 
 # PYTHON STUBS
 
