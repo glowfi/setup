@@ -286,6 +286,14 @@ rm -rf Lorien_"$Lorienver"_Linux
 
 yay -S --noconfirm gromit-mpx
 
+# SETUP DOCKER 
+
+install "docker" "pac"
+sudo systemctl start docker.service
+sudo usermod -aG docker $USER
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl stop docker.service && sudo systemctl disable docker.service
+
 
 # SETUP POSTGRES
 

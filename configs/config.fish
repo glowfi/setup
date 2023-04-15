@@ -146,6 +146,10 @@ alias pst='sudo systemctl start postgresql'
 alias psp='sudo systemctl stop postgresql'
 alias psql='psql -d delta'
 
+# Docker alias
+alias dst='sudo systemctl start docker.service'
+alias dsp='sudo systemctl stop docker.service;sudo systemctl disable docker.service'
+
 # Mongo alias
 alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
@@ -461,7 +465,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "646s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "651s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
