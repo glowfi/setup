@@ -321,9 +321,9 @@ npm i -g neovim typescript typescript-language-server pyright vscode-langservers
 install "cmake unzip ninja tree-sitter xclip shfmt" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
-sudo make CMAKE_BUILD_TYPE=Release install
+sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"
 cd ..
-sudo rm -r neovim
+rm -r neovim
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
 
