@@ -150,7 +150,7 @@ elif [[ "$driveType" = "non-ssd" ]]; then
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
-for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum && break || sleep 1; done
+for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum diff-so-fancy && break || sleep 1; done
 
 # GRUB
 
