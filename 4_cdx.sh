@@ -247,6 +247,9 @@ chmod +x ~/.local/bin/send.sh
 cp -r ~/setup/scripts/prev.sh ~/.local/bin/
 chmod +x ~/.local/bin/prev.sh
 
+cp -r ~/setup/scripts/gtfu.sh ~/.local/bin/
+chmod +x ~/.local/bin/gtfu.sh
+
 install "ani-cli-git" "yay"
 
 pip install poetry
