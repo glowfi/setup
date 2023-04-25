@@ -25,7 +25,7 @@ sudo systemctl start libvirtd
 ## UNINSTALL
 
 ```bash
-sudo pacman -Rns dnsmasq virt-manager qemu-base edk2-ovmf qemu-ui-sdl
+sudo pacman -Rns dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 sudo gpasswd -d "$USER" libvirt
 ```
 
