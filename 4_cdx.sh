@@ -46,6 +46,8 @@ install "numactl" "pac"
 for i in (seq 2)
     pip install torch torchvision torchaudio
     pip install opencv-python opencv-contrib-python
+    pip install dlib mtcnn
+    pip install git+https://github.com/hukkelas/DSFD-Pytorch-Inference.git
 end
 
 # PYTHON STUBS
