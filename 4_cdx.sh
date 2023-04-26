@@ -19,6 +19,7 @@ echo ""
 
 for i in (seq 2)
     python -m ensurepip --upgrade
+    pip install --upgrade pip
     pip install setuptools
 end
 
@@ -87,6 +88,8 @@ source ~/.config/fish/config.fish
 # NODE MODULES
 
 npm i -g yarn
+npm update -g npm
+npm install npm@latest -g 
 
 echo ""
 echo ------------------------------------------------------------------------
