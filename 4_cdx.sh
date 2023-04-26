@@ -321,8 +321,11 @@ echo "--------------Installing the best text editor in the world...-------------
 echo ---------------------------------------------------------------------------------------------
 echo ""
 
-pip install neovim black flake8
-npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
+for i in (seq 2)
+    pip install neovim black flake8
+    npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
+    pip uninstall -y cmake 
+end
 install "cmake unzip ninja tree-sitter xclip shfmt" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
