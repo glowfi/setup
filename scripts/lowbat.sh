@@ -19,7 +19,7 @@ while true; do
 			# Send a notification if the battery level is below the threshold
 			if [[ $BATTERY_LEVEL -lt $THRESHOLD1 ]]; then
 				touch "$HOME/.cache/lowbat30"
-				notify-send "Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
+				notify-send "🪫Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
 			fi
 
 		fi
@@ -30,7 +30,7 @@ while true; do
 			# Send a notification if the battery level is below the threshold
 			if [[ $BATTERY_LEVEL -lt $THRESHOLD2 ]]; then
 				touch "$HOME/.cache/lowbat20"
-				notify-send "Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
+				notify-send "🪫Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
 			fi
 
 		fi
@@ -41,7 +41,7 @@ while true; do
 			# Send a notification if the battery level is below the threshold
 			if [[ $BATTERY_LEVEL -lt $THRESHOLD3 ]]; then
 				touch "$HOME/.cache/lowbat15"
-				notify-send "Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
+				notify-send "🪫Low Battery Warning" "Battery level is at $BATTERY_LEVEL%"
 			fi
 
 		fi
