@@ -5,6 +5,8 @@ THRESHOLD1=30
 THRESHOLD2=20
 THRESHOLD3=10
 
+clearCache=0
+
 # Check if the laptop is running on battery power
 while true; do
 	if [[ $(acpi -a | grep off-line) ]]; then
@@ -43,5 +45,9 @@ while true; do
 			fi
 
 		fi
+	fi
+	((clearCache = clearCache + 1))
+	if [ $(($clearCache % 300)) -eq 0 ]; then
+		find "$HOME/.cache/" -name 'lowbat*' -delete
 	fi
 done
