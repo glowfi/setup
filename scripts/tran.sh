@@ -13,7 +13,7 @@ qu=$((down + 1))
 if test -f "$file"; then
 	if [[ ! -z "${up}" && ! -z "${down}" ]]; then
 		if [[ -z "${codez}" ]]; then
-			code=$(translate --list-all | fzf | awk '{print $1}')
+			code=$(trans --list-all | fzf | awk '{print $1}')
 		else
 			code=${codez}
 		fi
@@ -21,7 +21,7 @@ if test -f "$file"; then
 		if [[ ! -z "${code}" && ! -z "${text}" ]]; then
 			echo -e ""
 			echo -e "\e[1;31m Translating .... \e[0m"
-			echo "$text" | translate -b -p :"${code}"
+			echo "$text" | trans -b -p :"${code}" -player mpv
 		fi
 	else
 		echo "Provide Both Upper and Lower Bound Line Number!"

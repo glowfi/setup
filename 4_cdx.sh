@@ -277,9 +277,9 @@ rm -rf vimv
 cp -r ~/setup/scripts/dex.py ~/.local/bin/
 chmod +x ~/.local/bin/dex.py
 
-wget https://git.io/translate
-chmod +x ./translate
-mv ./translate ~/.local/bin/
+wget https://git.io/translate -O trans
+chmod +x ./trans
+mv ./trans ~/.local/bin/
 cp -r ~/setup/scripts/tran.sh ~/.local/bin/
 chmod +x ~/.local/bin/tran.sh
 
