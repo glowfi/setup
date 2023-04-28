@@ -141,6 +141,10 @@ xautolock -time 10 -locker slock &
 # dwmblocks
 dwmblocks &
 
+# Low Battery
+find "$HOME/.cache/" -name 'lowbat*' -delete
+~/.local/bin/lowbat.sh &
+
 # Infinte loop
 while true;do 
     ~/.config/DWM/dwm >/dev/null 2>&1 

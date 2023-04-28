@@ -253,6 +253,9 @@ chmod +x ~/.local/bin/prev.sh
 cp -r ~/setup/scripts/gtfu.sh ~/.local/bin/
 chmod +x ~/.local/bin/gtfu.sh
 
+cp -r ~/setup/scripts/lowbat.sh ~/.local/bin/
+chmod +x ~/.local/bin/lowbat.sh
+
 install "ani-cli-git" "yay"
 
 pip install poetry
