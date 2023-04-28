@@ -277,9 +277,9 @@ rm -rf vimv
 cp -r ~/setup/scripts/dex.py ~/.local/bin/
 chmod +x ~/.local/bin/dex.py
 
-wget git.io/trans
-chmod +x ./trans
-mv ./trans ~/.local/bin/
+wget https://git.io/translate
+chmod +x ./translate
+mv ./translate ~/.local/bin/
 cp -r ~/setup/scripts/tran.sh ~/.local/bin/
 chmod +x ~/.local/bin/tran.sh
 
@@ -337,7 +337,7 @@ git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"
 cd ..
-rm -r neovim
+sudo rm -rf neovim
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
 
