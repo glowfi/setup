@@ -136,6 +136,10 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 install "apparmor" "pac"
 sudo systemctl enable --now apparmor.service
 
+# INCREASE VIRTUAL MEMORY
+
+sudo echo "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/90-override.conf >/dev/null
+
 # THEMING GRUB
 
 echo ""
