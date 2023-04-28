@@ -22,6 +22,7 @@ if test -f "$file"; then
 			echo -e ""
 			echo -e "\e[1;31m Translating .... \e[0m"
 			echo "$text" | trans -b -p :"${code}" -player mpv
+			rm -rf awkprof.out
 		fi
 	else
 		echo "Provide Both Upper and Lower Bound Line Number!"
