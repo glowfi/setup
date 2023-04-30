@@ -156,12 +156,14 @@ alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
 # Search Pacman
 alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias spkg='pkg search "^" | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg install'
 
 # Search AUR
 alias saur="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro yay -S"
 
 # Uninstall Packages
 alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {1}' | xargs -ro sudo pacman -Rns"
+alias pkgu='pkg info | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg remove'
 
 # DWM compile
 alias dwc="make clean;make"
@@ -465,7 +467,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "651s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "653s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
@@ -728,3 +730,5 @@ if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
+
+cd
