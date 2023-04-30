@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-########### PACKAGES ###########
+########### UPGRADE SYSTEM ###########
 
 sudo pkg upgrade
 
@@ -75,3 +75,12 @@ cd "$findLocation"
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 gsed -i "s/$original/$required/g" user.js
 cd
+
+# Fix resolution
+
+echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1"
+
+# Fix Audio
+
+sudo echo 'hint.hdaa.0.nid33.config="as=2 seq=15"' | sudo tee -a /boot/device.hints >/dev/null
+sudo echo 'hint.hdaa.0.nid20.config="as=2 seq=0"' | sudo tee -a /boot/device.hints >/dev/null
