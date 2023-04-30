@@ -78,7 +78,7 @@ cd
 
 # Fix resolution
 
-echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1"
+echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xinitrc
 
 # Fix Audio
 
