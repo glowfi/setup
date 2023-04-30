@@ -6,8 +6,8 @@ sudo pkg upgrade
 
 ########### PACKAGES ###########
 
-sudo pkg install git nnn neovim firefox setsid wget gsed gawk xclip
-sudo pkg install fzf exa bottom fd-find bat gitui
+sudo pkg install git nnn neovim firefox setsid wget gsed gawk xclip pcmanfm
+sudo pkg install fzf exa bottom fd-find bat gitui ripgrep
 sudo pkg install nerd-fonts
 sudo pkg install py39-pip
 

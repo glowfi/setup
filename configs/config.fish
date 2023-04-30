@@ -23,7 +23,8 @@ set fish_greeting # Supresses fish's greeting message
 set TERM xterm-256color # Sets the terminal type
 
 # Start X at login
-if test (uname -a | grep -Eoi "Linux"|head -1) = Linux
+set checkOS (uname -a | grep -Eoi "Linux"|head -1)
+if test "$checkOS" = Linux
     if status --is-login
         if test -z "$DISPLAY" -a $XDG_VTNR = 1
             set greetings bonjour halo hola nomoskar
@@ -324,9 +325,9 @@ set go_loc_var (echo "go")
 function searchFilesCurrent
 
     if test -z "$argv[1]"
-        fd --exclude "$go_loc_var" --type f . | fzf --reverse --height 10 | read -t args
+        fd --exclude "$go_loc_var" --type f . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always $PWD/{1}" | read -t args
     else
-        fd --exclude "$go_loc_var" --type f --hidden . | fzf --reverse --height 10 | read -t args
+        fd --exclude "$go_loc_var" --type f --hidden . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always $PWD/{1}" | read -t args
     end
 
     if test -z "$args"
@@ -351,9 +352,9 @@ end
 function searchDirCurrent
 
     if test -z "$argv[1]"
-        fd --exclude "$go_loc_var" --type d . | fzf --reverse --height 10 | read -t args
+        fd --exclude "$go_loc_var" --type d . | fzf --prompt "Go to:" --reverse --preview "ls $PWD/{1}" | read -t args
     else
-        fd --exclude "$go_loc_var" --type d --hidden . | fzf --reverse --height 10 | read -t args
+        fd --exclude "$go_loc_var" --type d --hidden . | fzf --prompt "Open File:" --reverse --preview "ls $PWD/{1}" | read -t args
     end
 
     if test -z "$args"
@@ -365,7 +366,7 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --preview 'set loc {}
+    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
 bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
@@ -427,14 +428,20 @@ end
 
 # Jump to Mounted drive
 function gotoMounteddrive
-    set choice0 (exa /run/media/$USER)
-    set choice1 (exa /run/user/1000/gvfs)
-    set getChoice (echo -e "$choice0\n$choice1"|fzf)
+    if test "$checkOS" = Linux
+        set choice0 (exa /run/media/$USER)
+        set choice1 (exa /run/user/1000/gvfs)
+        set getChoice (echo -e "$choice0\n$choice1"|fzf)
 
-    if test -z (string match -i "$getChoice*" "$choice0")
-        cd "/run/user/1000/gvfs/$getChoice"
+        if test -z (string match -i "$getChoice*" "$choice0")
+            cd "/run/user/1000/gvfs/$getChoice"
+        else
+            cd "/run/media/$USER/$getChoice"
+        end
     else
-        cd "/run/media/$USER/$getChoice"
+        set choice0 (exa /media/)
+        set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|fzf --preview "ls /media/{1}")
+        cd "/media/$getChoice"
     end
 end
 
@@ -471,7 +478,11 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "657s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    if test "$checkOS" = Linux
+        sed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    else
+        gsed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    end
 end
 
 function simple
