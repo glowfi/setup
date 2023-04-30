@@ -6,10 +6,10 @@ sudo pkg upgrade
 
 ########### PACKAGES ###########
 
-sudo pkg install git nnn neovim firefox setsid wget gsed gawk xclip
-sudo pkg install fzf exa bottom fd-find bat gitui ripgrep
-sudo pkg install nerd-fonts
-sudo pkg install py39-pip
+sudo pkg install -y git nnn neovim firefox setsid wget gsed gawk xclip
+sudo pkg install -y fzf exa bottom fd-find bat gitui ripgrep
+sudo pkg install -y nerd-fonts
+sudo pkg install -y py39-pip
 
 ########### CONFIGS ###########
 
@@ -39,11 +39,11 @@ chmod +x ~/.local/bin/send.sh
 cd
 
 # Neovim Config
-sudo pkg install tree-sitter ninja shfmt
+sudo pkg install -y tree-sitter ninja shfmt
 pip install neovim
 cd ~/.config
-mkdir kitty
-cd kitty
+mkdir nvim
+cd nvim
 cp -r ~/setup/configs/nvim/ .
 gsed -i '34,40d' ~/.config/nvim/lua/core/dashboard.lua
 cd
@@ -74,7 +74,7 @@ cd
 ########### JELLYFIN SERVER ###########
 
 fetch https://github.com/Thefrank/jellyfin-server-freebsd/releases/download/v10.8.9/jellyfinserver-10.8.9.pkg
-sudo pkg install jellyfinserver-10.8.9.pkg
+sudo pkg install -y jellyfinserver-10.8.9.pkg
 rm -rf jellyfinserver-10.8.9.pkg
 sudo sysrc jellyfinserver_enable=TRUE
 sudo service jellyfinserver start
