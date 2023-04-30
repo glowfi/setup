@@ -14,9 +14,20 @@ sudo pkg install py39-pip
 ########### CONFIGS ###########
 
 mkdir -p ~/local/bin
+
+# NNN Config
+pip install trash-cli
+mkdir -p .config/nnn/plugins
+cd .config/nnn/plugins/
+curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+cd
+cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
+
+# Null Server Script
 cp -r ~/setup/scripts/send.sh ~/.local/bin/
 chmod +x ~/.local/bin/send.sh
 
+# Neovim Config
 sudo pkg install tree-sitter meson ninja shfmt
 pip install neovim
 cd ~/.config
@@ -25,6 +36,7 @@ cd kitty
 cp -r ~/setup/configs/nvim/ .
 cd
 
+# Kitty Config
 cd ~/.config
 mkdir kitty
 cd kitty
@@ -41,6 +53,7 @@ gawk -v line="14" -v text="$rep" '{
 mv output_file.txt kitty.conf
 cd
 
+# Fish Config
 rm -rf ~/.config/fish/config.fish
 cd ~/.config
 cp -r ~/setup/configs/config.fish ~/.config/fish/
@@ -76,11 +89,11 @@ wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.j
 gsed -i "s/$original/$required/g" user.js
 cd
 
-# Fix resolution
+########### Fix resolution ###########
 
 echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xinitrc
 
-# Fix Audio
+########### Fix Audio ###########
 
 sudo echo 'hint.hdaa.0.nid33.config="as=2 seq=15"' | sudo tee -a /boot/device.hints >/dev/null
 sudo echo 'hint.hdaa.0.nid20.config="as=2 seq=0"' | sudo tee -a /boot/device.hints >/dev/null
