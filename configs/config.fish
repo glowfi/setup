@@ -95,7 +95,7 @@ git clone https://github.com/neovim/neovim --depth 1;
 cd neovim;
 sudo make CMAKE_BUILD_TYPE=Release install || sudo pacman -S --noconfirm neovim;
 cd ..;
-rm -rf neovim;
+sudo rm -rf neovim;
 cp -r ~/setup/configs/nvim ~/.config;
 nvim -c "PackerSync";
 nvim -c "PackerSync";
@@ -370,8 +370,7 @@ function searchContents
     rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
-set loc3 (echo "$loc99")
-bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: "$loc3"/$loc' | awk -F':' '{ print $1 " " $2}' | read -t args
+bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: "$loc99"/$loc' | awk -F':' '{ print $1 " " $2}' | read -t args
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"
@@ -481,9 +480,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
