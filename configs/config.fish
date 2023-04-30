@@ -23,35 +23,39 @@ set fish_greeting # Supresses fish's greeting message
 set TERM xterm-256color # Sets the terminal type
 
 # Start X at login
-if status --is-login
-    if test -z "$DISPLAY" -a $XDG_VTNR = 1
-        set greetings bonjour halo hola nomoskar
-        set random_greet (random 1 (count $greetings))
+if test (uname -a | grep -Eoi "Linux"|head -1) = Linux
+    if status --is-login
+        if test -z "$DISPLAY" -a $XDG_VTNR = 1
+            set greetings bonjour halo hola nomoskar
+            set random_greet (random 1 (count $greetings))
 
-        echo "                                      " | lolcat
-        echo "                 ▄█▄                  " | lolcat
-        echo "                ▄███▄                 " | lolcat
-        echo "               ▄█████▄                " | lolcat
-        echo "              ▄███████▄               " | lolcat
-        echo "             ▄ ▀▀██████▄              " | lolcat
-        echo "            ▄██▄▄ ▀█████▄             " | lolcat
-        echo "           ▄█████████████▄            " | lolcat
-        echo "          ▄███████████████▄           " | lolcat
-        echo "         ▄█████████████████▄          " | lolcat
-        echo "        ▄███████████████████▄         " | lolcat
-        echo "       ▄█████████▀▀▀▀████████▄        " | lolcat
-        echo "      ▄████████▀      ▀███████▄       " | lolcat
-        echo "     ▄█████████        ████▀▀██▄      " | lolcat
-        echo "    ▄██████████        █████▄▄▄       " | lolcat
-        echo "   ▄██████████▀        ▀█████████▄    " | lolcat
-        echo "  ▄██████▀▀▀              ▀▀██████▄   " | lolcat
-        echo " ▄███▀▀                       ▀▀███▄  " | lolcat
-        echo "▄▀▀                               ▀▀▄ " | lolcat
-        echo ""
+            echo "                                      " | lolcat
+            echo "                 ▄█▄                  " | lolcat
+            echo "                ▄███▄                 " | lolcat
+            echo "               ▄█████▄                " | lolcat
+            echo "              ▄███████▄               " | lolcat
+            echo "             ▄ ▀▀██████▄              " | lolcat
+            echo "            ▄██▄▄ ▀█████▄             " | lolcat
+            echo "           ▄█████████████▄            " | lolcat
+            echo "          ▄███████████████▄           " | lolcat
+            echo "         ▄█████████████████▄          " | lolcat
+            echo "        ▄███████████████████▄         " | lolcat
+            echo "       ▄█████████▀▀▀▀████████▄        " | lolcat
+            echo "      ▄████████▀      ▀███████▄       " | lolcat
+            echo "     ▄█████████        ████▀▀██▄      " | lolcat
+            echo "    ▄██████████        █████▄▄▄       " | lolcat
+            echo "   ▄██████████▀        ▀█████████▄    " | lolcat
+            echo "  ▄██████▀▀▀              ▀▀██████▄   " | lolcat
+            echo " ▄███▀▀                       ▀▀███▄  " | lolcat
+            echo "▄▀▀                               ▀▀▄ " | lolcat
+            echo ""
 
-        echo "$greetings[$random_greet] $USER!" | figlet | lolcat
-        exec startx -- -keeptty
+            echo "$greetings[$random_greet] $USER!" | figlet | lolcat
+            exec startx -- -keeptty
+        end
     end
+else
+    true
 end
 
 # ===================================================================
@@ -154,7 +158,7 @@ alias dsp='sudo systemctl stop docker.service;sudo systemctl disable docker.serv
 alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
-# Search Pacman
+# Search Pacakges in Repository
 alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias spkg='pkg search "^" | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg install'
 
@@ -467,7 +471,7 @@ end
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
-    sed -i "653s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+    sed -i "657s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 end
 
 function simple
