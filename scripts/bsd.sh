@@ -6,7 +6,7 @@ sudo pkg upgrade
 
 ########### PACKAGES ###########
 
-sudo pkg install git nnn neovim firefox setsid wget gsed gawk xclip pcmanfm
+sudo pkg install git nnn neovim firefox setsid wget gsed gawk xclip
 sudo pkg install fzf exa bottom fd-find bat gitui ripgrep
 sudo pkg install nerd-fonts
 sudo pkg install py39-pip
@@ -25,15 +25,27 @@ cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
 
 # Null Server Script
 cp -r ~/setup/scripts/send.sh ~/.local/bin/
+cd ~/.local/bin/
+rep=$(fish -c 'printf "#!/usr/local/bin/bash"')
+gawk -v line="1" -v text="$rep" '{
+  if (NR == line) {
+    print text
+  } else {
+    print $0
+  }
+}' send.sh >output_file.txt
+mv output_file.txt send.sh
 chmod +x ~/.local/bin/send.sh
+cd
 
 # Neovim Config
-sudo pkg install tree-sitter meson ninja shfmt
+sudo pkg install tree-sitter ninja shfmt
 pip install neovim
 cd ~/.config
 mkdir kitty
 cd kitty
 cp -r ~/setup/configs/nvim/ .
+gsed -i '34,40d' ~/.config/nvim/lua/core/dashboard.lua
 cd
 
 # Kitty Config
