@@ -160,14 +160,14 @@ alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
 # Search Pacakges in Repository
-alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' | xargs -ro sudo pacman -S"
 alias spkg='pkg search "^" | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg install'
 
 # Search AUR
-alias saur="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro yay -S"
+alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' | xargs -ro yay -S"
 
 # Uninstall Packages
-alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {1}' | xargs -ro sudo pacman -Rns"
+alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' | xargs -ro sudo pacman -Rns"
 alias pkgu='pkg info | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg remove'
 
 # DWM compile
@@ -325,9 +325,9 @@ set go_loc_var (echo "go")
 function searchFilesCurrent
 
     if test -z "$argv[1]"
-        fd --exclude "$go_loc_var" --type f . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always $PWD/{1}" | read -t args
+        fd --exclude "$go_loc_var" --type f . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | read -t args
     else
-        fd --exclude "$go_loc_var" --type f --hidden . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always $PWD/{1}" | read -t args
+        fd --exclude "$go_loc_var" --type f --hidden . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | read -t args
     end
 
     if test -z "$args"
@@ -352,9 +352,9 @@ end
 function searchDirCurrent
 
     if test -z "$argv[1]"
-        fd --exclude "$go_loc_var" --type d . | fzf --prompt "Go to:" --reverse --preview "ls $PWD/{1}" | read -t args
+        fd --exclude "$go_loc_var" --type d . | fzf --prompt "Go to:" --reverse --preview "ls {}" | read -t args
     else
-        fd --exclude "$go_loc_var" --type d --hidden . | fzf --prompt "Open File:" --reverse --preview "ls $PWD/{1}" | read -t args
+        fd --exclude "$go_loc_var" --type d --hidden . | fzf --prompt "Open File:" --reverse --preview "ls {}" | read -t args
     end
 
     if test -z "$args"
@@ -365,12 +365,11 @@ function searchDirCurrent
 end
 
 # Search Inside Files
-set loc99 (echo "$PWD")
 function searchContents
     rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
-bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: "$loc99"/$loc' | awk -F':' '{ print $1 " " $2}' | read -t args
+bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}' | read -t args
     set fl (string split " " $args -f1)
     set ln (string split " " $args -f2)
     if test -z "$fl"
@@ -441,7 +440,7 @@ function gotoMounteddrive
         end
     else
         set choice0 (exa /media/)
-        set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|fzf --preview "ls /media/{1}")
+        set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|fzf --preview "ls /media/{}")
         cd "/media/$getChoice"
     end
 end
@@ -480,9 +479,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "668s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -746,5 +745,3 @@ if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
-
-cd
