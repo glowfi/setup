@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/sh
 
 ########### UPGRADE SYSTEM ###########
 
@@ -6,7 +6,9 @@ sudo pkg upgrade
 
 ########### PACKAGES ###########
 
-sudo pkg install -y git nnn neovim firefox setsid wget gsed gawk xclip
+sudo pkg install -y git nnn neovim firefox kitty
+sudo pkg install -y setsid wget gsed gawk bash
+sudo pkg install -y xclip
 sudo pkg install -y fzf exa bottom fd-find bat gitui ripgrep
 sudo pkg install -y nerd-fonts
 sudo pkg install -y py39-pip
@@ -75,6 +77,12 @@ cd
 
 fetch https://github.com/Thefrank/jellyfin-server-freebsd/releases/download/v10.8.9/jellyfinserver-10.8.9.pkg
 sudo pkg install -y jellyfinserver-10.8.9.pkg
+sudo pkg install -y libva-utils libva-intel-media-driver
+cd /usr/local/bin
+touch lffmpeg
+fish -c 'printf "#!/bin/sh" >>lffmpeg'
+printf 'ffmpeg -hwaccel vaapi "$@"' >>lffmpeg
+chmod +x lffmpeg
 rm -rf jellyfinserver-10.8.9.pkg
 sudo sysrc jellyfinserver_enable=TRUE
 sudo service jellyfinserver start
