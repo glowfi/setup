@@ -79,13 +79,14 @@ fetch https://github.com/Thefrank/jellyfin-server-freebsd/releases/download/v10.
 sudo pkg install -y jellyfinserver-10.8.9.pkg
 sudo pkg install -y libva-utils libva-intel-media-driver
 cd /usr/local/bin
-touch lffmpeg
-fish -c 'printf "#!/bin/sh" >>lffmpeg'
-printf 'ffmpeg -hwaccel vaapi "$@"' >>lffmpeg
-chmod +x lffmpeg
+fish -c'sudo touch lffmpeg'
+sudo fish -c 'printf "#!/bin/sh\n"' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
+sudo fish -c 'printf "ffmpeg -hwaccel vaapi "\$@""' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
+sudo chmod +x lffmpeg
 rm -rf jellyfinserver-10.8.9.pkg
 sudo sysrc jellyfinserver_enable=TRUE
 sudo service jellyfinserver start
+cd
 
 ########### FIREFOX HARDENING ###########
 
