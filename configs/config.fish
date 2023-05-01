@@ -223,7 +223,9 @@ alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
 
 # Eject
 alias ej="sudo udisksctl power-off -b $argv[1]"
-alias ej_="lsof +D ./ | awk '{print $2}' | tail -n +2 | xargs -r kill -9"
+function ej_
+    lsof +D ./ | awk '{print $2}' | tail -n +2 | xargs -r kill -9
+end
 
 # Delete Multiple Files 
 alias muldf="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
@@ -480,9 +482,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "671s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "669s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "671s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
