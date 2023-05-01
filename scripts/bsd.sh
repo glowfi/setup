@@ -118,3 +118,8 @@ echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xinitrc
 
 sudo echo 'hint.hdaa.0.nid33.config="as=2 seq=15"' | sudo tee -a /boot/device.hints >/dev/null
 sudo echo 'hint.hdaa.0.nid20.config="as=2 seq=0"' | sudo tee -a /boot/device.hints >/dev/null
+
+########### Enable SSH ###########
+
+sudo echo 'sshd_enable="YES"' | sudo tee -a /etc/rc.conf >/dev/null
+sudo /etc/rc.d/sshd start
