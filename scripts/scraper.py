@@ -89,6 +89,7 @@ class WebScraper:
             [
                 "yt-dlp",
                 "--ignore-errors",
+                "--continue",
                 "--external-downloader",
                 "aria2c",
                 "--external-downloader-args",

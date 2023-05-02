@@ -432,14 +432,30 @@ end
 # Jump to Mounted drive
 function gotoMounteddrive
     if test "$checkOS" = Linux
-        set choice0 (exa /run/media/$USER)
-        set choice1 (exa /run/user/1000/gvfs)
-        set getChoice (echo -e "$choice0\n$choice1"|fzf)
+        set choice0 (echo "")
+        set choice1 (echo "")
 
-        if test -z (string match -i "$getChoice*" "$choice0")
-            cd "/run/user/1000/gvfs/$getChoice"
-        else
-            cd "/run/media/$USER/$getChoice"
+        if test (exa "/run/media/$USER" 2>/dev/null)
+            set choice0 (exa /run/media/$USER)
+        end
+
+        if test (exa "/run/user/1000/gvfs" 2>/dev/null)
+            set choice1 (exa /run/user/1000/gvfs)
+        end
+
+        if test (echo "$choice0") || test (echo "$choice1")
+            set getChoice (echo -e "$choice0\n$choice1" |fzf)
+            if test -z (string match -i "$getChoice*" "$choice0")
+                if test (echo "$getChoice")
+                    cd "/run/user/1000/gvfs/$getChoice"
+                end
+            else
+                if test -z (string match -i "$getChoice*" "$choice1")
+                    if test (echo "$getChoice")
+                        cd "/run/media/$USER/$getChoice"
+                    end
+                end
+            end
         end
     else
         set choice0 (exa /media/)
@@ -482,9 +498,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "671s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "687s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "671s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "687s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
