@@ -52,6 +52,10 @@ install "fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts" 
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 install "bluez bluez-utils blueman" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
+wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
+sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
+rm -rf ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
+sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
 install "android-tools scrcpy" "pac"
 
 ### PACKAGES
