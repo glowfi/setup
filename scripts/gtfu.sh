@@ -26,7 +26,7 @@ gitChangeCommitMessage() {
 	commit_hash=""
 	new_message=""
 
-	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --ansi --preview="git show {1} | diff-so-fancy" --preview-window="up:70%" | awk -F" " '{print $1}')
+	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
 
 	if [[ "$commit_hash" != "" ]]; then
 
