@@ -234,6 +234,9 @@ install "xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo" "pac"
 cp -r ~/setup/scripts/dm-record.sh ~/.local/bin/
 chmod +x ~/.local/bin/dm-record.sh
 
+cp -r ~/setup/scripts/dmenu-bluetooth ~/.local/bin/
+chmod +x ~/.local/bin/dmenu-bluetooth
+
 cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
 chmod +x ~/.local/bin/sgrec.sh
 

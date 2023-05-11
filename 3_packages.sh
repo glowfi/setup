@@ -50,7 +50,7 @@ install "xorg-server" "pac"
 install "zip unzip unrar p7zip lzop" "pac"
 install "fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts" "pac"
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
-install "bluez bluez-utils blueman" "pac"
+install "bluez bluez-utils" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
 sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
