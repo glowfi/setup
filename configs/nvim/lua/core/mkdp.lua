@@ -11,7 +11,7 @@ vim.cmd("let g:mkdp_open_to_the_world = 0")
 
 vim.cmd("let g:mkdp_open_ip = ''")
 
-vim.cmd("let g:mkdp_browser = '/usr/bin/firefox'")
+vim.cmd("let g:mkdp_browser = '/usr/bin/brave'")
 
 vim.cmd("let g:mkdp_echo_preview_url = 0")
 
