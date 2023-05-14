@@ -46,7 +46,7 @@ install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
 install "numactl" "pac"
 for i in (seq 2)
     pip install torch torchvision torchaudio
-    pip install opencv-python
+    pip install opencv-contrib-python
 end
 
 # PYTHON STUBS
