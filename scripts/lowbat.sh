@@ -47,7 +47,7 @@ while true; do
 		fi
 	fi
 	((clearCache = clearCache + 1))
-	if [ $(($clearCache % 300)) -eq 0 ]; then
+	if [ $(($clearCache % 900)) -eq 0 ]; then
 		find "$HOME/.cache/" -name 'lowbat*' -delete
 	fi
 done
