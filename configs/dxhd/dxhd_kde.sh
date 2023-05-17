@@ -48,6 +48,14 @@ kitty
 #super + b
 brave
 
+## Network
+#super + n
+kitty -e "nmtui"
+
+## Audio
+#super + v
+kitty -e "pulsemixer"
+
 ## Screenshot
 #alt + a
 windowshot.sh
@@ -55,6 +63,23 @@ windowshot.sh
 ## Dmenu
 #super + w
 dmenu_run -p "Run:" -i
+
+## Scrap YT
+#super + y
+fish -c "sYT -p "dmenu""
+
+## Random Wallpaper
+#super + z
+feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
+
+## Favourite Wallpaper
+#super + c
+randWall=$(printf "136.png\n53.jpg" | shuf -n 1)
+feh --bg-fill ~/wall/"$randWall"
+
+## Clipboard
+#super + e
+clipmenu
 
 ## Intelligent Tools
 #alt + i
