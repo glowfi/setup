@@ -78,6 +78,9 @@ touch ~/.xprofile
 echo "# Hotkey daemon
 dxhd -b &
 
+# Wallpaper
+sh ~/.local/bin/wall.sh &
+
 # Clipboard
 clipmenud &
 
