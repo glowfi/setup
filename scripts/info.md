@@ -404,3 +404,25 @@ __NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRA
 ```bash
 DXVK_ASYNC=1 __NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json __GL_THREADED_OPTIMIZATIONS=1 PROTON_HIDE_NVIDIA_GPU=0 PROTON_ENABLE_NVAPI=1 gamemoderun MANGOHUD=1 %command%
 ```
+
+# PYTHON DL MODULES
+
+```fish
+install "python-opencv" "pac"
+install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
+install "numactl" "pac"
+for i in (seq 2)
+pip install torch torchvision torchaudio
+pip install opencv-contrib-python
+end
+```
+
+# PYTHON STUBS
+
+```fish
+set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
+curl -sSL "https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi" -o "$loc/**init**.pyi"
+pip install -U mypy
+stubgen -m cv2
+rm -rf out
+```

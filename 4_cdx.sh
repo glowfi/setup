@@ -39,24 +39,6 @@ for i in (seq 2)
     pyppeteer-install
 end
 
-# PYTHON DL MODULES 
-
-install "python-opencv" "pac"
-install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
-install "numactl" "pac"
-for i in (seq 2)
-    pip install torch torchvision torchaudio
-    pip install opencv-contrib-python
-end
-
-# PYTHON STUBS
-
-set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
-curl -sSL "https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi" -o "$loc/__init__.pyi"
-pip install -U mypy
-stubgen -m cv2
-rm -rf out
-
 # PYTHON MISC
 
 pip install pyfzf
