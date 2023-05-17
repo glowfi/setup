@@ -27,6 +27,20 @@ install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
+# Volnoti
+git clone https://github.com/hcchu/volnoti
+cd volnoti
+cd res
+rm display-brightness-symbolic.svg
+wget https://0x0.st/Ho5Y.svg -O display-brightness-symbolic.svg
+cd ..
+./prepare.sh
+./configure --prefix=/usr
+make
+sudo make clean install
+cd ..
+rm -rf volnoti
+
 # Setup nsxiv key-handler
 mkdir -p ~/.config/nsxiv/exec
 cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
@@ -36,20 +50,32 @@ cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
 
 echo ""
+echo "----------------------------------------------------------------------------------------"
+echo "--------------Creating wallpaper script...----------------------------------------------"
+echo "----------------------------------------------------------------------------------------"
+echo ""
+
+# WALLPAPER SCRIPT
+
+touch ~/.local/bin/wall.sh
+echo '#!/bin/sh
+while true; do
+    kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group "Containments" --group "1" --group "Wallpaper" --group "org.kde.image" --group "General" --key "Image" "$(find ~/wall -type f | shuf -n 1)"
+	sleep 900s
+done
+' >>~/.local/bin/wall.sh
+
+echo ""
 echo "------------------------------------------------------------------------------------------"
-echo "--------------Creating xinitrc...---------------------------------------------------------"
+echo "--------------Creating xprofile...--------------------------------------------------------"
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# XINIT SETUP
+# XPROFILE SETUP
 
-cp /etc/X11/xinit/xinitrc ~/.xinitrc
-sed -i '51,55d' ~/.xinitrc
+touch ~/.xprofile
 
-echo "# Picom
-picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 --experimental-backends
-
-# Hotkey daemon
+echo "# Hotkey daemon
 dxhd -b &
 
 # Clipboard

@@ -70,12 +70,12 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
+kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group 'Containments' --group '1' --group 'Wallpaper' --group 'org.kde.image' --group 'General' --key 'Image' "$(find ~/wall -type f | shuf -n 1)"
 
 ## Favourite Wallpaper
 #super + c
 randWall=$(printf "136.png\n53.jpg" | shuf -n 1)
-feh --bg-fill ~/wall/"$randWall"
+kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group 'Containments' --group '1' --group 'Wallpaper' --group 'org.kde.image' --group 'General' --key 'Image' "~/wall/$randWall"
 
 ## Clipboard
 #super + e
