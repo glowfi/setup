@@ -119,8 +119,8 @@ yes | printf "Cleaned Orphans!"'
 alias upgrade='mirru;sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm'
 
 # Archive Unarchive aliases 
-alias arca='arc archive'
-alias arcu='arc unarchive'
+alias comp='ouch compress'
+alias dcomp='ouch decompress'
 
 # Check-ur-requests alias
 alias checkur="checkur.py"

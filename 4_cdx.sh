@@ -102,7 +102,6 @@ rm -rf go.tar.gz
 # GOLANG MODULES 
 
 go install golang.org/x/tools/gopls@latest
-go install github.com/mholt/archiver/v3/cmd/arc@latest
 
 echo ""
 echo --------------------------------------------------------------------------

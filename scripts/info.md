@@ -367,9 +367,16 @@ xrandr --output "HDMI-1-0" --mode 1920x1080
 ### JELLYFIN MEDIA SERVER
 
 ```bash
+
+# INSTALL
 yay -S --noconfirm jellyfin-bin jellyfin-media-player
 pip install --upgrade jellyfin-mpv-shim
 sudo chmod -R a+rx /run/media/ && sudo systemctl start jellyfin.service
+
+# UNINSTALL
+yay -Rns --noconfirm jellyfin-bin jellyfin-media-player
+pip uninstall jellyfin-mpv-shim
+sudo rm -rf /var/cache/jellyfin /var/lib/jellyfin
 ```
 
 ### ARCHISO
