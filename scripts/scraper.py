@@ -94,7 +94,7 @@ class WebScraper:
         path = os.path.expanduser(f"~/Downloads/{name}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
-        if url.find("m3u8z") != -1:
+        if url.find("m3u8") != -1:
             m3u8_To_MP4.multithread_download(url)
         else:
             subprocess.run(
