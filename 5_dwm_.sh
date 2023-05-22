@@ -51,6 +51,7 @@ ninja -C build
 sudo ninja -C build install
 cd ..
 rm -rf picom
+cp -r ~/setup/configs/picom ~/.config/
 
 # APPEARANCE
 
@@ -121,7 +122,7 @@ echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
-picom -b --animations --animation-window-mass 0.5 --animation-for-open-window zoom --animation-stiffness 350 --experimental-backends
+picom -b
 
 # Hotkey daemon
 dxhd -b &
