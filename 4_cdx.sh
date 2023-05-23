@@ -265,9 +265,16 @@ mv ./trans ~/.local/bin/
 cp -r ~/setup/scripts/tran.sh ~/.local/bin/
 chmod +x ~/.local/bin/tran.sh
 
+# ADDITIONAL PROGRAMS
+
 install "atbswp" "yay"
 install "tk python-wxpython" "pac"
 pip install pyautogui pynput
+
+set url (curl https://github.com/th-ch/youtube-music/releases | grep -E ".AppImage" | head -1 | grep -io '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//i' -e 's/["'"'"']$//i')
+wget "https://github.com/$url" -O music
+chmod +x ./music
+mv ./music ~/.local/bin/
 
 # SETUP DOCKER 
 
