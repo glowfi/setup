@@ -38,7 +38,9 @@ kitty -e "pulsemixer"
 
 ## Screenshot
 #alt + a
+sed -i '126s/.*/fading = false;/' ~/.config/picom/picom.conf
 windowshot.sh
+sed -i '126s/.*/fading = true;/' ~/.config/picom/picom.conf
 
 ## Scrap YT
 #super + y
@@ -59,7 +61,9 @@ clipmenu
 
 ## Intelligent Tools
 #alt + i
+sed -i '126s/.*/fading = false;/' ~/.config/picom/picom.conf
 int.sh
+sed -i '126s/.*/fading = true;/' ~/.config/picom/picom.conf
 
 ## Kill Process
 #alt + k

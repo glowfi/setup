@@ -43,7 +43,8 @@ cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
 # PICOM DISPLAY COMPOSITOR
 
 install "libev libconfig meson ninja uthash" "pac"
-git clone https://github.com/pijulius/picom
+# git clone https://github.com/pijulius/picom
+git clone https://github.com/FT-Labs/picom
 cd picom
 git submodule update --init --recursive
 meson --buildtype=release . build
