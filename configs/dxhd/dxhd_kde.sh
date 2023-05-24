@@ -92,3 +92,134 @@ pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
 kill -9 "$pid"
 processName=$(echo "$getProcess" | awk '{print $NF}' | xargs)
 killall -9 "$processName"
+
+## Activate Deactivate Easyeffects
+#alt + g
+isRunning=$(ps aux | grep "easyeffects" | wc -lc | xargs | cut -d" " -f1)
+
+if [[ "$isRunning" = "2" ]]; then
+	getProcess=$(ps aux | grep "easyeffects" | head -1)
+	pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
+	kill -9 "$pid"
+	notify-send "Easyeffects Deactivated!"
+else
+	nohup easyeffects --gapplication-service &
+	rm ~/nohup.out
+	notify-send "Easyeffects Activated!"
+fi
+
+## Increase Volume
+#super + F8
+pamixer -i 5 --allow-boost
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
+fi
+
+## Decrease Volume
+#super + F7
+pamixer -d 5 --allow-boost
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
+fi
+
+## Mute/Unmute Volume
+#super + F6
+VOL=$(pamixer --get-volume)
+STATE=$(pamixer --get-mute)
+pamixer -t
+if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+	volnoti-show $VOL
+else
+	volnoti-show -m
+fi
+
+## Increase Brightness
+#super + F3
+brightnessctl s 30+
+currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%" | xargs)
+cap=100
+if [ "$currBrightness" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	fi
+fi
+
+## Decrease Brightness
+#super + F2
+brightnessctl s 30-
+currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%")
+cap=100
+if [ "$currBrightness" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	else
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	fi
+fi
+
+## Decrease Mic Volume
+#super + F9
+amixer sset Capture 5%-
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
+fi
+
+## Increase Mic Volume
+#super + F11
+amixer sset Capture 5%+
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+cap=100
+if [ "$VOL" -gt "$cap" ]; then
+	volnoti-show 100
+else
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
+fi
+
+## Mute/Unmute Mic Volume
+#super + F10
+amixer -D pulse sset Capture toggle
+MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+if [ "$MSTATE" = "[on]" ] || [ "$VOL" -eq 0 ]; then
+	volnoti-show $MVOL
+else
+	volnoti-show -m
+fi

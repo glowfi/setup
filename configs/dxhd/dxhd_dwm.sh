@@ -69,6 +69,21 @@ kill -9 "$pid"
 processName=$(echo "$getProcess" | awk '{print $NF}' | xargs)
 killall -9 "$processName"
 
+## Activate Deactivate Easyeffects
+#alt + g
+isRunning=$(ps aux | grep "easyeffects" | wc -lc | xargs | cut -d" " -f1)
+
+if [[ "$isRunning" = "2" ]]; then
+	getProcess=$(ps aux | grep "easyeffects" | head -1)
+	pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
+	kill -9 "$pid"
+	notify-send "Easyeffects Deactivated!"
+else
+	nohup easyeffects --gapplication-service &
+	rm ~/nohup.out
+	notify-send "Easyeffects Activated!"
+fi
+
 ## Increase Volume
 #super + F8
 pamixer -i 5 --allow-boost
