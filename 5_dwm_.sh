@@ -61,7 +61,9 @@ install "lxappearance-gtk3 qt5ct kvantum-qt5" "pac"
 install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
 git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
-cd ./Gruvbox-GTK-Theme/themes
+cd ./Gruvbox-GTK-Theme/
+git checkout 44e81d8226579a24a791f3acf43b97de815bc4b1
+cd themes
 sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
 cd ../../
 rm -rf Gruvbox-GTK-Theme

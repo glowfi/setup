@@ -52,10 +52,16 @@ install "fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts" 
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 install "bluez bluez-utils" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
+mkdir test
+cd test
 wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
 sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
-rm -rf ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
-sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
+wget 'https://archive.archlinux.org/packages/u/util-linux/util-linux-2.38rc4-1-x86_64.pkg.tar.zst'
+wget 'https://archive.archlinux.org/packages/u/util-linux-libs/util-linux-libs-2.38rc4-1-x86_64.pkg.tar.zst'
+sudo pacman -U --noconfirm ./util-linux-2.38rc4-1-x86_64.pkg.tar.zst ./util-linux-libs-2.38rc4-1-x86_64.pkg.tar.zst
+sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd util-linux util-linux-libs/" /etc/pacman.conf
+cd ..
+rm -rf test
 install "android-tools scrcpy" "pac"
 
 ### PACKAGES
