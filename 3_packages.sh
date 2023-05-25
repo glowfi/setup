@@ -65,8 +65,16 @@ install "brave-bin" "yay"
 install "ouch" "pac"
 
 ### IMAGE
-install "gimp imagemagick ffmpegthumbnailer" "pac"
+install "imagemagick ffmpegthumbnailer" "pac"
+install "gimp" "pac"
 install "gimp-plugin-registry" "yay"
+rm -rf ~/.config/GIMP/2.10
+mkdir -p ~/.config/GIMP/2.10
+cd ~/.config/GIMP/2.10
+git clone https://github.com/Diolinux/PhotoGIMP
+mv ./PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* .
+rm -rf PhotoGIMP filters plug-ins splashes
+cd
 
 ### VIDEO
 install "kdenlive ffmpeg yt-dlp mujs" "pac"
