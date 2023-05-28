@@ -113,17 +113,17 @@ class WebScraper:
             )
 
         # Download subtitles
-        # if subtitle:
-        #     args = [
-        #         "ffmpeg",
-        #         "-i",
-        #         f"{url}",
-        #         "-vf",
-        #         f"subtitle={subtitle}",
-        #         f"{name}.srt",
-        #     ]
-        #     ffmpeg_process = subprocess.Popen(args)
-        #     ffmpeg_process.wait()
+        if subtitle:
+            args = [
+                "ffmpeg",
+                "-i",
+                f"{url}",
+                "-vf",
+                f"subtitle={subtitle}",
+                f"{name}.srt",
+            ]
+            ffmpeg_process = subprocess.Popen(args)
+            ffmpeg_process.wait()
 
         return "Downloaded !"
 
