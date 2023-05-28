@@ -435,3 +435,6 @@
 [play_sound]
     summary = "*"
     script = ~/.local/bin/audio.sh
+
+# Enable Image 
+icon_position=left
