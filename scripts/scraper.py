@@ -94,23 +94,21 @@ class WebScraper:
         path = os.path.expanduser(f"~/Downloads/{name}/")
         subprocess.getoutput(f'mkdir "{path}"')
         os.chdir(path)
-        if url.find("m3u8") != -1:
-            m3u8_To_MP4.multithread_download(url)
-        else:
-            subprocess.run(
-                [
-                    "yt-dlp",
-                    "--ignore-errors",
-                    "--continue",
-                    "--external-downloader",
-                    "aria2c",
-                    "--external-downloader-args",
-                    "-j 16 -x 16 -s 16 -k 1M --max-tries=0 --retry-wait=0",
-                    url,
-                    "-o",
-                    f"{name}.%(ext)s",
-                ]
-            )
+
+        subprocess.run(
+            [
+                "yt-dlp",
+                "--ignore-errors",
+                "--continue",
+                "--external-downloader",
+                "aria2c",
+                "--external-downloader-args",
+                "-j 16 -x 16 -s 16 -k 1M --max-tries=0 --retry-wait=0",
+                url,
+                "-o",
+                f"{name}.%(ext)s",
+            ]
+        )
 
         # Download subtitles
         if subtitle:

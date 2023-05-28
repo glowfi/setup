@@ -240,7 +240,6 @@ chmod +x ~/.local/bin/lowbat.sh
 install "ani-cli-git" "yay"
 
 pip install poetry
-pip install m3u8_To_MP4
 git clone https://github.com/mov-cli/mov-cli
 cd mov-cli
 cp -r ~/setup/scripts/scraper.py ./mov_cli/utils/
