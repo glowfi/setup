@@ -219,6 +219,10 @@ rm -rf dragon
 
 cp -r ~/setup/configs/kitty ~/.config/
 
+# COPY ICONS
+
+cp -r ~/setup/configs/img ~/.local/share/
+
 # CHANGE DEFAULT SHELL
 
 echo ""
