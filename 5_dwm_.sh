@@ -23,6 +23,7 @@ install "mtpfs gvfs-mtp" "pac"
 install "jmtpfs nsxiv-git" "yay"
 
 # Volnoti
+install "dbus-glib" "pac"
 git clone https://github.com/hcchu/volnoti
 cd volnoti
 cd res
