@@ -56,10 +56,7 @@ mkdir test
 cd test
 wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
 sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
-wget 'https://archive.archlinux.org/packages/u/util-linux/util-linux-2.38rc4-1-x86_64.pkg.tar.zst'
-wget 'https://archive.archlinux.org/packages/u/util-linux-libs/util-linux-libs-2.38rc4-1-x86_64.pkg.tar.zst'
-sudo pacman -U --noconfirm ./util-linux-2.38rc4-1-x86_64.pkg.tar.zst ./util-linux-libs-2.38rc4-1-x86_64.pkg.tar.zst
-sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd util-linux util-linux-libs/" /etc/pacman.conf
+sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
 cd ..
 rm -rf test
 install "android-tools scrcpy" "pac"
