@@ -17,6 +17,47 @@ sudo pkg install -y devel/gh
 sudo pkg install -y papirus-icon-theme
 sudo pkg install -y mpv aria2
 
+###### PLANK THEME ######
+
+mkdir -p cd ~/.local/share/plank/themes/shade/
+cd ~/.local/share/plank/themes/shade/
+wget https://raw.githubusercontent.com/erikdubois/plankthemes/master/shade/dock.theme
+cd
+
+########### Restore Keyboard Shortcuts ###########
+
+# dconf dump /org/mate/desktop/keybindings/ > dconf-mate-desktop-keybindings.conf                                         2.77s
+# dconf dump /org/mate/marco/window-keybindings/ > dconf-mate-marco-keybindings.conf
+
+echo "[/]
+close='<Primary><Shift>q'
+move-to-side-n='<Mod4>Up'
+move-to-side-s='<Mod4>Down'
+tile-to-side-e='<Mod4>Right'
+tile-to-side-w='<Mod4>Left'
+toggle-maximized='<Primary><Shift>m'" >dconf-mate-marco-keybindings.conf
+
+echo "[custom0]
+action='clipmenu'
+binding='<Mod4>e'
+name='Clipboard'
+
+[custom1]
+action='dmenu_run'
+binding='<Mod4>p'
+name='App Launcher'" >dconf-mate-desktop-keybindings.conf
+
+dconf load /org/mate/desktop/keybindings/ <dconf-mate-desktop-keybindings.conf
+dconf load /org/mate/marco/window-keybindings/ <dconf-mate-marco-keybindings.conf
+
+rm dconf-mate-marco-keybindings.conf dconf-mate-desktop-keybindings.conf
+
+##### Clipboard Support #####
+
+echo "## Clipmenu
+clipmenud &
+" >>~/.xprofile
+
 ######## CONFIGURING GIT #######
 
 git config --global user.name -
