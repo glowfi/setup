@@ -12,6 +12,15 @@ sudo pkg install -y xclip
 sudo pkg install -y fzf exa bottom fd-find bat gitui ripgrep
 sudo pkg install -y nerd-fonts
 sudo pkg install -y py39-pip
+sudo pkg install -y node npm
+sudo pkg install -y devel/gh
+sudo pkg install -y papirus-icon-theme
+sudo pkg install -y mpv aria2
+
+######## CONFIGURING GIT #######
+
+git config --global user.name -
+git config --global user.email -
 
 ########### CONFIGS ###########
 
@@ -42,7 +51,10 @@ cd
 
 # Neovim Config
 sudo pkg install -y tree-sitter ninja shfmt
-pip install neovim
+sudo npm update -g npm
+sudo install npm@latest -g
+pip install neovim black flake8
+sudo npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
 cd ~/.config
 mkdir nvim
 cd nvim
@@ -75,18 +87,18 @@ cd
 
 ########### JELLYFIN SERVER ###########
 
-fetch https://github.com/Thefrank/jellyfin-server-freebsd/releases/download/v10.8.9/jellyfinserver-10.8.9.pkg
-sudo pkg install -y jellyfinserver-10.8.9.pkg
-sudo pkg install -y libva-utils libva-intel-media-driver
-cd /usr/local/bin
-fish -c'sudo touch lffmpeg'
-sudo fish -c 'printf "#!/bin/sh\n"' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
-sudo fish -c 'printf "ffmpeg -hwaccel vaapi "\$@""' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
-sudo chmod +x lffmpeg
-rm -rf jellyfinserver-10.8.9.pkg
-sudo sysrc jellyfinserver_enable=TRUE
-sudo service jellyfinserver start
-cd
+# fetch https://github.com/Thefrank/jellyfin-server-freebsd/releases/download/v10.8.9/jellyfinserver-10.8.9.pkg
+# sudo pkg install -y jellyfinserver-10.8.9.pkg
+# sudo pkg install -y libva-utils libva-intel-media-driver
+# cd /usr/local/bin
+# fish -c'sudo touch lffmpeg'
+# sudo fish -c 'printf "#!/bin/sh\n"' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
+# sudo fish -c 'printf "ffmpeg -hwaccel vaapi "\$@""' | sudo tee -a /usr/local/bin/lffmpeg >/dev/null
+# sudo chmod +x lffmpeg
+# rm -rf jellyfinserver-10.8.9.pkg
+# sudo sysrc jellyfinserver_enable=TRUE
+# sudo service jellyfinserver start
+# cd
 
 ########### FIREFOX HARDENING ###########
 
@@ -121,5 +133,5 @@ sudo echo 'hint.hdaa.0.nid20.config="as=2 seq=0"' | sudo tee -a /boot/device.hin
 
 ########### Enable SSH ###########
 
-sudo echo 'sshd_enable="YES"' | sudo tee -a /etc/rc.conf >/dev/null
-sudo /etc/rc.d/sshd start
+# sudo echo 'sshd_enable="YES"' | sudo tee -a /etc/rc.conf >/dev/null
+# sudo /etc/rc.d/sshd start
