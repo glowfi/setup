@@ -19,6 +19,9 @@ stop_ueberzug() {
 preview_img() {
 	[ -d "$1" ] && echo "$1 is a directory" ||
 		printf '%s\n' '{"action": "add", "identifier": "image-preview", "path": "'"$1"'", "x": "2", "y": "1", "width": "'"$FZF_PREVIEW_COLUMNS"'", "height": "'"$FZF_PREVIEW_LINES"'"}' >"$FIFO"
+	metadata="$(mediainfo "$1" | tail -10)"
+	printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+	echo "$metadata"
 }
 [ "$1" = "preview_img" ] && {
 	preview_img "$2"
