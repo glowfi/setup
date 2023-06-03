@@ -24,33 +24,170 @@ cd ~/.local/share/plank/themes/shade/
 wget https://raw.githubusercontent.com/erikdubois/plankthemes/master/shade/dock.theme
 cd
 
-########### Restore Keyboard Shortcuts ###########
+########### Restore Settings ###########
 
-# dconf dump /org/mate/desktop/keybindings/ > dconf-mate-desktop-keybindings.conf
-# dconf dump /org/mate/marco/window-keybindings/ > dconf-mate-marco-keybindings.conf
+echo "
+[com/solus-project/brisk-menu]
+dark-theme=false
+window-type='classic'
 
-echo "[/]
+[net/launchpad/plank/docks/dock1]
+alignment='center'
+auto-pinning=true
+current-workspace-only=false
+dock-items=['caja-browser.dockitem', 'kitty.dockitem', 'eom.dockitem', 'mpv.dockitem', 'firefox.dockitem', 'matecc.dockitem']
+hide-delay=0
+hide-mode='intelligent'
+icon-size=52
+items-alignment='center'
+lock-items=false
+monitor=''
+offset=0
+pinned-only=false
+pressure-reveal=false
+show-dock-item=false
+theme='shade'
+tooltips-enabled=true
+unhide-delay=0
+zoom-enabled=false
+zoom-percent=150
+
+[org/gnome/evolution-data-server]
+migrated=true
+
+[org/mate/caja/window-state]
+geometry='800x550+558+261'
+maximized=false
+start-with-sidebar=true
+start-with-status-bar=true
+start-with-toolbar=true
+
+[org/mate/desktop/accessibility/keyboard]
+bouncekeys-beep-reject=true
+bouncekeys-delay=300
+bouncekeys-enable=false
+enable=false
+feature-state-change-beep=false
+mousekeys-accel-time=1200
+mousekeys-enable=false
+mousekeys-init-delay=160
+mousekeys-max-speed=750
+slowkeys-beep-accept=true
+slowkeys-beep-press=true
+slowkeys-beep-reject=false
+slowkeys-delay=300
+slowkeys-enable=false
+stickykeys-enable=false
+stickykeys-latch-to-lock=true
+stickykeys-modifier-beep=true
+stickykeys-two-key-off=true
+timeout=120
+timeout-enable=false
+togglekeys-enable=false
+
+[org/mate/desktop/applications/calculator]
+exec='mate-calc'
+
+[org/mate/desktop/applications/terminal]
+exec='kitty'
+
+[org/mate/desktop/interface]
+gtk-color-scheme='topbar_bg_color:#222222\ntopbar_fg_color:#EFEFEF'
+gtk-theme='Vimix-Dark'
+icon-theme='ePapirus-Dark'
+
+[org/mate/desktop/keybindings/custom0]
+action='clipmenu'
+binding='<Mod4>e'
+name='Clipboard'
+
+[org/mate/desktop/keybindings/custom1]
+action='dmenu_run'
+binding='<Mod4>p'
+name='App Launcher'
+
+[org/mate/desktop/peripherals/mouse]
+cursor-theme='Adwaita'
+
+[org/mate/desktop/session]
+session-start=1685829561
+
+[org/mate/desktop/sound]
+event-sounds=true
+input-feedback-sounds=true
+theme-name='__no_sounds'
+
+[org/mate/marco/general]
+compositing-manager=true
+theme='Vimix-Dark'
+
+[org/mate/marco/global-keybindings]
+run-command-terminal='<Mod4>t'
+switch-to-workspace-1='<Mod4>1'
+switch-to-workspace-2='<Mod4>2'
+switch-to-workspace-3='<Mod4>3'
+
+[org/mate/marco/window-keybindings]
 close='<Primary><Shift>q'
 move-to-side-n='<Mod4>Up'
 move-to-side-s='<Mod4>Down'
 tile-to-side-e='<Mod4>Right'
 tile-to-side-w='<Mod4>Left'
-toggle-maximized='<Primary><Shift>m'" >dconf-mate-marco-keybindings.conf
+toggle-maximized='<Primary><Shift>m'
 
-echo "[custom0]
-action='clipmenu'
-binding='<Mod4>e'
-name='Clipboard'
+[org/mate/panel/general]
+default-layout='element'
+object-id-list=['notification-area', 'clock', 'object-0']
+toplevel-id-list=['top']
 
-[custom1]
-action='dmenu_run'
-binding='<Mod4>p'
-name='App Launcher'" >dconf-mate-desktop-keybindings.conf
+[org/mate/panel/objects/clock]
+applet-iid='ClockAppletFactory::ClockApplet'
+locked=true
+object-type='applet'
+panel-right-stick=true
+position=10
+toplevel-id='top'
 
-dconf load /org/mate/desktop/keybindings/ <dconf-mate-desktop-keybindings.conf
-dconf load /org/mate/marco/window-keybindings/ <dconf-mate-marco-keybindings.conf
+[org/mate/panel/objects/clock/prefs]
+custom-format=''
+format='24-hour'
 
-rm dconf-mate-marco-keybindings.conf dconf-mate-desktop-keybindings.conf
+[org/mate/panel/objects/notification-area]
+applet-iid='NotificationAreaAppletFactory::NotificationArea'
+locked=true
+object-type='applet'
+panel-right-stick=true
+position=20
+toplevel-id='top'
+
+[org/mate/panel/objects/object-0]
+object-type='menu-bar'
+panel-right-stick=false
+position=0
+toplevel-id='top'
+
+[org/mate/panel/objects/window-list/prefs]
+group-windows='never'
+
+[org/mate/panel/toplevels/top]
+expand=true
+orientation='top'
+screen=0
+size=24
+
+[org/mate/power-manager]
+action-critical-battery='hibernate'
+button-lid-ac='suspend'
+button-lid-battery='suspend'
+button-power='interactive'
+button-suspend='suspend'
+
+[org/mate/settings-daemon/plugins/media-keys]
+www='<Mod4>b'
+" >settings.conf
+
+dconf load / <settings.conf
+rm settings.conf
 
 ##### Clipboard Support #####
 
