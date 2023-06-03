@@ -26,7 +26,7 @@ cd
 
 ########### Restore Keyboard Shortcuts ###########
 
-# dconf dump /org/mate/desktop/keybindings/ > dconf-mate-desktop-keybindings.conf                                         2.77s
+# dconf dump /org/mate/desktop/keybindings/ > dconf-mate-desktop-keybindings.conf
 # dconf dump /org/mate/marco/window-keybindings/ > dconf-mate-marco-keybindings.conf
 
 echo "[/]
