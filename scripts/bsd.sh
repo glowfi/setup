@@ -24,6 +24,27 @@ cd ~/.local/share/plank/themes/shade/
 wget https://raw.githubusercontent.com/erikdubois/plankthemes/master/shade/dock.theme
 cd
 
+##### MPV #####
+
+wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
+bash ./default-media-player.sh mpv.desktop
+rm -rf default-media-player.sh
+
+mkdir -p .config/mpv/scripts
+touch ~/.config/mpv/mpv.conf
+echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
+
+mkdir -p $HOME/.config/mpv/scripts
+wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
+
+wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
+wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
+echo "osc=no" >>~/.config/mpv/mpv.conf
+
+cd .config/mpv/scripts/
+git clone https://github.com/4ndrs/PureMPV
+cd
+
 ########### Restore Settings ###########
 
 echo "
@@ -302,7 +323,7 @@ cd
 
 ########### Fix resolution ###########
 
-echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xinitrc
+echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xprofile
 
 ########### Fix Audio ###########
 
