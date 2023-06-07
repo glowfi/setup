@@ -102,17 +102,15 @@ killall -9 "$processName"
 isRunning=$(ps aux | grep "easyeffects" | wc -lc | xargs | cut -d" " -f1)
 
 if [[ "$isRunning" = "2" ]]; then
-	rm ~/nohup.out
 	getProcess=$(ps aux | grep "easyeffects" | head -1)
 	pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
 	kill -9 "$pid"
 	dunstify -I ~/.local/share/img/easyno.png "Easyeffects Deactivated!"
 	rm nohup.out
 else
-	rm ~/nohup.out
 	nohup easyeffects --gapplication-service &
-	rm ~/nohup.out
 	dunstify -I ~/.local/share/img/easy.png "Easyeffects Activated!"
+	rm ~/nohup.out
 fi
 
 ## Increase Volume
