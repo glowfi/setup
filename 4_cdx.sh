@@ -264,6 +264,9 @@ mv ./trans ~/.local/bin/
 cp -r ~/setup/scripts/tran.sh ~/.local/bin/
 chmod +x ~/.local/bin/tran.sh
 
+cp -r ~/setup/scripts/fixWords.py ~/.local/bin/
+chmod +x ~/.local/bin/fixWords.py
+
 # ADDITIONAL PROGRAMS
 
 install "atbswp" "yay"

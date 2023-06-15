@@ -22,6 +22,11 @@ install "lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-util
 install "mtpfs gvfs-mtp" "pac"
 install "jmtpfs nsxiv-git" "yay"
 
+### MISC
+
+mkdir -p ~/.misc
+cp -r ~/setup/configs/misc/* ~/.misc/
+
 # Volnoti
 install "dbus-glib" "pac"
 git clone https://github.com/hcchu/volnoti
@@ -113,17 +118,17 @@ done
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
-echo "--------------Creating xprofile...--------------------------------------------------------"
+echo "--------------Creating xinitrc...---------------------------------------------------------"
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# XPROFILE SETUP
+# XINITRC SETUP
 
-# cp /etc/X11/xinit/xinitrc ~/.xinitrc
-# sed -i '51,55d' ~/.xinitrc
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+sed -i '51,55d' ~/.xinitrc
 
 echo "# Startup Sound
-mpv --no-video ~/.local/share/sounds/startup.m4a
+mpv --no-video ~/.misc/startup.m4a &
 
 # Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
@@ -140,11 +145,14 @@ sh ~/.local/bin/wall.sh &
 # Clipboard
 clipmenud &
 
+# Dunst
+dunst &
+
 # Volume Notification
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker slock &
+xautolock -locknow -locker ~/.local/bin/screenLock.py
 
 # dwmblocks
 dwmblocks &
@@ -160,7 +168,7 @@ done
 
 # DWM Execute
 exec ~/.config/DWM/dwm
-" >>~/.xprofile
+" >>~/.xinitrc
 
 # INSTALL DWM
 echo ""
@@ -191,27 +199,17 @@ cd ..
 echo "Done Installing DEMNU!"
 echo ""
 
-# INSTALL SLOCK
+# INSTALL SCREENLOCKER
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing SLOCK ...-----------------------------------------------------------------"
+echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cd ~/setup/configs/slock
-output=$(getent passwd "$uname" | cut -d ':' -f 5 | awk -F" " '{print $1}')
-output1=$(echo $output | awk '{ print toupper($0) }')
-sudo sed -i "2s/.*/static const char *user  = \""$uname"\";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "3s/.*/static const char *group = \""$uname"\";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
-sudo sed -i "s/Replacehere/"$output1"/g" ~/setup/configs/slock/slock.c
-sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
-sudo cp config.def.h config.h
-sudo make clean install
-sudo systemctl enable slock@$uname.service
-cd ..
-echo "Done Installing SLOCK!"
-echo ""
+pip install pynput opencv-python requests argparse
+cp -r ~/setup/scripts/screenLock.py ~/.local/bin/
+chmod +x ~/.local/bin/screenLock.py
+
 
 # COPY TOPBAR SETTINGS
 echo ""
@@ -235,8 +233,6 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cp -r ~/setup/configs/dunst/ ~/.config
-mkdir -p ~/.local/share/sounds
-cp -r ~/setup/scripts/audio.ogg ~/.local/share/sounds
 cp -r ~/setup/scripts/audio.sh ~/.local/bin/
 chmod +x ~/.local/bin/audio.sh
 cd
@@ -297,17 +293,3 @@ xdg-settings set default-web-browser brave-browser.desktop
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
-
-# SDDM LOGIN MANAGER
-
-sudo mkdir /usr/share/xsessions
-cd /usr/share/xsessions
-sudo touch dwm.desktop
-sudo echo '[Desktop Entry]
-Encoding=UTF-8
-Name=Dwm
-Comment=Dynamic window manager
-Exec=dwm
-Icon=dwm
-Type=XSession' | sudo tee -a /usr/share/xsessions/dwm.desktop >/dev/null
-cp -r ~/setup/scripts/startup.m4a ~/.local/share/sounds
