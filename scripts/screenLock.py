@@ -48,7 +48,6 @@ def listenKey():
             else:
                 # Append the key to the string
                 string += key.char
-                print(string)
         except AttributeError as e:
             print(e)
 
