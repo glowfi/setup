@@ -87,68 +87,71 @@ else:
             data = json.load(f)
 
         if data:
-            k = random.randint(0, len(data))
-            url = data[str(k)]
+            for i in range(len(data)):
+                k = random.randint(0, len(data))
+                url = data[str(k)]
 
-            def on_key_press(key):
-                global string
-                try:
-                    if key == keyboard.Key.enter:
-                        if getPass(string) == matched:
-                            pid = os.getpid()
-                            os.kill(pid, signal.SIGTERM)
-                            return False
+                def on_key_press(key):
+                    global string
+                    try:
+                        if key == keyboard.Key.enter:
+                            if getPass(string) == matched:
+                                pid = os.getpid()
+                                os.kill(pid, signal.SIGTERM)
+                                return False
+                            else:
+                                string = ""
+                        elif key == keyboard.Key.backspace:
+                            if len(string) > 0:
+                                string = string.rstrip(string[-1])
                         else:
-                            string = ""
-                    elif key == keyboard.Key.backspace:
-                        if len(string) > 0:
-                            string = string.rstrip(string[-1])
-                    else:
-                        # Append the key to the string
-                        string += key.char
-                except AttributeError as e:
-                    print(e)
+                            # Append the key to the string
+                            string += key.char
+                    except AttributeError as e:
+                        print(e)
 
-            root = Tk()
+                root = Tk()
 
-            cap = cv2.VideoCapture(url)
+                cap = cv2.VideoCapture(url)
 
-            # Listen for keyboard input using pynput
-            listener = keyboard.Listener(on_press=on_key_press)
-            listener.start()
-            while True:
-                ret, frame = cap.read()
-                if not ret:
-                    break
-                frame = cv2.resize(
-                    frame, (root.winfo_screenwidth(), root.winfo_screenheight())
-                )
-                cv2.putText(
-                    frame,
-                    time.strftime("%H:%M:%S %p"),
-                    (50, root.winfo_screenheight() - 50),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    2,
-                    (255, 255, 255),
-                    2,
-                )
-                cv2.putText(
-                    frame,
-                    "Type Password to unlock",
-                    (60, root.winfo_screenheight() - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    1,
-                    (255, 255, 255),
-                    1,
-                )
-                cv2.namedWindow("Video", cv2.WINDOW_FULLSCREEN | cv2.WINDOW_GUI_NORMAL)
-                cv2.setWindowProperty(
-                    "Video", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN
-                )
-                cv2.imshow("Video", frame)
+                # Listen for keyboard input using pynput
+                listener = keyboard.Listener(on_press=on_key_press)
+                listener.start()
+                while True:
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
+                    frame = cv2.resize(
+                        frame, (root.winfo_screenwidth(), root.winfo_screenheight())
+                    )
+                    cv2.putText(
+                        frame,
+                        time.strftime("%H:%M:%S %p"),
+                        (50, root.winfo_screenheight() - 50),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        2,
+                        (255, 255, 255),
+                        2,
+                    )
+                    cv2.putText(
+                        frame,
+                        "Type Password to unlock",
+                        (60, root.winfo_screenheight() - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 255, 255),
+                        1,
+                    )
+                    cv2.namedWindow(
+                        "Video", cv2.WINDOW_FULLSCREEN | cv2.WINDOW_GUI_NORMAL
+                    )
+                    cv2.setWindowProperty(
+                        "Video", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN
+                    )
+                    cv2.imshow("Video", frame)
 
-                if cv2.waitKey(25) & 0xFF == ord("`"):
-                    break
+                    if cv2.waitKey(25) & 0xFF == ord("`"):
+                        break
 
-            cap.release()
-            cv2.destroyAllWindows()
+                cap.release()
+                cv2.destroyAllWindows()

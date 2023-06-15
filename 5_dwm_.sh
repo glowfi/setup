@@ -152,7 +152,7 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -locknow -locker ~/.local/bin/screenLock.py
+xautolock -time 10 -locker ~/.local/bin/screenLock.py
 
 # dwmblocks
 dwmblocks &
