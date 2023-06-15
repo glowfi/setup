@@ -113,16 +113,19 @@ done
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
-echo "--------------Creating xinitrc...---------------------------------------------------------"
+echo "--------------Creating xprofile...--------------------------------------------------------"
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# XINIT SETUP
+# XPROFILE SETUP
 
-cp /etc/X11/xinit/xinitrc ~/.xinitrc
-sed -i '51,55d' ~/.xinitrc
+# cp /etc/X11/xinit/xinitrc ~/.xinitrc
+# sed -i '51,55d' ~/.xinitrc
 
-echo "# Resolution
+echo "# Startup Sound
+mpv --no-video ~/.local/share/sounds/startup.m4a
+
+# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
@@ -157,7 +160,7 @@ done
 
 # DWM Execute
 exec ~/.config/DWM/dwm
-" >>~/.xinitrc
+" >>~/.xprofile
 
 # INSTALL DWM
 echo ""
@@ -294,3 +297,17 @@ xdg-settings set default-web-browser brave-browser.desktop
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
+
+# SDDM LOGIN MANAGER
+
+sudo mkdir /usr/share/xsessions
+cd /usr/share/xsessions
+sudo touch dwm.desktop
+sudo echo '[Desktop Entry]
+Encoding=UTF-8
+Name=Dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession' | sudo tee -a /usr/share/xsessions/dwm.desktop >/dev/null
+cp -r ~/setup/scripts/startup.m4a ~/.local/share/sounds
