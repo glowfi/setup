@@ -12,7 +12,7 @@ case "$(readlink -f /sbin/init)" in
 esac
 
 case "$(printf "Lock\nDisplay off\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
-'Lock') slock ;;
+'Lock') screenLock.py ;;
 'Display off') xset dpms force off ;;
 'Logout') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
 'Sleep') slock $ctl suspend ;;
