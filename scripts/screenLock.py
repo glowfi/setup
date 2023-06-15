@@ -20,8 +20,6 @@ VIDEO_LOC_FILENAME = os.path.expanduser("~/.config/screensaver/vid.json")
 string = ""
 matched = None
 
-data = None
-
 
 def getPass(message):
     # Compute the SHA-256 hash of the message
@@ -32,6 +30,35 @@ def getPass(message):
 
     # Print the hash
     return hex_digest
+
+
+def listenKey():
+    def on_key_press(key):
+        global string
+        try:
+            if key == keyboard.Key.enter:
+                if getPass(string) == matched:
+                    pid = os.getpid()
+                    os.kill(pid, signal.SIGTERM)
+                else:
+                    string = ""
+            elif key == keyboard.Key.backspace:
+                if len(string) > 0:
+                    string = string.rstrip(string[-1])
+            else:
+                # Append the key to the string
+                string += key.char
+                print(string)
+        except AttributeError as e:
+            print(e)
+
+    # Listen for keyboard input using pynput
+    listener = keyboard.Listener(on_press=on_key_press)
+
+    return listener
+
+
+log = listenKey()
 
 
 # Create the argument parser
@@ -51,6 +78,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if args.init == "y":
+    log.stop()
     if os.path.exists(f"{CONFIG_LOC}/{CONFIG_LOC_FILENAME}"):
         print("User Already Registered!")
         exit(0)
@@ -86,37 +114,17 @@ else:
         with open(f"{VIDEO_LOC_FILENAME}", "r") as f:
             data = json.load(f)
 
+        log.start()
+
         if data:
-            for i in range(len(data)):
+            while True:
                 k = random.randint(0, len(data))
                 url = data[str(k)]
-
-                def on_key_press(key):
-                    global string
-                    try:
-                        if key == keyboard.Key.enter:
-                            if getPass(string) == matched:
-                                pid = os.getpid()
-                                os.kill(pid, signal.SIGTERM)
-                                return False
-                            else:
-                                string = ""
-                        elif key == keyboard.Key.backspace:
-                            if len(string) > 0:
-                                string = string.rstrip(string[-1])
-                        else:
-                            # Append the key to the string
-                            string += key.char
-                    except AttributeError as e:
-                        print(e)
 
                 root = Tk()
 
                 cap = cv2.VideoCapture(url)
 
-                # Listen for keyboard input using pynput
-                listener = keyboard.Listener(on_press=on_key_press)
-                listener.start()
                 while True:
                     ret, frame = cap.read()
                     if not ret:
