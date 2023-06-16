@@ -427,7 +427,7 @@ end
 # PYTHON STUBS
 
 ```fish
-set loc (echo "/home/ayush/.local/lib/python3.10/site-packages/cv2")
+set loc (echo "/home/$USER/.local/lib/python3.10/site-packages/cv2")
 curl -sSL "https://raw.githubusercontent.com/microsoft/python-type-stubs/main/cv2/__init__.pyi" -o "$loc/**init**.pyi"
 pip install -U mypy
 stubgen -m cv2
