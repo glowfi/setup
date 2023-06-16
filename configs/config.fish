@@ -746,8 +746,9 @@ set -U fish_pager_color_progress brwhite --background=cyan
 #                     Miscellaneous
 # ===================================================================
 
-# Default Editor
+# ENV Export
 export EDITOR=nvim
+export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass
 
 # Bar as Manpager
 set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-dark -l man -p'"

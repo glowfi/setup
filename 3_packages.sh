@@ -60,6 +60,7 @@ sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
 cd ..
 rm -rf test
 install "android-tools scrcpy" "pac"
+install "x11-ssh-askpass" "pac"
 
 ### PACKAGES
 install "kdeconnect kcolorchooser" "pac"
