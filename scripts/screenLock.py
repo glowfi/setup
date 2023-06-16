@@ -16,6 +16,7 @@ import json
 CONFIG_LOC = os.path.expanduser("~/.config/screensaver")
 CONFIG_LOC_FILENAME = "hash.txt"
 VIDEO_LOC_FILENAME = os.path.expanduser("~/.config/screensaver/vid.json")
+URL = "https://0x0.st/HT-u.json"
 
 string = ""
 matched = None
@@ -32,14 +33,18 @@ def getPass(message):
     return hex_digest
 
 
+def destroyScreen():
+    pid = os.getpid()
+    os.kill(pid, signal.SIGTERM)
+
+
 def listenKey():
     def on_key_press(key):
         global string
         try:
             if key == keyboard.Key.enter:
                 if getPass(string) == matched:
-                    pid = os.getpid()
-                    os.kill(pid, signal.SIGTERM)
+                    destroyScreen()
                 else:
                     string = ""
             elif key == keyboard.Key.backspace:
@@ -90,8 +95,7 @@ if args.init == "y":
         f.write(val)
 
     # Get Data
-    url = "https://0x0.st/HT-u.json"
-    data = requests.get(url)
+    data = requests.get(URL)
     data = data.json()
 
     with open(f"{VIDEO_LOC_FILENAME}", "w") as f:
@@ -118,11 +122,11 @@ else:
         if data:
             while True:
                 k = random.randint(0, len(data))
-                url = data[str(k)]
+                currURL = data[str(k)]
 
                 root = Tk()
 
-                cap = cv2.VideoCapture(url)
+                cap = cv2.VideoCapture(currURL)
 
                 while True:
                     ret, frame = cap.read()
@@ -139,6 +143,7 @@ else:
                         2,
                         (255, 255, 255),
                         2,
+                        cv2.LINE_AA,
                     )
                     cv2.putText(
                         frame,
@@ -148,6 +153,7 @@ else:
                         1,
                         (255, 255, 255),
                         1,
+                        cv2.LINE_AA,
                     )
                     cv2.namedWindow(
                         "Video", cv2.WINDOW_FULLSCREEN | cv2.WINDOW_GUI_NORMAL
