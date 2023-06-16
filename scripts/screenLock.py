@@ -113,6 +113,7 @@ else:
         print("An error occured!")
 
     else:
+        os.system("xdotool click 1")
         # Generate Random number
         with open(f"{VIDEO_LOC_FILENAME}", "r") as f:
             data = json.load(f)
