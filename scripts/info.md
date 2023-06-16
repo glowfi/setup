@@ -284,20 +284,35 @@ setsid firefox
 sleep 3
 killall firefox
 
-# Settings
+###### Arkenfox ######
 
+# Get Default-release Location
+findLocation=$(find ~/.mozilla/firefox/ | grep -E "default-release" | head -1)
+
+# Go to Default-release
+cd "$findLocation"
+
+# Settings
 original=$(echo 'user_pref("keyword.enabled", false);')
 required=$(echo 'user_pref("keyword.enabled", true);')
 
-# Get Default-release Location
-
-findLocation=$(find ~/.mozilla/firefox/ | grep -E "default-release" | head -1)
-
-# Activate Settings
-
-cd "$findLocation"
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
+cd
+
+###### Betterfox ######
+
+# Create profile
+firefox -CreateProfile second
+
+# Get Default-release Location
+findLocation=$(find ~/.mozilla/firefox/ | grep -E "second" | head -1)
+
+# Go to second profile
+cd "$findLocation"
+
+# Settings
+wget "https://raw.githubusercontent.com/yokoffing/Betterfox/master/user.js" -O user.js
 cd
 ```
 
