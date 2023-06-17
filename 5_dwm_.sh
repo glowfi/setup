@@ -162,8 +162,8 @@ find "$HOME/.cache/" -name 'lowbat*' -delete
 ~/.local/bin/lowbat.sh &
 
 # Infinte loop
-while true;do 
-    ~/.config/DWM/dwm >/dev/null 2>&1 
+while true;do
+    ~/.config/DWM/dwm >/dev/null 2>&1
 done
 
 # DWM Execute
@@ -297,7 +297,7 @@ xdg-settings set default-web-browser brave-browser.desktop
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
 
-# SDDM 
+# SDDM
 
 install "sddm" "pac"
 cd /usr/share/sddm/themes/
@@ -359,8 +359,8 @@ find "$HOME/.cache/" -name 'lowbat*' -delete
 ~/.local/bin/lowbat.sh &
 
 # Infinte loop
-while true;do 
-    ~/.config/DWM/dwm >/dev/null 2>&1 
+while true;do
+    ~/.config/DWM/dwm >/dev/null 2>&1
 done
 
 # DWM Execute

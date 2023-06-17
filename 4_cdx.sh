@@ -18,25 +18,25 @@ echo ""
 # UPGRADE PIP TO LATEST VERSION
 
 for i in (seq 2)
-    python -m ensurepip --upgrade
-    pip install --upgrade pip
-    pip install setuptools
+python -m ensurepip --upgrade
+pip install --upgrade pip
+pip install setuptools
 end
 
 # PYTHON MODULES
 
 for i in (seq 2)
-    pip install virtualenv twine wheel
+pip install virtualenv twine wheel
 end
 
 # JUPYTER SETUP
 
 for i in (seq 2)
-    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
-    jupyter contrib nbextension install --user
-    jupyter nbextensions_configurator enable --user
-    pyppeteer-install
+pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
+jupyter contrib nbextension install --user
+jupyter nbextensions_configurator enable --user
+pyppeteer-install
 end
 
 # PYTHON MISC
@@ -47,7 +47,7 @@ install "libxres" "pac"
 git clone "https://github.com/glowfi/ueberzug-tabbed"
 cd ueberzug-tabbed
 python -m pip install .
-cd .. 
+cd ..
 rm -rf ueberzug-tabbed
 
 echo ""
@@ -69,7 +69,7 @@ source ~/.config/fish/config.fish
 
 npm i -g yarn
 npm update -g npm
-npm install npm@latest -g 
+npm install npm@latest -g
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -99,7 +99,7 @@ curl https://go.dev/dl/ | grep -e linux | head -2 | grep -e href | awk -F href '
 tar -xzf go.tar.gz
 rm -rf go.tar.gz
 
-# GOLANG MODULES 
+# GOLANG MODULES
 
 go install golang.org/x/tools/gopls@latest
 
@@ -187,7 +187,7 @@ mkdir -p .config/mpv/scripts
 touch ~/.config/mpv/mpv.conf
 echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 
-# MPV Scripts 
+# MPV Scripts
 
 mkdir -p $HOME/.config/mpv/scripts
 wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
@@ -273,7 +273,7 @@ install "atbswp" "yay"
 install "tk python-wxpython" "pac"
 pip install pyautogui pynput
 
-# SETUP DOCKER 
+# SETUP DOCKER
 
 install "docker" "pac"
 sudo systemctl start docker.service
@@ -303,11 +303,11 @@ echo ---------------------------------------------------------------------------
 echo ""
 
 for i in (seq 2)
-    pip install neovim black flake8
-    npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
-    pip uninstall -y cmake 
+pip install neovim black flake8 beautysh
+npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
+pip uninstall -y cmake
 end
-install "cmake ninja tree-sitter xclip shfmt" "pac"
+install "cmake ninja tree-sitter xclip" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"

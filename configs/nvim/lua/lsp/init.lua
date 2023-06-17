@@ -222,6 +222,9 @@ lspconfig.tsserver.setup({
 	flags = { debounce_text_changes = 150 },
 })
 
+-- Bash
+require("lspconfig").bashls.setup({ capabilities = capabilities })
+
 -- Null-ls Integration
 local status_ok___, null_ls = pcall(require, "lsp.null-ls")
 if not status_ok___ then
