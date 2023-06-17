@@ -47,8 +47,13 @@ gitChangeCommitMessage() {
 
 }
 
+gitCheckout() {
+	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
+	git checkout "$commit_hash"
+}
+
 if [ -d "$PWD/.git" ]; then
-	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit" | fzf | awk -F"." '{print $1}')
+	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit\n3.Checkout to a particular commit" | fzf | awk -F"." '{print $1}')
 
 	if [ "$out" = "1" ]; then
 		gitMakeMine
@@ -56,7 +61,10 @@ if [ -d "$PWD/.git" ]; then
 		[ "$out" = "2" ]
 	then
 		gitChangeCommitMessage
-
+	elif
+		[ "$out" = "3" ]
+	then
+		gitCheckout
 	fi
 else
 	echo "Not a Git Repository"
