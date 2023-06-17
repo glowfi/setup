@@ -296,3 +296,11 @@ xdg-settings set default-web-browser brave-browser.desktop
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
+
+# SDDM 
+install "sddm" "pac"
+sudo systemctl enable sddm
+cd /usr/share/sddm/themes/
+sudo git clone "https://github.com/MarianArlt/sddm-sugar-light"
+rep="Current=sddm-sugar-light"
+sudo sed -i "33s/.*/$rep/" /usr/lib/sddm/sddm.conf.d/default.conf
