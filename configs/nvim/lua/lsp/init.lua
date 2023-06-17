@@ -223,7 +223,7 @@ lspconfig.tsserver.setup({
 })
 
 -- Bash
-require("lspconfig").bashls.setup({ capabilities = capabilities })
+lspconfig.bashls.setup({ capabilities = capabilities })
 
 -- Null-ls Integration
 local status_ok___, null_ls = pcall(require, "lsp.null-ls")
