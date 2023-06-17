@@ -152,7 +152,7 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker ~/.local/bin/screenLock.py &
+xautolock -time 10 -locker ~/.local/bin/screenLock.sh &
 
 # dwmblocks
 dwmblocks &
@@ -206,9 +206,12 @@ echo "--------------Installing SCREENLOCKER ...---------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-pip install pynput opencv-python requests argparse
+pip install pynput opencv-python requests argparse playsound
 cp -r ~/setup/scripts/screenLock.py ~/.local/bin/
 chmod +x ~/.local/bin/screenLock.py
+cp -r ~/setup/scripts/screenLock.sh ~/.local/bin/
+chmod +x ~/.local/bin/screenLock.sh
+install "i3lock-color" "yay"
 
 
 # COPY TOPBAR SETTINGS

@@ -65,6 +65,11 @@ while true; do
 done
 ' >>~/.local/bin/wall.sh
 
+### MISC
+
+mkdir -p ~/.misc
+cp -r ~/setup/configs/misc/* ~/.misc/
+
 echo ""
 echo "------------------------------------------------------------------------------------------"
 echo "--------------Creating xprofile...--------------------------------------------------------"

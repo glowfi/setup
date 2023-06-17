@@ -12,11 +12,14 @@ import argparse
 import getpass
 import hashlib
 import json
+from playsound import playsound
 
 CONFIG_LOC = os.path.expanduser("~/.config/screensaver")
 CONFIG_LOC_FILENAME = "hash.txt"
 VIDEO_LOC_FILENAME = os.path.expanduser("~/.config/screensaver/vid.json")
 URL = "https://0x0.st/HT-u.json"
+LOCK_SOUND_LOC = os.path.expanduser("~/.misc/lock.mp3")
+UNLOCK_SOUND_LOC = os.path.expanduser("~/.misc/unlock.mp3")
 
 string = ""
 matched = None
@@ -44,6 +47,8 @@ def listenKey():
         try:
             if key == keyboard.Key.enter:
                 if getPass(string) == matched:
+                    if os.path.exists(UNLOCK_SOUND_LOC):
+                        playsound(UNLOCK_SOUND_LOC)
                     destroyScreen()
                 else:
                     string = ""
@@ -119,6 +124,8 @@ else:
             data = json.load(f)
 
         log.start()
+        if os.path.exists(LOCK_SOUND_LOC):
+            playsound(LOCK_SOUND_LOC)
 
         if data:
             while True:
