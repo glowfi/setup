@@ -49,6 +49,7 @@ def listenKey():
                 if getPass(string) == matched:
                     if os.path.exists(UNLOCK_SOUND_LOC):
                         playsound(UNLOCK_SOUND_LOC)
+                        os.system("killall -9 i3lock")
                     destroyScreen()
                 else:
                     string = ""
@@ -129,7 +130,7 @@ else:
 
         if data:
             while True:
-                k = random.randint(0, len(data))
+                k = random.randint(0, len(data) - 1)
                 currURL = data[str(k)]
 
                 root = Tk()
