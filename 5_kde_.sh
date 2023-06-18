@@ -23,6 +23,7 @@ install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm s
 # PACKAGES
 
 install "dolphin ark zathura zathura-pdf-mupdf clipmenu dmenu" "pac"
+install "wmctrl" "pac"
 install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"

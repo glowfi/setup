@@ -16,6 +16,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
+install "wmctrl" "pac"
 install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "pulsemixer pamixer" "pac"
 install "lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils" "pac"
