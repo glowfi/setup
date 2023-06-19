@@ -44,8 +44,8 @@ def destroyScreen():
     os.kill(pid, signal.SIGTERM)
 
 
-def play_sound_typing(loc):
-    playsound(loc)
+# def play_sound_typing(loc):
+#     playsound(loc)
 
 
 def listenKey():
@@ -66,10 +66,10 @@ def listenKey():
                 if len(string) > 0:
                     string = string.rstrip(string[-1])
             else:
-                if os.path.exists(TYPE_SOUND_LOC):
-                    threading.Thread(
-                        target=play_sound_typing, args=(TYPE_SOUND_LOC,)
-                    ).start()
+                # if os.path.exists(TYPE_SOUND_LOC):
+                #     threading.Thread(
+                #         target=play_sound_typing, args=(TYPE_SOUND_LOC,)
+                #     ).start()
                 string += key.char
         except AttributeError as e:
             print(e)
