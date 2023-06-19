@@ -43,9 +43,9 @@ echo "-------------------------------------------------"
 echo "Changing the makeflags for "$nc" cores."
 TOTALMEM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
 if [[ $TOTALMEM -gt 8000000 ]]; then
-	sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
-	echo "Changing the compression settings for "$nc" cores."
-	sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+    sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+    echo "Changing the compression settings for "$nc" cores."
+    sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 fi
 
 # LOCALE GENERATION
@@ -119,16 +119,16 @@ echo ""
 ## Determine GPU
 
 if lspci | grep -E "NVIDIA|GeForce"; then
-	echo "Installing NVIDIA drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
+    echo "Installing NVIDIA drivers ..."
+    for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
 
 elif lspci | grep -E "Radeon"; then
-	echo "Installing AMD Radeon drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
+    echo "Installing AMD Radeon drivers ..."
+    for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
 
 elif lspci | grep -E "Integrated Graphics Controller"; then
-	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
+    echo "Installing Intel drivers ..."
+    for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 
 fi
 
@@ -142,15 +142,15 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+    for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
 
 elif [[ "$driveType" = "non-ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+    for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
 
 fi
 
 # RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
-for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr && break || sleep 1; done
+for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine && break || sleep 1; done
 
 # GRUB
 
@@ -161,22 +161,22 @@ echo "-------------------------------------------------------"
 echo ""
 
 if [[ "$driveType" = "ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
-	grub-mkconfig -o /boot/grub/grub.cfg
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+    grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "$driveType" = "non-ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-	grub-mkconfig -o /boot/grub/grub.cfg
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+    grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
 # UPDATING mkinitcpio.conf and GRUB
 
 if lspci | grep -E "NVIDIA|GeForce"; then
-	sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-	sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
-	mkinitcpio -p linux-zen
+    sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+    sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
+    mkinitcpio -p linux-zen
 elif lspci | grep -E "Radeon"; then
-	sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
-	mkinitcpio -p linux-zen
+    sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
+    mkinitcpio -p linux-zen
 fi
 
 # DISABLE WIFI POWERSAVER MODE
