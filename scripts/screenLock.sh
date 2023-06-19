@@ -20,7 +20,7 @@ root() {
     rm -rf ~/.cache/output-0.png
     rm -rf ~/.cache/output-1.png
 
-    convert "$image" "${hue[@]}" "${effect[@]}" -pointsize 26 -fill "#28282B" -gravity center -annotate +0+160 "LOCKED !" "$icon" -gravity center -composite "$image" "/home/$USER/.cache/output.png"
+    convert "$image" "${hue[@]}" "${effect[@]}" -gravity center "$icon" -gravity center -composite "$image" "/home/$USER/.cache/output.png"
 
     mv ~/.cache/output-0.png ~/.cache/out.png
     rm -rf ~/.cache/output-1.png
