@@ -13,6 +13,7 @@ import getpass
 import hashlib
 import json
 from playsound import playsound
+import threading
 
 CONFIG_LOC = os.path.expanduser("~/.config/screensaver")
 CONFIG_LOC_FILENAME = "hash.txt"
@@ -20,6 +21,8 @@ VIDEO_LOC_FILENAME = os.path.expanduser("~/.config/screensaver/vid.json")
 URL = "https://0x0.st/HT-u.json"
 LOCK_SOUND_LOC = os.path.expanduser("~/.misc/lock.mp3")
 UNLOCK_SOUND_LOC = os.path.expanduser("~/.misc/unlock.mp3")
+TYPE_SOUND_LOC = os.path.expanduser("~/.misc/type.mp3")
+WRONG_SOUND_LOC = os.path.expanduser("~/.misc/wrong.mp3")
 
 string = ""
 matched = None
@@ -41,6 +44,10 @@ def destroyScreen():
     os.kill(pid, signal.SIGTERM)
 
 
+def play_sound_typing(loc):
+    playsound(loc)
+
+
 def listenKey():
     def on_key_press(key):
         global string
@@ -52,12 +59,17 @@ def listenKey():
                         os.system("killall -9 i3lock")
                     destroyScreen()
                 else:
+                    if os.path.exists(WRONG_SOUND_LOC):
+                        playsound(WRONG_SOUND_LOC)
                     string = ""
             elif key == keyboard.Key.backspace:
                 if len(string) > 0:
                     string = string.rstrip(string[-1])
             else:
-                # Append the key to the string
+                if os.path.exists(TYPE_SOUND_LOC):
+                    threading.Thread(
+                        target=play_sound_typing, args=(TYPE_SOUND_LOC,)
+                    ).start()
                 string += key.char
         except AttributeError as e:
             print(e)
