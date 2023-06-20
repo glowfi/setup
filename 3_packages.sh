@@ -221,16 +221,6 @@ cp -r ~/setup/configs/kitty ~/.config/
 
 cp -r ~/setup/configs/img ~/.local/share/
 
-# POWERPLAN LINUX
-
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
-cd
-..
-rm -rf auto-cpufreq
-
-cp -r ~/setup/scripts/powerplan.sh ~/.local/bin/
-chmod +x ~/.local/bin/powerplan.sh
 
 # CHANGE DEFAULT SHELL
 

@@ -15,6 +15,10 @@ echo "--------------Installing Python Modules...------------------------------"
 echo ------------------------------------------------------------------------
 echo ""
 
+# FIX WARNING
+
+sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+
 # UPGRADE PIP TO LATEST VERSION
 
 for i in (seq 2)
@@ -58,7 +62,7 @@ echo ""
 
 # DOWNLOAD NODEJS
 
-set ver (curl -f -L https://nodejs.org/en | grep -Eo "https?://\S+?\""|grep "dist"|tail -2|head -1|cut -d"/" -f5|tr -d "v"|xargs)
+set ver (echo "20.3.0")
 wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
 tar -xf ~/node.tar.xz -C ~
 rm -rf ~/node.tar.xz
