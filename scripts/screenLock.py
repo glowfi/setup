@@ -2,7 +2,7 @@
 
 import time
 import cv2
-from tkinter import Tk, Canvas, Label, font
+from tkinter import Tk
 from pynput import keyboard
 import os
 import signal
@@ -13,39 +13,28 @@ import getpass
 import hashlib
 import json
 from playsound import playsound
-import threading
 
 CONFIG_LOC = os.path.expanduser("~/.config/screensaver")
 CONFIG_LOC_FILENAME = "hash.txt"
 VIDEO_LOC_FILENAME = os.path.expanduser("~/.config/screensaver/vid.json")
 URL = "https://0x0.st/HT-u.json"
-LOCK_SOUND_LOC = os.path.expanduser("~/.misc/lock.mp3")
-UNLOCK_SOUND_LOC = os.path.expanduser("~/.misc/unlock.mp3")
-TYPE_SOUND_LOC = os.path.expanduser("~/.misc/type.mp3")
-WRONG_SOUND_LOC = os.path.expanduser("~/.misc/wrong.mp3")
+LOCK_SOUND_LOC = os.path.expanduser("~/.misc/lock.ogg")
+UNLOCK_SOUND_LOC = os.path.expanduser("~/.misc/unlock.ogg")
+WRONG_SOUND_LOC = os.path.expanduser("~/.misc/wrong.ogg")
 
 string = ""
 matched = None
 
 
 def getPass(message):
-    # Compute the SHA-256 hash of the message
     hash_object = hashlib.sha512(message.encode())
-
-    # Get the hexadecimal representation of the hash
     hex_digest = hash_object.hexdigest()
-
-    # Print the hash
     return hex_digest
 
 
 def destroyScreen():
     pid = os.getpid()
     os.kill(pid, signal.SIGTERM)
-
-
-# def play_sound_typing(loc):
-#     playsound(loc)
 
 
 def listenKey():
@@ -66,15 +55,10 @@ def listenKey():
                 if len(string) > 0:
                     string = string.rstrip(string[-1])
             else:
-                # if os.path.exists(TYPE_SOUND_LOC):
-                #     threading.Thread(
-                #         target=play_sound_typing, args=(TYPE_SOUND_LOC,)
-                #     ).start()
                 string += key.char
         except AttributeError as e:
             print(e)
 
-    # Listen for keyboard input using pynput
     listener = keyboard.Listener(on_press=on_key_press)
 
     return listener
@@ -83,10 +67,8 @@ def listenKey():
 log = listenKey()
 
 
-# Create the argument parser
 parser = argparse.ArgumentParser(description="A Screensaver")
 
-# Add the command-line arguments
 parser.add_argument(
     "-ini",
     "--init",
@@ -96,7 +78,6 @@ parser.add_argument(
 )
 
 
-# Parse the command-line arguments
 args = parser.parse_args()
 
 if args.init == "y":
@@ -112,7 +93,6 @@ if args.init == "y":
     with open(f"{CONFIG_LOC_FILENAME}", "w") as f:
         f.write(val)
 
-    # Get Data
     data = requests.get(URL)
     data = data.json()
 
@@ -132,7 +112,6 @@ else:
 
     else:
         os.system("xdotool click 1")
-        # Generate Random number
         with open(f"{VIDEO_LOC_FILENAME}", "r") as f:
             data = json.load(f)
 
