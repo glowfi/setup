@@ -150,7 +150,7 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker ~/.local/bin/screenLock.sh &
+xautolock -time 10 -locker ~/.local/bin/screenlocker
 
 # dwmblocks
 dwmblocks &
@@ -204,12 +204,14 @@ echo "--------------Installing SCREENLOCKER ...---------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-pip install pynput opencv-python requests argparse playsound
-cp -r ~/setup/scripts/screenLock.py ~/.local/bin/
-chmod +x ~/.local/bin/screenLock.py
-cp -r ~/setup/scripts/screenLock.sh ~/.local/bin/
-chmod +x ~/.local/bin/screenLock.sh
-install "i3lock-color" "yay"
+pip install opencv-python tk pynput playsound pathlib pyautogui
+git clone https://github.com/glowfi/screenlocker
+cd screenlocker
+cargo build
+mv ./target/debug/screenlocker ~/.local/bin/screenlocker
+cd ..
+rm -rf screenlocker
+
 
 
 # COPY TOPBAR SETTINGS
