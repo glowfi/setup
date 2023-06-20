@@ -128,10 +128,7 @@ echo ""
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 sed -i '51,55d' ~/.xinitrc
 
-echo "# Startup Sound
-mpv --no-video ~/.misc/startup.m4a &
-
-# Resolution
+echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
@@ -308,74 +305,3 @@ rm -rf auto-cpufreq
 
 cp -r ~/setup/scripts/powerplan.sh ~/.local/bin/
 chmod +x ~/.local/bin/powerplan.sh
-
-
-# SDDM
-
-install "sddm" "pac"
-cd /usr/share/sddm/themes/
-sudo git clone "https://github.com/MarianArlt/sddm-sugar-light"
-rep="Current=sddm-sugar-light"
-sudo sed -i "33s/.*/$rep/" /usr/lib/sddm/sddm.conf.d/default.conf
-
-
-sudo mkdir /usr/share/xsessions
-cd /usr/share/xsessions
-sudo touch dwm.desktop
-sudo echo '[Desktop Entry]
-Encoding=UTF-8
-Name=Dwm
-Comment=Dynamic window manager
-Exec=dwm
-Icon=dwm
-Type=XSession' | sudo tee -a /usr/share/xsessions/dwm.desktop >/dev/null
-cp -r ~/setup/scripts/startup.m4a ~/.local/share/sounds
-
-sudo systemctl enable sddm
-
-# XPROFILE
-
-touch ~/.xprofile
-
-echo "# Startup Sound
-mpv --no-video ~/.misc/startup.m4a &
-
-# Resolution
-xrandr --output eDP-1 --mode 1920x1080 &
-
-# Picom
-picom -b
-
-# Hotkey daemon
-dxhd -b &
-
-# Wallpaper
-sh ~/.local/bin/wall.sh &
-
-# Clipboard
-clipmenud &
-
-# Dunst
-dunst &
-
-# Volume Notification
-volnoti &
-
-# Autolock
-xautolock -time 10 -locker ~/.local/bin/screenLock.sh &
-
-# dwmblocks
-dwmblocks &
-
-# Low Battery
-find "$HOME/.cache/" -name 'lowbat*' -delete
-~/.local/bin/lowbat.sh &
-
-# Infinte loop
-while true;do
-    ~/.config/DWM/dwm >/dev/null 2>&1
-done
-
-# DWM Execute
-exec ~/.config/DWM/dwm
-" >> ~/.xprofile

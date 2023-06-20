@@ -23,40 +23,20 @@ set fish_greeting # Supresses fish's greeting message
 set TERM xterm-256color # Sets the terminal type
 
 # Start X at login
-set checkOS (uname -a | grep -Eoi "Linux"|head -1)
-if test "$checkOS" = Linux
-    if status --is-login
-        if test -z "$DISPLAY" -a $XDG_VTNR = 1
-            set greetings bonjour halo hola nomoskar
-            set random_greet (random 1 (count $greetings))
-
-            echo "                                      " | lolcat
-            echo "                 ▄█▄                  " | lolcat
-            echo "                ▄███▄                 " | lolcat
-            echo "               ▄█████▄                " | lolcat
-            echo "              ▄███████▄               " | lolcat
-            echo "             ▄ ▀▀██████▄              " | lolcat
-            echo "            ▄██▄▄ ▀█████▄             " | lolcat
-            echo "           ▄█████████████▄            " | lolcat
-            echo "          ▄███████████████▄           " | lolcat
-            echo "         ▄█████████████████▄          " | lolcat
-            echo "        ▄███████████████████▄         " | lolcat
-            echo "       ▄█████████▀▀▀▀████████▄        " | lolcat
-            echo "      ▄████████▀      ▀███████▄       " | lolcat
-            echo "     ▄█████████        ████▀▀██▄      " | lolcat
-            echo "    ▄██████████        █████▄▄▄       " | lolcat
-            echo "   ▄██████████▀        ▀█████████▄    " | lolcat
-            echo "  ▄██████▀▀▀              ▀▀██████▄   " | lolcat
-            echo " ▄███▀▀                       ▀▀███▄  " | lolcat
-            echo "▄▀▀                               ▀▀▄ " | lolcat
-            echo ""
-
-            echo "$greetings[$random_greet] $USER!" | figlet | lolcat
-            exec startx -- -keeptty
-        end
-    end
-else
+set otherOS (uname -a | grep -Eoi "Android"|head -1)
+if test "$otherOS" = Android
     true
+else
+    set checkOS (uname -a | grep -Eoi "Linux"|head -1)
+    if test "$checkOS" = Linux
+        if status --is-login
+            if test -z "$DISPLAY" -a $XDG_VTNR = 1
+                exec startx -- -keeptty
+            end
+        end
+    else
+        true
+    end
 end
 
 # ===================================================================
