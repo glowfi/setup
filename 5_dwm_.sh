@@ -156,7 +156,7 @@ xautolock -time 10 -locker ~/.local/bin/screenlocker &
 dwmblocks &
 
 # Low Battery
-find "$HOME/.cache/" -name 'lowbat*' -delete
+find /home/ayush/.cache/ -name 'lowbat*' -delete
 ~/.local/bin/lowbat.sh &
 
 # Infinte loop
