@@ -150,7 +150,7 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker ~/.local/bin/screenlocker
+xautolock -time 10 -locker ~/.local/bin/screenlocker &
 
 # dwmblocks
 dwmblocks &
