@@ -12,7 +12,7 @@ case "$(readlink -f /sbin/init)" in
 esac
 
 case "$(printf "Lock\nDisplay off\nLogout\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
-    'Lock') screenLock.sh ;;
+    'Lock') screenlocker ;;
     'Display off') xset dpms force off ;;
     'Logout') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
     'Sleep') slock $ctl suspend ;;
