@@ -430,5 +430,6 @@ table inet dev {
     }
 }" | sudo tee -a /etc/nftables.conf >/dev/null
 
+sudo chmod 700 /etc/{iptables,nftables.conf}
 sudo systemctl enable --now nftables
 sudo systemctl restart --now nftables
