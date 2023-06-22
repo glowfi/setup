@@ -76,7 +76,7 @@ filesystem() {
     fs=$(gum choose "${options[@]}")
 
     if [[ "$fs" == "exit" ]]; then
-        exit
+        exit 1
     else
         echo "$fs" >>"$CONFIG_FILE"
     fi
@@ -216,7 +216,7 @@ if [[ "$passu1" == "$passu2" ]]; then
 else
     echo "Password do not match.Try running the script again!"
     rm -rf "$CONFIG_FILE"
-    exit
+    exit 1
 fi
 
 echo ""
@@ -230,7 +230,7 @@ if [[ "$passr1" == "$passr2" ]]; then
 else
     echo "Password do not match.Try running the script again!"
     rm -rf "$CONFIG_FILE"
-    exit
+    exit 1
 fi
 
 echo ""
