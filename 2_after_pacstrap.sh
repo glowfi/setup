@@ -126,10 +126,13 @@ elif lspci | grep -E "Radeon"; then
     echo "Installing AMD Radeon drivers ..."
     for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
 
-elif lspci | grep -E "Integrated Graphics Controller"; then
+elif lspci | grep -E "Intel Corporation UHD"; then
     echo "Installing Intel drivers ..."
     for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 
+elif lspci | grep -E "Integrated Graphics Controller"; then
+    echo "Installing Intel drivers ..."
+    for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 fi
 
 # PACAKGES
