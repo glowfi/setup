@@ -235,6 +235,15 @@ LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
 sudo echo "# Disable webcam
 blacklist uvcvideo" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
 
+# Better IO Scheduler
+
+echo '# set scheduler for NVMe
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="none"
+# set scheduler for SSD and eMMC
+ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
+# set scheduler for rotating disks
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"' | sudo tee -a /etc/udev/rules.d/60-ioschedulers.rules
+
 # PERFORMANCE AND SECURITY SETTINGS
 
 sudo sed -i 's/^umask.*/umask\ 077/' /etc/profile
