@@ -207,8 +207,8 @@ echo ""
 pip install opencv-python tk pynput playsound pathlib pyautogui
 git clone https://github.com/glowfi/screenlocker
 cd screenlocker
-fish -c "cargo build"
-mv ./target/debug/screenlocker ~/.local/bin/screenlocker
+fish -c "cargo build --release"
+mv ./target/release/screenlocker ~/.local/bin/screenlocker
 cd ..
 rm -rf screenlocker
 
