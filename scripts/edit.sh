@@ -64,7 +64,9 @@ video2gif(){
     filelocation
     cutChoice
 
-    ffmpeg -i "$filename" -filter_complex "[0:v] fps=15,scale=w=720:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" -loop 0 -ss "$start" -t "$end" -f gif "$filename_without_extension.gif"
+    quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
+
+    ffmpeg -i "$filename" -filter_complex "[0:v] fps=15,scale=w=$quality:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" -loop 0 -ss "$start" -t "$end" -f gif "$filename_without_extension.gif"
 }
 
 # Download Youtube Video
