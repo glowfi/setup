@@ -62,11 +62,13 @@ incv(){
 video2gif(){
 
     filelocation
+    quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
     cutChoice
 
-    quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
+    ffmpeg -y -ss "$start" -t "$end" -i "$filename" -vf "fps=15,scale=$quality:-1:flags=lanczos,palettegen" palette.png
+    ffmpeg -ss "$start" -t "$end" -i "$filename" -i palette.png -filter_complex "fps=15,scale=$quality:-1:flags=lanczos[x];[x][1:v]paletteuse" "$filename_without_extension.gif"
+    rm palette.png
 
-    ffmpeg -i "$filename" -filter_complex "[0:v] fps=15,scale=w=$quality:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" -loop 0 -ss "$start" -t "$end" -f gif "$filename_without_extension.gif"
 }
 
 # Download Youtube Video
@@ -186,6 +188,9 @@ filename=""
 filename_without_extension=""
 start=""
 end=""
+
+# CD To Home Directory
+cd
 
 # Choose Operation to Perform
 operation=$(echo -e "1. Trim Audio File
