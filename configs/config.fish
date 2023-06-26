@@ -211,6 +211,9 @@ end
 alias muldf="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
 alias muldd="fd --type d . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
 
+# Remove all Metadata
+alias metr="exiftool -all= -overwrite_original $argv[1]"
+
 
 # ===================================================================
 #                         Git Functions
@@ -456,9 +459,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "645s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "648s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "645s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "648s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
