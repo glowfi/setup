@@ -387,28 +387,6 @@ function setWall
     end
 end
 
-# Trim a audio file's time
-function trad
-    ffmpeg -i $argv[1] -ss $argv[2] -to $argv[3] -f mp3 -ab 192000 -vn out.mp3
-end
-
-# Trim a video files's time
-function trvi
-    ffmpeg -i $argv[1] -vcodec copy -acodec copy -ss $argv[2] -to $argv[3] out.mp4
-end
-
-# Merge two audio files
-function mado
-    ffmpeg -i $argv[1] -i $argv[2] \
-        -filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' \
-        -map '[out]' output.mp3
-end
-
-# Increase Volume of an audio file
-function incv
-    ffmpeg -i $argv[1] -filter:a "volume=$argv[2]" out.mp3
-end
-
 # Jump to Mounted drive
 function gotoMounteddrive
     if test "$checkOS" = Linux
@@ -478,9 +456,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "687s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "645s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "687s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "645s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
