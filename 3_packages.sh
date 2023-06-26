@@ -85,7 +85,7 @@ install "kdenlive ffmpeg yt-dlp mujs" "pac"
 install "mpv-git" "yay"
 
 ### AUDIO
-install "songrec mediainfo" "pac"
+install "songrec" "pac"
 
 install "easyeffects lsp-plugins" "pac"
 mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
@@ -99,6 +99,7 @@ install "openrazer-meta polychromatic" "yay"
 sudo gpasswd -a $USER plugdev
 
 ### EXTRAS
+install "mediainfo perl-image-exiftool" "pac"
 install "onlyoffice-bin tectonic" "yay"
 install "pandoc-bin" "yay"
 

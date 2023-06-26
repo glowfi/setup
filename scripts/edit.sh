@@ -63,10 +63,11 @@ video2gif(){
 
     filelocation
     quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
+    fps=$(gum input --placeholder "Enter FPS or framerate for the gif")
     cutChoice
 
-    ffmpeg -y -ss "$start" -t "$end" -i "$filename" -vf "fps=15,scale=$quality:-1:flags=lanczos,palettegen" palette.png
-    ffmpeg -ss "$start" -t "$end" -i "$filename" -i palette.png -filter_complex "fps=15,scale=$quality:-1:flags=lanczos[x];[x][1:v]paletteuse" "$filename_without_extension.gif"
+    ffmpeg -y -ss "$start" -t "$end" -i "$filename" -vf "fps=$fps,scale=$quality:-1:flags=lanczos,palettegen" palette.png
+    ffmpeg -ss "$start" -t "$end" -i "$filename" -i palette.png -filter_complex "fps=$fps,scale=$quality:-1:flags=lanczos[x];[x][1:v]paletteuse" "$filename_without_extension.gif"
     rm palette.png
 
 }
