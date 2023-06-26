@@ -128,7 +128,7 @@ echo ""
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 sed -i '51,55d' ~/.xinitrc
 
-echo "# Resolution
+echo '# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
@@ -156,7 +156,7 @@ xautolock -time 10 -locker ~/.local/bin/screenlocker &
 dwmblocks &
 
 # Low Battery
-find /home/ayush/.cache/ -name 'lowbat*' -delete
+find "$HOME/.cache/" -name "lowbat*" -delete
 ~/.local/bin/lowbat.sh &
 
 # Infinte loop
@@ -166,7 +166,7 @@ done
 
 # DWM Execute
 exec ~/.config/DWM/dwm
-" >>~/.xinitrc
+' >>~/.xinitrc
 
 # INSTALL DWM
 echo ""
