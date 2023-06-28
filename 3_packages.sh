@@ -60,7 +60,6 @@ sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
 cd ..
 rm -rf test
 install "android-tools scrcpy" "pac"
-install "x11-ssh-askpass" "pac"
 
 ### PACKAGES
 install "kdeconnect kcolorchooser" "pac"
@@ -231,6 +230,33 @@ sudo echo "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/90-override.
 sudo echo 'DNS=9.9.9.9
 DNSOverTLS=yes
 LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+
+# SETUP SSH
+
+install "openssh sshguard x11-ssh-askpass" "pac"
+
+sudo rm -rf /etc/sshguard.conf
+sudo echo '# Full path to backend executable (required, no default)
+BACKEND="/usr/lib/sshguard/sshg-fw-nft-sets"
+
+# Log reader command (optional, no default)
+LOGREADER="LANG=C /usr/bin/journalctl -afb -p info -n1 -t sshd -t vsftpd -o cat"
+
+# How many problematic attempts trigger a block
+THRESHOLD=20
+# Blocks last at least 180 seconds
+BLOCK_TIME=180
+# The attackers are remembered for up to 3600 seconds
+DETECTION_TIME=3600
+
+# Blacklist threshold and file name
+BLACKLIST_FILE=100:/var/db/sshguard/blacklist.db
+
+# IPv6 subnet size to block. Defaults to a single address, CIDR notation. (optional, default to 128)
+IPV6_SUBNET=64
+# IPv4 subnet size to block. Defaults to a single address, CIDR notation. (optional, default to 32)
+IPV4_SUBNET=24' | sudo tee -a /etc/sshguard.conf >/dev/null
+
 
 # SECURITY FEATURES
 

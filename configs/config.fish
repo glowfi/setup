@@ -212,7 +212,11 @@ alias muldf="fd --type f . | fzf -m --reverse --height 10 | xargs -ro sudo rm -r
 alias muldd="fd --type d . | fzf -m --reverse --height 10 | xargs -ro sudo rm -rf"
 
 # Remove all Metadata
-alias metr="exiftool -all= -overwrite_original $argv[1]"
+alias rmet="exiftool -all= -overwrite_original $argv[1]"
+
+# Start and Disable SSH Services
+alias shs="sudo systemctl enable --now sshd;sudo systemctl enable --now sshguard"
+alias shd="sudo systemctl disable sshd;sudo systemctl disable sshguard"
 
 
 # ===================================================================
@@ -459,9 +463,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "648s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "652s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "648s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "652s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
