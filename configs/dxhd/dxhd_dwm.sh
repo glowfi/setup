@@ -31,6 +31,10 @@ kitty
 #super + b
 brave
 
+## Alternate Browser
+#ctrl + alt + b
+firefox
+
 ## Network
 #super + n
 kitty -e "nmtui"
