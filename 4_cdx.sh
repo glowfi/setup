@@ -241,6 +241,19 @@ chmod +x ~/.local/bin/gtfu.sh
 cp -r ~/setup/scripts/lowbat.sh ~/.local/bin/
 chmod +x ~/.local/bin/lowbat.sh
 
+yes | pip uninstall pathlib
+pip install pyinstaller
+pip install ffmpeg-python typing-extensions
+sudo pacman -S --noconfirm gifsicle
+git clone https://github.com/winstxnhdw/ezgif-essentials
+cd ezgif-essentials
+pyinstaller --onefile main.py
+cd dist
+mv ./main ~/.local/bin/ezgif
+cd ../..
+rm -rf ezgif-essentials
+pip install pathlib
+yes | pip uninstall pyinstaller
 cp -r ~/setup/scripts/edit.sh ~/.local/bin/
 chmod +x ~/.local/bin/edit.sh
 

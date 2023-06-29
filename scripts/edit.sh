@@ -61,15 +61,22 @@ incv(){
 # Convert Video to Gif
 video2gif(){
 
+    methods=$(echo -e "1.Pure FFMPEG\n2.Custom Library")
+    method=$(echo "$methods"| gum filter --placeholder "Choose Conversion Method"|awk -F"." '{print $1}')
     filelocation
-    quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
-    fps=$(gum input --placeholder "Enter FPS or framerate for the gif")
     cutChoice
 
-    ffmpeg -y -ss "$start" -t "$end" -i "$filename" -vf "fps=$fps,scale=$quality:-1:flags=lanczos,palettegen" palette.png
-    ffmpeg -ss "$start" -t "$end" -i "$filename" -i palette.png -filter_complex "fps=$fps,scale=$quality:-1:flags=lanczos[x];[x][1:v]paletteuse" "$filename_without_extension.gif"
-    rm palette.png
-
+    if [[ "$method" = "1" ]]; then
+        quality=$(gum input --placeholder "Enter quality of gif to render (can be 480p 640p 1080p) Higher Quality will make gif size larger!")
+        fps=$(gum input --placeholder "Enter FPS or framerate for the gif")
+        ffmpeg -y -ss "$start" -t "$end" -i "$filename" -vf "fps=$fps,scale=$quality:-1:flags=lanczos,palettegen" palette.png
+        ffmpeg -ss "$start" -t "$end" -i "$filename" -i palette.png -filter_complex "fps=$fps,scale=$quality:-1:flags=lanczos[x];[x][1:v]paletteuse" "$filename_without_extension.gif"
+        rm palette.png
+    else
+        ffmpeg -i "$filename" -vcodec copy -acodec copy -ss "$start" -to "$end" temp.mp4
+        ezgif -i temp.mp4 -z 3
+        rm -rf temp.mp4
+    fi
 }
 
 # Download Youtube Video
