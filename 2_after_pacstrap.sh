@@ -171,16 +171,36 @@ elif [[ "$driveType" = "non-ssd" ]]; then
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# UPDATING mkinitcpio.conf and GRUB
+# Add Modules to load at start
 
-if lspci | grep -E "NVIDIA|GeForce"; then
-    sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-    sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
-    mkinitcpio -p linux-zen
-elif lspci | grep -E "Radeon"; then
-    sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
-    mkinitcpio -p linux-zen
+FS=$(sed -n '1p' <"$CONFIG_FILE")
+
+if [[ "$FS" = "btrfs" ]]; then
+    if lspci | grep -E "NVIDIA|GeForce"; then
+        sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+        sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
+        for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
+        grub-mkconfig -o /boot/grub/grub.cfg
+        mkinitcpio -p linux-zen
+        sudo systemctl enable grub-btrfsd
+    elif lspci | grep -E "Radeon"; then
+        sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
+        for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
+        grub-mkconfig -o /boot/grub/grub.cfg
+        mkinitcpio -p linux-zen
+        sudo systemctl enable grub-btrfsd
+    fi
+else
+    if lspci | grep -E "NVIDIA|GeForce"; then
+        sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+        sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
+        mkinitcpio -p linux-zen
+    elif lspci | grep -E "Radeon"; then
+        sed -i 's/MODULES=()/MODULES=(amdgpu)/' /etc/mkinitcpio.conf
+        mkinitcpio -p linux-zen
+    fi
 fi
+
 
 # DISABLE WIFI POWERSAVER MODE
 
