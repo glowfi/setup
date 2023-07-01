@@ -197,10 +197,6 @@ sudo usermod --shell /bin/fish $1
 echo "Changed default shell!"
 
 
-# TIMESHIFT
-
-install "timeshift timeshift-autosnap" "yay"
-
 # PERFORMANCE AND SECURITY
 
 echo ""

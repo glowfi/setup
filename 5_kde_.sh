@@ -181,3 +181,7 @@ sudo rm -rf auto-cpufreq
 
 cp -r ~/setup/scripts/powerplan.sh ~/.local/bin/
 chmod +x ~/.local/bin/powerplan.sh
+
+# TIMESHIFT
+
+install "timeshift timeshift-autosnap" "yay"
