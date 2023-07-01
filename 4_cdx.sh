@@ -47,12 +47,8 @@ end
 
 pip install pyfzf
 
-install "libxres" "pac"
-git clone "https://github.com/glowfi/ueberzug-tabbed"
-cd ueberzug-tabbed
-python -m pip install .
-cd ..
-rm -rf ueberzug-tabbed
+install "libxres openslide" "pac"
+install "ueberzugpp" "yay"
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -258,6 +254,7 @@ cp -r ~/setup/scripts/edit.sh ~/.local/bin/
 chmod +x ~/.local/bin/edit.sh
 
 install "ani-cli-git" "yay"
+install "lobster-git" "yay"
 
 pip install poetry
 git clone https://github.com/mov-cli/mov-cli
