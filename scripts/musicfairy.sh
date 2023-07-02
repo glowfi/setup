@@ -36,12 +36,13 @@ if [ -d "$MODEL_PATH" ]; then
     # get url for bestaudio stream from the youtube video
     audio_url="$(yt-dlp -f bestaudio --get-url "$youtube_url")"
 
-    # add the track to mpd and play
-    mpv "$audio_url"
-
     # Get youtube video title for system notification
     title=$(yt-dlp --get-title "$youtube_url")
     notify-send "Playing: " "$title"
+
+    # add the track to mpd and play
+    mpv "$audio_url"
+
 else
     # Install Dependencies for the first time
     rm -rf "$MODEL_PATH"
