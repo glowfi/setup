@@ -25,8 +25,8 @@ install "jmtpfs nsxiv-git" "yay"
 
 ### MISC
 
-mkdir -p ~/.misc
-cp -r ~/setup/configs/misc/* ~/.misc/
+mkdir -p $HOME/.misc
+cp -r $HOME/setup/configs/misc/* $HOME/.misc/
 
 # Volnoti
 install "dbus-glib" "pac"
@@ -44,8 +44,8 @@ cd ..
 rm -rf volnoti
 
 # Setup nsxiv key-handler
-mkdir -p ~/.config/nsxiv/exec
-cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
+mkdir -p $HOME/.config/nsxiv/exec
+cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
 # PICOM DISPLAY COMPOSITOR
 
@@ -59,7 +59,7 @@ ninja -C build
 sudo ninja -C build install
 cd ..
 rm -rf picom
-cp -r ~/setup/configs/picom ~/.config/
+cp -r $HOME/setup/configs/picom $HOME/.config/
 
 # APPEARANCE
 
@@ -81,7 +81,7 @@ sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
 cd ..
 rm -rf gruvbox-material-gtk
 
-cd ~/Downloads/
+cd $HOME/Downloads/
 wget 'https://0x0.st/HryC.tar.gz'
 tar xzvf HryC.tar.gz
 rm HryC.tar.gz
@@ -97,9 +97,9 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 install "dxhd-bin" "yay"
-mkdir -p ~/.config/dxhd
-mv ~/setup/configs/dxhd/dxhd_dwm.sh ~/.config/dxhd
-mv ~/.config/dxhd/dxhd_dwm.sh ~/.config/dxhd/dxhd.sh
+mkdir -p $HOME/.config/dxhd
+mv $HOME/setup/configs/dxhd/dxhd_dwm.sh $HOME/.config/dxhd
+mv $HOME/.config/dxhd/dxhd_dwm.sh $HOME/.config/dxhd/dxhd.sh
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
@@ -109,13 +109,13 @@ echo ""
 
 # WALLPAPER SCRIPT
 
-touch ~/.local/bin/wall.sh
+touch $HOME/.local/bin/wall.sh
 echo '#!/bin/sh
 while true; do
-	feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
+	feh --bg-fill "$(find $HOME/wall -type f | shuf -n 1)"
 	sleep 900s
 done
-' >>~/.local/bin/wall.sh
+' >>$HOME/.local/bin/wall.sh
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -125,8 +125,8 @@ echo ""
 
 # XINITRC SETUP
 
-cp /etc/X11/xinit/xinitrc ~/.xinitrc
-sed -i '51,55d' ~/.xinitrc
+cp /etc/X11/xinit/xinitrc $HOME/.xinitrc
+sed -i '51,55d' $HOME/.xinitrc
 
 echo '# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
@@ -138,7 +138,7 @@ picom -b
 dxhd -b &
 
 # Wallpaper
-sh ~/.local/bin/wall.sh &
+sh $HOME/.local/bin/wall.sh &
 
 # Clipboard
 clipmenud &
@@ -150,23 +150,23 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker ~/.local/bin/screenlocker &
+xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # dwmblocks
 dwmblocks &
 
 # Low Battery
 find "$HOME/.cache/" -name "lowbat*" -delete
-~/.local/bin/lowbat.sh &
+$HOME/.local/bin/lowbat.sh &
 
 # Infinte loop
 while true;do
-    ~/.config/DWM/dwm >/dev/null 2>&1
+    $HOME/.config/DWM/dwm >/dev/null 2>&1
 done
 
 # DWM Execute
-exec ~/.config/DWM/dwm
-' >>~/.xinitrc
+exec $HOME/.config/DWM/dwm
+' >>$HOME/.xinitrc
 
 # INSTALL DWM
 echo ""
@@ -176,9 +176,9 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 DWM_VER=$(echo "6.2")
-cp -r ~/setup/configs/dwm-${DWM_VER}/ ~/.config/
-mv ~/.config/dwm-${DWM_VER}/ ~/.config/DWM
-cd ~/.config/DWM/
+cp -r $HOME/setup/configs/dwm-${DWM_VER}/ $HOME/.config/
+mv $HOME/.config/dwm-${DWM_VER}/ $HOME/.config/DWM
+cd $HOME/.config/DWM/
 make
 cd ..
 echo "Done Installing DWM!"
@@ -191,7 +191,7 @@ echo "--------------Installing DMENU ...----------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cd ~/setup/configs/dmenu
+cd $HOME/setup/configs/dmenu
 sudo make clean install
 cd ..
 echo "Done Installing DEMNU!"
@@ -208,7 +208,7 @@ pip install opencv-python tk pynput playsound pathlib pyautogui
 git clone https://github.com/glowfi/screenlocker
 cd screenlocker
 fish -c "cargo build --release"
-mv ./target/release/screenlocker ~/.local/bin/screenlocker
+mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
 cd ..
 rm -rf screenlocker
 
@@ -221,8 +221,8 @@ echo "--------------Copying TOPBAR settings...----------------------------------
 echo "----------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/dwmblocks/modules/* ~/.local/bin/
-cd ~/setup/configs/dwmblocks/
+cp -r $HOME/setup/configs/dwmblocks/modules/* $HOME/.local/bin/
+cd $HOME/setup/configs/dwmblocks/
 sudo make clean install
 cd
 echo "Done Copying TOPBAR settings!"
@@ -235,9 +235,9 @@ echo "--------------Copying DUNST settings...-----------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/dunst/ ~/.config
-cp -r ~/setup/scripts/audio.sh ~/.local/bin/
-chmod +x ~/.local/bin/audio.sh
+cp -r $HOME/setup/configs/dunst/ $HOME/.config
+cp -r $HOME/setup/scripts/audio.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/audio.sh
 cd
 echo "Done Copying DUNST settings!"
 echo ""
@@ -249,7 +249,7 @@ echo "--------------Copying Xresources...---------------------------------------
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r ~/setup/configs/.Xresources ~
+cp -r $HOME/setup/configs/.Xresources $HOME
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -259,9 +259,9 @@ echo ""
 
 # UPDATE MIMETYPE
 
-touch ~/zathura.desktop
+touch $HOME/zathura.desktop
 sudo touch zathura.desktop
-cp -r ~/setup/configs/zathura ~/.config
+cp -r $HOME/setup/configs/zathura $HOME/.config
 
 sudo echo "[Desktop Entry]
 Version=1.0
@@ -273,8 +273,8 @@ Exec=zathura %f
 Terminal=false
 Categories=Office;Viewer;
 MimeType=application/pdf;
-" >>~/zathura.desktop
-sudo mv ~/zathura.desktop /usr/share/applications
+" >>$HOME/zathura.desktop
+sudo mv $HOME/zathura.desktop /usr/share/applications
 
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default nsxiv.desktop image/jpg
@@ -305,8 +305,8 @@ cd
 ..
 sudo rm -rf auto-cpufreq
 
-cp -r ~/setup/scripts/powerplan.sh ~/.local/bin/
-chmod +x ~/.local/bin/powerplan.sh
+cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/powerplan.sh
 
 # TIMESHIFT
 

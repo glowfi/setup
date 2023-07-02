@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/helperf.fish"
 ### PACKAGES
 install "postgresql python-pip gitui github-cli" "pac"
 install "insomnia-bin" "yay"
-cp -r ~/setup/configs/Insomnia/ ~/.config
+cp -r $HOME/setup/configs/Insomnia/ $HOME/.config
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -59,11 +59,11 @@ echo ""
 # DOWNLOAD NODEJS
 
 set ver (echo "20.3.0")
-wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O ~/node.tar.xz
-tar -xf ~/node.tar.xz -C ~
-rm -rf ~/node.tar.xz
-mv ~/node-v"$ver"-linux-x64 ~/.local/bin/nodeJS
-source ~/.config/fish/config.fish
+wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O $HOME/node.tar.xz
+tar -xf $HOME/node.tar.xz -C $HOME
+rm -rf $HOME/node.tar.xz
+mv $HOME/node-v"$ver"-linux-x64 $HOME/.local/bin/nodeJS
+source $HOME/.config/fish/config.fish
 
 # NODE MODULES
 
@@ -113,11 +113,11 @@ echo ""
 
 set clangd_ver (echo "15.0.6")
 install "clang" "pac"
-wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O ~/clangd.zip
-unzip ~/clangd.zip -d ~
-rm -rf ~/clangd.zip
-mv ~/clangd_"$clangd_ver" ~/.local/bin/clangd
-source ~/.config/fish/config.fish
+wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O $HOME/clangd.zip
+unzip $HOME/clangd.zip -d $HOME
+rm -rf $HOME/clangd.zip
+mv $HOME/clangd_"$clangd_ver" $HOME/.local/bin/clangd
+source $HOME/.config/fish/config.fish
 
 
 
@@ -130,11 +130,11 @@ echo ""
 # INSTALL LUA LSP
 
 set lua_ver (echo "3.6.10")
-wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O ~/lua-ls.tar.gz
-mkdir -p ~/lua-ls
-tar -xf ~/lua-ls.tar.gz -C ~/lua-ls/
-rm -rf ~/lua-ls.tar.gz
-mv ~/lua-ls ~/.local/bin/luaLSP
+wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O $HOME/lua-ls.tar.gz
+mkdir -p $HOME/lua-ls
+tar -xf $HOME/lua-ls.tar.gz -C $HOME/lua-ls/
+rm -rf $HOME/lua-ls.tar.gz
+mv $HOME/lua-ls $HOME/.local/bin/luaLSP
 
 # INSTALL LUA FORAMTTER
 
@@ -159,14 +159,14 @@ echo ""
 
 # INSTALL checkur
 
-mkdir -p ~/.local/bin
+mkdir -p $HOME/.local/bin
 pip install rich
 git clone https://github.com/glowfi/check-ur-requests
 cd check-ur-requests
-cp -r ./checkur.py ~/.local/bin/
+cp -r ./checkur.py $HOME/.local/bin/
 cd ..
 rm -rf check-ur-requests
-chmod +x ~/.local/bin/checkur.py
+chmod +x $HOME/.local/bin/checkur.py
 
 # INSTALL xhibit
 
@@ -178,20 +178,20 @@ pip install xhibit
 pip install numerize
 install "jq aria2" "pac"
 git clone https://github.com/glowfi/sYT
-cp -r sYT/sYT.py ~/.local/bin/
-cp -r sYT/sYT.sh ~/.local/bin/
+cp -r sYT/sYT.py $HOME/.local/bin/
+cp -r sYT/sYT.sh $HOME/.local/bin/
 rm -rf sYT
-chmod +x ~/.local/bin/sYT.py
-chmod +x ~/.local/bin/sYT.sh
+chmod +x $HOME/.local/bin/sYT.py
+chmod +x $HOME/.local/bin/sYT.sh
 mkdir -p .config/mpv/scripts
-touch ~/.config/mpv/mpv.conf
-echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
+touch $HOME/.config/mpv/mpv.conf
+echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>$HOME/.config/mpv/mpv.conf
 
 # INSTALL MUSICFAIRY
 
-cp -r ~/setup/scripts/musicfairy.sh ~/.local/bin/
-chmod +x ~/.local/bin/musicfairy.sh
-~/.local/bin/musicfairy.sh
+cp -r $HOME/setup/scripts/musicfairy.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/musicfairy.sh
+$HOME/.local/bin/musicfairy.sh
 
 # MPV Scripts
 
@@ -200,48 +200,48 @@ wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOM
 
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
-echo "osc=no" >>~/.config/mpv/mpv.conf
+echo "osc=no" >>$HOME/.config/mpv/mpv.conf
 
 cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 
 # ADDITIONAL SCRIPTS
 
-cp -r ~/setup/scripts/int.sh ~/.local/bin/
-chmod +x ~/.local/bin/int.sh
+cp -r $HOME/setup/scripts/int.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/int.sh
 
-cp -r ~/setup/scripts/formatDisk.sh ~/.local/bin/
-chmod +x ~/.local/bin/formatDisk.sh
+cp -r $HOME/setup/scripts/formatDisk.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/formatDisk.sh
 
-cp -r ~/setup/scripts/rename.sh ~/.local/bin/
-chmod +x ~/.local/bin/rename.sh
+cp -r $HOME/setup/scripts/rename.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/rename.sh
 
 install "xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo" "pac"
-cp -r ~/setup/scripts/dm-record.sh ~/.local/bin/
-chmod +x ~/.local/bin/dm-record.sh
+cp -r $HOME/setup/scripts/dm-record.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dm-record.sh
 
-cp -r ~/setup/scripts/dmenu-bluetooth ~/.local/bin/
-chmod +x ~/.local/bin/dmenu-bluetooth
+cp -r $HOME/setup/scripts/dmenu-bluetooth $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dmenu-bluetooth
 
-cp -r ~/setup/scripts/sgrec.sh ~/.local/bin/
-chmod +x ~/.local/bin/sgrec.sh
+cp -r $HOME/setup/scripts/sgrec.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/sgrec.sh
 
-cp -r ~/setup/scripts/windowshot.sh ~/.local/bin/
-chmod +x ~/.local/bin/windowshot.sh
+cp -r $HOME/setup/scripts/windowshot.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/windowshot.sh
 
-cp -r ~/setup/scripts/opa.sh ~/.local/bin/
-chmod +x ~/.local/bin/opa.sh
+cp -r $HOME/setup/scripts/opa.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/opa.sh
 
-cp -r ~/setup/scripts/send.sh ~/.local/bin/
-chmod +x ~/.local/bin/send.sh
+cp -r $HOME/setup/scripts/send.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/send.sh
 
-cp -r ~/setup/scripts/prev.sh ~/.local/bin/
-chmod +x ~/.local/bin/prev.sh
+cp -r $HOME/setup/scripts/prev.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/prev.sh
 
-cp -r ~/setup/scripts/gtfu.sh ~/.local/bin/
-chmod +x ~/.local/bin/gtfu.sh
+cp -r $HOME/setup/scripts/gtfu.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/gtfu.sh
 
-cp -r ~/setup/scripts/lowbat.sh ~/.local/bin/
-chmod +x ~/.local/bin/lowbat.sh
+cp -r $HOME/setup/scripts/lowbat.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/lowbat.sh
 
 yes | pip uninstall pathlib
 pip install pyinstaller
@@ -251,13 +251,13 @@ git clone https://github.com/winstxnhdw/ezgif-essentials
 cd ezgif-essentials
 pyinstaller --onefile main.py
 cd dist
-mv ./main ~/.local/bin/ezgif
+mv ./main $HOME/.local/bin/ezgif
 cd ../..
 rm -rf ezgif-essentials
 pip install pathlib
 yes | pip uninstall pyinstaller
-cp -r ~/setup/scripts/edit.sh ~/.local/bin/
-chmod +x ~/.local/bin/edit.sh
+cp -r $HOME/setup/scripts/edit.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/edit.sh
 
 install "ani-cli-git" "yay"
 install "lobster-git" "yay"
@@ -265,7 +265,7 @@ install "lobster-git" "yay"
 pip install poetry
 git clone https://github.com/mov-cli/mov-cli
 cd mov-cli
-cp -r ~/setup/scripts/scraper.py ./mov_cli/utils/
+cp -r $HOME/setup/scripts/scraper.py ./mov_cli/utils/
 pip install -r requirements.txt
 poetry build
 pip install dist/*.tar.gz
@@ -274,21 +274,21 @@ rm -rf mov-cli
 
 git clone https://github.com/thameera/vimv
 cd vimv
-cp -r vimv ~/.local/bin/
+cp -r vimv $HOME/.local/bin/
 cd ..
 rm -rf vimv
 
-cp -r ~/setup/scripts/dex.py ~/.local/bin/
-chmod +x ~/.local/bin/dex.py
+cp -r $HOME/setup/scripts/dex.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dex.py
 
 wget https://git.io/translate -O trans
 chmod +x ./trans
-mv ./trans ~/.local/bin/
-cp -r ~/setup/scripts/tran.sh ~/.local/bin/
-chmod +x ~/.local/bin/tran.sh
+mv ./trans $HOME/.local/bin/
+cp -r $HOME/setup/scripts/tran.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/tran.sh
 
-cp -r ~/setup/scripts/fixWords.py ~/.local/bin/
-chmod +x ~/.local/bin/fixWords.py
+cp -r $HOME/setup/scripts/fixWords.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/fixWords.py
 
 # ADDITIONAL PROGRAMS
 
@@ -344,7 +344,7 @@ xdg-mime default nvim.desktop text/plain
 
 # COPY NEOVIM SETTINGS
 
-cp -r ~/setup/configs/nvim ~/.config
+cp -r $HOME/setup/configs/nvim $HOME/.config
 nvim -c PackerSync
 nvim -c PackerSync
 nvim -c PackerSync
@@ -375,4 +375,4 @@ echo "[core]
     hunk-header-file-style = red
     hunk-header-line-number-style = \"#067a00\"
     hunk-header-style = file line-number syntax
-" >>~/.gitconfig
+" >>$HOME/.gitconfig

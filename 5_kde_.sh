@@ -43,8 +43,8 @@ cd ..
 rm -rf volnoti
 
 # Setup nsxiv key-handler
-mkdir -p ~/.config/nsxiv/exec
-cp -r ~/setup/configs/key-handler ~/.config/nsxiv/exec
+mkdir -p $HOME/.config/nsxiv/exec
+cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
 # REMOVE KWALLET
 
@@ -58,18 +58,18 @@ echo ""
 
 # WALLPAPER SCRIPT
 
-touch ~/.local/bin/wall.sh
+touch $HOME/.local/bin/wall.sh
 echo '#!/bin/sh
 while true; do
-    kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group "Containments" --group "1" --group "Wallpaper" --group "org.kde.image" --group "General" --key "Image" "$(find ~/wall -type f | shuf -n 1)"
+    kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group "Containments" --group "1" --group "Wallpaper" --group "org.kde.image" --group "General" --key "Image" "$(find $HOME/wall -type f | shuf -n 1)"
 	sleep 900s
 done
-' >>~/.local/bin/wall.sh
+' >>$HOME/.local/bin/wall.sh
 
 ### MISC
 
-mkdir -p ~/.misc
-cp -r ~/setup/configs/misc/* ~/.misc/
+mkdir -p $HOME/.misc
+cp -r $HOME/setup/configs/misc/* $HOME/.misc/
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -79,20 +79,20 @@ echo ""
 
 # XPROFILE SETUP
 
-touch ~/.xprofile
+touch $HOME/.xprofile
 
 echo "# Hotkey daemon
 dxhd -b &
 
 # Wallpaper
-sh ~/.local/bin/wall.sh &
+sh $HOME/.local/bin/wall.sh &
 
 # Clipboard
 clipmenud &
 
 # Volume Notification
 volnoti &
-" >>~/.xprofile
+" >>$HOME/.xprofile
 
 # ENABLE SDDM
 
@@ -112,8 +112,8 @@ echo "--------------Register Kitty in Dolphin...--------------------------------
 echo "--------------------------------------------------------------------------------"
 echo ""
 
-mkdir -p ~/.local/share/kservices5
-cp -r ~/setup/configs/kittyhere.desktop ~/.local/share/kservices5
+mkdir -p $HOME/.local/share/kservices5
+cp -r $HOME/setup/configs/kittyhere.desktop $HOME/.local/share/kservices5
 
 # SETUP DXHD
 
@@ -124,11 +124,11 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 install "dxhd-bin" "yay"
-mkdir -p ~/.config/dxhd
-mv ~/setup/configs/dxhd/dxhd_kde.sh ~/.config/dxhd
-mv ~/.config/dxhd/dxhd_kde.sh ~/.config/dxhd/dxhd.sh
-# mkdir -p ~/.config/systemd/user
-# cp -r ~/setup/configs/dxhd/dxhd.service ~/.config/systemd/user
+mkdir -p $HOME/.config/dxhd
+mv $HOME/setup/configs/dxhd/dxhd_kde.sh $HOME/.config/dxhd
+mv $HOME/.config/dxhd/dxhd_kde.sh $HOME/.config/dxhd/dxhd.sh
+# mkdir -p $HOME/.config/systemd/user
+# cp -r $HOME/setup/configs/dxhd/dxhd.service $HOME/.config/systemd/user
 # systemctl --user enable dxhd.service
 
 echo ""
@@ -139,9 +139,9 @@ echo ""
 
 # UPDATE MIMETYPE
 
-touch ~/zathura.desktop
+touch $HOME/zathura.desktop
 sudo touch zathura.desktop
-cp -r ~/setup/configs/zathura ~/.config
+cp -r $HOME/setup/configs/zathura $HOME/.config
 
 sudo echo "[Desktop Entry]
 Version=1.0
@@ -153,8 +153,8 @@ Exec=zathura %f
 Terminal=false
 Categories=Office;Viewer;
 MimeType=application/pdf;
-" >>~/zathura.desktop
-sudo mv ~/zathura.desktop /usr/share/applications
+" >>$HOME/zathura.desktop
+sudo mv $HOME/zathura.desktop /usr/share/applications
 
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default nsxiv.desktop image/jpg
@@ -179,8 +179,8 @@ cd
 ..
 sudo rm -rf auto-cpufreq
 
-cp -r ~/setup/scripts/powerplan.sh ~/.local/bin/
-chmod +x ~/.local/bin/powerplan.sh
+cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/powerplan.sh
 
 # TIMESHIFT
 

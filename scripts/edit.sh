@@ -118,8 +118,8 @@ ytcustomAudioVideo(){
     yt-dlp -F "$link" | sed '1,5d' | grep "audio only" | gum filter --placeholder "Choose Quality for audio:" | awk '{print $1}' | xargs -t -I {} yt-dlp -f {} --output "my_audio_fetched.%(ext)s" --external-downloader aria2c --external-downloader-args "-j 16 -x 16 -s 16 -k 1M" "$link"
 
     # Merge
-    vid=$(find ~ \( ! -regex '.*/\..*' \) -type f -name "my_video_fetched.*")
-    aud=$(find ~ \( ! -regex '.*/\..*' \) -type f -name "my_audio_fetched.*")
+    vid=$(find $HOME \( ! -regex '.*/\..*' \) -type f -name "my_video_fetched.*")
+    aud=$(find $HOME \( ! -regex '.*/\..*' \) -type f -name "my_audio_fetched.*")
     echo "$vid"
     echo "$aud"
     echo "$title"

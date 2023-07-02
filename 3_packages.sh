@@ -32,7 +32,7 @@ echo ""
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin/
 makepkg -si --noconfirm
-cd ~
+cd $HOME
 rm -rf yay-bin
 
 # PACKAGES
@@ -72,9 +72,9 @@ install "ouch" "pac"
 install "imagemagick ffmpegthumbnailer" "pac"
 install "gimp" "pac"
 install "gimp-plugin-registry" "yay"
-rm -rf ~/.config/GIMP/2.10
-mkdir -p ~/.config/GIMP/2.10
-cd ~/.config/GIMP/2.10
+rm -rf $HOME/.config/GIMP/2.10
+mkdir -p $HOME/.config/GIMP/2.10
+cd $HOME/.config/GIMP/2.10
 git clone https://github.com/Diolinux/PhotoGIMP
 mv ./PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* .
 rm -rf PhotoGIMP filters plug-ins splashes
@@ -140,7 +140,7 @@ echo ""
 git clone --depth=1 https://github.com/vinceliuice/grub2-themes.git
 cd grub2-themes/
 rm backgrounds/1080p/background-tela.jpg
-cp -r ~/setup/scripts/background-tela.jpg backgrounds/1080p/
+cp -r $HOME/setup/scripts/background-tela.jpg backgrounds/1080p/
 sudo ./install.sh -b -t tela
 cd ..
 rm -rf grub2-themes
@@ -154,7 +154,7 @@ echo ""
 # COPY FISH SHELL SETTINGS
 
 fish -c "exit"
-cp -r ~/setup/configs/config.fish ~/.config/fish/
+cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 
 # INSTALL AND COPY NNN FM SETTINGS
 
@@ -169,7 +169,7 @@ mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 cd
-cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
+cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
 
 git clone https://github.com/mwh/dragon
 cd dragon
@@ -179,11 +179,11 @@ rm -rf dragon
 
 # COPY KITTY SETTINGS
 
-cp -r ~/setup/configs/kitty ~/.config/
+cp -r $HOME/setup/configs/kitty $HOME/.config/
 
 # COPY ICONS
 
-cp -r ~/setup/configs/img ~/.local/share/
+cp -r $HOME/setup/configs/img $HOME/.local/share/
 
 
 # CHANGE DEFAULT SHELL

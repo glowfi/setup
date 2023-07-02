@@ -19,8 +19,8 @@ sudo pkg install -y mpv aria2
 
 ###### PLANK THEME ######
 
-mkdir -p cd ~/.local/share/plank/themes/shade/
-cd ~/.local/share/plank/themes/shade/
+mkdir -p cd $HOME/.local/share/plank/themes/shade/
+cd $HOME/.local/share/plank/themes/shade/
 wget https://raw.githubusercontent.com/erikdubois/plankthemes/master/shade/dock.theme
 cd
 
@@ -31,15 +31,15 @@ bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
 
 mkdir -p .config/mpv/scripts
-touch ~/.config/mpv/mpv.conf
-echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
+touch $HOME/.config/mpv/mpv.conf
+echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>$HOME/.config/mpv/mpv.conf
 
 mkdir -p $HOME/.config/mpv/scripts
 wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
 
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
-echo "osc=no" >>~/.config/mpv/mpv.conf
+echo "osc=no" >>$HOME/.config/mpv/mpv.conf
 
 cd .config/mpv/scripts/
 git clone https://github.com/4ndrs/PureMPV
@@ -214,7 +214,7 @@ rm settings.conf
 
 echo "## Clipmenu
 clipmenud &
-" >>~/.xprofile
+" >>$HOME/.xprofile
 
 ######## CONFIGURING GIT #######
 
@@ -223,7 +223,7 @@ git config --global user.email -
 
 ########### CONFIGS ###########
 
-mkdir -p ~/local/bin
+mkdir -p $HOME/local/bin
 
 # NNN Config
 pip install trash-cli
@@ -231,11 +231,11 @@ mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 cd
-cp -r ~/setup/scripts/preview-tui ~/.config/nnn/plugins
+cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
 
 # Null Server Script
-cp -r ~/setup/scripts/send.sh ~/.local/bin/
-cd ~/.local/bin/
+cp -r $HOME/setup/scripts/send.sh $HOME/.local/bin/
+cd $HOME/.local/bin/
 rep=$(fish -c 'printf "#!/usr/local/bin/bash"')
 gawk -v line="1" -v text="$rep" '{
   if (NR == line) {
@@ -245,7 +245,7 @@ gawk -v line="1" -v text="$rep" '{
   }
 }' send.sh >output_file.txt
 mv output_file.txt send.sh
-chmod +x ~/.local/bin/send.sh
+chmod +x $HOME/.local/bin/send.sh
 cd
 
 # Neovim Config
@@ -254,18 +254,18 @@ sudo npm update -g npm
 sudo install npm@latest -g
 pip install neovim black flake8
 sudo npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver browser-sync
-cd ~/.config
+cd $HOME/.config
 mkdir nvim
 cd nvim
-cp -r ~/setup/configs/nvim/ .
-gsed -i '34,40d' ~/.config/nvim/lua/core/dashboard.lua
+cp -r $HOME/setup/configs/nvim/ .
+gsed -i '34,40d' $HOME/.config/nvim/lua/core/dashboard.lua
 cd
 
 # Kitty Config
-cd ~/.config
+cd $HOME/.config
 mkdir kitty
 cd kitty
-cp -r ~/setup/configs/kitty/ .
+cp -r $HOME/setup/configs/kitty/ .
 rep=$(echo "shell /usr/local/bin/fish")
 gawk -v line="14" -v text="$rep" '{
   if (NR == line) {
@@ -279,9 +279,9 @@ mv output_file.txt kitty.conf
 cd
 
 # Fish Config
-rm -rf ~/.config/fish/config.fish
-cd ~/.config
-cp -r ~/setup/configs/config.fish ~/.config/fish/
+rm -rf $HOME/.config/fish/config.fish
+cd $HOME/.config
+cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 cd
 
 ########### JELLYFIN SERVER ###########
@@ -312,7 +312,7 @@ required=$(echo 'user_pref("keyword.enabled", true);')
 
 # Get Default-release Location
 
-findLocation=$(find ~/.mozilla/firefox/ | grep -E "default-release" | head -1)
+findLocation=$(find $HOME/.mozilla/firefox/ | grep -E "default-release" | head -1)
 
 # Activate Settings
 
@@ -323,7 +323,7 @@ cd
 
 ########### Fix resolution ###########
 
-echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>~/.xprofile
+echo "xrandr --output eDP-1 --mode 1920x1080 --scale 1x1" >>$HOME/.xprofile
 
 ########### Fix Audio ###########
 

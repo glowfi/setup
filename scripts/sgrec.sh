@@ -56,9 +56,9 @@ fi
 
 artistName=$(echo "$output" | head -2 | tail -1 | tr -d '"')
 imageLocation=$(echo "$output" | tail -1 | tr -d '"')
-wget "$imageLocation" -O ~/.cache/tmp.jpg 2>/dev/null
+wget "$imageLocation" -O $HOME/.cache/tmp.jpg 2>/dev/null
 
 clear
-kitty +kitten icat --align=left ~/.cache/tmp.jpg
+kitty +kitten icat --align=left $HOME/.cache/tmp.jpg
 echo "Song Name : $songName"
 echo "Artist(s)   : $artistName"

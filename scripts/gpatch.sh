@@ -35,8 +35,8 @@ sudo pacman -S --noconfirm meson systemd git dbus libinih
 sudo pacman -S --noconfirm gamemode
 
 ## Save Scraper and Save Retriever from cloud
-cp -r ~/setup/scripts/saveScraper.py ~/.local/bin/
-chmod +x ~/.local/bin/saveScraper.py
+cp -r $HOME/setup/scripts/saveScraper.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/saveScraper.py
 
 ########### NOTES ###########
 
@@ -61,7 +61,7 @@ chmod +x ~/.local/bin/saveScraper.py
 # cd gov
 # wget "https://github.com/benjamimgois/goverlay/releases/download/$govlyVer1/goverlay_$govlyVer2.tar.xz"
 # tar -xf "goverlay_$govlyVer2.tar.xz"
-# cp -r ./goverlay ~/.local/bin/
+# cp -r ./goverlay $HOME/.local/bin/
 # cd ..
 # rm -rf gov
 
