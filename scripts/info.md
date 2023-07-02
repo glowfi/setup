@@ -344,12 +344,13 @@ required=$(echo 'user_pref("keyword.enabled", true);')
 
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
-echo "user_pref('privacy.clearOnShutdown.cache', false); // [DEFAULT: true]" >> user.js
-echo "user_pref('privacy.clearOnShutdown.downloads', false); // [DEFAULT: true]" >> user.js
-echo "user_pref('privacy.clearOnShutdown.formdata', false); // [DEFAULT: true]" >> user.js
-echo "user_pref('privacy.clearOnShutdown.history', false); // [DEFAULT: true]" >> user.js
-echo "user_pref('privacy.clearOnShutdown.sessions', false); // [DEFAULT: true]" >> user.js
-echo "$req0" >> user.js
+user_pref('privacy.clearOnShutdown.cache', false); // [DEFAULT: true]
+user_pref('privacy.clearOnShutdown.downloads', false); // [DEFAULT: true]
+user_pref('privacy.clearOnShutdown.formdata', false); // [DEFAULT: true]
+user_pref('privacy.clearOnShutdown.history', false); // [DEFAULT: true]
+user_pref('privacy.clearOnShutdown.sessions', false); // [DEFAULT: true]
+user_pref('privacy.clearOnShutdown.cookies', false); // Cookies
+user_pref('privacy.clearOnShutdown.offlineApps', false); // Site Data
 cd
 
 ###### Arkenfox Profile 2 ######
