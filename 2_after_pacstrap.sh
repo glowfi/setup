@@ -222,3 +222,6 @@ systemctl enable acpid
 # REMOVE SCRIPT DIRECTORY
 
 rm -rf setup
+
+# FIX AN ISSUE WITH BTRFS
+sed -i 's/subvolid.*,//' /etc/fstab
