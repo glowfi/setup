@@ -278,13 +278,57 @@ qemu-system-x86_64 \
 ### FIREFOX
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
+
+###### Policies ######
+
+sudo rm -rf /usr/lib/firefox/distribution/
+sudo mkdir -p /usr/lib/firefox/distribution/
+sudo touch /usr/lib/firefox/distribution/policies.json
+echo '
+{
+	"policies": {
+		"CaptivePortal": false,
+		"DisableFirefoxAccounts": true,
+		"DisableFirefoxStudies": true,
+		"DisablePocket": true,
+		"DisableTelemetry": true,
+		"Extensions": {
+			"Install": [
+				"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+				"https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi"
+				]
+		},
+            "FirefoxHome": {
+			"Search": true,
+			"TopSites": false,
+			"SponsoredTopSites": false,
+			"Highlights": false,
+			"Pocket": false,
+			"SponsoredPocket": false,
+			"Snippets": false,
+			"Locked": false
+		},
+		"NetworkPrediction": false,
+		"OverrideFirstRunPage": "about:home",
+		"UserMessaging": {
+			"WhatsNew": false,
+			"ExtensionRecommendations": false,
+			"FeatureRecommendations": false,
+			"SkipOnboarding": false
+		}
+
+	}
+}'| sudo tee -a /usr/lib/firefox/distribution/policies.json >/dev/null
+
+
+###### Start Firefox ######
 
 setsid firefox
 sleep 3
 killall firefox
 
-###### Arkenfox ######
+###### Arkenfox Profile 1 ######
 
 # Get Default-release Location
 findLocation=$(find ~/.mozilla/firefox/ | grep -E "default-release" | head -1)
@@ -300,7 +344,7 @@ wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.j
 sed -i "s/$original/$required/g" user.js
 cd
 
-###### Betterfox ######
+###### Arkenfox Profile 2 ######
 
 # Create profile
 firefox -CreateProfile second
@@ -312,8 +356,32 @@ findLocation=$(find ~/.mozilla/firefox/ | grep -E "second" | head -1)
 cd "$findLocation"
 
 # Settings
+original=$(echo 'user_pref("keyword.enabled", false);')
+required=$(echo 'user_pref("keyword.enabled", true);')
+
+wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
+sed -i "s/$original/$required/g" user.js
+cd
+
+###### Betterfox Profile 3 ######
+
+# Create profile
+firefox -CreateProfile third
+
+# Get Default-release Location
+findLocation=$(find ~/.mozilla/firefox/ | grep -E "third" | head -1)
+
+# Go to third profile
+cd "$findLocation"
+
+# Settings
 wget "https://raw.githubusercontent.com/yokoffing/Betterfox/master/user.js" -O user.js
 cd
+
+###### Normal Profile 4 ######
+
+# Create profile
+firefox -CreateProfile fourth
 ```
 
 ## UNINSTALL
