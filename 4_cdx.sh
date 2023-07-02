@@ -187,6 +187,12 @@ mkdir -p .config/mpv/scripts
 touch ~/.config/mpv/mpv.conf
 echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>~/.config/mpv/mpv.conf
 
+# INSTALL MUSICFAIRY
+
+cp -r ~/setup/scripts/musicfairy.sh ~/.local/bin/
+chmod +x ~/.local/bin/musicfairy.sh
+~/.local/bin/musicfairy.sh
+
 # MPV Scripts
 
 mkdir -p $HOME/.config/mpv/scripts

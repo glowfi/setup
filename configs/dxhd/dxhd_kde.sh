@@ -70,6 +70,10 @@ dmenu_run -p "Run:" -i
 #super + y
 fish -c "sYT -p "dmenu""
 
+## Musicfairy
+#alt + m
+musicfairy.sh
+
 ## Random Wallpaper
 #super + z
 kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group 'Containments' --group '1' --group 'Wallpaper' --group 'org.kde.image' --group 'General' --key 'Image' "$(find ~/wall -type f | shuf -n 1)"

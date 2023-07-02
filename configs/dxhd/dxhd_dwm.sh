@@ -49,6 +49,10 @@ sed -i '126s/.*/fading = true;/' ~/.config/picom/picom.conf
 #super + y
 fish -c "sYT -p "dmenu""
 
+## Musicfairy
+#alt + m
+musicfairy.sh
+
 ## Random Wallpaper
 #super + z
 feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
