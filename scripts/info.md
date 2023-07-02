@@ -280,6 +280,7 @@ qemu-system-x86_64 \
 ```bash
 #!/usr/bin/env bash
 
+
 ###### Policies ######
 
 sudo rm -rf /usr/lib/firefox/distribution/
@@ -316,8 +317,8 @@ echo '
 			"ExtensionRecommendations": false,
 			"FeatureRecommendations": false,
 			"SkipOnboarding": false
-		}
-
+		},
+		"NoDefaultBookmarks":true
 	}
 }'| sudo tee -a /usr/lib/firefox/distribution/policies.json >/dev/null
 
@@ -340,8 +341,15 @@ cd "$findLocation"
 original=$(echo 'user_pref("keyword.enabled", false);')
 required=$(echo 'user_pref("keyword.enabled", true);')
 
+
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
+echo "user_pref('privacy.clearOnShutdown.cache', false); // [DEFAULT: true]" >> user.js
+echo "user_pref('privacy.clearOnShutdown.downloads', false); // [DEFAULT: true]" >> user.js
+echo "user_pref('privacy.clearOnShutdown.formdata', false); // [DEFAULT: true]" >> user.js
+echo "user_pref('privacy.clearOnShutdown.history', false); // [DEFAULT: true]" >> user.js
+echo "user_pref('privacy.clearOnShutdown.sessions', false); // [DEFAULT: true]" >> user.js
+echo "$req0" >> user.js
 cd
 
 ###### Arkenfox Profile 2 ######
