@@ -342,12 +342,16 @@ cd "$findLocation"
 original=$(echo 'user_pref("keyword.enabled", false);')
 required=$(echo 'user_pref("keyword.enabled", true);')
 
+mkdir chrome
+cd chrome
+cd ..
 
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
 echo -e "\n" >> user.js
 echo "// ****** OVERRIDES ******" >> user.js
 echo "" >> user.js
+echo "user_pref('toolkit.legacyUserProfileCustomizations.stylesheets', true);" >> user.js
 echo "user_pref('privacy.clearOnShutdown.cache', false);" >> user.js
 echo "user_pref('privacy.clearOnShutdown.downloads', false);" >> user.js
 echo "user_pref('privacy.clearOnShutdown.formdata', false);" >> user.js
@@ -389,6 +393,7 @@ sed -i "s/$original/$required/g" user.js
 echo -e "\n" >> user.js
 echo "// ****** OVERRIDES ******" >> user.js
 echo "" >> user.js
+echo "user_pref('toolkit.legacyUserProfileCustomizations.stylesheets', true);" >> user.js
 echo 'user_pref("general.smoothScroll",                                       true);'>> user.js
 echo 'user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);'  >> user.js
 echo 'user_pref("general.smoothScroll.msdPhysics.enabled",                    true);'>> user.js
