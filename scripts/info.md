@@ -298,6 +298,7 @@ echo '
 			"Install": [
 				"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
 				"https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi"
+				"https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi"
 				]
 		},
             "FirefoxHome": {
@@ -344,13 +345,28 @@ required=$(echo 'user_pref("keyword.enabled", true);')
 
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
-user_pref('privacy.clearOnShutdown.cache', false); // [DEFAULT: true]
-user_pref('privacy.clearOnShutdown.downloads', false); // [DEFAULT: true]
-user_pref('privacy.clearOnShutdown.formdata', false); // [DEFAULT: true]
-user_pref('privacy.clearOnShutdown.history', false); // [DEFAULT: true]
-user_pref('privacy.clearOnShutdown.sessions', false); // [DEFAULT: true]
-user_pref('privacy.clearOnShutdown.cookies', false); // Cookies
-user_pref('privacy.clearOnShutdown.offlineApps', false); // Site Data
+echo -e "\n" >> user.js
+echo "// ****** OVERRIDES ******" >> user.js
+echo "" >> user.js
+echo "user_pref('privacy.clearOnShutdown.cache', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.downloads', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.formdata', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.history', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.sessions', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.cookies', false);" >> user.js
+echo "user_pref('privacy.clearOnShutdown.offlineApps', false);" >> user.js
+echo "user_pref('browser.startup.page', 1);" >> user.js
+echo 'user_pref("general.smoothScroll",                                       true);'>> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);'  >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.enabled",                    true);'>> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant",  600);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.regularSpringConstant",      650);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS",         25);'  >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio",      2.0);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",     250);' >> user.js
+echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.0);' >> user.js
+echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >> user.js
+echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >> user.js
 cd
 
 ###### Arkenfox Profile 2 ######
@@ -370,6 +386,20 @@ required=$(echo 'user_pref("keyword.enabled", true);')
 
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 sed -i "s/$original/$required/g" user.js
+echo -e "\n" >> user.js
+echo "// ****** OVERRIDES ******" >> user.js
+echo "" >> user.js
+echo 'user_pref("general.smoothScroll",                                       true);'>> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);'  >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.enabled",                    true);'>> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant",  600);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.regularSpringConstant",      650);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS",         25);'  >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio",      2.0);' >> user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",     250);' >> user.js
+echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.0);' >> user.js
+echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >> user.js
+echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >> user.js
 cd
 
 ###### Betterfox Profile 3 ######

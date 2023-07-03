@@ -168,6 +168,8 @@ rm -rf default-media-player.sh
 
 xdg-mime default dolphin.desktop inode/directory
 
+xdg-settings set default-web-browser firefox.desktop
+
 echo "Done seting default application!"
 echo ""
 

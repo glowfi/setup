@@ -46,7 +46,25 @@ kitty
 
 ## Browser
 #super + b
-brave
+choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|dmenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
+if [[ "$choice" != "" ]]; then
+    firefox -P "$choice" &
+    sleep 1
+    if [ -f "/tmp/ffpid" ]; then
+        echo "Do Not Do Anything ...!"
+    else
+        while true; do
+            echo "$$" > /tmp/ffpid
+            pgrep firefox > /dev/null
+            if [ $? -ne 0 ]; then
+                rm -rf /tmp/ffpid
+                exit 0
+            fi
+            VOL=$(pamixer --get-volume)
+            pactl list sink-inputs | grep -E 'Sink Input #|application.name = "Firefox"' | grep -oP '#\K\d+' | xargs -I{} pactl set-sink-input-volume {} "$VOL%"
+        done
+    fi
+fi
 
 ## Network
 #super + n

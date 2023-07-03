@@ -288,10 +288,11 @@ rm -rf default-media-player.sh
 
 xdg-mime default pcmanfm.desktop inode/directory
 
+xdg-settings set default-web-browser firefox.desktop
+
 echo "Done seting default application!"
 echo ""
 
-xdg-settings set default-web-browser brave-browser.desktop
 
 # REMOVE KWALLET
 
