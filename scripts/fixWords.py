@@ -2,20 +2,18 @@
 
 import pyperclip
 
-# Get the string from the clipboard
 text = pyperclip.paste()
 
-words = text.split()
 
-current_line = ""  # initialize an empty string for the current line
-formatted = ""
-
-for word in words:
-    if len(current_line + word) <= 100:
-        current_line += word + " "
-    else:
-        formatted += current_line + "\n"
-        current_line = word + " "
+words = text.split(" ")
+words = " ".join(words)
 
 
-pyperclip.copy(formatted)
+def format_text(text):
+    formatted_text = ""
+    for i in range(0, len(text), 100):
+        formatted_text += text[i : i + 100] + "\n"
+    return formatted_text
+
+
+pyperclip.copy(format_text(words))
