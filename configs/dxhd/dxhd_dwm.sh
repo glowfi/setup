@@ -11,13 +11,11 @@ case "$(readlink -f /sbin/init)" in
     *) ctl='loginctl' ;;
 esac
 
-case "$(printf "Lock\nDisplay off\nLogout\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
+case "$(printf "Lock\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
     'Lock') screenlocker ;;
-    'Display off') xset dpms force off ;;
-    'Logout') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
-    'Sleep') slock $ctl suspend ;;
-    'Reboot') $ctl reboot ;;
-    'Shutdown') $ctl poweroff ;;
+    'Sleep') systemctl suspend ;;
+    'Reboot') reboot ;;
+    'Shutdown') poweroff ;;
     *) exit 1 ;;
 esac
 
