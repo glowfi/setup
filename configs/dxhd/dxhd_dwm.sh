@@ -34,7 +34,7 @@ if [[ "$choice" != "" ]]; then
     if [[ "$choice" = "1" ]]; then
         brave --profile-directory=Default
     else
-        brave --profile-directory="Profile 1"
+        brave --profile-directory="Tmp"
     fi
 fi
 
