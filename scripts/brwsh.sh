@@ -19,17 +19,23 @@ killall brave
 
 
 ### Settings (Default Profile)
-brave --profile-directory=Tmp
+brave --profile-directory=Tmp &
+sleep 3
+killall brave
+sleep 6
 cat $HOME/setup/configs/brave/settings.json > $HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences
-cat $HOME/setup/configs/brave/settings.json > "$HOME/.config/BraveSoftware/Brave-Browser/Profile 1/Preferences"
+sleep 6
+cat $HOME/setup/configs/brave/settings.json > "$HOME/.config/BraveSoftware/Brave-Browser/Tmp/Preferences"
 
 
 
 ######## Firefox ########
 
+rm -rf $HOME/.mozilla
+sudo rm -rf /usr/lib/firefox/distribution
+
 ### Policies
 
-sudo rm -rf /usr/lib/firefox/distribution/
 sudo mkdir -p /usr/lib/firefox/distribution/
 sudo touch /usr/lib/firefox/distribution/policies.json
 echo '
@@ -72,7 +78,7 @@ echo '
 
 ###### Start Firefox ######
 
-firefox&
+firefox &
 sleep 6
 killall firefox
 
