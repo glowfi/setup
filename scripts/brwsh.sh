@@ -1,7 +1,33 @@
 #!/usr/bin/env bash
 
+######## Brave ########
 
-###### Policies ######
+sudo rm -rf /etc/brave/
+rm -rf $HOME/.config/BraveSoftware/
+
+### Policies
+sudo mkdir -p /etc/brave/policies/managed/
+sudo touch /etc/brave/policies/managed/brace.json
+cat $HOME/setup/configs/brave/policy.json | sudo tee -a /etc/brave/policies/managed/brace.json >/dev/null
+
+
+### Start Brave
+
+brave &
+sleep 6
+killall brave
+
+
+### Settings (Default Profile)
+brave --profile-directory=Tmp
+cat $HOME/setup/configs/brave/settings.json > $HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences
+cat $HOME/setup/configs/brave/settings.json > "$HOME/.config/BraveSoftware/Brave-Browser/Profile 1/Preferences"
+
+
+
+######## Firefox ########
+
+### Policies
 
 sudo rm -rf /usr/lib/firefox/distribution/
 sudo mkdir -p /usr/lib/firefox/distribution/

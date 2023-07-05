@@ -46,6 +46,15 @@ kitty
 
 ## Browser
 #super + b
+choice=$(echo -e "1.Default Profile\n2.Temp Profile" | dmenu -i | awk -F"." '{print $1}')
+if [[ "$choice" = "1" ]]; then
+    brave --profile-directory=Default
+else
+    brave --profile-directory="Profile 1"
+fi
+
+## Alternate Browser
+#ctrl + alt + b
 choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|dmenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
 if [[ "$choice" != "" ]]; then
     firefox -P "$choice" &

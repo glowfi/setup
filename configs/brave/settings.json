@@ -1,0 +1,1012 @@
+{
+    "alternate_error_pages": {
+        "backup": false
+    },
+    "announcement_notification_service_first_run_time": "",
+    "apps": {
+        "shortcuts_arch": "",
+        "shortcuts_version": 0
+    },
+    "autocomplete": {
+        "retention_policy_last_version": 114
+    },
+    "autofill": {
+        "orphan_rows_removed": true,
+        "upload_events_last_reset_timestamp": ""
+    },
+    "brave": {
+        "brave_ads": {
+            "notification_ads": [],
+            "prefs": {
+                "version": 12
+            }
+        },
+        "default_private_search_provider_data": {
+            "alternate_urls": [
+                "{google:baseURL}#q={searchTerms}",
+                "{google:baseURL}search#q={searchTerms}",
+                "{google:baseURL}webhp#q={searchTerms}",
+                "{google:baseURL}s#q={searchTerms}",
+                "{google:baseURL}s?q={searchTerms}"
+            ],
+            "contextual_search_url": "{google:baseURL}_/contextualsearch?{google:contextualSearchVersion}{google:contextualSearchContextData}",
+            "created_by_policy": false,
+            "created_from_play_api": false,
+            "date_created": "0",
+            "doodle_url": "",
+            "enforced_by_policy": false,
+            "favicon_url": "https://www.google.com/images/branding/product/ico/googleg_lodp.ico",
+            "id": "3",
+            "image_search_branding_label": "",
+            "image_translate_source_language_param_key": "sourcelang",
+            "image_translate_target_language_param_key": "targetlang",
+            "image_translate_url": "{google:baseSearchByImageURL}upload?filtertype=tr&{imageTranslateSourceLocale}{imageTranslateTargetLocale}",
+            "image_url": "{google:baseSearchByImageURL}upload",
+            "image_url_post_params": "encoded_image={google:imageThumbnail},image_url={google:imageURL},sbisrc={google:imageSearchSource},original_width={google:imageOriginalWidth},original_height={google:imageOriginalHeight},processed_image_dimensions={google:processedImageDimensions}",
+            "input_encodings": [
+                "UTF-8"
+            ],
+            "is_active": 0,
+            "keyword": ":g",
+            "last_modified": "0",
+            "last_visited": "0",
+            "logo_url": "",
+            "new_tab_url": "",
+            "originating_url": "",
+            "preconnect_to_search_url": true,
+            "prefetch_likely_navigations": true,
+            "prepopulate_id": 1,
+            "safe_for_autoreplace": true,
+            "search_intent_params": [
+                "si",
+                "gs_ssp"
+            ],
+            "search_url_post_params": "",
+            "short_name": "Google",
+            "side_image_search_param": "sideimagesearch",
+            "side_search_param": "sidesearch",
+            "starter_pack_id": 0,
+            "suggestions_url": "{google:baseSuggestURL}search?{google:searchFieldtrialParameter}client={google:suggestClient}&gs_ri={google:suggestRid}&xssi=t&q={searchTerms}&{google:inputType}{google:omniboxFocusType}{google:cursorPosition}{google:currentPageUrl}{google:pageClassification}{google:clientCacheTimeToLive}{google:searchVersion}{google:sessionToken}{google:prefetchQuery}sugkey={google:suggestAPIKeyParameter}",
+            "suggestions_url_post_params": "",
+            "synced_guid": "",
+            "url": "{google:baseURL}search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}",
+            "usage_count": 0
+        },
+        "default_private_search_provider_guid": "",
+        "enable_media_router_on_restart": false,
+        "fb_embed_default": false,
+        "google_login_default": false,
+        "ipfs": {
+            "resolve_method": 3
+        },
+        "new_tab_page": {
+            "hide_all_widgets": false
+        },
+        "other_bookmarks_migrated": true,
+        "rewards": {
+            "inline_tip": {
+                "github": false,
+                "reddit": false,
+                "twitter": false
+            },
+            "inline_tip_buttons_enabled": false,
+            "notifications": "{\"displayed\":[],\"notifications\":[]}",
+            "scheduled_captcha": {
+                "failed_attempts": 0,
+                "id": "",
+                "paused": false,
+                "payment_id": "",
+                "snooze_count": 0
+            },
+            "show_brave_rewards_button_in_location_bar": false
+        },
+        "search": {
+            "default_version": 25,
+            "p3a_default_switch": [
+                {
+                    "day": "",
+                    "value": 1
+                }
+            ]
+        },
+        "shields_fp_settings_migration": true,
+        "shields_settings_version": 4,
+        "today": {
+            "p3a_curr_session_card_views": "0",
+            "p3a_total_card_views": [
+                {
+                    "day": 0,
+                    "value": 0.0
+                }
+            ],
+            "p3a_weekly_card_views_count": [
+                {
+                    "day": 0,
+                    "value": 0.0
+                }
+            ],
+            "p3a_weekly_card_visits_count": [
+                {
+                    "day": 0,
+                    "value": 0.0
+                }
+            ]
+        },
+        "twitter_embed_default": false,
+        "wallet": {
+            "default_solana_wallet": 1,
+            "default_wallet2": 1,
+            "deprecated_ethereum_test_networks_migrated": true,
+            "ethereum_transactions": {
+                "coin_type_migrated": true
+            },
+            "hidden_networks": {
+                "ethereum": [
+                    "0x5",
+                    "0xaa36a7",
+                    "0x539",
+                    "0x4cb2f"
+                ],
+                "filecoin": [
+                    "t",
+                    "0x539"
+                ],
+                "solana": [
+                    "0x67",
+                    "0x66",
+                    "0x539"
+                ]
+            },
+            "keyrings": {},
+            "last_transaction_sent_time_dict": {},
+            "show_wallet_icon_on_toolbar": false,
+            "transactions": {
+                "chain_id_migrated": true
+            },
+            "user": {
+                "asset": {
+                    "eth_contract_address_migrated": true
+                },
+                "assets": {
+                    "add_is_erc1155_migrated": true,
+                    "add_is_nft_migrated": true,
+                    "add_preloading_networks_migrated_3": true,
+                    "default_hidden_networks_version": 1
+                }
+            }
+        }
+    },
+    "brave_shields": {
+        "p3a_ads_allow_domain_count": 0,
+        "p3a_ads_standard_domain_count": 0,
+        "p3a_ads_strict_domain_count": 0,
+        "p3a_first_reported_v2": true,
+        "p3a_fp_allow_domain_count": 0,
+        "p3a_fp_standard_domain_count": 0,
+        "p3a_fp_strict_domain_count": 0
+    },
+    "brave_sync_v2": {
+        "reset_devices_progress_token_time": "",
+        "v1_meta_info_cleared": true,
+        "v1_migrated": true
+    },
+    "browser": {
+        "clear_data": {
+            "form_data": true,
+            "hosted_apps_data": true,
+            "passwords": true,
+            "time_period": 4
+        },
+        "has_seen_welcome_page": false,
+        "last_clear_browsing_data_tab": 1,
+        "window_placement": {
+            "bottom": 1070,
+            "left": 30,
+            "maximized": false,
+            "right": 1048,
+            "top": 37,
+            "work_area_bottom": 1080,
+            "work_area_left": 0,
+            "work_area_right": 1920,
+            "work_area_top": 0
+        }
+    },
+    "chrome": {
+        "prefetch_proxy": {
+            "origin_decider": {
+                "retry_after": {}
+            }
+        }
+    },
+    "commerce_daily_metrics_last_update_time": "",
+    "countryid_at_install": -1,
+    "credentials_enable_autosignin": false,
+    "default_apps_install_state": 2,
+    "default_search_provider": {
+        "synced_guid": ""
+    },
+    "default_search_provider_data": {
+        "template_url_data": {
+            "alternate_urls": [
+                "{google:baseURL}#q={searchTerms}",
+                "{google:baseURL}search#q={searchTerms}",
+                "{google:baseURL}webhp#q={searchTerms}",
+                "{google:baseURL}s#q={searchTerms}",
+                "{google:baseURL}s?q={searchTerms}"
+            ],
+            "contextual_search_url": "{google:baseURL}_/contextualsearch?{google:contextualSearchVersion}{google:contextualSearchContextData}",
+            "created_by_policy": false,
+            "created_from_play_api": false,
+            "date_created": "0",
+            "doodle_url": "",
+            "enforced_by_policy": false,
+            "favicon_url": "https://www.google.com/images/branding/product/ico/googleg_lodp.ico",
+            "id": "3",
+            "image_search_branding_label": "",
+            "image_translate_source_language_param_key": "sourcelang",
+            "image_translate_target_language_param_key": "targetlang",
+            "image_translate_url": "{google:baseSearchByImageURL}upload?filtertype=tr&{imageTranslateSourceLocale}{imageTranslateTargetLocale}",
+            "image_url": "{google:baseSearchByImageURL}upload",
+            "image_url_post_params": "encoded_image={google:imageThumbnail},image_url={google:imageURL},sbisrc={google:imageSearchSource},original_width={google:imageOriginalWidth},original_height={google:imageOriginalHeight},processed_image_dimensions={google:processedImageDimensions}",
+            "input_encodings": [
+                "UTF-8"
+            ],
+            "is_active": 0,
+            "keyword": ":g",
+            "last_modified": "0",
+            "last_visited": "0",
+            "logo_url": "",
+            "new_tab_url": "",
+            "originating_url": "",
+            "preconnect_to_search_url": true,
+            "prefetch_likely_navigations": true,
+            "prepopulate_id": 1,
+            "safe_for_autoreplace": true,
+            "search_intent_params": [
+                "si",
+                "gs_ssp"
+            ],
+            "search_url_post_params": "",
+            "short_name": "Google",
+            "side_image_search_param": "sideimagesearch",
+            "side_search_param": "sidesearch",
+            "starter_pack_id": 0,
+            "suggestions_url": "{google:baseSuggestURL}search?{google:searchFieldtrialParameter}client={google:suggestClient}&gs_ri={google:suggestRid}&xssi=t&q={searchTerms}&{google:inputType}{google:omniboxFocusType}{google:cursorPosition}{google:currentPageUrl}{google:pageClassification}{google:clientCacheTimeToLive}{google:searchVersion}{google:sessionToken}{google:prefetchQuery}sugkey={google:suggestAPIKeyParameter}",
+            "suggestions_url_post_params": "",
+            "synced_guid": "",
+            "url": "{google:baseURL}search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}",
+            "usage_count": 0
+        }
+    },
+    "domain_diversity": {
+        "last_reporting_timestamp": ""
+    },
+    "extensions": {
+        "alerts": {
+            "initialized": true
+        },
+        "chrome_url_overrides": {},
+        "last_chrome_version": "114.1.52.129",
+        "settings": {
+            "ahfgeienlihckogmohjhadlkjgocpleb": {
+                "active_permissions": {
+                    "api": [
+                        "management",
+                        "system.display",
+                        "system.storage",
+                        "webstorePrivate",
+                        "system.cpu",
+                        "system.memory",
+                        "system.network"
+                    ],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": []
+                },
+                "app_launcher_ordinal": "t",
+                "commands": {},
+                "content_settings": [],
+                "creation_flags": 1,
+                "events": [],
+                "first_install_time": "",
+                "from_webstore": false,
+                "incognito_content_settings": [],
+                "incognito_preferences": {},
+                "last_update_time": "",
+                "location": -1,
+                "manifest": {
+                    "app": {
+                        "launch": {
+                            "web_url": "https://chrome.google.com/webstore"
+                        },
+                        "urls": [
+                            "https://chrome.google.com/webstore"
+                        ]
+                    },
+                    "description": "Discover great apps, games, extensions and themes for Brave.",
+                    "icons": {
+                        "128": "webstore_icon_128.png",
+                        "16": "webstore_icon_16.png"
+                    },
+                    "key": "",
+                    "name": "Web Store",
+                    "permissions": [
+                        "webstorePrivate",
+                        "management",
+                        "system.cpu",
+                        "system.display",
+                        "system.memory",
+                        "system.network",
+                        "system.storage"
+                    ],
+                    "version": "0.2"
+                },
+                "page_ordinal": "n",
+                "path": "/opt/brave-bin/resources/web_store",
+                "preferences": {},
+                "regular_only_preferences": {},
+                "state": 1,
+                "was_installed_by_default": false,
+                "was_installed_by_oem": false
+            },
+            "bpkoijdaibakhfgahdfknbdcankhidoa": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://old.reddit.com/*",
+                        "https://reddit.com/*",
+                        "https://www.reddit.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "eoceebklhjepohnakemchinmkdpbolgh": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://gist.github.com/*",
+                        "https://github.com/*",
+                        "https://www.github.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "feipjgjfhmnfhhmbkclfopokbcgnpnnd": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://m.youtube.com/*",
+                        "https://www.youtube.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "ficffphkednpmhjngkiljamkalhjmclj": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://old.reddit.com/*",
+                        "https://reddit.com/*",
+                        "https://www.reddit.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "gajhkmnhhoadjcfchafgbekhgigglnkp": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://*.twitter.com/*",
+                        "https://twitter.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "galpopeppgfimpgpdbbkhemhcjgghmhl": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://gist.github.com/*",
+                        "https://github.com/*",
+                        "https://www.github.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "glcghbidhfocejckcfmfpdhmkjfmkiei": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://*.twitter.com/*",
+                        "https://twitter.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "ldopphkgfhfchjcgfilekhkifaodmegm": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://twitch.tv/*",
+                        "https://www.twitch.tv/*"
+                    ]
+                },
+                "state": 1
+            },
+            "mhjfbmdgcfjbbpaeojofohoefgiehjai": {
+                "active_permissions": {
+                    "api": [
+                        "contentSettings",
+                        "fileSystem",
+                        "fileSystem.write",
+                        "metricsPrivate",
+                        "tabs",
+                        "resourcesPrivate",
+                        "pdfViewerPrivate"
+                    ],
+                    "explicit_host": [
+                        "chrome://brave-resources/*",
+                        "chrome://resources/*",
+                        "chrome://webui-test/*"
+                    ],
+                    "manifest_permissions": [],
+                    "scriptable_host": []
+                },
+                "commands": {},
+                "content_settings": [],
+                "creation_flags": 1,
+                "events": [],
+                "first_install_time": "",
+                "from_webstore": false,
+                "incognito_content_settings": [],
+                "incognito_preferences": {},
+                "last_update_time": "",
+                "location": 5,
+                "manifest": {
+                    "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
+                    "description": "",
+                    "incognito": "split",
+                    "key": "",
+                    "manifest_version": 2,
+                    "mime_types": [
+                        "application/pdf"
+                    ],
+                    "mime_types_handler": "index.html",
+                    "name": "Chrome PDF Viewer",
+                    "offline_enabled": true,
+                    "permissions": [
+                        "chrome://brave-resources/",
+                        "chrome://resources/",
+                        "chrome://webui-test/",
+                        "contentSettings",
+                        "metricsPrivate",
+                        "pdfViewerPrivate",
+                        "resourcesPrivate",
+                        "tabs",
+                        {
+                            "fileSystem": [
+                                "write"
+                            ]
+                        }
+                    ],
+                    "version": "1"
+                },
+                "path": "/opt/brave-bin/resources/pdf",
+                "preferences": {},
+                "regular_only_preferences": {},
+                "state": 1,
+                "was_installed_by_default": false,
+                "was_installed_by_oem": false
+            },
+            "mjkjompjknhcipamakpfliebpggggpga": {
+                "active_permissions": {
+                    "api": [],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "https://vimeo.com/*"
+                    ]
+                },
+                "state": 1
+            },
+            "mnojpmjdmbbfmejpflffifhffcmidifd": {
+                "active_permissions": {
+                    "api": [
+                        "activeTab",
+                        "alarms",
+                        "contentSettings",
+                        "contextMenus",
+                        "cookies",
+                        "history",
+                        "management",
+                        "settingsPrivate",
+                        "storage",
+                        "tabs",
+                        "unlimitedStorage",
+                        "webNavigation",
+                        "webRequest",
+                        "webRequestBlocking"
+                    ],
+                    "explicit_host": [
+                        "*://*/*",
+                        "\u003Call_urls>",
+                        "chrome://favicon/*"
+                    ],
+                    "manifest_permissions": [],
+                    "scriptable_host": [
+                        "http://*/*",
+                        "https://*/*",
+                        "https://chrome.google.com/webstore/*"
+                    ]
+                },
+                "commands": {},
+                "content_settings": [],
+                "creation_flags": 1,
+                "events": [],
+                "first_install_time": "",
+                "from_webstore": false,
+                "incognito_content_settings": [],
+                "incognito_preferences": {},
+                "last_update_time": "",
+                "location": 5,
+                "manifest": {
+                    "background": {
+                        "persistent": true,
+                        "scripts": [
+                            "out/brave_extension_background.bundle.js"
+                        ]
+                    },
+                    "content_scripts": [
+                        {
+                            "all_frames": true,
+                            "js": [
+                                "out/content_element_picker.bundle.js"
+                            ],
+                            "matches": [
+                                "http://*/*",
+                                "https://*/*"
+                            ],
+                            "run_at": "document_start"
+                        },
+                        {
+                            "all_frames": true,
+                            "js": [
+                                "out/webstore.bundle.js"
+                            ],
+                            "matches": [
+                                "https://chrome.google.com/webstore/*"
+                            ],
+                            "run_at": "document_start"
+                        }
+                    ],
+                    "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",
+                    "default_locale": "en_US",
+                    "description": "__MSG_appName__",
+                    "externally_connectable": {
+                        "ids": [
+                            "*"
+                        ],
+                        "matches": [
+                            "chrome://newtab/*"
+                        ]
+                    },
+                    "icons": {
+                        "128": "assets/img/icon-128.png",
+                        "16": "assets/img/icon-16.png",
+                        "256": "assets/img/icon-256.png",
+                        "32": "assets/img/icon-32.png",
+                        "48": "assets/img/icon-48.png",
+                        "64": "assets/img/icon-64.png"
+                    },
+                    "incognito": "split",
+                    "key": "",
+                    "manifest_version": 2,
+                    "name": "Brave",
+                    "permissions": [
+                        "activeTab",
+                        "alarms",
+                        "contentSettings",
+                        "contextMenus",
+                        "cookies",
+                        "history",
+                        "management",
+                        "settingsPrivate",
+                        "storage",
+                        "tabs",
+                        "webNavigation",
+                        "webRequest",
+                        "*://*/*",
+                        "chrome://favicon/*",
+                        "webRequestBlocking",
+                        "unlimitedStorage",
+                        "\u003Call_urls>"
+                    ],
+                    "version": "1.0.0",
+                    "web_accessible_resources": [
+                        "elementPicker.html",
+                        "elementPicker.js"
+                    ]
+                },
+                "path": "/opt/brave-bin/resources/brave_extension",
+                "preferences": {},
+                "regular_only_preferences": {},
+                "state": 1,
+                "was_installed_by_default": false,
+                "was_installed_by_oem": false
+            },
+            "nkeimhogjdpnpccoofpliimaahmaaome": {
+                "active_permissions": {
+                    "api": [
+                        "desktopCapture",
+                        "processes",
+                        "webrtcAudioPrivate",
+                        "webrtcDesktopCapturePrivate",
+                        "webrtcLoggingPrivate",
+                        "system.cpu",
+                        "enterprise.hardwarePlatform"
+                    ],
+                    "explicit_host": [],
+                    "manifest_permissions": [],
+                    "scriptable_host": []
+                },
+                "commands": {},
+                "content_settings": [],
+                "creation_flags": 1,
+                "events": [
+                    "runtime.onConnectExternal"
+                ],
+                "first_install_time": "",
+                "from_webstore": false,
+                "incognito_content_settings": [],
+                "incognito_preferences": {},
+                "last_update_time": "",
+                "location": 5,
+                "manifest": {
+                    "background": {
+                        "page": "background.html",
+                        "persistent": false
+                    },
+                    "externally_connectable": {
+                        "matches": [
+                            "https://*.google.com/*"
+                        ]
+                    },
+                    "incognito": "split",
+                    "key": "",
+                    "manifest_version": 2,
+                    "name": "Google Hangouts",
+                    "permissions": [
+                        "desktopCapture",
+                        "enterprise.hardwarePlatform",
+                        "processes",
+                        "system.cpu",
+                        "webrtcAudioPrivate",
+                        "webrtcDesktopCapturePrivate",
+                        "webrtcLoggingPrivate"
+                    ],
+                    "version": "1.3.21"
+                },
+                "path": "/opt/brave-bin/resources/hangout_services",
+                "preferences": {},
+                "regular_only_preferences": {},
+                "state": 1,
+                "was_installed_by_default": false,
+                "was_installed_by_oem": false
+            },
+            "odbfpeeihdkbihmopkbjmoonfanlbfcl": {
+                "disable_reasons": 1,
+                "state": 0
+            }
+        },
+        "theme": {
+            "id": "",
+            "system_theme": 1
+        }
+    },
+    "gcm": {
+        "product_category_for_subtypes": "com.brave.linux"
+    },
+    "google": {
+        "services": {
+            "consented_to_sync": false,
+            "signin_scoped_device_id": ""
+        }
+    },
+    "intl": {
+        "selected_languages": "en-US,en"
+    },
+    "invalidation": {
+        "per_sender_topics_to_handler": {
+            "10": {},
+            "8181035976": {}
+        }
+    },
+    "media": {
+        "device_id_salt": "",
+        "engagement": {
+            "schema_version": 5
+        }
+    },
+    "ntp": {
+        "num_personal_suggestions": 0
+    },
+    "pinned_tabs": [],
+    "prefetch": {
+        "search_prefetch": {
+            "cache": {}
+        }
+    },
+    "privacy_sandbox": {
+        "anti_abuse_initialized": true,
+        "topics_data_accessible_since": ""
+    },
+    "profile": {
+        "avatar_index": 26,
+        "content_settings": {
+            "enable_quiet_permission_ui_enabling_method": {
+                "notifications": 1
+            },
+            "exceptions": {
+                "accessibility_events": {},
+                "anti_abuse": {},
+                "app_banner": {},
+                "ar": {},
+                "auto_select_certificate": {},
+                "automatic_downloads": {},
+                "autoplay": {},
+                "background_sync": {},
+                "bluetooth_chooser_data": {},
+                "bluetooth_guard": {},
+                "bluetooth_scanning": {},
+                "braveShields": {},
+                "braveSpeedreader": {},
+                "brave_ethereum": {},
+                "brave_google_sign_in": {},
+                "brave_localhost_access": {},
+                "brave_remember_1p_storage": {},
+                "brave_solana": {},
+                "camera_pan_tilt_zoom": {},
+                "client_hints": {},
+                "clipboard": {},
+                "cookies": {},
+                "cosmeticFiltering": {
+                    "*,*": {
+                        "last_modified": "",
+                        "setting": 2
+                    },
+                    "*,https://firstparty": {
+                        "last_modified": "",
+                        "setting": 2
+                    }
+                },
+                "durable_storage": {},
+                "fedcm_active_session": {},
+                "fedcm_idp_registration": {},
+                "fedcm_idp_signin": {},
+                "fedcm_share": {},
+                "file_system_access_chooser_data": {},
+                "file_system_last_picked_directory": {},
+                "file_system_read_guard": {},
+                "file_system_write_guard": {},
+                "fingerprintingV2": {
+                    "*,*": {
+                        "last_modified": "",
+                        "setting": 2
+                    }
+                },
+                "formfill_metadata": {},
+                "geolocation": {},
+                "get_display_media_set_select_all_screens": {},
+                "hid_chooser_data": {},
+                "hid_guard": {},
+                "httpUpgradableResources": {},
+                "http_allowed": {},
+                "httpsUpgrades": {},
+                "https_enforced": {},
+                "idle_detection": {},
+                "images": {},
+                "important_site_info": {},
+                "insecure_private_network": {},
+                "intent_picker_auto_display": {},
+                "javascript": {},
+                "javascript_jit": {},
+                "legacy_cookie_access": {},
+                "local_fonts": {},
+                "media_engagement": {},
+                "media_stream_camera": {},
+                "media_stream_mic": {},
+                "midi_sysex": {},
+                "mixed_script": {},
+                "nfc_devices": {},
+                "notification_interactions": {},
+                "notification_permission_review": {},
+                "notifications": {},
+                "password_protection": {},
+                "payment_handler": {},
+                "permission_autoblocking_data": {},
+                "permission_autorevocation_data": {},
+                "popups": {},
+                "private_network_chooser_data": {},
+                "private_network_guard": {},
+                "protocol_handler": {},
+                "reduced_accept_language": {},
+                "referrers": {},
+                "safe_browsing_url_check_data": {},
+                "sensors": {},
+                "serial_chooser_data": {},
+                "serial_guard": {},
+                "shieldsAds": {
+                    "*,*": {
+                        "last_modified": "",
+                        "setting": 2
+                    }
+                },
+                "shieldsCookiesV3": {},
+                "site_engagement": {},
+                "sound": {},
+                "ssl_cert_decisions": {},
+                "storage_access": {},
+                "subresource_filter": {},
+                "subresource_filter_data": {},
+                "third_party_storage_partitioning": {},
+                "top_level_storage_access": {},
+                "trackers": {
+                    "*,*": {
+                        "last_modified": "",
+                        "setting": 2
+                    }
+                },
+                "unused_site_permissions": {},
+                "usb_chooser_data": {},
+                "usb_guard": {},
+                "vr": {},
+                "webid_api": {},
+                "webid_auto_reauthn": {},
+                "window_placement": {}
+            },
+            "pref_version": 1
+        },
+        "created_by_version": "114.1.52.129",
+        "creation_time": "",
+        "default_content_setting_values": {
+            "anti_abuse": 2
+        },
+        "exit_type": "Normal",
+        "last_engagement_time": "",
+        "last_time_obsolete_http_credentials_removed": 0,
+        "last_time_password_store_metrics_reported": 0,
+        "managed_user_id": "",
+        "name": "Profile 1",
+        "were_old_google_logins_removed": true
+    },
+    "protection": {
+        "macs": {
+            "browser": {
+                "show_home_button": ""
+            },
+            "default_search_provider_data": {
+                "template_url_data": ""
+            },
+            "extensions": {
+                "settings": {
+                    "ahfgeienlihckogmohjhadlkjgocpleb": "",
+                    "bpkoijdaibakhfgahdfknbdcankhidoa": "",
+                    "eoceebklhjepohnakemchinmkdpbolgh": "",
+                    "feipjgjfhmnfhhmbkclfopokbcgnpnnd": "",
+                    "ficffphkednpmhjngkiljamkalhjmclj": "",
+                    "gajhkmnhhoadjcfchafgbekhgigglnkp": "",
+                    "galpopeppgfimpgpdbbkhemhcjgghmhl": "",
+                    "glcghbidhfocejckcfmfpdhmkjfmkiei": "",
+                    "ldopphkgfhfchjcgfilekhkifaodmegm": "",
+                    "mhjfbmdgcfjbbpaeojofohoefgiehjai": "",
+                    "mjkjompjknhcipamakpfliebpggggpga": "",
+                    "mnojpmjdmbbfmejpflffifhffcmidifd": "",
+                    "nkeimhogjdpnpccoofpliimaahmaaome": "",
+                    "odbfpeeihdkbihmopkbjmoonfanlbfcl": ""
+                }
+            },
+            "google": {
+                "services": {
+                    "account_id": "",
+                    "last_account_id": "",
+                    "last_username": ""
+                }
+            },
+            "homepage": "",
+            "homepage_is_newtabpage": "",
+            "media": {
+                "storage_id_salt": ""
+            },
+            "pinned_tabs": "",
+            "prefs": {
+                "preference_reset_time": ""
+            },
+            "safebrowsing": {
+                "incidents_sent": ""
+            },
+            "search_provider_overrides": "",
+            "session": {
+                "restore_on_startup": "",
+                "startup_urls": ""
+            }
+        }
+    },
+    "safebrowsing": {
+        "event_timestamps": {},
+        "metrics_last_log_time": "",
+        "unhandled_sync_password_reuses": {}
+    },
+    "savefile": {
+        "default_directory": ""
+    },
+    "session": {
+        "restore_on_startup": 5
+    },
+    "sessions": {
+        "event_log": [
+            {
+                "crashed": false,
+                "time": "",
+                "type": 0
+            },
+            {
+                "did_schedule_command": true,
+                "first_session_service": true,
+                "tab_count": 1,
+                "time": "",
+                "type": 2,
+                "window_count": 1
+            }
+        ],
+        "session_data_status": 3
+    },
+    "signin": {
+        "allowed": false
+    },
+    "spellcheck": {
+        "dictionaries": [
+            "en-US"
+        ],
+        "dictionary": ""
+    },
+    "supervised_user": {
+        "metrics": {
+            "day_id": 154316
+        }
+    },
+    "sync": {
+        "requested": false
+    },
+    "translate_site_blacklist": [],
+    "translate_site_blocklist_with_time": {},
+    "unified_consent": {
+        "migration_state": 10
+    },
+    "web_apps": {
+        "did_migrate_default_chrome_apps": [
+            "MigrateDefaultChromeAppToWebAppsGSuite",
+            "MigrateDefaultChromeAppToWebAppsNonGSuite"
+        ],
+        "last_preinstall_synchronize_version": "114"
+    },
+    "zerosuggest": {
+        "cachedresults": "",
+        "cachedresults_with_url": {}
+    }
+}
