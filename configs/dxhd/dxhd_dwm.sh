@@ -30,7 +30,7 @@ kitty
 ## Browser
 #super + b
 choice=$(echo -e "1.Default Profile\n2.Temp Profile" | dmenu -i | awk -F"." '{print $1}')
-if [[ "$choice" !="" ]]; then
+if [[ "$choice" != "" ]]; then
     if [[ "$choice" = "1" ]]; then
         brave --profile-directory=Default
     else
