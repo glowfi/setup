@@ -243,6 +243,9 @@ chmod +x $HOME/.local/bin/gtfu.sh
 cp -r $HOME/setup/scripts/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
 
+cp -r $HOME/setup/scripts/klp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/klp
+
 yes | pip uninstall pathlib
 pip install pyinstaller
 pip install ffmpeg-python typing-extensions

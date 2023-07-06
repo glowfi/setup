@@ -70,7 +70,7 @@ install "ouch" "pac"
 
 ### IMAGE
 install "imagemagick ffmpegthumbnailer" "pac"
-install "gimp" "pac"
+install "gimp kolourpaint" "pac"
 install "gimp-plugin-registry" "yay"
 rm -rf $HOME/.config/GIMP/2.10
 mkdir -p $HOME/.config/GIMP/2.10
