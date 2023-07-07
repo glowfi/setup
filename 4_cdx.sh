@@ -187,12 +187,6 @@ mkdir -p .config/mpv/scripts
 touch $HOME/.config/mpv/mpv.conf
 echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>$HOME/.config/mpv/mpv.conf
 
-# INSTALL MUSICFAIRY
-
-cp -r $HOME/setup/scripts/musicfairy.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/musicfairy.sh
-$HOME/.local/bin/musicfairy.sh
-
 # MPV Scripts
 
 mkdir -p $HOME/.config/mpv/scripts
@@ -209,6 +203,9 @@ cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 cp -r $HOME/setup/scripts/int.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/int.sh
 
+cp -r $HOME/setup/scripts/speech2text.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/speech2text.sh
+
 cp -r $HOME/setup/scripts/formatDisk.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/formatDisk.sh
 
@@ -219,8 +216,8 @@ install "xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo" "pac"
 cp -r $HOME/setup/scripts/dm-record.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dm-record.sh
 
-cp -r $HOME/setup/scripts/dmenu-bluetooth $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dmenu-bluetooth
+cp -r $HOME/setup/scripts/dm-bluetooth $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dm-bluetooth
 
 cp -r $HOME/setup/scripts/sgrec.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/sgrec.sh
