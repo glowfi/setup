@@ -23,7 +23,7 @@ speech2textdefinite(){
     epoch=$(date +%s)
     mkdir $epoch
     mkdir $HOME/Documents/transcribed
-    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv *.vtt *.txt *.tsv *.json *.srt $epoch
     mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
 
@@ -62,7 +62,7 @@ speech2textinfinite(){
     epoch=$(date +%s)
     mkdir $epoch
     mkdir $HOME/Documents/transcribed
-    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv *.vtt *.txt *.tsv *.json *.srt $epoch
     mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
 
@@ -102,7 +102,7 @@ speech2textfile(){
     epoch=$(date +%s)
     mkdir $epoch
     mkdir $HOME/Documents/transcribed
-    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv *.vtt *.txt *.tsv *.json *.srt $epoch
     mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
 
@@ -150,7 +150,7 @@ speech2textfilelang(){
     epoch=$(date +%s)
     mkdir $epoch
     mkdir $HOME/Documents/transcribed
-    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv *.vtt *.txt *.tsv *.json *.srt $epoch
     mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
 
