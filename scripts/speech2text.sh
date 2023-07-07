@@ -171,6 +171,21 @@ filelocation(){
     filename_without_extension="$(echo "$filename" | sed 's/\.[^.]*$//')"
 }
 
+# Download Model
+downloadModel(){
+    modelType=$(echo -e "1.tiny.en\n2.tiny\n3.base.en\n4.base\n5.small.en\n6.small\n7.medium.en\n8.medium\n9.large" |gum filter --placeholder "Choose Model to Download"|awk -F"." '{print $2}'|xargs)
+
+    python - <<END
+import sys
+from whisper import _download, _MODELS
+
+models = ["tiny.en", "tiny", "base.en", "base", "small.en", "small", "medium.en", "medium", "large"]
+
+for model in models:
+    _download(_MODELS["$modelType"], "$MODEL_PATH", False)
+END
+}
+
 MODEL_PATH="$HOME/.local/share/openai-whispermodel"
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -183,18 +198,19 @@ lang="Afrikaans,Albanian,Amharic,Arabic,Armenian,Assamese,Azerbaijani,Bashkir,Ba
 # CD To Home Directory
 cd
 
-# Choose Operation to Perform
-operation=$(echo -e "1. Speech 2 Text (5 seconds)
+
+if [ -d "$MODEL_PATH" ]; then
+    # Choose Operation to Perform
+    operation=$(echo -e "1. Speech 2 Text (5 seconds)
 2.Speech 2 Text (Press q to stop recording)
 3.Speech 2 Text from a file (Autodetect input file language)
 4.Speech 2 Text from a file (Mention the language of input file)
-")
+5.Download more model
+    ")
 
-# Extract Choice
-choice=$(echo "$operation"| gum filter --placeholder "Choose Operation to Perform" | awk -F"." '{print $1}'| xargs)
+    # Extract Choice
+    choice=$(echo "$operation"| gum filter --placeholder "Choose Operation to Perform" | awk -F"." '{print $1}'| xargs)
 
-
-if [ -d "$MODEL_PATH" ]; then
 
     if [[ "$choice" = "1" ]]; then
         speech2textdefinite
@@ -204,15 +220,19 @@ if [ -d "$MODEL_PATH" ]; then
         speech2textfile
     elif [[ "$choice" = "4" ]]; then
         speech2textfilelang
+    elif [[ "$choice" = "5" ]]; then
+        downloadModel
     fi
 
 else
     # Install Dependencies for the first time
-    echo -e "${YELLOW}Downloading Model ...${NORMAL}"
+    echo -e "${YELLOW}Installing Dependencies ...${NORMAL}"
     rm -rf "$MODEL_PATH"
     pip install git+https://github.com/openai/whisper.git
     mkdir -p "$MODEL_PATH"
-    wget "https://openaipublic.azureedge.net/main/whisper/models/9ecf779972d90ba49c06d968637d720dd632c55bbf19d441fb42bf17a411e794/small.pt" -O $MODEL_PATH/small.pt
+    clear
+    echo -e "${YELLOW}Downloading Model ...${NORMAL}"
+    downloadModel
     clear
     echo -e "${GREEN}Model Downloaded! Run the script Again to convert speech to text!${NORMAL}"
 fi
