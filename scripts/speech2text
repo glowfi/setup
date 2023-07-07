@@ -205,8 +205,7 @@ if [ -d "$MODEL_PATH" ]; then
 2.Speech 2 Text (Press q to stop recording)
 3.Speech 2 Text from a file (Autodetect input file language)
 4.Speech 2 Text from a file (Mention the language of input file)
-5.Download more model
-    ")
+    5.Download more model")
 
     # Extract Choice
     choice=$(echo "$operation"| gum filter --placeholder "Choose Operation to Perform" | awk -F"." '{print $1}'| xargs)
