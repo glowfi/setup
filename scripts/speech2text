@@ -208,7 +208,7 @@ if [ -d "$MODEL_PATH" ]; then
     5.Download more model")
 
     # Extract Choice
-    choice=$(echo "$operation"| gum filter --placeholder "Choose Operation to Perform" | awk -F"." '{print $1}'| xargs)
+    choice=$(echo "$operation"|sed 's/^[ \t]*//'| gum filter --placeholder "Choose Operation to Perform" | awk -F"." '{print $1}'| xargs)
 
 
     if [[ "$choice" = "1" ]]; then
