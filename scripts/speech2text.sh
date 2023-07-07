@@ -10,15 +10,33 @@ speech2textdefinite(){
     echo -e "${YELLOW}Transcribing Speech to Text ...${NORMAL}"
     saveCWD=$(echo "$pwd")
     cd $MODEL_PATH
+
+    # Cleanup Old Files
+    echo "Cleaning old files... Ignore any not found messages below"
+    find . ! -name . -prune -type d -exec rm -rf {} +
+    rm *.vtt *.txt *.tsv *.json *.srt
+
+
+    # Transcribe
     whisper $HOME/.cache/speech.wav --model_dir "$MODEL_PATH" --task transcribe
-    read text < $MODEL_PATH/speech.txt
-    rm speech.vtt speech.txt speech.tsv speech.json speech.srt
-    rm $HOME/.cache/speech.wav
+    text=$(cat $MODEL_PATH/speech.txt)
+    epoch=$(date +%s)
+    mkdir $epoch
+    mkdir $HOME/Documents/transcribed
+    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
+
+    # CD into the output directory
+    clear
+    echo -e "${GREEN}Output${NORMAL}"
+    cd $HOME/Documents/transcribed/$epoch
+    ls
 
     # Print the text
     clear
-    echo -e "${RED}$text${NORMAL}"
+    echo -e "${GREEN}$text${NORMAL}\n\n"
+    echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
 }
 
 speech2textinfinite(){
@@ -31,15 +49,34 @@ speech2textinfinite(){
     echo -e "${YELLOW}Transcribing Speech to Text ...${NORMAL}"
     saveCWD=$(echo "$pwd")
     cd $MODEL_PATH
+
+    # Cleanup Old Files
+    echo "Cleaning old files... Ignore any not found messages below"
+    find . ! -name . -prune -type d -exec rm -rf {} +
+    rm *.vtt *.txt *.tsv *.json *.srt
+
+
+    # Transcribe
     whisper $HOME/.cache/speech.wav --model_dir "$MODEL_PATH" --task transcribe
-    read text < $MODEL_PATH/speech.txt
-    rm speech.vtt speech.txt speech.tsv speech.json speech.srt
-    rm $HOME/.cache/speech.wav
+    text=$(cat $MODEL_PATH/speech.txt)
+    epoch=$(date +%s)
+    mkdir $epoch
+    mkdir $HOME/Documents/transcribed
+    cp *.vtt *.txt *.tsv *.json *.srt $epoch
+    mv $epoch $HOME/Documents/transcribed
     cd "$saveCWD"
+
+    # CD into the output directory
+    clear
+    echo -e "${GREEN}Output${NORMAL}"
+    cd $HOME/Documents/transcribed/$epoch
+    ls
 
     # Print the text
     clear
-    echo -e "${RED}$text${NORMAL}"
+    echo -e "${GREEN}$text${NORMAL}\n\n"
+    echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
+
 }
 
 speech2textfile(){
@@ -56,6 +93,7 @@ speech2textfile(){
     cd $MODEL_PATH
 
     # Cleanup Old Files
+    echo "Cleaning old files... Ignore any not found messages below"
     find . ! -name . -prune -type d -exec rm -rf {} +
     rm *.vtt *.txt *.tsv *.json *.srt
 
@@ -99,6 +137,7 @@ speech2textfilelang(){
     cd $MODEL_PATH
 
     # Cleanup Old Files
+    echo "Cleaning old files... Ignore any not found messages below"
     find . ! -name . -prune -type d -exec rm -rf {} +
     rm *.vtt *.txt *.tsv *.json *.srt
 
