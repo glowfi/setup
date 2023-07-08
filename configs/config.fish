@@ -444,14 +444,14 @@ end
 function micVOl
     if test -z $argv[1]
         bash -c "while :
-        do amixer sset Capture 30000
+        do amixer -D pulse sset Capture 30000
         pkill -RTMIN+10 dwmblocks
         sleep 1
         done" >/dev/null
     else
 
         bash -c "while :
-        do amixer sset Capture $argv[1]
+        do amixer -D pulse sset Capture $argv[1]
         pkill -RTMIN+10 dwmblocks
         sleep 1
         done" >/dev/null
