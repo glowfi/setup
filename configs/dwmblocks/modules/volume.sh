@@ -4,8 +4,8 @@ dwm_pulse() {
     VOL=$(pamixer --get-volume)
     STATE=$(pamixer --get-mute)
 
-    MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
-    MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
+    MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'|xargs)
+    MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}'|xargs)
 
     printf "%s" "$SEP1"
 
