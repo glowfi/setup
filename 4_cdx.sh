@@ -205,6 +205,7 @@ chmod +x $HOME/.local/bin/int.sh
 
 cp -r $HOME/setup/scripts/speech2text $HOME/.local/bin/
 chmod +x $HOME/.local/bin/speech2text
+$HOME/.local/bin/speech2text
 
 cp -r $HOME/setup/scripts/formatDisk.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/formatDisk.sh
