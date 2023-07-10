@@ -37,6 +37,7 @@ speech2textdefinite(){
     clear
     echo -e "${GREEN}$text${NORMAL}\n\n"
     echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
+    mv $HOME/.cache/speech.wav "${HOME}/Documents/transcribed/$epoch"
 }
 
 speech2textinfinite(){
@@ -76,6 +77,7 @@ speech2textinfinite(){
     clear
     echo -e "${GREEN}$text${NORMAL}\n\n"
     echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
+    mv $HOME/.cache/speech.wav "${HOME}/Documents/transcribed/$epoch"
 
 }
 
@@ -113,6 +115,7 @@ speech2textfile(){
     ls
 
     echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
+    mv "$filename" "${HOME}/Documents/transcribed/$epoch"
 
 }
 
@@ -161,6 +164,7 @@ speech2textfilelang(){
     ls
 
     echo -e "${RED} Files saved at : ${HOME}/Documents/transcribed/$epoch ${NORMAL}"
+    mv "$filename" "${HOME}/Documents/transcribed/$epoch"
 
 }
 
