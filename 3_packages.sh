@@ -56,7 +56,9 @@ mkdir test
 cd test
 wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
 sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
-sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd/" /etc/pacman.conf
+wget "https://archive.archlinux.org/packages/i/iptables-nft/iptables-nft-1%3A1.8.8-3-x86_64.pkg.tar.zst"
+sudo pacman -U --noconfirm ./iptables-nft-1:1.8.8-3-x86_64.pkg.tar.zst
+sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd iptables-nft/" /etc/pacman.conf
 cd ..
 rm -rf test
 install "android-tools scrcpy" "pac"
@@ -383,7 +385,7 @@ net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performan
 
 # FIREWALL
 
-for i in {1..5}; do yes | sudo pacman -S nftables iptables-nft && break || sleep 1; done
+for i in {1..5}; do yes | sudo pacman -S nftables && break || sleep 1; done
 sudo rm -rf /etc/nftables.conf
 
 echo "#!/usr/sbin/nft -f
@@ -393,6 +395,21 @@ flush ruleset
 
 table ip filter {
   chain DOCKER-USER {
+    mark set 1
+  }
+  chain LIBVIRT_FWI{
+    mark set 1
+  }
+  chain LIBVIRT_FWO{
+    mark set 1
+  }
+  chain LIBVIRT_FWX{
+    mark set 1
+  }
+  chain LIBVIRT_INP{
+    mark set 1
+  }
+  chain LIBVIRT_OUT{
     mark set 1
   }
 }
