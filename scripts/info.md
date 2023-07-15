@@ -18,6 +18,7 @@ sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl spice spice-gtk spice
 
 ```bash
 sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
+yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
 ```

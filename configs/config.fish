@@ -120,7 +120,7 @@ alias wl="nsxiv -t ."
 alias pri="setWall"
 
 # PyPI package alias 
-alias pC="python3 setup.py sdist bdist_wheel"
+alias pC="rm -rf build/ dist/ xhibit.egg-info/;python3 setup.py sdist bdist_wheel"
 alias tW="twine upload dist/*"
 
 # Browser-sync
