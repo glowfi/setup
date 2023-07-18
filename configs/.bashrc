@@ -235,7 +235,7 @@ PS1+="\[${white}\]@";
 PS1+="\[${hostStyle}\]\h"; # host
 PS1+="\[${red}\]]${reset} ";
 PS1+="\[${blue}\]\w ${reset}"; # working directory full path
-PS1+="\$(prompt_git \"\[${white}\] on \[${blue}\]\" \"\[${cyan}\]\")"; # Git repository details
+PS1+="\$(prompt_git \"\[${white}\] on \[${blue}\]\" \"\[${cyan}\]\") "; # Git repository details
 export PS1;
 
 PS2="\[${yellow}\]→ \[${reset}\]";
