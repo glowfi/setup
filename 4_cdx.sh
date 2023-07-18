@@ -149,7 +149,8 @@ echo ""
 
 # FZF TERMINAL INTEGRATION
 
-install "fzf" "pac"
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf                                                                              1ms
+yes | ~/.fzf/install
 
 echo ""
 echo -------------------------------------------------------------------------------

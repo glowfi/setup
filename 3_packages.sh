@@ -157,6 +157,31 @@ echo ""
 fish -c "exit"
 cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 
+# COPY BASH SHELL SETTINGS
+
+cp -r $HOME/setup/configs/.bashrc $HOME
+
+# COPY inputrc
+
+cp -r $HOME/setup/configs/.inputrc $HOME
+
+# COPY VIM SETTINGS
+
+cp -r $HOME/setup/configs/.vimrc $HOME
+
+# INSTALL AND COPY TMUX SETTINGS
+
+install "tmux" "pac"
+cp -r $HOME/setup/configs/.tmux.conf $HOME
+
+# COPY BASH inputrc VIM TMUX TO ROOT
+
+sudo cp $HOME/.bashrc /root/
+sudo cp $HOME/.inputrc /root/
+sudo cp $HOME/.vimrc /root/
+sudo cp $HOME/.tmux.conf /root/
+
+
 # INSTALL AND COPY NNN FM SETTINGS
 
 sudo pacman -S --noconfirm trash-cli tree
