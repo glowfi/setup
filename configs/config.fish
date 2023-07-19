@@ -331,9 +331,9 @@ function searchFilesCurrent
 
         switch $def
             case "nvim.desktop"
-                nvim $args
+                nvim $args; or clear && vim $args
             case ""
-                nvim $args
+                nvim $args; or clear && vim $args
             case '*'
                 setsid xdg-open $args
         end
