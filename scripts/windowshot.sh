@@ -1,7 +1,7 @@
 #!/bin/sh
 
 print_date() {
-    date '+%F_%T' | sed -e 's/:/-/g'
+    date "+%e %B %Y %-I:%M:%S.%3N" | tr " " "-"
 }
 
 SCREENSHOTDIR="${HOME}/Pictures/ScreenShots"
