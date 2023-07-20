@@ -168,17 +168,6 @@ rm -rf default-media-player.sh
 
 xdg-mime default dolphin.desktop inode/directory
 
-# Set the MIME types of the Office document formats and CSV files you want to open in OnlyOffice
-mime_types=("application/vnd.ms-powerpoint" "application/vnd.openxmlformats-officedocument.presentationml.presentation" "application/vnd.ms-excel" "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" "application/msword" "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "text/csv")
-
-# Set the path to the OnlyOffice desktop file
-onlyoffice_desktop_file="onlyoffice-desktopeditors.desktop"
-
-# Loop through the MIME types and configure xdg-mime to open them with OnlyOffice
-for mime_type in "${mime_types[@]}"; do
-    xdg-mime default "${onlyoffice_desktop_file}" "${mime_type}"
-done
-
 xdg-settings set default-web-browser brave-browser.desktop
 
 echo "Done seting default application!"
