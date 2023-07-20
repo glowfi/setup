@@ -292,6 +292,9 @@ chmod +x $HOME/.local/bin/tran.sh
 cp -r $HOME/setup/scripts/fixWords.py $HOME/.local/bin/
 chmod +x $HOME/.local/bin/fixWords.py
 
+cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/blank.sh
+
 # ADDITIONAL PROGRAMS
 
 install "atbswp" "yay"
