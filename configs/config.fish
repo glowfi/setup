@@ -331,11 +331,11 @@ function searchFilesCurrent
 
         switch $def
             case "nvim.desktop"
-                nvim $args; or clear && vim $args
+                nvim (realpath "$args"); or clear && vim (realpath "$args")
             case ""
-                nvim $args; or clear && vim $args
+                nvim (realpath "$args"); or clear && vim (realpath "$args")
             case '*'
-                setsid xdg-open $args
+                setsid xdg-open (realpath "$args")
         end
     end
 end
