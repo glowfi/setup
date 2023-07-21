@@ -588,6 +588,29 @@ mkdir {work,out}
 sudo mkarchiso -v -w work -o out "$HOME/setup/configs/archlive"
 ```
 
+### SystemD Service
+
+```
+echo -e "
+[Unit]
+Description=Test Service
+
+[Service]
+ExecStart=$HOME/script.sh
+User=$USER
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee /etc/systemd/system/mystartup.service >/dev/null
+
+
+### Reload the systemd daemon and enable the service
+sudo systemctl daemon-reload
+sudo systemctl enable mystartup.service
+
+```
+
 ### PROTON ARGUMENTS
 
 ##### ENABLE
