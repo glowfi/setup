@@ -293,6 +293,18 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
+# THEMING
+
+cd $HOME/.config;rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
+
+cp -r $HOME/setup/configs/theming/qt5ct/ $HOME/setup/configs/theming/gtk-2.0 $HOME/setup/configs/theming/gtk-3.0 $HOME/setup/configs/theming/Kvantum $HOME/.config
+cp -r $HOME/setup/configs/theming/.gtkrc-2.0 $HOME
+echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
+
+
 
 # REMOVE KWALLET
 
