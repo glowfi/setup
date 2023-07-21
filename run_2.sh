@@ -25,6 +25,9 @@ chmod +x ~/setup/3_0_packages.sh
 chmod +x ~/setup/3_1_performance_security.sh
 ~/setup/3_1_performance_security.sh
 
+chmod +x ~/setup/3_2_browser.sh
+~/setup/3_2_browser.sh
+
 chmod +x ~/setup/4_cdx.sh
 ~/setup/4_cdx.sh
 
