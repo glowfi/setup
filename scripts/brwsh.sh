@@ -13,18 +13,20 @@ cat $HOME/setup/configs/brave/policy.json | sudo tee -a /etc/brave/policies/mana
 
 ### Start Brave
 
-brave &
-sleep 6
-killall brave
+sudo -u "$USER" brave --headless=new &
+sleep 3
+pkill -u "$USER" brave
+rm -rf $HOME/.config/BraveSoftware/Brave-Browser/SingletonLock
 
 
 ### Settings (Default Profile)
-brave --profile-directory=Tmp &
+sudo -u "$USER" brave --headless=new --profile-directory=Tmp &
 sleep 3
-killall brave
-sleep 6
+pkill -u "$USER" brave
+rm -rf $HOME/.config/BraveSoftware/Brave-Browser/SingletonLock
+sleep 3
 cat $HOME/setup/configs/brave/settings.json > $HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences
-sleep 6
+sleep 3
 cat $HOME/setup/configs/brave/settings.json > "$HOME/.config/BraveSoftware/Brave-Browser/Tmp/Preferences"
 
 
@@ -34,9 +36,9 @@ rm -rf $HOME/.librewolf/
 
 ###### Start Librewolf ######
 
-librewolf &
+sudo -u "$USER" librewolf --headless &
 sleep 6
-killall librewolf
+pkill -u "$USER" librewolf
 
 ###### Arkenfox Profile ######
 
