@@ -2,16 +2,10 @@
 
 ## INSTALL
 
-#### ULTRA MINIMAL
+#### MINIMAL (With only quickemu)
 
 ```bash
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
-```
-
-#### MINIMAL
-
-```bash
-sudo pacman -S --noconfirm qemu-base edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 ```
 
 #### FULL
@@ -109,184 +103,151 @@ else
 fi
 ```
 
-#### QEMU CLI COMMAND (PASSTHROUGH VIRTUALIZATION)
+#### SCRIPT TO AUTOMATE VIRTUALIZATION
 
-<b>Without Audio</b>
+# Python Script to create socket file
 
-```bash
-sudo qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl,gl=on \
-	-boot menu=on \
-	-device vfio-pci,host=01:00.0,multifunction=on \
-	-device vfio-pci,host=01:00.1 \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-	-drive file=win10.iso,index=1,media=cdrom \
-	-drive file=virtio.iso,index=2,media=cdrom
+```python
+
+# createsocket.py
+
+import socket
+
+# create a socket object
+sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+
+# specify the path for the socket file
+sock_path = "name.sock"
+
+# bind the socket to the specified path
+sock.bind(sock_path)
+
+# listen for incoming connections
+sock.listen(1)
+
+# accept incoming connections
+conn, addr = sock.accept()
+
+# use the connection object to send or receive data
+# ...
+
+# close the connection and socket
+conn.close()
+sock.close()
 ```
 
-<b>With Audio Passthrough</b>
+# Start VM
 
 ```bash
-sudo qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl \
-	-boot menu=on \
-    -audiodev id=audio1,driver=spice \
-    -spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
-    -device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \
-    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \
-	-device vfio-pci,host=01:00.0,multifunction=on \
-	-device vfio-pci,host=01:00.1 \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-	-cdrom win10.iso
-```
 
-### BSD Virtualization
+#!/usr/bin/env bash
 
-<b>Simple Virtualization (Audio Not Working)</b>
+# start.sh
 
-```bash
+name="void-musl-xfce"
+
+# Kill all sockets
+rm -rf "${name}-monitor.socket"
+rm -rf "${name}-serial.socket"
+rm -rf "${name}-agent.sock"
+rm -rf "${name}.socket"
+
+# Kill any running python script
+ps aux | grep "createsocket.py"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+ps aux | grep "qemu"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+ps aux | grep "spicy"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+
+# Create Main socket
+setsid python createsocket.py &
+
+# Create the monitor socket file
+monitor_socket="${name}-monitor.socket"
+if [ ! -e "$monitor_socket" ]; then
+    mkfifo "$monitor_socket"
+fi
+
+# Create the serial socket file
+serial_socket="${name}-serial.socket"
+if [ ! -e "$serial_socket" ]; then
+    mkfifo "$serial_socket"
+fi
+
 qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl,gl=on \
-	-boot menu=on \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-    -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
-	-cdrom NAME
+    -name "${name}",process=${name} \
+    -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
+    -smp cores=4,threads=2,sockets=1 -m 6G -device virtio-balloon \
+    -display none,gl=on \
+    -vga virtio \
+    -display none \
+    -audiodev spice,id=audio0 \
+    -device intel-hda \
+    -device hda-duplex,audiodev=audio0 \
+    -rtc base=localtime,clock=host,driftfix=slew \
+    -spice disable-ticketing=on,port=5930,addr=127.0.0.1 \
+    -device virtio-serial-pci \
+    -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \
+    -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \
+    -chardev spicevmc,id=vdagent0,name=vdagent \
+    -device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \
+    -chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \
+    -device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \
+    -device virtio-rng-pci,rng=rng0 \
+    -object rng-random,id=rng0,filename=/dev/urandom \
+    -device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \
+    -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \
+    -chardev spicevmc,id=usbredirchardev2,name=usbredir \
+    -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
+    -chardev spicevmc,id=usbredirchardev3,name=usbredir \
+    -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
+    -device pci-ohci,id=smartpass -device usb-ccid \
+    -chardev spicevmc,id=ccid,name=smartcard \
+    -device ccid-card-passthru,chardev=ccid \
+    -device usb-ehci,id=input \
+    -device usb-kbd,bus=input.0 \
+    -k en-us \
+    -device usb-mouse,bus=input.0 -device virtio-net,netdev=nic \
+    -netdev user,hostname="${name}",hostfwd=tcp::22220-:22,id=nic \
+    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
+    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+    -device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=Image.img\
+    -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \
+    -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \
+    -monitor unix:"${name}.socket",server,nowait \
+    -serial unix:"${name}.socket",server,nowait \
+    -drive media=cdrom,index=0,file=void.iso &
+
+    -device vfio-pci,host=01:00.0,multifunction=on \
+    -device vfio-pci,host=01:00.1 \
+
+
+
+# Open Spice Window
+setsid spicy -p 5930 --title="${name}" &
+
 ```
 
-<b>Virtualization with QXL (Audio Not Working)</b>
+# Cleanup File
 
 ```bash
-qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-device qxl-vga,ram_size=65536,vram_size=65536,vgamem_mb=64 \
-	-display none \
-	-boot menu=on \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-	-audiodev spice,id=audio0 \
-	-device intel-hda \
-	-device hda-duplex,audiodev=audio0 \
-	-spice port=5900,addr=127.0.0.1,disable-ticketing=on,image-compression=off,seamless-migration=on \
-	-device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
-	-cdrom gbsd.iso
-```
+#!/usr/bin/env bash
 
-<b>Virtualization with Virtio (GPU Passthrough)</b>
+# clean.sh
 
-```bash
-sudo qemu-system-x86_64 \
-	-enable-kvm \
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
-	-machine q35,accel=kvm,smm=on \
-	-cpu host \
-	-m 10G \
-	-smp 6 \
-	-vga virtio \
-	-display sdl,gl=on \
-	-boot menu=on \
-	-device vfio-pci,host=01:00.0,multifunction=on \
-	-device vfio-pci,host=01:00.1 \
-	-serial none \
-	-parallel none \
-	-global driver=cfi.pflash01,property=secure,value=on \
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-	-drive file=Image.img \
-    -device virtio-net,netdev=vmnic -netdev user,id=vmnic,hostfwd=tcp::5222-:22 \
-	-cdrom NAME
-```
+name="void-musl-xfce"
 
-<b>UEFI BSD (Audio Working)</b>
+# rm -rf Image.img
+# qemu-img create -f qcow2 Image.img 30
 
-```bash
-qemu-system-x86_64 \
-	-name ghostbsd-22.01.12-mate,process=ghostbsd-22.01.12-mate \
-	-enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
-	-smp cores=4,threads=2,sockets=1 -m 4G -device virtio-balloon \
-	-vga none \
-	-device qxl-vga,ram_size=65536,vram_size=65536,vgamem_mb=64 \
-	-display none \
-	-audiodev spice,id=audio0 \
-	-device intel-hda \
-	-device hda-duplex,audiodev=audio0 \
-	-rtc base=localtime,clock=host,driftfix=slew \
-	-spice disable-ticketing=on,port=5930,addr=127.0.0.1 \
-	-device virtio-serial-pci \
-	-chardev socket,id=agent0,path=ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-agent.sock,server=on,wait=off \
-	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \
-	-chardev spicevmc,id=vdagent0,name=vdagent \
-	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \
-	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \
-	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \
-	-device virtio-rng-pci,rng=rng0 \
-	-object rng-random,id=rng0,filename=/dev/urandom \
-	-device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \
-	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \
-	-chardev spicevmc,id=usbredirchardev2,name=usbredir \
-	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
-	-chardev spicevmc,id=usbredirchardev3,name=usbredir \
-	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
-	-device pci-ohci,id=smartpass -device usb-ccid \
-	-chardev spicevmc,id=ccid,name=smartcard \
-	-device ccid-card-passthru,chardev=ccid \
-	-device usb-ehci,id=input \
-	-device usb-kbd,bus=input.0 \
-	-k en-us \
-	-device usb-mouse,bus=input.0 -device virtio-net,netdev=nic \
-	-netdev user,hostname=ghostbsd-22.01.12-mate,hostfwd=tcp::22220-:22,id=nic \
-	-global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-	-drive if=pflash,format=raw,unit=1,file=ghostbsd-22.01.12-mate/OVMF_VARS.fd \
-	-drive media=cdrom,index=0,file=ghostbsd-22.01.12-mate/GhostBSD-22.01.12.iso \
-	-device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=ghostbsd-22.01.12-mate/disk.qcow2 \
-	-fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \
-	-device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \
-	-monitor unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-monitor.socket,server,nowait \
-	-serial unix:ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate-serial.socket,server,nowait # -pidfile ghostbsd-22.01.12-mate/ghostbsd-22.01.12-mate.pid \
+# Kill all sockets
+rm -rf "${name}-monitor.socket"
+rm -rf "${name}-serial.socket"
+rm -rf "${name}-agent.sock"
+rm -rf "${name}.socket"
+
+# Kill any running python script
+ps aux | grep "createsocket.py"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+ps aux | grep "qemu"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+ps aux | grep "spicy"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
 ```
 
 ### FIREFOX

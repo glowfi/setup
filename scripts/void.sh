@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
+# CACHE PASSWORD
+sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
+
+
 # Core Packages
 
 sudo xbps-install -Sy wget curl make awk gcc
 sudo xbps-install -Sy git xfce4-screenshooter
+sudo xbps-install -Sy xdg-utils
 
 # Fonts
-sudo xbps-install nerd-fonts nerd-fonts-ttf
+sudo xbps-install -Sy nerd-fonts nerd-fonts-ttf
+sudo xbps-install -Sy noto-fonts-ttf noto-fonts-ttf noto-fonts-ttf-extra
 
 # Spice Agent
 
@@ -34,6 +40,7 @@ echo "Changed default shell!"
 # Python
 
 sudo xbps-install -Sy python3 python3-pip
+sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 
 # NodeJS
 
@@ -141,7 +148,6 @@ echo 'user_pref("mousewheel.default.delta_multiplier_y",                      30
 
 cd
 
-
 # INSTALL AND COPY NNN FM SETTINGS
 
 sudo xbps-install -Sy trash-cli tree
@@ -153,11 +159,32 @@ curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | s
 cd
 cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
 
-git clone https://github.com/mwh/dragon
-cd dragon
-make clean install
-cd ..
-rm -rf dragon
+# CONFIGURING GIT
+
+git config --global user.name -
+git config --global user.email -
+
+echo "[core]
+    pager = delta --syntax-theme 'gruvbox-dark'
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    features = decorations
+
+[delta \"interactive\"]
+    keep-plus-minus-markers = false
+
+[delta \"decorations\"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = \"#067a00\"
+    hunk-header-style = file line-number syntax
+" >>$HOME/.gitconfig
 
 # Editor
 
@@ -170,17 +197,29 @@ sudo xbps-install -Sy fortune-mod
 sudo xbps-install -Sy neovim
 
 cp -r $HOME/setup/configs/nvim $HOME/.config
-nvim -c PackerSync
-nvim -c PackerSync
-nvim -c PackerSync
+
+# Clone DS
+sudo xbps-install -Sy github-cli
+git clone https://github.com/glowfi/DS
+
+# Extra
+
+pip install xhibit
+
+# DELETE CACHED PASSWORD
+
+sudo sed -i '72d' /etc/sudoers
+
+# Create shortcuts
+
+xfconf-query -c xfce4-keyboard-shortcuts -n -t 'string' -p "/commands/custom/<Super>t" -s "kitty"
+xfconf-query -c xfce4-keyboard-shortcuts -n -t 'string' -p "/commands/custom/<Super>b" -s "firefox"
 
 # Theme
+
 git clone https://github.com/grassmunk/Chicago95
 cd Chicago95
 ./installer.py
 cd ..
 rm -rf Chicago95
 wget "https://i.imgur.com/I4IF27V.jpg" -O "$HOME/Downloads/background.png"
-
-# Clone DS
-git clone https://github.com/glowfi/DS
