@@ -172,6 +172,14 @@ if [ ! -e "$serial_socket" ]; then
     mkfifo "$serial_socket"
 fi
 
+# Delete everyting related to net netdev virtio-net devices
+# -nic none \
+# -net none \
+# -nodefaults \
+# -device vfio-pci,host=01:00.0,multifunction=on \
+# -device vfio-pci,host=01:00.1 \
+
+
 qemu-system-x86_64 \
     -name "${name}",process=${name} \
     -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
@@ -216,8 +224,6 @@ qemu-system-x86_64 \
     -serial unix:"${name}.socket",server,nowait \
     -drive media=cdrom,index=0,file=void.iso &
 
-    -device vfio-pci,host=01:00.0,multifunction=on \
-    -device vfio-pci,host=01:00.1 \
 
 
 
