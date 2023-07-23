@@ -3,7 +3,7 @@
 # Core Packages
 
 sudo xbps-install -Sy wget curl make awk gcc
-sudo xbps-install -Sy git
+sudo xbps-install -Sy git xfce4-screenshooter
 
 # Fonts
 sudo xbps-install nerd-fonts nerd-fonts-ttf
@@ -174,5 +174,13 @@ nvim -c PackerSync
 nvim -c PackerSync
 nvim -c PackerSync
 
-# Copy DS
+# Theme
+git clone https://github.com/grassmunk/Chicago95
+cd Chicago95
+./installer.py
+cd ..
+rm -rf Chicago95
+wget "https://i.imgur.com/I4IF27V.jpg" -O "$HOME/Downloads/background.png"
+
+# Clone DS
 git clone https://github.com/glowfi/DS
