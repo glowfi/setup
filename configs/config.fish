@@ -86,15 +86,6 @@ alias mirru='sudo rm -rf /var/lib/pacman/db.lck;
 sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 sudo pacman -Syyy'
 
-# Cleanup
-alias cleanup='yes | sudo pacman -Sc;
-yes | yay -Sc;
-printf "Cleaned Unused Pacakges!\n";
-rm -rf ~/.cache/*;
-printf "Cleaned Cache!\n";
-sudo pacman -Rns (pacman -Qtdq)  2> /dev/null;
-yes | printf "Cleaned Orphans!"'
-
 # Upgrade
 alias upgrade='mirru;sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm'
 
@@ -141,6 +132,7 @@ alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
 # Search Pacakges in Repository
 alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' | xargs -ro sudo pacman -S"
+alias sxb='sudo xbps-query -Rs . | fzf -m | cut -d " " -f2 | xargs -ro sudo xbps-install -Sy'
 alias spkg='pkg search "^" | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg install'
 
 # Search AUR
@@ -149,6 +141,17 @@ alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' | xargs -ro yay -S"
 # Uninstall Packages
 alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' | xargs -ro sudo pacman -Rns"
 alias pkgu='pkg info | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg remove'
+alias xbu="xbps-query -m | fzf -m | xargs -ro sudo xbps-remove -R"
+
+# Cleanup
+alias cleanup='yes | sudo pacman -Sc;
+yes | yay -Sc;
+printf "Cleaned Unused Pacakges!\n";
+rm -rf ~/.cache/*;
+printf "Cleaned Cache!\n";
+sudo pacman -Rns (pacman -Qtdq)  2> /dev/null;
+yes | printf "Cleaned Orphans!"'
+alias xbc="sudo xbps-remove -Oo;sudo rm /var/cache/xbps/*;sudo rm -rf $HOME/.cache"
 
 # DWM compile
 alias dwc="make clean;make"
@@ -466,9 +469,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "655s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "658s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "655s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "658s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
