@@ -152,7 +152,7 @@ elif [[ "$driveType" = "non-ssd" ]]; then
 
 fi
 
-# RUST REPLACEMENTS OF SOME GNU COREUTILS (ls cat grep find top)
+# REPLACEMENTS OF SOME GNU COREUTILS AND SOME OTHER *nix PROGRAMS
 for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine && break || sleep 1; done
 
 # GRUB
@@ -224,4 +224,5 @@ systemctl enable acpid
 rm -rf setup
 
 # FIX AN ISSUE WITH BTRFS
+
 sed -i 's/subvolid.*,//' /etc/fstab

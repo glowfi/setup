@@ -2,13 +2,13 @@
 
 ## INSTALL
 
-#### MINIMAL (With only quickemu)
+### MINIMAL (With only quickemu)
 
 ```bash
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
 ```
 
-#### FULL
+### FULL
 
 ```bash
 sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
@@ -52,20 +52,42 @@ qemu-system-x86_64 -enable-kvm \
 	-cdrom ISO_NAME
 ```
 
-#### GPU PASSTHROUGH GUIDE
+## GPU PASSTHROUGH GUIDE
 
-##### Virtio drivers iso By Redhat
+### Virtio drivers iso By Redhat
 
 ```
 https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
 ```
 
-#### SCRIPT TO AUTOMATE PASSTHROUGH
+### SCRIPT TO AUTOMATE PASSTHROUGH (Specific to my configuration)
 
 ```bash
 #!/bin/bash
 
-if [[ "$1" = "pass" ]]; then
+if [[ -f "$HOME/.config/gpupass" ]]; then
+
+    # If file exist means we have already passthroughed our GPU
+    rm $HOME/.config/gpupass
+
+    ## EDIT GRUB
+    sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
+    sudo sed -i '6a\GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"' /etc/default/grub
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+    ## DELETE vfio.conf
+    sudo rm -rf /etc/modprobe.d/vfio.conf
+
+    ## ADD BACK NVIDIA MODULES
+    sudo sed -i 's/MODULES=(btrfs)/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
+    ## Regenerate initramfs
+    sudo mkinitcpio -p linux-zen
+
+else
+
+    # If file does not exist it means we are yet to passthrough our GPU
+    touch $HOME/.config/gpupass
 
     ## EDIT GRUB
     sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"/' /etc/default/grub
@@ -85,175 +107,21 @@ if [[ "$1" = "pass" ]]; then
 
     ## Regenerate initramfs
     sudo mkinitcpio -p linux-zen
-else
 
-    ## EDIT GRUB
-    sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
-    sudo sed -i '6a\GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"' /etc/default/grub
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-    ## DELETE vfio.conf
-    sudo rm -rf /etc/modprobe.d/vfio.conf
-
-    ## ADD BACK NVIDIA MODULES
-    sudo sed -i 's/MODULES=(btrfs)/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-
-    ## Regenerate initramfs
-    sudo mkinitcpio -p linux-zen
 fi
 ```
 
-#### SCRIPT TO AUTOMATE VIRTUALIZATION
+# Arguments Help
 
-# Python Script to create socket file
+```sh
+### GPU Passthrough VFIO Devices
+-device vfio-pci,host=01:00.0,multifunction=on \
+-device vfio-pci,host=01:00.1 \
 
-```python
-
-# createsocket.py
-
-import socket
-
-# create a socket object
-sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-
-# specify the path for the socket file
-sock_path = "name.sock"
-
-# bind the socket to the specified path
-sock.bind(sock_path)
-
-# listen for incoming connections
-sock.listen(1)
-
-# accept incoming connections
-conn, addr = sock.accept()
-
-# use the connection object to send or receive data
-# ...
-
-# close the connection and socket
-conn.close()
-sock.close()
-```
-
-# Start VM
-
-```bash
-
-#!/usr/bin/env bash
-
-# start.sh
-
-name="void-musl-xfce"
-
-# Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
-rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
-
-# Kill any running python script
-ps aux | grep "createsocket.py"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
-ps aux | grep "qemu"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
-ps aux | grep "spicy"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
-
-# Create Main socket
-setsid python createsocket.py &
-
-# Create the monitor socket file
-monitor_socket="${name}-monitor.socket"
-if [ ! -e "$monitor_socket" ]; then
-    mkfifo "$monitor_socket"
-fi
-
-# Create the serial socket file
-serial_socket="${name}-serial.socket"
-if [ ! -e "$serial_socket" ]; then
-    mkfifo "$serial_socket"
-fi
-
-# Delete everyting related to net netdev virtio-net devices
-# -nic none \
-# -net none \
-# -nodefaults \
-# -device vfio-pci,host=01:00.0,multifunction=on \
-# -device vfio-pci,host=01:00.1 \
-
-
-qemu-system-x86_64 \
-    -name "${name}",process=${name} \
-    -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \
-    -smp cores=4,threads=2,sockets=1 -m 6G -device virtio-balloon \
-    -display none,gl=on \
-    -vga virtio \
-    -display none \
-    -audiodev spice,id=audio0 \
-    -device intel-hda \
-    -device hda-duplex,audiodev=audio0 \
-    -rtc base=localtime,clock=host,driftfix=slew \
-    -spice disable-ticketing=on,port=5930,addr=127.0.0.1 \
-    -device virtio-serial-pci \
-    -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \
-    -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \
-    -chardev spicevmc,id=vdagent0,name=vdagent \
-    -device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \
-    -chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \
-    -device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \
-    -device virtio-rng-pci,rng=rng0 \
-    -object rng-random,id=rng0,filename=/dev/urandom \
-    -device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \
-    -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \
-    -chardev spicevmc,id=usbredirchardev2,name=usbredir \
-    -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
-    -chardev spicevmc,id=usbredirchardev3,name=usbredir \
-    -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
-    -device pci-ohci,id=smartpass -device usb-ccid \
-    -chardev spicevmc,id=ccid,name=smartcard \
-    -device ccid-card-passthru,chardev=ccid \
-    -device usb-ehci,id=input \
-    -device usb-kbd,bus=input.0 \
-    -k en-us \
-    -device usb-mouse,bus=input.0 -device virtio-net,netdev=nic \
-    -netdev user,hostname="${name}",hostfwd=tcp::22220-:22,id=nic \
-    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \
-    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-    -device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=Image.img\
-    -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \
-    -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \
-    -monitor unix:"${name}.socket",server,nowait \
-    -serial unix:"${name}.socket",server,nowait \
-    -drive media=cdrom,index=0,file=void.iso &
-
-
-
-
-# Open Spice Window
-setsid spicy -p 5930 --title="${name}" &
-
-```
-
-# Cleanup File
-
-```bash
-#!/usr/bin/env bash
-
-# clean.sh
-
-name="void-musl-xfce"
-
-# rm -rf Image.img
-# qemu-img create -f qcow2 Image.img 30
-
-# Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
-rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
-
-# Kill any running python script
-ps aux | grep "createsocket.py"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
-ps aux | grep "qemu"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
-ps aux | grep "spicy"|head -1 | awk -F" " '{print $2}'|xargs -I{} kill -9 "{}"
+### Delete everyting related to net netdev virtio-net devices to disable network Completely
+-nic none \
+-net none \
+-nodefaults \
 ```
 
 ### FIREFOX

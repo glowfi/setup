@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 
 # CACHE PASSWORD
+
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
+# Get Dotfiles
+
+git clone https://github.com/glowfi/setup
+
+# Get DS
+
+sudo xbps-install -Sy github-cli
+git clone https://github.com/glowfi/DS
 
 # Core Packages
 
@@ -11,6 +20,7 @@ sudo xbps-install -Sy git xfce4-screenshooter
 sudo xbps-install -Sy xdg-utils
 
 # Fonts
+
 sudo xbps-install -Sy nerd-fonts nerd-fonts-ttf
 sudo xbps-install -Sy noto-fonts-ttf noto-fonts-ttf noto-fonts-ttf-extra
 
@@ -19,10 +29,6 @@ sudo xbps-install -Sy noto-fonts-ttf noto-fonts-ttf noto-fonts-ttf-extra
 sudo xbps-install -Sy spice-vdagent
 sudo ln -s /etc/sv/spice-vdagentd/ /var/service
 sudo sv up spice-vdagentd
-
-# Config
-
-git clone https://github.com/glowfi/setup
 
 # Kitty Terminal
 
@@ -46,9 +52,10 @@ sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 
 sudo xbps-install -Sy nodejs
 
-# Rust utils
+# REPLACEMENTS OF SOME GNU COREUTILS AND SOME OTHER *nix PROGRAMS
 
-sudo xbps-install -Sy exa bat ripgrep fd bottom bc gum delta tldr duf gping tokei hyperfine
+sudo xbps-install -Sy exa bat ripgrep fd bottom
+sudo xbps-install -Sy bc gum delta tldr duf gping tokei hyperfine
 
 # FZF TERMINAL INTEGRATION
 
@@ -198,10 +205,6 @@ sudo xbps-install -Sy neovim
 
 cp -r $HOME/setup/configs/nvim $HOME/.config
 
-# Clone DS
-sudo xbps-install -Sy github-cli
-git clone https://github.com/glowfi/DS
-
 # Extra
 
 pip install xhibit
@@ -210,7 +213,7 @@ pip install xhibit
 
 sudo sed -i '72d' /etc/sudoers
 
-# Create shortcuts
+# Create custom keybindings
 
 xfconf-query -c xfce4-keyboard-shortcuts -n -t 'string' -p "/commands/custom/<Super>t" -s "kitty"
 xfconf-query -c xfce4-keyboard-shortcuts -n -t 'string' -p "/commands/custom/<Super>b" -s "firefox"
