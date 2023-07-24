@@ -130,7 +130,7 @@ qemu-system-x86_64 \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
     -monitor unix:"${name}.socket",server,nowait \\
     -serial unix:"${name}.socket",server,nowait \\
-    -drive media=cdrom,index=0,file=void.iso &
+    -drive media=cdrom,index=0,file=${name}.iso &
 
 # Open Spice Window
 setsid spicy -p 5930 --title="${name}" &" >> start.sh
