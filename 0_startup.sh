@@ -6,40 +6,40 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Config file checking
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 if [ ! -f $CONFIG_FILE ]; then # check if file exists
-    touch -f $CONFIG_FILE         # create file if not exists
+	touch -f $CONFIG_FILE         # create file if not exists
 fi
 
 installDependency() {
 
-    ### Install dependency
-    echo ""
-    echo "-------------------------------------------------------------"
-    echo "--------------Installing Dependency ....---------------------"
-    echo "------------------------------------------------------------ "
-    echo ""
+	### Install dependency
+	echo ""
+	echo "-------------------------------------------------------------"
+	echo "--------------Installing Dependency ....---------------------"
+	echo "------------------------------------------------------------ "
+	echo ""
 
-    echo ""
-    sudo pacman -S --noconfirm gum
-    clear
+	echo ""
+	sudo pacman -S --noconfirm gum
+	clear
 }
 
 # Logo
 logo() {
 
-    f=3 b=4
-    for j in f b; do
-        for i in {0..7}; do
-            printf -v $j$i %b "\e[${!j}${i}m"
-        done
-    done
-    for i in {0..7}; do
-        printf -v fbright$i %b "\e[9${i}m"
-    done
-    bld=$'\e[1m'
-    rst=$'\e[0m'
-    inv=$'\e[7m'
+	f=3 b=4
+	for j in f b; do
+		for i in {0..7}; do
+			printf -v $j$i %b "\e[${!j}${i}m"
+		done
+	done
+	for i in {0..7}; do
+		printf -v fbright$i %b "\e[9${i}m"
+	done
+	bld=$'\e[1m'
+	rst=$'\e[0m'
+	inv=$'\e[7m'
 
-    cat <<EOF
+	cat <<EOF
 
  $fbright3  ▄███████▄                $fbright1  ▄██████▄    $fbright2  ▄██████▄    $fbright4  ▄██████▄    $fbright5  ▄██████▄    $fbright6  ▄██████▄
  $fbright3▄█████████▀▀               $fbright1▄$fbright7█▀█$fbright1██$fbright7█▀█$fbright1██▄  $fbright2▄█$fbright7█ █$fbright2██$fbright7█ █$fbright2█▄  $fbright4▄█$fbright7█ █$fbright4██$fbright7█ █$fbright4█▄  $fbright5▄█$fbright7█ █$fbright5██$fbright7█ █$fbright5█▄  $fbright6▄██$fbright7█▀█$fbright6██$fbright7█▀█$fbright6▄
@@ -50,13 +50,13 @@ logo() {
  $rst
 EOF
 
-    echo "   ▄▄                 █              ▄▄▄▄           ▄                 "
-    echo "   ██    ▄ ▄▄   ▄▄▄   █ ▄▄          █▀   ▀  ▄▄▄   ▄▄█▄▄  ▄   ▄  ▄▄▄▄  "
-    echo "  █  █   █▀  ▀ █▀  ▀  █▀  █         ▀█▄▄▄  █▀  █    █    █   █  █▀ ▀█ "
-    echo "  █▄▄█   █     █      █   █             ▀█ █▀▀▀▀    █    █   █  █   █ "
-    echo " █    █  █     ▀█▄▄▀  █   █         ▀▄▄▄█▀ ▀█▄▄▀    ▀▄▄  ▀▄▄▀█  ██▄█▀ "
-    echo "                                                                █     "
-    echo "                                                                ▀     "
+	echo "   ▄▄                 █              ▄▄▄▄           ▄                 "
+	echo "   ██    ▄ ▄▄   ▄▄▄   █ ▄▄          █▀   ▀  ▄▄▄   ▄▄█▄▄  ▄   ▄  ▄▄▄▄  "
+	echo "  █  █   █▀  ▀ █▀  ▀  █▀  █         ▀█▄▄▄  █▀  █    █    █   █  █▀ ▀█ "
+	echo "  █▄▄█   █     █      █   █             ▀█ █▀▀▀▀    █    █   █  █   █ "
+	echo " █    █  █     ▀█▄▄▀  █   █         ▀▄▄▄█▀ ▀█▄▄▀    ▀▄▄  ▀▄▄▀█  ██▄█▀ "
+	echo "                                                                █     "
+	echo "                                                                ▀     "
 
 }
 
@@ -64,59 +64,59 @@ EOF
 
 filesystem() {
 
-    echo ""
-    echo "---------------------------------------------------"
-    echo "------- Choose filesytem...------------------------"
-    echo "---------------------------------------------------"
-    echo ""
+	echo ""
+	echo "---------------------------------------------------"
+	echo "------- Choose filesytem...------------------------"
+	echo "---------------------------------------------------"
+	echo ""
 
-    echo "Please Select your file system : "
+	echo "Please Select your file system : "
 
-    options=("btrfs" "ext4" "exit")
-    fs=$(gum choose "${options[@]}")
+	options=("btrfs" "ext4" "exit")
+	fs=$(gum choose "${options[@]}")
 
-    if [[ "$fs" == "exit" ]]; then
-        exit 1
-    else
-        echo "$fs" >>"$CONFIG_FILE"
-    fi
+	if [[ "$fs" == "exit" ]]; then
+		exit 1
+	else
+		echo "$fs" >>"$CONFIG_FILE"
+	fi
 }
 
 # Handle Timezone
 
 timezone() {
 
-    echo ""
-    echo "---------------------------------------------------"
-    echo "------- Choose Timezone...-------------------------"
-    echo "---------------------------------------------------"
-    echo ""
+	echo ""
+	echo "---------------------------------------------------"
+	echo "------- Choose Timezone...-------------------------"
+	echo "---------------------------------------------------"
+	echo ""
 
-    time_zone="$(curl --fail https://ipapi.co/timezone)"
+	time_zone="$(curl --fail https://ipapi.co/timezone)"
 
-    echo ""
-    echo ""
-    echo ""
-    echo "System detected your timezone to be '$time_zone'"
-    echo "Is this correct? :"
+	echo ""
+	echo ""
+	echo ""
+	echo "System detected your timezone to be '$time_zone'"
+	echo "Is this correct? :"
 
-    options=("yes" "no")
-    choose=$(gum choose "${options[@]}")
+	options=("yes" "no")
+	choose=$(gum choose "${options[@]}")
 
-    if [[ "$choose" == "yes" ]]; then
+	if [[ "$choose" == "yes" ]]; then
 
-        echo "$time_zone" >>"$CONFIG_FILE"
-    else
-        echo "Please enter your desired timezone e.g. Europe/London :"
-        read new_timezone
-        if [[ "$new_timezone" == "" ]]; then
-            echo ""
-            echo "No timezone entered. Enter correct timezone format!"
-            timezone
-        else
-            echo "$time_zone" >>"$CONFIG_FILE"
-        fi
-    fi
+		echo "$time_zone" >>"$CONFIG_FILE"
+	else
+		echo "Please enter your desired timezone e.g. Europe/London :"
+		read new_timezone
+		if [[ "$new_timezone" == "" ]]; then
+			echo ""
+			echo "No timezone entered. Enter correct timezone format!"
+			timezone
+		else
+			echo "$time_zone" >>"$CONFIG_FILE"
+		fi
+	fi
 
 }
 
@@ -124,19 +124,19 @@ timezone() {
 
 keymap() {
 
-    echo ""
-    echo "---------------------------------------------------------"
-    echo "------- Choose keyboard layout...------------------------"
-    echo "---------------------------------------------------------"
-    echo ""
+	echo ""
+	echo "---------------------------------------------------------"
+	echo "------- Choose keyboard layout...------------------------"
+	echo "---------------------------------------------------------"
+	echo ""
 
-    echo -e "Please select key board layout from this list :"
+	echo -e "Please select key board layout from this list :"
 
-    # These are default key maps as presented in official arch repo archinstall
-options=(us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk)
-keymap=$(gum choose "${options[@]}")
+	# These are default key maps as presented in official arch repo archinstall
+	options=(us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk)
+	keymap=$(gum choose "${options[@]}")
 
-echo "$keymap" >>"$CONFIG_FILE"
+	echo "$keymap" >>"$CONFIG_FILE"
 
 }
 
@@ -144,21 +144,21 @@ echo "$keymap" >>"$CONFIG_FILE"
 
 drivetype() {
 
-echo ""
-echo "----------------------------------------------------"
-echo "------- Choose drive type...------------------------"
-echo "----------------------------------------------------"
-echo ""
+	echo ""
+	echo "----------------------------------------------------"
+	echo "------- Choose drive type...------------------------"
+	echo "----------------------------------------------------"
+	echo ""
 
-echo -e "Is this an ssd? yes/no:"
-options=("yes" "no")
-choose=$(gum choose "${options[@]}")
+	echo -e "Is this an ssd? yes/no:"
+	options=("yes" "no")
+	choose=$(gum choose "${options[@]}")
 
-if [[ "$choose" == "yes" ]]; then
-    echo "ssd" >>"$CONFIG_FILE"
-else
-    echo "non-ssd" >>"$CONFIG_FILE"
-fi
+	if [[ "$choose" == "yes" ]]; then
+		echo "ssd" >>"$CONFIG_FILE"
+	else
+		echo "non-ssd" >>"$CONFIG_FILE"
+	fi
 
 }
 
@@ -166,13 +166,13 @@ fi
 
 diskpart() {
 
-echo ""
-echo "------------------------------------------------------"
-echo "------- Choose diskpartiton...------------------------"
-echo "------------------------------------------------------"
-echo ""
+	echo ""
+	echo "------------------------------------------------------"
+	echo "------- Choose diskpartiton...------------------------"
+	echo "------------------------------------------------------"
+	echo ""
 
-echo -e "
+	echo -e "
     ------------------------------------------------------------------------
         THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK
         Please make sure you know what you are doing because
@@ -180,63 +180,63 @@ echo -e "
     ------------------------------------------------------------------------
 "
 
-options=($(lsblk -n --output TYPE,KNAME,SIZE | awk '$1=="disk"{print "/dev/"$2"|"$3}'))
-disk=$(gum choose "${options[@]}" | awk -F"|" '{print $1}')
-echo "$disk" >>"$CONFIG_FILE"
+	options=($(lsblk -n --output TYPE,KNAME,SIZE | awk '$1=="disk"{print "/dev/"$2"|"$3}'))
+	disk=$(gum choose "${options[@]}" | awk -F"|" '{print $1}')
+	echo "$disk" >>"$CONFIG_FILE"
 }
 
 # Handle userinfo
 
 userinfo() {
 
-echo ""
-echo "-----------------------------------------------------"
-echo "------- Enter user details...------------------------"
-echo "-----------------------------------------------------"
-echo ""
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "------- Enter user details...------------------------"
+	echo "-----------------------------------------------------"
+	echo ""
 
-echo ""
-echo "What would be the username?"
-uname=$(gum input --placeholder "Username")
-echo "$uname" >>"$CONFIG_FILE"
+	echo ""
+	echo "What would be the username?"
+	uname=$(gum input --placeholder "Username")
+	echo "$uname" >>"$CONFIG_FILE"
 
-echo ""
-echo "What would be the fullname of the user?"
-fname=$(gum input --placeholder "Full Name")
-echo "$fname" >>"$CONFIG_FILE"
+	echo ""
+	echo "What would be the fullname of the user?"
+	fname=$(gum input --placeholder "Full Name")
+	echo "$fname" >>"$CONFIG_FILE"
 
-echo ""
-echo "What would be the password for $uname's account?"
-passu1=$(gum input --password --placeholder "Password for $uname's account")
-echo "Type password for $uname's account again"
-passu2=$(gum input --password --placeholder "Type password for $uname's account again")
-if [[ "$passu1" == "$passu2" ]]; then
-    upass=$passu2
-    echo "$upass" >>"$CONFIG_FILE"
-else
-    echo "Password do not match.Try running the script again!"
-    rm -rf "$CONFIG_FILE"
-    exit 1
-fi
+	echo ""
+	echo "What would be the password for $uname's account?"
+	passu1=$(gum input --password --placeholder "Password for $uname's account")
+	echo "Type password for $uname's account again"
+	passu2=$(gum input --password --placeholder "Type password for $uname's account again")
+	if [[ "$passu1" == "$passu2" ]]; then
+		upass=$passu2
+		echo "$upass" >>"$CONFIG_FILE"
+	else
+		echo "Password do not match.Try running the script again!"
+		rm -rf "$CONFIG_FILE"
+		exit 1
+	fi
 
-echo ""
-echo "What would be the password for root account?"
-passr1=$(gum input --password --placeholder "Password for root account")
-echo "Type password for root account again"
-passr2=$(gum input --password --placeholder "Type password for root account again")
-if [[ "$passr1" == "$passr2" ]]; then
-    rpass=$passr2
-    echo "$rpass" >>"$CONFIG_FILE"
-else
-    echo "Password do not match.Try running the script again!"
-    rm -rf "$CONFIG_FILE"
-    exit 1
-fi
+	echo ""
+	echo "What would be the password for root account?"
+	passr1=$(gum input --password --placeholder "Password for root account")
+	echo "Type password for root account again"
+	passr2=$(gum input --password --placeholder "Type password for root account again")
+	if [[ "$passr1" == "$passr2" ]]; then
+		rpass=$passr2
+		echo "$rpass" >>"$CONFIG_FILE"
+	else
+		echo "Password do not match.Try running the script again!"
+		rm -rf "$CONFIG_FILE"
+		exit 1
+	fi
 
-echo ""
-echo "What would be the hostname?"
-nameofmachine=$(gum input --placeholder "Hostname")
-echo "$nameofmachine" >>"$CONFIG_FILE"
+	echo ""
+	echo "What would be the hostname?"
+	nameofmachine=$(gum input --placeholder "Hostname")
+	echo "$nameofmachine" >>"$CONFIG_FILE"
 
 }
 

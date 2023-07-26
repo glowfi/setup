@@ -19,18 +19,18 @@ qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]
 current=$(kreadconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled)
 
 if [ $current = "true" ]; then
-    kwriteconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled false
-    kwriteconfig5 --file kwinrc --group Plugins --key diminactiveEnabled false
-    kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled false
-    qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'bottom';p.height = 44;"
-    notify-send 'Normal Mode'
+	kwriteconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled false
+	kwriteconfig5 --file kwinrc --group Plugins --key diminactiveEnabled false
+	kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled false
+	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'bottom';p.height = 44;"
+	notify-send 'Normal Mode'
 
 elif [ $current = "false" ]; then
-    kwriteconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled true
-    kwriteconfig5 --file kwinrc --group Plugins --key diminactiveEnabled true
-    kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled true
-    qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 25;"
-    notify-send 'Tiling Mode'
+	kwriteconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled true
+	kwriteconfig5 --file kwinrc --group Plugins --key diminactiveEnabled true
+	kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled true
+	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 25;"
+	notify-send 'Tiling Mode'
 fi
 qdbus org.kde.KWin /KWin reconfigure
 
@@ -48,11 +48,11 @@ kitty
 #super + b
 choice=$(echo -e "1.Default Profile\n2.Temp Profile" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" != "" ]]; then
-    if [[ "$choice" = "1" ]]; then
-        brave --profile-directory=Default
-    else
-        brave --profile-directory="Tmp"
-    fi
+	if [[ "$choice" = "1" ]]; then
+		brave --profile-directory=Default
+	else
+		brave --profile-directory="Tmp"
+	fi
 fi
 
 ## Network
@@ -113,15 +113,15 @@ killall -9 "$processName"
 isRunning=$(ps aux | grep "easyeffects" | wc -lc | xargs | cut -d" " -f1)
 
 if [[ "$isRunning" = "2" ]]; then
-    getProcess=$(ps aux | grep "easyeffects" | head -1)
-    pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
-    kill -9 "$pid"
-    dunstify -I ~/.misc/easyno.png "Easyeffects Deactivated!"
-    rm nohup.out
+	getProcess=$(ps aux | grep "easyeffects" | head -1)
+	pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
+	kill -9 "$pid"
+	dunstify -I ~/.misc/easyno.png "Easyeffects Deactivated!"
+	rm nohup.out
 else
-    nohup easyeffects --gapplication-service &
-    dunstify -I ~/.misc/easy.png "Easyeffects Activated!"
-    rm ~/nohup.out
+	nohup easyeffects --gapplication-service &
+	dunstify -I ~/.misc/easy.png "Easyeffects Activated!"
+	rm ~/nohup.out
 fi
 
 ## Increase Volume
@@ -131,13 +131,13 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-        volnoti-show -m
-    else
-        volnoti-show $VOL
-    fi
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
 fi
 
 ## Decrease Volume
@@ -147,13 +147,13 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-        volnoti-show -m
-    else
-        volnoti-show $VOL
-    fi
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $VOL
+	fi
 fi
 
 ## Mute/Unmute Volume
@@ -162,9 +162,9 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 pamixer -t
 if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-    volnoti-show $VOL
+	volnoti-show $VOL
 else
-    volnoti-show -m
+	volnoti-show -m
 fi
 
 ## Increase Brightness
@@ -173,13 +173,13 @@ brightnessctl s 30+
 currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%" | xargs)
 cap=100
 if [ "$currBrightness" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$currBrightness" -eq 0 ]; then
-        volnoti-show -m
-    else
-        volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
-    fi
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	fi
 fi
 
 ## Decrease Brightness
@@ -188,13 +188,13 @@ brightnessctl s 30-
 currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%")
 cap=100
 if [ "$currBrightness" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$currBrightness" -eq 0 ]; then
-        volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
-    else
-        volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
-    fi
+	if [ "$currBrightness" -eq 0 ]; then
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	else
+		volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $currBrightness
+	fi
 fi
 
 ## Decrease Mic Volume
@@ -204,13 +204,13 @@ MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'
 MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-        volnoti-show -m
-    else
-        volnoti-show $MVOL
-    fi
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
 fi
 
 ## Increase Mic Volume
@@ -220,13 +220,13 @@ MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'
 MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-    volnoti-show 100
+	volnoti-show 100
 else
-    if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-        volnoti-show -m
-    else
-        volnoti-show $MVOL
-    fi
+	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		volnoti-show -m
+	else
+		volnoti-show $MVOL
+	fi
 fi
 
 ## Mute/Unmute Mic Volume
@@ -235,7 +235,7 @@ amixer -D pulse sset Capture toggle
 MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
 MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 if [ "$MSTATE" = "[on]" ] || [ "$VOL" -eq 0 ]; then
-    volnoti-show $MVOL
+	volnoti-show $MVOL
 else
-    volnoti-show -m
+	volnoti-show -m
 fi

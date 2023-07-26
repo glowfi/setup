@@ -12,7 +12,6 @@ ln -s $HOME/.local/share/kwin/scripts/krohnkite/metadata.desktop $HOME/.local/sh
 cd ..
 rm -rf krohnkite
 
-
 # Creating Breezerc to hide title bars
 
 touch $HOME/.config/breezerc

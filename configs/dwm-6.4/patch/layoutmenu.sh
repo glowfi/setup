@@ -5,4 +5,3 @@ cat <<EOF | xmenu
 ><> Floating Layout	1
 [M] Monocle Layout	2
 EOF
-

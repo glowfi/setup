@@ -1,32 +1,32 @@
 #!/bin/sh
 
 dwm_pulse() {
-    VOL=$(pamixer --get-volume)
-    STATE=$(pamixer --get-mute)
+	VOL=$(pamixer --get-volume)
+	STATE=$(pamixer --get-mute)
 
-    MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'|xargs)
-    MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}'|xargs)
+	MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }' | xargs)
+	MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}' | xargs)
 
-    printf "%s" "$SEP1"
+	printf "%s" "$SEP1"
 
-    # Print Output
-    if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-        printf "🔇"
-    elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
-        printf "🔈 %s%%" "$VOL"
-    elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
-        printf "🔉 %s%%" "$VOL"
-    else
-        printf "🔊 %s%%" "$VOL"
-    fi
+	# Print Output
+	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
+		printf "🔇"
+	elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+		printf "🔈 %s%%" "$VOL"
+	elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+		printf "🔉 %s%%" "$VOL"
+	else
+		printf "🔊 %s%%" "$VOL"
+	fi
 
-    if [ "$MSTATE" = "[off]" ] || [ "$VOL" -eq 0 ]; then
-        printf "  🎤🔇"
-    else
-        printf "  🎤 %s%" "$MVOL"
-    fi
+	if [ "$MSTATE" = "[off]" ] || [ "$VOL" -eq 0 ]; then
+		printf "  🎤🔇"
+	else
+		printf "  🎤 %s%" "$MVOL"
+	fi
 
-    printf "%s" "$SEP2"
+	printf "%s" "$SEP2"
 }
 
 dwm_pulse

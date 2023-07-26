@@ -110,8 +110,7 @@ echo '
 		},
 		"NoDefaultBookmarks":true
 	}
-}'| sudo tee -a /usr/lib/firefox/distribution/policies.json >/dev/null
-
+}' | sudo tee -a /usr/lib/firefox/distribution/policies.json >/dev/null
 
 ###### Start Firefox ######
 
@@ -136,22 +135,22 @@ cd ..
 wget https://raw.githubusercontent.com/arkenfox/user.js/master/user.js -O user.js
 
 # Settings
-echo -e "\n" >> user.js
-echo "// ****** OVERRIDES ******" >> user.js
-echo "" >> user.js
-echo 'user_pref("keyword.enabled", true);' >> user.js
-echo "user_pref('toolkit.legacyUserProfileCustomizations.stylesheets', true);" >> user.js
-echo 'user_pref("general.smoothScroll",                                       true);'>> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);'  >> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.enabled",                    true);'>> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant",  600);' >> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.regularSpringConstant",      650);' >> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS",         25);'  >> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio",      2.0);' >> user.js
-echo 'user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",     250);' >> user.js
-echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.0);' >> user.js
-echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >> user.js
-echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >> user.js
+echo -e "\n" >>user.js
+echo "// ****** OVERRIDES ******" >>user.js
+echo "" >>user.js
+echo 'user_pref("keyword.enabled", true);' >>user.js
+echo "user_pref('toolkit.legacyUserProfileCustomizations.stylesheets', true);" >>user.js
+echo 'user_pref("general.smoothScroll",                                       true);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.enabled",                    true);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant",  600);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.regularSpringConstant",      650);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS",         25);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio",      2.0);' >>user.js
+echo 'user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",     250);' >>user.js
+echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.0);' >>user.js
+echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >>user.js
+echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >>user.js
 
 cd
 

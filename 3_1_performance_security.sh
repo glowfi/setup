@@ -15,7 +15,6 @@ sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
 sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
-
 # SETUP APPARMOR
 
 sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
@@ -58,7 +57,6 @@ BLACKLIST_FILE=100:/var/db/sshguard/blacklist.db
 IPV6_SUBNET=64
 # IPv4 subnet size to block. Defaults to a single address, CIDR notation. (optional, default to 32)
 IPV4_SUBNET=24' | sudo tee -a /etc/sshguard.conf >/dev/null
-
 
 # SECURITY FEATURES
 
@@ -182,7 +180,6 @@ net.ipv4.conf.default.send_redirects = 0
 
 # To use the new FQ-PIE Queue Discipline (>= Linux 5.6) in systems with systemd (>= 217), will need to replace the default fq_codel.
 net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performance-tweaks.conf >/dev/null
-
 
 # FIREWALL
 

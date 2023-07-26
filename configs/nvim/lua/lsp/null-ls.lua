@@ -31,7 +31,7 @@ M.setup = function()
 			b.formatting.rustfmt.with({ filetypes = { "rust" } }),
 			b.formatting.gofmt.with({ filetypes = { "go" } }),
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
-			b.formatting.beautysh.with({ filetypes = { "sh" } }),
+			b.formatting.shfmt.with({ filetypes = { "sh" } }),
 			b.diagnostics.flake8.with({ filetypes = { "python" } }),
 			-- b.diagnostics.eslint_d.with({
 			-- 	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },

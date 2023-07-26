@@ -182,7 +182,6 @@ sudo cp $HOME/.inputrc /root/
 sudo cp $HOME/.vimrc /root/
 sudo cp $HOME/.tmux.conf /root/
 
-
 # INSTALL AND COPY NNN FM SETTINGS
 
 sudo pacman -S --noconfirm trash-cli tree
@@ -211,7 +210,6 @@ cp -r $HOME/setup/configs/kitty $HOME/.config/
 # COPY ICONS
 
 cp -r $HOME/setup/configs/img $HOME/.local/share/
-
 
 # CHANGE DEFAULT SHELL
 

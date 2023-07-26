@@ -331,11 +331,11 @@ echo ---------------------------------------------------------------------------
 echo ""
 
 for i in (seq 2)
-pip install neovim black flake8 beautysh
+pip install neovim black flake8
 npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
 pip uninstall -y cmake
 end
-install "cmake ninja tree-sitter xclip" "pac"
+install "cmake ninja tree-sitter xclip shfmt" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"

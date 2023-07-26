@@ -8,72 +8,71 @@ echo -e "Are you sure to go with this ==> \e[31m${isoLocation}\e[0m \e[33m[y,yes
 read _confirm
 
 if [[ "$_confirm" = "no" || "$_confirm" = "n" ]]; then
-    echo "Exited!"
+	echo "Exited!"
 elif [[ "$_confirm" = "yes" || "$_confirm" = "y" ]]; then
-    if [[ "$isoLocation" != "" ]]; then
-        cores="4"
-        threads="2"
-        ram="4G"
-        vga="virtio"
+	if [[ "$isoLocation" != "" ]]; then
+		cores="4"
+		threads="2"
+		ram="4G"
+		vga="virtio"
 
-        echo "Enter the name of the virtual machine: [Do not give spaces while naming]"
-        read name
+		echo "Enter the name of the virtual machine: [Do not give spaces while naming]"
+		read name
 
-        echo "Enter cores to use: (Default 4)"
-        read _cores
+		echo "Enter cores to use: (Default 4)"
+		read _cores
 
-        echo "Enter threads to use: (Default 2)"
-        read _threads
+		echo "Enter threads to use: (Default 2)"
+		read _threads
 
-        echo "Enter ram to use: (Default 4G)"
-        read _ram
+		echo "Enter ram to use: (Default 4G)"
+		read _ram
 
-        echo "Enter video drivers to use: (Default Virtio) [Virtio/QXL]"
-        read _vga
+		echo "Enter video drivers to use: (Default Virtio) [Virtio/QXL]"
+		read _vga
 
-        if [[ "$_cores" != "" ]]; then
-            cores="$_cores"
-        fi
+		if [[ "$_cores" != "" ]]; then
+			cores="$_cores"
+		fi
 
-        if [[ "$_threads" != "" ]]; then
-            threads="$_threads"
-        fi
+		if [[ "$_threads" != "" ]]; then
+			threads="$_threads"
+		fi
 
-        if [[ "$_ram" != "" ]]; then
-            ram="$_ram"
-        fi
+		if [[ "$_ram" != "" ]]; then
+			ram="$_ram"
+		fi
 
-        if [[ "$_vga" != "" ]]; then
-            vga="$_vga"
-        fi
+		if [[ "$_vga" != "" ]]; then
+			vga="$_vga"
+		fi
 
+		name=$(echo "$name" | tr " " "-")
 
-        name=$(echo "$name" | tr " " "-")
+		# Create Directory if not exits
+		mkdir -p $HOME/Downloads/VMS/
 
-        # Create Directory if not exits
-        mkdir -p $HOME/Downloads/VMS/
+		# Go to VMS Directory
+		cd $HOME/Downloads/VMS/
 
-        # Go to VMS Directory
-        cd $HOME/Downloads/VMS/
+		# Create a Directory with the given name
+		mkdir "${name}"
+		cd "${name}"
 
-        # Create a Directory with the given name
-        mkdir "${name}"
-        cd "${name}"
+		# Copy the iso
+		isoname=$(echo "${isoLocation}" | awk -F"/" '{print $NF}')
+		cp -r "${isoLocation}" .
+		mv "${isoname}" "${name}.iso"
 
-        # Copy the iso
-        isoname=$(echo "${isoLocation}" | awk -F"/" '{print $NF}')
-        cp -r "${isoLocation}" .
-        mv "${isoname}" "${name}.iso"
+		### Create QCOW
+		cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
+		qemu-img create -f qcow2 Image.img 20G
 
-        ### Create QCOW
-        cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
-        qemu-img create -f qcow2 Image.img 20G
+		### Start Script
 
-        ### Start Script
+		touch start.sh
 
-        touch start.sh
-
-        echo "#!/usr/bin/env bash
+		echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -146,16 +145,15 @@ qemu-system-x86_64 \\
     -drive media=cdrom,index=0,file=${name}.iso &
 
 # Open Spice Window
-        setsid spicy -p 5930 --title="${name}" &" >> start.sh
+        setsid spicy -p 5930 --title="${name}" &" >>start.sh
 
-        chmod +x start.sh
+		chmod +x start.sh
 
+		### Cleanup Script
 
-        ### Cleanup Script
+		touch clean.sh
 
-        touch clean.sh
-
-        echo "#!/usr/bin/env bash
+		echo "#!/usr/bin/env bash
 
 # rm -rf Image.img
 # qemu-img create -f qcow2 Image.img 30
@@ -169,16 +167,15 @@ rm -rf "${name}.socket"
 # Kill any running python script qemu spicy
 ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-        ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >> clean.sh
+        ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 
-        chmod +x clean.sh
+		chmod +x clean.sh
 
+		### Socket Script
 
-        ### Socket Script
+		touch createsocket.py
 
-        touch createsocket.py
-
-        echo "import socket
+		echo "import socket
 
 # create a socket object
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -200,10 +197,10 @@ conn, addr = sock.accept()
 
 # close the connection and socket
 conn.close()
-        sock.close()" >> createsocket.py
+sock.close()" >>createsocket.py
 
-        cd ..
-    fi
+		cd ..
+	fi
 else
-    echo "Please type either yes or no!"
+	echo "Please type either yes or no!"
 fi

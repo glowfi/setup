@@ -1,3 +1,4 @@
 #!/usr/bin/env fish
 
-export QT_QPA_PLATFORMTHEME=kde;kolourpaint
+export QT_QPA_PLATFORMTHEME=kde
+kolourpaint

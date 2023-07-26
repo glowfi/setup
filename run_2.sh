@@ -32,13 +32,13 @@ chmod +x ~/setup/4_cdx.sh
 ~/setup/4_cdx.sh
 
 if [[ $choice == "KDE" ]]; then
-    clear
-    chmod +x ~/setup/5_kde_.sh
-    ~/setup/5_kde_.sh
+	clear
+	chmod +x ~/setup/5_kde_.sh
+	~/setup/5_kde_.sh
 elif [[ $choice == "DWM" ]]; then
-    clear
-    chmod +x ~/setup/5_dwm_.sh
-    ~/setup/5_dwm_.sh $uname
+	clear
+	chmod +x ~/setup/5_dwm_.sh
+	~/setup/5_dwm_.sh $uname
 fi
 
 ## CLEANUP
@@ -72,7 +72,7 @@ echo ""
 
 cd
 if [ -s "$HOME/setup/err.txt" ]; then
-    cp -r "$HOME/Downloads/err.txt"
+	cp -r "$HOME/Downloads/err.txt"
 fi
 
 rm -rf setup
