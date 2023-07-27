@@ -82,6 +82,10 @@ elif [[ "$_confirm" = "yes" || "$_confirm" = "y" ]]; then
 		mkdir "${name}"
 		cd "${name}"
 
+		# Create a shared folder
+		mkdir -p sharedFolder
+		chmod 777 sharedFolder
+
 		# Copy the iso
 		isoname=$(echo "${isoLocation}" | awk -F"/" '{print $NF}')
 		cp -r "${isoLocation}" .
@@ -170,7 +174,9 @@ qemu-system-x86_64 \\
     -monitor unix:"${name}.socket",server,nowait \\
     -serial unix:"${name}.socket",server,nowait \\
     -drive file=${name}.iso,media=cdrom \\
-    -drive file=virtio.iso,media=cdrom &
+    -drive file=virtio.iso,media=cdrom \\
+    -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
+
 
 # Open Spice Window
         setsid spicy -p 5930 --title="${name}" &" >>start.sh
@@ -267,7 +273,8 @@ qemu-system-x86_64 \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
     -monitor unix:"${name}.socket",server,nowait \\
     -serial unix:"${name}.socket",server,nowait \\
-    -drive media=cdrom,index=0,file=${name}.iso &
+    -drive media=cdrom,index=0,file=${name}.iso \\
+    -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
 
 # Open Spice Window
         setsid spicy -p 5930 --title="${name}" &" >>start.sh

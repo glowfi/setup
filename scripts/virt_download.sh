@@ -440,7 +440,7 @@ qubesurl() {
 
 nobaraurl() {
 	mirror="https://nobaraproject.org/download-nobara/"
-	new=$(curl -s $mirror | grep -m1 "NA Download" | awk -F"\"" '{ print $8 }')
+	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "KDE" | grep -E "iso" | head -1 | xargs)
 	output="nobara.iso"
 	checkfile $1
 }
@@ -1268,62 +1268,76 @@ unattended_windows() {
 EOF
 }
 
-winget() {
+callMido() {
+	clear
+	echo -e "Downloading $output"
+	wget "https://raw.githubusercontent.com/ElliotKillick/Mido/main/Mido.sh" -O mido
+	chmod +x mido
+	./mido "$1"
+	iso=$(find -type f | grep "iso" | head -1 | xargs -I {} realpath "{}")
+	if [[ "$1" == "win10x64" || "$1" == "win11x64" ]]; then
+		mv "${iso}" "${VM_PATH}/unattended/${output}"
+	fi
+	rm -rf mido
+}
 
+winget() {
 	# CACHE PASSWORD
 	sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
 	VM_PATH="$HOME/Downloads/VM_ISO"
 	mkdir -p "$VM_PATH"
 
-	sudo rm -rf "${VM_PATH}/unattended"
-	mkdir -p "${VM_PATH}/unattended"
-	cd "${VM_PATH}/unattended"
+	if [[ "$1" == "win7x64-ultimate" || "$1" == "win81x64" ]]; then
+		cd "${VM_PATH}"
+		callMido "$1"
+	else
+		sudo rm -rf "${VM_PATH}/unattended"
+		mkdir -p "${VM_PATH}/unattended"
+		cd "${VM_PATH}/unattended"
 
-	clear
-	echo -e "Downloading $new to $output"
-	aria2c -j 16 -x 16 -s 16 -k 1M "${new}" -o "${output}"
+		callMido "$1"
 
-	mkdir mnt
-	sudo mount -o loop "${output}" mnt
+		mkdir mnt
+		sudo mount -o loop "${output}" mnt
 
-	epoch=$(date +%s)
-	mkdir "win-${epoch}"
-	sudo cp -r mnt/* "win-${epoch}"
+		epoch=$(date +%s)
+		mkdir "win-${epoch}"
+		sudo cp -r mnt/* "win-${epoch}"
 
-	mkdir "modifications-${epoch}"
-	cd "modifications-${epoch}"
-	clear
-	echo -e "Downloading Spice Agents for copy paste functionality ..."
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
-	unattended_windows "${VM_PATH}/unattended/modifications-${epoch}/autounattend.xml"
-	cd ..
+		mkdir "modifications-${epoch}"
+		cd "modifications-${epoch}"
+		clear
+		echo -e "Downloading Spice Agents for copy paste functionality ..."
+		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
+		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
+		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
+		unattended_windows "${VM_PATH}/unattended/modifications-${epoch}/autounattend.xml"
+		cd ..
 
-	sudo umount mnt
-	sudo rm -rf mnt
+		sudo umount mnt
+		sudo rm -rf mnt
 
-	mkisofs \
-		-iso-level 4 \
-		-rock \
-		-disable-deep-relocation \
-		-untranslated-filenames \
-		-b boot/etfsboot.com \
-		-no-emul-boot \
-		-boot-load-size 8 \
-		-eltorito-alt-boot \
-		-eltorito-platform efi \
-		-b efi/microsoft/boot/efisys.bin \
-		-o "../${output}" \
-		"win-${epoch}" "modifications-${epoch}"
-
-	# rm -rf "${VM_PATH}/unattended"
+		mkisofs \
+			-iso-level 4 \
+			-rock \
+			-disable-deep-relocation \
+			-untranslated-filenames \
+			-b boot/etfsboot.com \
+			-no-emul-boot \
+			-boot-load-size 8 \
+			-eltorito-alt-boot \
+			-eltorito-platform efi \
+			-b efi/microsoft/boot/efisys.bin \
+			-o "../${output}" \
+			"win-${epoch}" "modifications-${epoch}"
+	fi
 
 	# DELETE CACHED PASSWORD
 	sudo sed -i '72d' /etc/sudoers
 
 	cd "${VM_PATH}"
+	rm -rf "virtio.iso"
 	clear
 	echo -e "Downloading Spice Agents for copy paste functionality ..."
 
@@ -1331,19 +1345,24 @@ winget() {
 	aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
 }
 
-win10url() {
-	new="https://www.itechtics.com/?dl_id=173"
-	output="Windows10.iso"
-	winget "$output"
+win7url() {
+	output="Windows7_Ultimate.iso"
+	winget "win7x64-ultimate"
+}
 
+win8_1url() {
+	output="Windows8_1.iso"
+	winget "win81x64"
+}
+
+win10url() {
+	output="Windows10.iso"
+	winget "win10x64"
 }
 
 win11url() {
-
-	new="https://www.itechtics.com/?dl_id=168"
 	output="Windows11.iso"
-	winget "$output"
-
+	winget "win11x64"
 }
 
 netbootxyz() {
@@ -1377,7 +1396,7 @@ other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux 
 sourcebased=(gentoo sabayon calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
-notlinux=(openindiana minix haiku menuetos kolibri reactos freedos windows10 windows11)
+notlinux=(openindiana minix haiku menuetos kolibri reactos freedos windows7 windows8_1 windows10 windows11)
 
 # All distributions
 category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux")
@@ -1522,6 +1541,8 @@ menuetos=("MenuetOS" "amd64" "release" "menueturl")
 kolibri=("Kolibri" "amd64" "release" "kolibriurl")
 reactos=("ReactOS" "amd64" "release" "reactosurl")
 freedos=("FreeDOS" "amd64" "release" "freedosurl")
+windows7=("Windows7_Ultimate" "amd64" "latest" "win7url")
+windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
 
