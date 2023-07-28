@@ -1339,10 +1339,10 @@ winget() {
 	cd "${VM_PATH}"
 	rm -rf "virtio.iso"
 	clear
-	echo -e "Downloading Spice Agents for copy paste functionality ..."
-
 	echo "Downloading Virtio Drivers for setting higher resolution ..."
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
+	if [[ "$1" != "win7x64-ultimate" ]]; then
+		aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
+	fi
 }
 
 win7url() {

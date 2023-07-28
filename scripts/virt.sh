@@ -136,7 +136,6 @@ qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
     -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \\
     -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
-    -display none,gl=on \\
     -vga ${vga} \\
     -display none \\
     -audiodev spice,id=audio0 \\
@@ -235,7 +234,6 @@ qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
     -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \\
     -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
-    -display none,gl=on \\
     -vga ${vga} \\
     -display none \\
     -audiodev spice,id=audio0 \\
