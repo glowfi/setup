@@ -1018,14 +1018,14 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>*</ComputerName>
       <OEMInformation>
-        <Manufacturer>Quickemu Project</Manufacturer>
-        <Model>Quickemu</Model>
+        <Manufacturer>qemu&KVM Project</Manufacturer>
+        <Model>qemu&KVM</Model>
         <SupportHours>24/7</SupportHours>
         <SupportPhone></SupportPhone>
-        <SupportProvider>Quickemu Project</SupportProvider>
-        <SupportURL>https://github.com/quickemu-project/quickemu/issues</SupportURL>
+        <SupportProvider>qemu&KVM Project</SupportProvider>
+        <SupportURL>https://www.qemu.org</SupportURL>
       </OEMInformation>
-      <OEMName>Quickemu Project</OEMName>
+      <OEMName>qemu&KVM Project</OEMName>
       <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
     </component>
     <component name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1137,8 +1137,8 @@ unattended_windows() {
       </UpgradeData>
       <UserData>
         <AcceptEula>true</AcceptEula>
-        <FullName>Quickemu</FullName>
-        <Organization>Quickemu Project</Organization>
+        <FullName>qemu&KVM</FullName>
+        <Organization>qemu&KVM Project</Organization>
         <!-- https://docs.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys -->
         <ProductKey>
           <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
@@ -1198,11 +1198,11 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <AutoLogon>
         <Password>
-          <Value>quickemu</Value>
+          <Value>qemu&KVM</Value>
           <PlainText>true</PlainText>
         </Password>
         <Enabled>true</Enabled>
-        <Username>Quickemu</Username>
+        <Username>qemu&KVM</Username>
       </AutoLogon>
       <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
       <OOBE>
@@ -1223,18 +1223,18 @@ unattended_windows() {
         <LocalAccounts>
           <LocalAccount wcm:action="add">
             <Password>
-              <Value>quickemu</Value>
+              <Value>qemu&KVM</Value>
               <PlainText>true</PlainText>
             </Password>
-            <Description>Quickemu</Description>
-            <DisplayName>Quickemu</DisplayName>
+            <Description>qemu&KVM</Description>
+            <DisplayName>qemu&KVM</DisplayName>
             <Group>Administrators</Group>
-            <Name>Quickemu</Name>
+            <Name>qemu&KVM</Name>
           </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
-      <RegisteredOrganization>Quickemu Project</RegisteredOrganization>
-      <RegisteredOwner>Quickemu</RegisteredOwner>
+      <RegisteredOrganization>qemu&KVM Project</RegisteredOrganization>
+      <RegisteredOwner>qemu&KVM</RegisteredOwner>
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add">
           <CommandLine>msiexec /i E:\guest-agent\qemu-ga-x86_64.msi /quiet /passive /qn</CommandLine>
