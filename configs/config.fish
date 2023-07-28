@@ -172,6 +172,9 @@ alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetoot
 # Virtualization 
 alias von='sudo systemctl start libvirtd;sudo virsh net-start default'
 alias voff='sudo systemctl stop libvirtd;sudo virsh net-destroy default '
+alias vd='vm_download.sh'
+alias vs='vm_setup.sh'
+alias vm='vm_manager.sh'
 
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
@@ -469,9 +472,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "658s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "661s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "658s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "661s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
