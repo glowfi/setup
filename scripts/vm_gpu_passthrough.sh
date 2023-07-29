@@ -20,7 +20,7 @@ if [[ -f "$HOME/.config/gpupass" ]]; then
 	sudo mkinitcpio -p linux-zen
 
 	## Show message to remove flags
-	sudo mkinitcpio -p linux-zen
+	clear
 	echo "Remove the flags from startup script !"
 
 else
