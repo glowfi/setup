@@ -175,6 +175,7 @@ alias voff='sudo systemctl stop libvirtd;sudo virsh net-destroy default '
 alias vd='vm_download.sh'
 alias vs='vm_setup.sh'
 alias vm='vm_manager.sh'
+alias vg='vm_gpu_passthrough.sh'
 
 # Go to Mounted drive
 alias jd='gotoMounteddrive'
@@ -472,9 +473,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "661s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "662s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "661s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "662s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

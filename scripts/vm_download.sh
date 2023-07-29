@@ -5,20 +5,14 @@ helpsection() {
 	echo "| Script downloads recent (latest release) linux ISOs and spins a VM for a test. This is kinda distrohopper dream machine.               | "
 	echo "| It consist of the file with distro download functions (distrofunctions.sh) as well as this script (download.sh).                       | "
 	echo "| Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       | "
-	echo "| change the download URL or something else, it might be required to do manual changes - probably in distrofunctions.sh.                 | "
+	echo "| Change the download URL or something else, it might be required to do manual changes.                                                  | "
 	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr (these tools usually are preinstalled on linux)                            | "
 	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
-	echo "| Written by SecurityXIII / Aug 2020 ~ Jan 2023 / Kopimi un-license /--------------------------------------------------------------------/ "
-	echo "\-------------------------------------------------------------------/"
+	echo "| Scripts Included : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)             | "
+	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
 	echo "+ How to use?"
-	echo " If you manually pick distros (opt. one or two) you will be prompted about launching a VM for test spin for each distro."
-	echo " Multiple values are also supported. Please choose one out of five options:"
-	echo "* one distribution (e.g. type 0 for archlinux)*"
-	echo "* several distros - space separated (e.g. for getting both Arch and Debian, type '0 4' (without quotes))*"
-	echo "* 'all' option, the script will ONLY download ALL of the ISOs (warning: this can take a lot of space (100+GB) !)"
-	echo "* 'filesize' option will check the local (downloaded) filesizes of ISOs vs. the current/recent ISOs filesizes on the websites"
-	echo "* 'netbootxyz' option allows you to boot from netboot.xyz via network"
-	echo "* 'netbootsal' option will boot from boot.salstar.sk"
+	echo "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading"
+	echo "+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading"
 }
 
 # the public ipxe mirror does not work
@@ -29,12 +23,13 @@ helpsection() {
 
 #### Constant Variables
 allDistros="all\n"
+VMS_ISO="$HOME/Downloads/VMS_ISO"
 
 # Download functions and commands
 
 wgetcmd() {
-	mkdir -p "$HOME/Downloads/VM_ISO"
-	cd $HOME/Downloads/VM_ISO
+	mkdir -p "${VMS_ISO}"
+	cd "${VMS_ISO}"
 	echo "Downloading $new to $output"
 	aria2c -j 16 -x 16 -s 16 -k 1M "${new}" -o "${output}"
 }
@@ -1275,16 +1270,15 @@ winget() {
 	# CACHE PASSWORD
 	sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
-	VM_PATH="$HOME/Downloads/VM_ISO"
-	mkdir -p "$VM_PATH"
+	mkdir -p "$VMS_ISO"
 
 	if [[ "$1" == "win7x64-ultimate" || "$1" == "win81x64" ]]; then
-		cd "${VM_PATH}"
+		cd "${VMS_ISO}"
 		callMido "$1"
 	else
-		sudo rm -rf "${VM_PATH}/unattended"
-		mkdir -p "${VM_PATH}/unattended"
-		cd "${VM_PATH}/unattended"
+		sudo rm -rf "${VMS_ISO}/unattended"
+		mkdir -p "${VMS_ISO}/unattended"
+		cd "${VMS_ISO}/unattended"
 
 		callMido "$1"
 
@@ -1302,7 +1296,7 @@ winget() {
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
-		unattended_windows "${VM_PATH}/unattended/modifications-${epoch}/autounattend.xml"
+		unattended_windows "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
 		cd ..
 
 		sudo umount mnt
@@ -1326,7 +1320,7 @@ winget() {
 	# DELETE CACHED PASSWORD
 	sudo sed -i '72d' /etc/sudoers
 
-	cd "${VM_PATH}"
+	cd "${VMS_ISO}"
 	rm -rf "virtio.iso"
 	clear
 	echo "Downloading Virtio Drivers for setting higher resolution ..."
@@ -1552,10 +1546,10 @@ drawmenu() {
 }
 
 normalmode() {
-	echo -e "\n\n\n"
+	echo -e "\n\n"
 	allDistros=$(echo "$allDistros" | sed '/^\s*$/d')
 	drawmenu
-	x=$(echo -e "$allDistros" | fzf --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
+	x=$(echo -e "$allDistros" | fzf -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
 
 	# Happens if the input is empty
 	if [ -z "$x" ]; then
@@ -1574,10 +1568,8 @@ normalmode() {
 		for distr in $x; do
 			dist=${distro_arr[$distr]}
 			typeset -n arr=$dist
-
-			echo "You choose ${arr[0]} distro ${arr[2]}, built for ${arr[1]} arch. Do you want to download ${arr[0]} ISO? (y / n)"
-			read z
-			if [ $z = "y" ]; then $"${arr[3]}"; fi
+			echo "You choose ${arr[0]} distro ${arr[2]}, built for ${arr[1]} arch."
+			$"${arr[3]}"
 		done
 	else
 
@@ -1633,14 +1625,6 @@ normalmode() {
 	fi
 }
 
-quickmode() {
-	IFS=,
-	for distr in $distros; do
-		dist=${distro_arr[$distr]}
-		typeset -n arr=$dist
-		$"${arr[3]}"
-	done
-	exit 0
-}
+if [ "$silent" != "1" ]; then helpsection; fi
 
 normalmode

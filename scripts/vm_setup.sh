@@ -1,110 +1,83 @@
 #!/usr/bin/env bash
 
+#### Constant Variables
+unattended="no"
 isWindows="no"
+name=""
+cores="4"
+threads="2"
+ram="4G"
+vga="virtio"
+diskSize="30G"
 VMS_PATH="$HOME/Downloads/VMS"
 
-echo "Are you trying to install windows?: [yes,y/no,n]"
-read _isWindows
+while [[ $# > 0 ]]; do
+	case "$1" in
 
-if [[ "$_isWindows" != "" ]]; then
-	if [[ "$_isWindows" == "no" || "$_isWindows" == "n" || "$_isWindows" == "yes" || "$_isWindows" == "y" ]]; then
-		isWindows="$_isWindows"
-	else
-		echo "Please Enter Properly if you are trying to install Windows or not!"
-		exit 0
-	fi
-fi
+	-u | --unattended)
+		unattended="$2"
+		shift
+		;;
+	-iswin | --isWindows)
+		isWindows="$2"
+		shift
+		;;
+	-n | --name)
+		name="$2"
+		shift
+		;;
+	-c | --cores)
+		cores="$2"
+		shift
+		;;
+	-t | --threads)
+		threads="$2"
+		shift
+		;;
+	-r | --ram)
+		ram="$2"
+		shift
+		;;
+	-v | --vga)
+		vga="$2"
+		shift
+		;;
+	-ds | --diskSize)
+		diskSize="$2"
+		shift
+		;;
+	-vmp | --vmpath)
+		VMS_PATH="$2"
+		shift
+		;;
+	-g | --goto)
+		goto="$2"
+		shift
+		;;
 
-# Get ISO Location
-isoLocation=$(fd --type f . $HOME | fzf --prompt "Choose ISO Location:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | xargs -I {} realpath "{}")
+	--help | *)
+		echo "This is a tool to setup a VM using QEMU+KVM"
+		exit 1
+		;;
+	esac
+	shift
+done
 
-# Get Confirmation
-echo -e "Are you sure to go with this ==> \e[31m${isoLocation}\e[0m \e[33m[y,yes/n,no]\e[0m"
-read _confirm
+addScripts() {
 
-if [[ "$_confirm" = "no" || "$_confirm" = "n" ]]; then
-	echo "Exited!"
-elif [[ "$_confirm" = "yes" || "$_confirm" = "y" ]]; then
-	if [[ "$isoLocation" != "" ]]; then
-		cores="4"
-		threads="2"
-		ram="4G"
-		vga="virtio"
-		diskSize="30G"
+	### Copy OVMF_VARS
+	cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
 
-		echo "Enter the name of the virtual machine: [Do not give spaces while naming]"
-		read name
+	### Start Script
 
-		echo "Enter cores to use: (Default 4)"
-		read _cores
+	touch start.sh
 
-		echo "Enter threads to use: (Default 2)"
-		read _threads
+	if [[ "$isWindows" == "yes" || "$isWindows" == "y" ]]; then
 
-		echo "Enter ram to use: (Default 4G)"
-		read _ram
+		### Copy virtio
+		cp -r "$HOME/Downloads/VM_ISO/virtio.iso" "${VMS_PATH}/${name}"
 
-		echo "Enter Disk Size to use: (Default 30G) [Enter something sensisble like 100G(in gigabytes),100M(in megabytes),100K(in kilobytes)]"
-		read _diskSize
-
-		echo "Enter video drivers to use: (Default Virtio) [Virtio/QXL]"
-		read _vga
-
-		if [[ "$_cores" != "" ]]; then
-			cores="$_cores"
-		fi
-
-		if [[ "$_threads" != "" ]]; then
-			threads="$_threads"
-		fi
-
-		if [[ "$_ram" != "" ]]; then
-			ram="$_ram"
-		fi
-
-		if [[ "$_diskSize" != "" ]]; then
-			diskSize="$_diskSize"
-		fi
-
-		if [[ "$_vga" != "" ]]; then
-			vga="$_vga"
-		fi
-
-		name=$(echo "$name" | tr " " "-")
-
-		# Create Directory if not exits
-		mkdir -p "${VMS_PATH}"
-
-		# Go to VMS Directory
-		cd "${VMS_PATH}"
-
-		# Create a Directory with the given name
-		mkdir "${name}"
-		cd "${name}"
-
-		# Create a shared folder
-		mkdir -p sharedFolder
-		chmod 777 sharedFolder
-
-		# Copy the iso
-		isoname=$(echo "${isoLocation}" | awk -F"/" '{print $NF}')
-		cp -r "${isoLocation}" .
-		mv "${isoname}" "${name}.iso"
-
-		### Create QCOW
-		cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
-		qemu-img create -f qcow2 Image.img "${diskSize}"
-
-		### Start Script
-
-		touch start.sh
-
-		if [[ "$isWindows" == "yes" || "$isWindows" == "y" ]]; then
-
-			### Copy virtio
-			cp -r "$HOME/Downloads/VM_ISO/virtio.iso" "${VMS_PATH}/${name}"
-
-			echo "#!/usr/bin/env bash
+		echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -180,16 +153,13 @@ qemu-system-x86_64 \\
 # Open Spice Window
         setsid spicy -p 5930 --title="${name}" &" >>start.sh
 
-			chmod +x start.sh
+		chmod +x start.sh
 
-			### Cleanup Script
+		### Cleanup Script
 
-			touch clean.sh
+		touch clean.sh
 
-			echo "#!/usr/bin/env bash
-
-# rm -rf Image.img
-# qemu-img create -f qcow2 Image.img 30
+		echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -201,8 +171,8 @@ rm -rf "${name}.socket"
 ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
         ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
-		else
-			echo "#!/usr/bin/env bash
+	else
+		echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -277,16 +247,13 @@ qemu-system-x86_64 \\
 # Open Spice Window
         setsid spicy -p 5930 --title="${name}" &" >>start.sh
 
-			chmod +x start.sh
+		chmod +x start.sh
 
-			### Cleanup Script
+		### Cleanup Script
 
-			touch clean.sh
+		touch clean.sh
 
-			echo "#!/usr/bin/env bash
-
-# rm -rf Image.img
-# qemu-img create -f qcow2 Image.img 30
+		echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -299,15 +266,15 @@ ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{}
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
         ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 
-		fi
+	fi
 
-		chmod +x clean.sh
+	chmod +x clean.sh
 
-		### Socket Script
+	### Socket Script
 
-		touch createsocket.py
+	touch createsocket.py
 
-		echo "import socket
+	echo "import socket
 
 # create a socket object
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -331,10 +298,10 @@ conn, addr = sock.accept()
 conn.close()
 sock.close()" >>createsocket.py
 
-		#### Include a minimal start Script
+	#### Include a minimal start Script
 
-		touch fallback-start.sh
-		echo "
+	touch fallback-start.sh
+	echo "
 qemu-system-x86_64 -enable-kvm \\
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \\
 	-machine q35,accel=kvm,smm=on \\
@@ -348,11 +315,142 @@ qemu-system-x86_64 -enable-kvm \\
 	-smp ${cores} \\
 	-vga ${vga} \\
 	-display sdl,gl=on \\
-	-cdrom ${name}.iso" >>fallback-start.sh
-		chmod +x fallback-start.sh
+	-cdrom ${name}.iso &" >>fallback-start.sh
+	chmod +x fallback-start.sh
 
-		cd ..
+	#### Include a minimal start Script (BIOS)
+
+	touch fallback-start-BIOS.sh
+	echo "
+qemu-system-x86_64 -enable-kvm \\
+	-machine q35,accel=kvm,smm=on \\
+	-cpu host \\
+	-boot menu=on \\
+	-drive file=Image.img \\
+	-m ${ram} \\
+	-smp ${cores} \\
+	-vga ${vga} \\
+	-display sdl,gl=on \\
+	-cdrom ${name}.iso &" >>fallback-start-BIOS.sh
+	chmod +x fallback-start-BIOS.sh
+
+}
+
+takeInput() {
+	echo "Enter cores to use: (Default 4)"
+	read _cores
+
+	echo "Enter threads to use: (Default 2)"
+	read _threads
+
+	echo "Enter ram to use: (Default 4G)"
+	read _ram
+
+	if [[ "$1" == "resize" ]]; then
+		echo "By how much the disk size to be increased : [Enter something sensisble like 100G(in gigabytes),100M(in megabytes),100K(in kilobytes)]"
+		read _diskSize
+		qemu-img resize ./Image.img "+${_diskSize}"
+	else
+		echo "Enter Disk Size to use: (Default 30G) [Enter something sensisble like 100G(in gigabytes),100M(in megabytes),100K(in kilobytes)]"
+		read _diskSize
+
 	fi
+
+	echo "Enter video drivers to use: (Default virtio) [virtio/qxl]"
+	read _vga
+
+	if [[ "$_cores" != "" ]]; then
+		cores="$_cores"
+	fi
+
+	if [[ "$_threads" != "" ]]; then
+		threads="$_threads"
+	fi
+
+	if [[ "$_ram" != "" ]]; then
+		ram="$_ram"
+	fi
+
+	if [[ "$_diskSize" != "" ]]; then
+		diskSize="$_diskSize"
+	fi
+
+	if [[ "$_vga" != "" ]]; then
+		vga="$_vga"
+	fi
+
+}
+
+takeCliArguments() {
+	echo "Are you trying to install windows?: [yes,y/no,n]"
+	read _isWindows
+
+	if [[ "$_isWindows" != "" ]]; then
+		if [[ "$_isWindows" == "no" || "$_isWindows" == "n" || "$_isWindows" == "yes" || "$_isWindows" == "y" ]]; then
+			isWindows="$_isWindows"
+		else
+			echo "Please Enter Properly if you are trying to install Windows or not!"
+			exit 0
+		fi
+	fi
+
+	# Get ISO Location
+	isoLocation=$(fd --type f . $HOME | fzf --prompt "Choose ISO Location:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | xargs -I {} realpath "{}")
+
+	# Get Confirmation
+	echo -e "Are you sure to go with this ==> \e[31m${isoLocation}\e[0m \e[33m[y,yes/n,no]\e[0m"
+	read _confirm
+
+	if [[ "$_confirm" = "no" || "$_confirm" = "n" ]]; then
+		echo "Exited!"
+	elif [[ "$_confirm" = "yes" || "$_confirm" = "y" ]]; then
+		if [[ "$isoLocation" != "" ]]; then
+
+			echo "Enter the name of the virtual machine: [Do not give spaces while naming]"
+			read _name
+
+			# Take Input
+			takeInput
+
+			name=$(echo "$_name" | tr " " "-")
+
+			# Create Directory if not exits
+			mkdir -p "${VMS_PATH}"
+
+			# Go to VMS Directory
+			cd "${VMS_PATH}"
+
+			# Create a Directory with the given name
+			mkdir "${name}"
+			cd "${name}"
+
+			# Create a shared folder
+			mkdir -p sharedFolder
+			chmod 777 sharedFolder
+
+			# Copy the iso
+			isoname=$(echo "${isoLocation}" | awk -F"/" '{print $NF}')
+			cp -r "${isoLocation}" .
+			mv "${isoname}" "${name}.iso"
+
+			# Create QCOW
+			qemu-img create -f qcow2 Image.img "${diskSize}"
+
+			# Add Scripts
+			addScripts
+
+			cd ..
+		fi
+	else
+		echo "Please type either yes or no!"
+	fi
+}
+
+if [[ "$unattended" == "no" ]]; then
+	takeCliArguments
 else
-	echo "Please type either yes or no!"
+	cd "${goto}"
+	takeInput "resize"
+	find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
+	addScripts
 fi

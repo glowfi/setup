@@ -15,8 +15,8 @@ sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spi
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
-cp -r $HOME/setup/scripts/vm_download.sh $HOME/setup/scripts/vm_setup.sh $HOME/setup/scripts/vm_manager.sh ~/.local/bin/
-chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
+cp -r $HOME/setup/scripts/vm_download.sh $HOME/setup/scripts/vm_setup.sh $HOME/setup/scripts/vm_manager.sh $HOME/setup/scripts/vm_gpu_passthrough.sh $HOME/.local/bin
+chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh $HOME/.local/bin/vm_gpu_passthrough.sh
 ```
 
 ## UNINSTALL
@@ -54,69 +54,16 @@ qemu-system-x86_64 -enable-kvm \
 	-cdrom ISO_NAME
 ```
 
-## GPU PASSTHROUGH GUIDE
-
-### Virtio drivers iso By Redhat
-
-```
-https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md
-```
-
-### SCRIPT TO AUTOMATE PASSTHROUGH (Specific to my configuration)
-
-```bash
-#!/bin/bash
-
-if [[ -f "$HOME/.config/gpupass" ]]; then
-
-    # If file exist means we have already passthroughed our GPU
-    rm $HOME/.config/gpupass
-
-    ## EDIT GRUB
-    sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
-    sudo sed -i '6a\GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"' /etc/default/grub
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-    ## DELETE vfio.conf
-    sudo rm -rf /etc/modprobe.d/vfio.conf
-
-    ## ADD BACK NVIDIA MODULES
-    sudo sed -i 's/MODULES=(btrfs)/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-
-    ## Regenerate initramfs
-    sudo mkinitcpio -p linux-zen
-
-else
-
-    # If file does not exist it means we are yet to passthrough our GPU
-    touch $HOME/.config/gpupass
-
-    ## EDIT GRUB
-    sudo sed -i '6s/.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf amd_iommu=on vfio-pci.ids=10de:25a2,10de:2291"/' /etc/default/grub
-    sudo sed -i '7d' /etc/default/grub
-
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-    ## EDIT vfio.conf
-    sudo -E nvim -c ":q" /etc/modprobe.d/vfio.conf
-    sudo echo | sudo tee /etc/modprobe.d/vfio.conf >/dev/null
-    sudo echo "options vfio-pci ids=10de:25a2,10de:2291" | sudo tee -a /etc/modprobe.d/vfio.conf >/dev/null
-    sudo echo "softdep nvidia pre: vfio-pci" | sudo tee -a /etc/modprobe.d/vfio.conf >/dev/null
-    sudo sed -i "1d" /etc/modprobe.d/vfio.conf
-
-    ## GET RID OF ANY NVIDIA MODULES
-    sudo sed -i 's/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/MODULES=(btrfs)/' /etc/mkinitcpio.conf
-
-    ## Regenerate initramfs
-    sudo mkinitcpio -p linux-zen
-
-fi
-```
-
 # Arguments Help
 
 ```sh
+
 ### GPU Passthrough VFIO Devices
+
+#### Add sudo ####
+echo "Please Enter Your account Password :"
+sudo echo ""
+
 -device vfio-pci,host=01:00.0,multifunction=on \
 -device vfio-pci,host=01:00.1 \
 
