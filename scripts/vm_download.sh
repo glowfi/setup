@@ -467,8 +467,8 @@ berryurl() {
 }
 
 risiurl() {
-	mirror="https://risi.io/downloads"
-	new=$(curl -s $mirror | grep Download | grep -m1 .iso | awk -F"\"" '{ print $2 }')
+	mirror="https://risi.io/#download"
+	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "mirror" | tail -1)
 	output="risios.iso"
 	checkfile $1
 }
@@ -555,12 +555,12 @@ clearurl() {
 }
 
 dragoraurl() {
-	mirror="http://rsync.dragora.org/current/iso/beta/"
-	echo "Unfortunately, current Dragora mirror ($mirror) is unavailable"
-	#x=$(curl -s $mirror | grep -m1 x86_64 | awk -F\' '{ print $2 }')
-	#new="$mirror$x"
-	#output="dragora.iso"
-	#checkfile $1
+	getVer=$(curl https://mirror.fsf.org/dragora/current/iso/ | grep -E "beta" | tail -1 | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | tr -d "/")
+	mirror="https://mirror.fsf.org/dragora/current/iso/${getVer}/"
+	x=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | tail -3 | head -1)
+	new="$mirror$x"
+	output="dragora.iso"
+	checkfile $1
 }
 
 slackwareurl() {
@@ -596,11 +596,10 @@ plopurl() {
 
 solusurl() {
 	mirror="https://getsol.us/download/"
-	echo "Unfortunately, current Solus mirror ($mirror) is unavailable"
-	#x=$(curl -s $mirror | grep -m1 iso | awk -F\" '{ print $2 }')
-	#new="$x"
-	#output="solus.iso"
-	#checkfile $1
+	x=$(curl -s "$mirror" | grep -E "download" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "Budgie" | head -1 | grep -Eo "https.+iso")
+	new="$x"
+	output="solus.iso"
+	checkfile $1
 }
 
 peropesisurl() {
@@ -634,15 +633,6 @@ gentoourl() {
 	output="gentoo.iso"
 	notlive
 	checkfile $1
-}
-
-sabayonurl() {
-	mirror="https://www.sabayon.org/desktop/"
-	echo "Unfortunately, current Sabayon mirror ($mirror) is unavailable"
-	#x=$(curl -s $mirror | grep GNOME.iso | head -1 | awk -F"http://" '{ print $2 }' | awk -F\" '{ print $1 }')
-	#new="http://$x"
-	#output="sabayon.iso"
-	#checkfile $1
 }
 
 calcurl() {
@@ -1393,7 +1383,7 @@ arch=(archlinux manjaro arcolinux archbang parabola endeavour artix arco garuda 
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
-sourcebased=(gentoo sabayon calculate nixos guix crux gobolinux easyos)
+sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
 notlinux=(openindiana minix haiku menuetos kolibri reactos freedos windows7 windows8_1 windows10 windows11)
@@ -1493,7 +1483,6 @@ pisi=("Pisilinux" "amd64" "release" "pisiurl")
 
 # Source-based distros
 gentoo=("Gentoo" "amd64" "admincd" "gentoourl")
-sabayon=("Sabayon" "amd64" "daily" "sabayonurl")
 calculate=("Calculate" "amd64" "release" "calcurl")
 nixos=("NixOS" "amd64" "unstable" "nixurl")
 guix=("Guix" "amd64" "release" "guixurl")
@@ -1653,46 +1642,5 @@ quickmode() {
 	done
 	exit 0
 }
-
-VALID_ARGS=$(getopt -o hysd: --long help,noconfirm,silent,distro: -- "$@")
-if [[ $? -ne 0 ]]; then
-	exit 1
-fi
-
-eval set -- "$VALID_ARGS"
-while [ : ]; do
-	case "$1" in
-	-h | --help)
-		helpsection
-		echo "Valid command line flags:"
-		echo "-h/--help: Show this help"
-		echo "-y/--noconfirm: Download specified distro without confirmation. "
-		echo "-s/--silent: Don't show help or extra info."
-		echo "-d/--distro: Download distributions specified in the comma-separated list. Example: 0,2,34"
-		exit 0
-		;;
-	-y | --noconfirm)
-		echo "-y/--noconfirm option specified. Script will download specified distro without confirmation."
-		noconfirm=1
-		shift
-		;;
-	-s | --silent)
-		echo "-s/--silent option specified. Script will not show help or extra info."
-		silent=1
-		shift
-		;;
-	-d | --distro)
-		echo "-d/--distro option specified. Script will download distributions with the following numbers: '$2'"
-		distros="$2"
-		quickmode
-		;;
-	--)
-		shift
-		break
-		;;
-	esac
-done
-
-if [ "$silent" != "1" ]; then helpsection; fi
 
 normalmode

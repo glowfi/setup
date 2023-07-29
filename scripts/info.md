@@ -13,10 +13,10 @@ yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
 ```bash
 sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa
-cp -r $HOME/setup/scripts/vm_download.sh $HOME/setup/scripts/vm_setup.sh $HOME/setup/scripts/vm_manager.sh ~/.local/bin/
-chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
+cp -r $HOME/setup/scripts/vm_download.sh $HOME/setup/scripts/vm_setup.sh $HOME/setup/scripts/vm_manager.sh ~/.local/bin/
+chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
 ```
 
 ## UNINSTALL
