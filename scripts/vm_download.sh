@@ -8,7 +8,7 @@ helpsection() {
 	echo "| Change the download URL or something else, it might be required to do manual changes.                                                  | "
 	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr (these tools usually are preinstalled on linux)                            | "
 	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
-	echo "| Scripts Included : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)             | "
+	echo "| Scripts Used : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)                 | "
 	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
 	echo "+ How to use?"
 	echo "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading"
