@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #### Constant Variables
-unattended="no"
+reconfigure="no"
 isWindows="no"
 name=""
 cores="4"
@@ -14,8 +14,8 @@ VMS_PATH="$HOME/Downloads/VMS"
 while [[ $# > 0 ]]; do
 	case "$1" in
 
-	-u | --unattended)
-		unattended="$2"
+	-reconf | --reconfigure)
+		reconfigure="$2"
 		shift
 		;;
 	-iswin | --isWindows)
@@ -446,7 +446,7 @@ takeCliArguments() {
 	fi
 }
 
-if [[ "$unattended" == "no" ]]; then
+if [[ "$reconfigure" == "no" ]]; then
 	takeCliArguments
 else
 	cd "${goto}"

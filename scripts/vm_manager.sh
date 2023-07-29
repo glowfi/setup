@@ -10,7 +10,7 @@ choice1=$(echo "$vmlist" | fzf --prompt "Choose VM:")
 reconfigure() {
 	goto="$1"
 	name="$2"
-	fish -c "vs -u yes -n ${name} -g ${goto}"
+	fish -c "vs -reconf yes -n ${name} -g ${goto}"
 }
 
 # Perform the choosen task
