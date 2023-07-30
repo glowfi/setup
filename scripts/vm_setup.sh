@@ -308,7 +308,7 @@ sock.close()" >>createsocket.py
 	#### Include a minimal start Script
 
 	touch fallback-start.sh
-	echo "
+	echo "#!/usr/bin/env bash
 qemu-system-x86_64 -enable-kvm \\
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \\
 	-machine q35,accel=kvm,smm=on \\
@@ -328,7 +328,7 @@ qemu-system-x86_64 -enable-kvm \\
 	#### Include a minimal start Script (BIOS)
 
 	touch fallback-start-BIOS.sh
-	echo "
+	echo "#!/usr/bin/env bash
 qemu-system-x86_64 -enable-kvm \\
 	-machine q35,accel=kvm,smm=on \\
 	-cpu host \\
