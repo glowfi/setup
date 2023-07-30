@@ -13,10 +13,18 @@ reconfigure() {
 	fish -c "vs -reconf yes -n ${name} -g ${goto}"
 }
 
+update() {
+
+	goto="$1"
+	name="$2"
+	fish -c "vs -ups yes -n ${name} -g ${goto}"
+
+}
+
 # Perform the choosen task
 if [[ "$choice1" != "" ]]; then
 	# Choose what to do
-	choice2=$(echo -e "1.Start VM (UEFI)\n2.Fallback Start Script(UEFI)\n3.Fallback Start Script (Legacy BIOS)\n4.Close VM\n5.Delete VM\n6.Reconfigure VM" | fzf | awk -F"." '{print $1}')
+	choice2=$(echo -e "1.Start VM (UEFI)\n2.Fallback Start Script(UEFI)\n3.Fallback Start Script (Legacy BIOS)\n4.Close VM\n5.Delete VM\n6.Reconfigure VM\n7.Update Scripts" | fzf | awk -F"." '{print $1}')
 	cd "${VM_PATH}/${choice1}"
 
 	if [[ "$choice2" != "" && "$choice2" == "5" ]]; then
@@ -34,6 +42,8 @@ if [[ "$choice1" != "" ]]; then
 				./clean.sh
 			elif [[ "$choice2" == "6" ]]; then
 				reconfigure "${VM_PATH}/${choice1}" "${choice1}"
+			elif [[ "$choice2" == "7" ]]; then
+				update "${VM_PATH}/${choice1}" "${choice1}"
 			fi
 		fi
 	fi

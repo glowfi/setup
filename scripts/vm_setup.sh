@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 #### Constant Variables
+unattendedUpdateScripts="no"
 reconfigure="no"
 isWindows="no"
 name=""
@@ -10,10 +11,16 @@ ram="4G"
 vga="virtio"
 diskSize="30G"
 VMS_PATH="$HOME/Downloads/VMS"
+VMS_ISO="$HOME/Downloads/VMS_ISO"
+CONFIG_FILE=".config"
 
 while [[ $# > 0 ]]; do
 	case "$1" in
 
+	-ups | --unattendedUpdateScripts)
+		unattendedUpdateScripts="$2"
+		shift
+		;;
 	-reconf | --reconfigure)
 		reconfigure="$2"
 		shift
@@ -75,7 +82,7 @@ addScripts() {
 	if [[ "$isWindows" == "yes" || "$isWindows" == "y" ]]; then
 
 		### Copy virtio
-		cp -r "$HOME/Downloads/VM_ISO/virtio.iso" "${VMS_PATH}/${name}"
+		cp -r "${VMS_ISO}/virtio.iso" "${VMS_PATH}/${name}"
 
 		echo "#!/usr/bin/env bash
 
@@ -334,6 +341,16 @@ qemu-system-x86_64 -enable-kvm \\
 	-cdrom ${name}.iso &" >>fallback-start-BIOS.sh
 	chmod +x fallback-start-BIOS.sh
 
+	#### Save the current configuration
+
+	rm -rf "${CONFIG_FILE}"
+	touch "${CONFIG_FILE}"
+	echo "${name}" >>"${CONFIG_FILE}"
+	echo "${threads}" >>"${CONFIG_FILE}"
+	echo "${ram}" >>"${CONFIG_FILE}"
+	echo "${cores}" >>"${CONFIG_FILE}"
+	echo "${vga}" >>"${CONFIG_FILE}"
+	echo "${isWindows}" >>"${CONFIG_FILE}"
 }
 
 takeInput() {
@@ -446,11 +463,27 @@ takeCliArguments() {
 	fi
 }
 
-if [[ "$reconfigure" == "no" ]]; then
-	takeCliArguments
-else
+if [[ "$unattendedUpdateScripts" = "yes" ]]; then
 	cd "${goto}"
-	takeInput "resize"
+	name=$(sed -n '1p' <"$CONFIG_FILE")
+	threads=$(sed -n '2p' <"$CONFIG_FILE")
+	ram=$(sed -n '3p' <"$CONFIG_FILE")
+	cores=$(sed -n '4p' <"$CONFIG_FILE")
+	vga=$(sed -n '5p' <"$CONFIG_FILE")
+	isWindows=$(sed -n '6p' <"$CONFIG_FILE")
+
 	find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
 	addScripts
+
+else
+	if [[ "$reconfigure" == "no" ]]; then
+		takeCliArguments
+	else
+		cd "${goto}"
+		takeInput "resize"
+		find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
+		isWindows=$(sed -n '6p' <"$CONFIG_FILE")
+		addScripts
+	fi
+
 fi
