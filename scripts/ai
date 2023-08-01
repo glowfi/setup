@@ -64,12 +64,16 @@ def _read():
 
 # Save Conversation
 def save(message, data):
+    words = message.split()
+    capitalized_words = [word.capitalize() for word in words]
+    message = " ".join(capitalized_words)
     with open(f"{location}/{file}", "a+") as f:
         f.write(
             "\n\n"
             + "#### ========= Start of Conversation ========== \n"
             + "<h3>Question : </h3> \n"
             + f'<h2><p style="color: red;">{message}</p></h2>'
+            + f'<h2><p style="color: green;">Reply :</p></h2>'
             + "\n\n"
             + f"{data}\n\n"
             + "#### ========= End of Conversation ============= \n\n\n"
