@@ -521,7 +521,7 @@ pclinuxosurl() {
 
 voidurl() {
 	mirror="https://alpha.de.repo.voidlinux.org/live/current/"
-	x=$(curl -s $mirror | grep "xfce" | grep -m1 "x86_64" | awk -F">" '{ print $2 }' | awk -F"<" '{ print $1 }')
+	x=$(curl -s $mirror | grep "xfce" | grep -m1 "musl" | awk -F">" '{ print $2 }' | awk -F"<" '{ print $1 }')
 	new="$mirror/$x"
 	output="void.iso"
 	checkfile $1
