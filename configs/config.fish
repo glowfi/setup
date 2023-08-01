@@ -71,6 +71,8 @@ alias upgv='sudo rm /usr/local/bin/nvim;
 sudo rm -r /usr/local/share/nvim;
 rm -rf ~/.config/nvim;
 rm -rf ~/.local/share/nvim;
+pip uninstall cmake -y;
+sudo pacman -S --noconfirm cmake ninja tree-sitter;
 git clone https://github.com/neovim/neovim --depth 1;
 cd neovim;
 sudo make CMAKE_BUILD_TYPE=Release install || sudo pacman -S --noconfirm neovim;
