@@ -245,6 +245,10 @@ chmod +x $HOME/.local/bin/lowbat.sh
 cp -r $HOME/setup/scripts/klp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/klp
 
+pip install poe-api 
+cp -r $HOME/setup/scripts/ai $HOME/.local/bin/
+chmod +x $HOME/.local/bin/ai
+
 yes | pip uninstall pathlib
 pip install pyinstaller
 pip install ffmpeg-python typing-extensions

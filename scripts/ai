@@ -1,0 +1,127 @@
+#!/bin/python3
+
+import poe
+import subprocess
+import os
+from colorama import init, Fore, Style
+import sys
+
+# Constants
+token = ""
+file = "conversations.md"
+location = os.path.expanduser("~/.local/share/poe")
+
+
+# Kill all nvim processes associated with this script
+def kill():
+    os.system(
+        "ps aux | grep 'Markdown' | head | awk '{print $2}' | xargs -I {} kill -9 {} > /dev/null 2>&1"
+    )
+    os.system(
+        "ps aux | grep 'index.js' | head | awk '{print $2}' | xargs -I {} kill -9 {} > /dev/null 2>&1"
+    )
+
+
+# Get the command line arguments
+args = sys.argv
+
+if len(args) > 1:
+    if args[1] == "k":
+        kill()
+        print("Killed all processes!")
+        exit(0)
+    elif args[1] == "d":
+        os.system(f"rm -rf {location}")
+        print("Deleted the saved conversation!")
+        exit(0)
+
+
+# Initialize Poe
+print(Fore.RED + "Initializing .....")
+client = poe.Client(token)
+print(Fore.GREEN + "Client Initialized!")
+print(Style.RESET_ALL)
+
+# Initialize colorama
+init()
+
+
+def _read():
+    with open(f"{location}/{file}", "a+") as f:
+        subprocess.Popen(
+            [
+                "setsid",
+                "nvim",
+                "--headless",
+                "-c",
+                ":MarkdownPreview",
+                f"{location}/{file}",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+
+# Save Conversation
+def save(message, data):
+    with open(f"{location}/{file}", "a+") as f:
+        f.write(
+            "\n\n"
+            + "#### ========= Start of Conversation ========== \n"
+            + "<h3>Question : </h3> \n"
+            + f'<h2><p style="color: red;">{message}</p></h2>'
+            + "\n\n"
+            + f"{data}\n\n"
+            + "#### ========= End of Conversation ============= \n\n\n"
+        )
+
+        kill()
+        _read()
+
+
+# File Check
+def fileCheck():
+    # Create File if not exists
+    if not os.path.exists(location):
+        os.makedirs(location)
+        with open(f"{location}/{file}", "w") as f:
+            f.write("")
+    # Otherwise read the file
+    else:
+        kill()
+        _read()
+
+
+def prompt():
+    conversationNumber = 1
+    chunk = {"text": ""}
+
+    print("========= Start of Conversation ==========")
+    # Take User Input
+    while True:
+        print("\n")
+        print(Fore.BLUE + f"Converation {conversationNumber} :", Style.RESET_ALL)
+        print("========================================")
+        message = input("Enter Your message :" + Fore.MAGENTA)
+        print(Style.RESET_ALL, "Reply :", Fore.YELLOW)
+        for chunk in client.send_message("capybara", message):
+            print(chunk["text_new"], end="", flush=True)
+        print(Style.RESET_ALL)
+        print("========================================")
+
+        save(message, chunk["text"])
+        conversationNumber += 1
+
+
+# Purge all conversations
+if len(args) > 1:
+    if args[1] == "p":
+        client.purge_all_conversations()
+        print("Purged all Conversations")
+        exit(0)
+
+# Check File exists
+fileCheck()
+
+# Start prompt
+prompt()
