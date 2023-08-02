@@ -90,7 +90,7 @@ def save(message, data):
         f.write(
             "\n\n"
             + "#### ========= Start of Conversation ========== \n"
-            + '<h3 style="color: green;">Question : </h3> \n'
+            + '<h3 style="color: red;">Question : </h3> \n'
             + f'<h2><div style="background-color: #e0ddda;">{message}</div></h2>\n'
             + f'<h2><p style="color: green;">Reply :</p></h2>\n'
             + "\n\n"
