@@ -141,7 +141,7 @@ def prompt():
 
         choose = input(
             Fore.LIGHTBLUE_EX
-            + "Press e to write message in an editor.\nPress n to input message normally"
+            + "Press e to write message in an editor.\nPress n to input message normally\n"
             + Fore.LIGHTCYAN_EX
             + "\nChoose:"
         )
@@ -150,12 +150,16 @@ def prompt():
             message = get_input()
             print(Fore.RED + "\nYour Message :  " + Fore.MAGENTA + message)
         else:
+            print("")
             message = input(Fore.RED + "Enter Your message :  " + Fore.MAGENTA)
 
         if message == "":
             message = "Do not reply to this message"
 
-        print(Style.RESET_ALL, Fore.GREEN + "Reply :", Fore.YELLOW)
+        if choose != "e":
+            print("")
+
+        print(Fore.GREEN + "Reply :", Fore.YELLOW)
         for chunk in client.send_message("capybara", message):
             print(chunk["text_new"], end="", flush=True)
         print(Style.RESET_ALL)
