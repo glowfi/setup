@@ -5,11 +5,25 @@ import subprocess
 import os
 from colorama import init, Fore, Style
 import sys
+import tempfile
+
 
 # Constants
 token = ""
 file = "conversations.md"
 location = os.path.expanduser("~/.local/share/poe")
+openviewer = "no"
+
+
+def help():
+    print("Any one out of the below arguments can be passed at a time.\n")
+    print("Example: ai k\n")
+    print("Arguments :")
+    print("h  open help")
+    print("k  Kill all nvim processes")
+    print("d  Delete all conversations stored on this computer")
+    print("p  Delete all conversations stored on the server")
+    print("v  Open conversations viewer stored on this computer")
 
 
 # Kill all nvim processes associated with this script
@@ -33,6 +47,11 @@ if len(args) > 1:
     elif args[1] == "d":
         os.system(f"rm -rf {location}")
         print("Deleted the saved conversation!")
+        exit(0)
+    elif args[1] == "v":
+        openviewer = "yes"
+    elif args[1] == "h":
+        help()
         exit(0)
 
 
@@ -64,23 +83,24 @@ def _read():
 
 # Save Conversation
 def save(message, data):
-    words = message.split()
-    capitalized_words = [word.capitalize() for word in words]
-    message = " ".join(capitalized_words)
+    # words = message.split()
+    # capitalized_words = [word.capitalize() for word in words]
+    # message = " ".join(capitalized_words)
     with open(f"{location}/{file}", "a+") as f:
         f.write(
             "\n\n"
             + "#### ========= Start of Conversation ========== \n"
-            + "<h3>Question : </h3> \n"
-            + f'<h2><p style="color: red;">{message}</p></h2>'
-            + f'<h2><p style="color: green;">Reply :</p></h2>'
+            + '<h3 style="color: green;">Question : </h3> \n'
+            + f'<h2><div style="background-color: #e0ddda;">{message}</div></h2>\n'
+            + f'<h2><p style="color: green;">Reply :</p></h2>\n'
             + "\n\n"
             + f"{data}\n\n"
             + "#### ========= End of Conversation ============= \n\n\n"
         )
 
-        kill()
-        _read()
+        if openviewer == "yes":
+            kill()
+            _read()
 
 
 # File Check
@@ -92,8 +112,20 @@ def fileCheck():
             f.write("")
     # Otherwise read the file
     else:
-        kill()
-        _read()
+        if openviewer == "yes":
+            kill()
+            _read()
+
+
+def get_input():
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp_file:
+        tmp_file.close()
+        editor = os.environ.get("EDITOR", "vi")
+        os.system(f"{editor} {tmp_file.name}")
+        with open(tmp_file.name, "r") as f:
+            input_text = f.read()
+        os.unlink(tmp_file.name)
+    return input_text
 
 
 def prompt():
@@ -106,8 +138,24 @@ def prompt():
         print("\n")
         print(Fore.BLUE + f"Converation {conversationNumber} :", Style.RESET_ALL)
         print("========================================")
-        message = input("Enter Your message :" + Fore.MAGENTA)
-        print(Style.RESET_ALL, "Reply :", Fore.YELLOW)
+
+        choose = input(
+            Fore.LIGHTBLUE_EX
+            + "Press e to write message in an editor.\nPress n to input message normally"
+            + Fore.LIGHTCYAN_EX
+            + "\nChoose:"
+        )
+
+        if choose == "e":
+            message = get_input()
+            print(Fore.RED + "\nYour Message :  " + Fore.MAGENTA + message)
+        else:
+            message = input(Fore.RED + "Enter Your message :  " + Fore.MAGENTA)
+
+        if message == "":
+            message = "Do not reply to this message"
+
+        print(Style.RESET_ALL, Fore.GREEN + "Reply :", Fore.YELLOW)
         for chunk in client.send_message("capybara", message):
             print(chunk["text_new"], end="", flush=True)
         print(Style.RESET_ALL)
