@@ -40,6 +40,7 @@ cp new_grub /etc/default/grub
 
 ########## mkinitcpio ##########
 
+# MODULES='vfio_pci vfio vfio_iommu_type1 vfio_virqfd'
 MODULES='vfio_pci vfio vfio_iommu_type1'
 FILES='/usr/bin/vfio-pci-override.sh'
 HOOKS='vfio'
