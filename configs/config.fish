@@ -177,7 +177,6 @@ alias voff='sudo systemctl stop libvirtd;sudo virsh net-destroy default '
 alias vd='vm_download.sh'
 alias vs='vm_setup.sh'
 alias vm='vm_manager.sh'
-alias vg='vm_gpu_passthrough.sh'
 
 # Go to Mounted drive
 alias jd='gotoMounteddrive'

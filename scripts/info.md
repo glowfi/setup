@@ -15,8 +15,8 @@ sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spi
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
-cp -r $HOME/setup/scripts/vm_download.sh $HOME/setup/scripts/vm_setup.sh $HOME/setup/scripts/vm_manager.sh $HOME/setup/scripts/vm_gpu_passthrough.sh $HOME/.local/bin
-chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh $HOME/.local/bin/vm_gpu_passthrough.sh
+cp -r $HOME/setup/scripts/virtualization/vm_download.sh $HOME/setup/scripts/virtualization/vm_setup.sh $HOME/setup/scripts/virtualization/vm_manager.sh $HOME/.local/bin
+chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
 ```
 
 ## UNINSTALL
