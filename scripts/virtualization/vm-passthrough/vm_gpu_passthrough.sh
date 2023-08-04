@@ -40,7 +40,7 @@ cp new_grub /etc/default/grub
 
 ########## mkinitcpio ##########
 
-MODULES='vfio_pci vfio vfio_iommu_type1 vfio_virqfd'
+MODULES='vfio_pci vfio vfio_iommu_type1'
 FILES='/usr/bin/vfio-pci-override.sh'
 HOOKS='vfio'
 cp /etc/mkinitcpio.conf new_mkinitcpio
@@ -59,11 +59,6 @@ sed -i "\|^HOOKS=| s|base\(.*\) udev|base ${HOOKS}\1 udev|" new_mkinitcpio
 # Copy Updated mkinitcpio
 cp new_mkinitcpio /etc/mkinitcpio.conf
 
-########## Regenerate GRUB,mkinitcpio ##########
-
-grub-mkconfig -o /boot/grub/grub.cfg
-mkinitcpio -p linux-zen
-
 ########## Copy necessary files ##########
 
 # Main file containg logic to assign Primary Used GPU as the passthough device
@@ -80,6 +75,11 @@ cp vfio-hooks /etc/initcpio/hooks/vfio
 ########## Allow libvirt to autostart ##########
 
 systemctl enable libvirtd.service
+
+########## Regenerate GRUB,mkinitcpio ##########
+
+grub-mkconfig -o /boot/grub/grub.cfg
+mkinitcpio -p linux-zen
 
 ########## Checking for TPM ##########
 
