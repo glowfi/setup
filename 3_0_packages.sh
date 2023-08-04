@@ -158,21 +158,12 @@ echo ""
 fish -c "exit"
 cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 
-# COPY BASH SHELL SETTINGS
-
-cp -r $HOME/setup/configs/.bashrc $HOME
-
-# COPY inputrc
-
-cp -r $HOME/setup/configs/.inputrc $HOME
-
-# COPY VIM SETTINGS
-
-cp -r $HOME/setup/configs/.vimrc $HOME
-
-# INSTALL AND COPY TMUX SETTINGS
+# COPY BASH inputrc VIM TMUX TO HOME
 
 install "tmux" "pac"
+cp -r $HOME/setup/configs/.bashrc $HOME
+cp -r $HOME/setup/configs/.inputrc $HOME
+cp -r $HOME/setup/configs/.vimrc $HOME
 cp -r $HOME/setup/configs/.tmux.conf $HOME
 
 # COPY BASH inputrc VIM TMUX TO ROOT
