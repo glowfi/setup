@@ -286,7 +286,7 @@ sudo pacman -S --noconfirm dnscrypt-proxy dnsmasq
 ### Put Server Name
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
 getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
-newServers="server_names = ['scaleway-fr', 'soltysiak', 'cloudflare', 'doh-blahdns-de']"
+newServers="server_names = ['ahadns-doh-nl', 'ahadns-doh-la', 'quad9-dnscrypt-ip4-filter-ecs-pri','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri']"
 sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Configure Listening Port
