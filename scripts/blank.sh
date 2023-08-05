@@ -38,7 +38,7 @@ enableFeatures() {
 
 	# NETWORKING SETTINGS
 
-	sudo echo -e 'DNS=9.9.9.9\nDNSOverTLS=yes\nLLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+	sudo echo -e 'DNSOverTLS=yes\nLLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
 
 	# SECURITY FEATURES
 
