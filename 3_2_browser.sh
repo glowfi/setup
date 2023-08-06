@@ -7,8 +7,8 @@ rm -rf $HOME/.config/BraveSoftware/
 
 ### Policies
 sudo mkdir -p /etc/brave/policies/managed/
-sudo touch /etc/brave/policies/managed/brace.json
-cat $HOME/setup/configs/brave/policy.json | sudo tee -a /etc/brave/policies/managed/brace.json >/dev/null
+sudo touch /etc/brave/policies/managed/brave-policy.json
+cat $HOME/setup/configs/brave/policy.json | sudo tee -a /etc/brave/policies/managed/brave-policy.json >/dev/null
 
 ### Create Default Profile
 
