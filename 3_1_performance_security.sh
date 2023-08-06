@@ -300,7 +300,6 @@ sudo systemctl start dnscrypt-proxy
 sudo systemctl enable dnscrypt-proxy
 
 ### Setup dnsmasq
-
 sudo echo '
 no-resolv
 server=::1#53000
@@ -311,12 +310,10 @@ conf-file=/usr/share/dnsmasq/trust-anchors.conf
 dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 
 ### Start dnsmasq at startup
-
 sudo systemctl start dnsmasq
 sudo systemctl enable dnsmasq
 
 ### Edit /etc/resolv.conf
-
 sudo chattr -i /etc/resolv.conf
 sudo truncate -s 0 /etc/resolv.conf
 sudo echo '### Custom DNS Resolver

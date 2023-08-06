@@ -299,9 +299,6 @@ chmod +x $HOME/.local/bin/fixWords.py
 cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/blank.sh
 
-cp -r $HOME/setup/scripts/libw $HOME/.local/bin/
-chmod +x $HOME/.local/bin/libw
-
 # ADDITIONAL PROGRAMS
 
 install "atbswp" "yay"
