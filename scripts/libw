@@ -1,0 +1,18 @@
+#!/bin/bash
+
+librewolf &
+sleep 1
+if [ -f "/tmp/libwpid" ]; then
+	echo "Do Not Do Anything ...!"
+else
+	while true; do
+		echo "$$" >/tmp/libwpid
+		pgrep librewolf >/dev/null
+		if [ $? -ne 0 ]; then
+			rm -rf /tmp/libwpid
+			exit 0
+		fi
+		VOL=$(pamixer --get-volume)
+		pactl list sink-inputs | grep -E 'Sink Input #|application.name = "librewolf"' | grep -oP '#\K\d+' | xargs -I{} pactl set-sink-input-volume {} "$VOL%"
+	done
+fi
