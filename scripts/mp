@@ -10,7 +10,7 @@ makepdf_s() {
 	echo -e "\n${BLUE}Processing .........${NC}"
 	cd "${folder}"
 	# Convert Markdwon to pdf
-	md-to-pdf "${filename}" --pdf-options '{ "format": "Letter", "margin": "20mm", "printBackground": true }' --body-class markdown-body --css ".page-break { page-break-after: always; }.markdown-body { font-size: 14px; }.markdown-body pre > code { white-space: pre-wrap; }" --highlight-style "gruvbox-dark-hard"
+	md-to-pdf "${filename}" --stylesheet "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" --pdf-options '{ "format": "Letter", "margin": "20mm", "printBackground": true }' --marked-options '{ "gfm": false }' --body-class markdown-body --css ".page-break { page-break-after: always; }.markdown-body { font-size: 18px; }.markdown-body pre > code { white-space: pre-wrap; }" --highlight-style "tomorrow"
 	echo -e "\n"
 }
 
