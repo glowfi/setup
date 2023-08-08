@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Save current working directory
+saveCWD=$(echo "$PWD")
+
+makepdf_s() {
+	BLUE='\033[0;34m'
+	NC='\033[0m' # No Color
+
+	echo -e "\n${BLUE}Processing .........${NC}"
+	cd "${folder}"
+	# Convert Markdwon to pdf
+	md-to-pdf "${filename}" --pdf-options '{ "format": "Letter", "margin": "20mm", "printBackground": true }' --body-class markdown-body --css ".page-break { page-break-after: always; }.markdown-body { font-size: 11px; }.markdown-body pre > code { white-space: pre-wrap; }" --highlight-style "gruvbox-dark-hard"
+	echo -e "\n"
+}
+
+if [[ "$1" ]]; then
+	# Handle directory
+	if [ -d "$1" ]; then
+		mapfile -t files_array < <(find $(realpath "$1") -type f -name '*.md')
+
+		for filename in "${files_array[@]}"; do
+			base=$(basename "$filename")
+			folder="${filename//$base/}"
+			makepdf_s
+		done
+
+	# Handle File
+	elif [ -f "$1" ]; then
+
+		filename=$(realpath "$1")
+		base=$(basename "$filename")
+		ext=$(echo "$base" | awk -F"." '{print $2}')
+		if [[ "$ext" = "md" ]]; then
+			folder="${filename//$base/}"
+			makepdf_s
+		else
+			echo "Please provide a markdown file!"
+		fi
+
+	# Handle no proper arguments provided
+	else
+		echo "$path does not exist or is not a valid directory or file."
+	fi
+
+	# Go back to current working directory
+	cd "$saveCWD"
+else
+	echo "No arguments provided!"
+fi

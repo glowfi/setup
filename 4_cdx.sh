@@ -70,6 +70,9 @@ source $HOME/.config/fish/config.fish
 npm i -g yarn
 npm update -g npm
 npm install npm@latest -g
+npm i -g md-to-pdf
+sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
+sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -298,6 +301,9 @@ chmod +x $HOME/.local/bin/fixWords.py
 
 cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/blank.sh
+
+cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/mp
 
 # ADDITIONAL PROGRAMS
 
