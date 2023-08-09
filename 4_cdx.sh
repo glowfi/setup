@@ -89,6 +89,9 @@ cargo xtask install --server
 cd ..
 rm -rf rust-analyzer
 
+# RUST MODULES
+
+cargo install ripdrag
 
 echo ""
 echo --------------------------------------------------------------------------
@@ -305,6 +308,9 @@ chmod +x $HOME/.local/bin/blank.sh
 cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/mp
 
+cp -r $HOME/setup/scripts/batchmover $HOME/.local/bin/
+chmod +x $HOME/.local/bin/batchmover
+
 # ADDITIONAL PROGRAMS
 
 install "atbswp" "yay"
@@ -313,7 +319,7 @@ pip install pyautogui pynput
 
 # SETUP DOCKER
 
-install "docker" "pac"
+install "docker docker-compose" "pac"
 sudo systemctl start docker.service
 sudo usermod -aG docker $USER
 sudo chmod 666 /var/run/docker.sock
