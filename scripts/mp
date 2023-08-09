@@ -10,7 +10,162 @@ makepdf_s() {
 	echo -e "\n${BLUE}Processing .........${NC}"
 	cd "${folder}"
 	# Convert Markdwon to pdf
-	md-to-pdf "${filename}" --stylesheet "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" --pdf-options '{ "format": "Letter", "margin": "20mm", "printBackground": true }' --marked-options '{ "gfm": false }' --body-class markdown-body --css ".page-break { page-break-after: always; }.markdown-body { font-size: 18px; }.markdown-body pre > code { white-space: pre-wrap; }" --highlight-style "tomorrow"
+	md-to-pdf "${filename}" --pdf-options '{ "format": "Letter", "margin": "20mm", "printBackground": true }' --body-class markdown-body --css ".page-break { page-break-after: always; }.markdown-body a{color:#4078c0}.markdown-body pre > code { white-space: pre-wrap;background-color:#f8f8f8; }.markdown-body {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    line-height: 1.5;
+    color: #24292e;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+        sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    font-size: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+.markdown-body strong {
+    font-weight: inherit;
+    font-weight: bolder;
+}
+
+.markdown-body h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre {
+    font-family: monospace, monospace;
+    font-size: 1em;
+}
+
+.markdown-body input {
+    font: inherit;
+    margin: 0;
+}
+
+.markdown-body input {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.markdown-body strong {
+    font-weight: 600;
+}
+
+.markdown-body kbd {
+    font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+}
+.markdown-body h1 {
+    font-size: 32px;
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+    font-weight: 600;
+}
+
+.markdown-body h2 {
+    font-size: 24px;
+}
+
+.markdown-body h3 {
+    font-size: 20px;
+}
+
+.markdown-body h3,
+.markdown-body h4 {
+    font-weight: 600;
+}
+
+.markdown-body h4 {
+    font-size: 16px;
+}
+
+.markdown-body h5 {
+    font-size: 14px;
+}
+
+.markdown-body h5,
+.markdown-body h6 {
+    font-weight: 600;
+}
+
+.markdown-body h6 {
+    font-size: 12px;
+}
+
+.markdown-body code,
+.markdown-body pre {
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-size: 12px;
+}
+.markdown-body .f6 {
+    font-size: 12px !important;
+}
+
+.markdown-body .text-bold {
+    font-weight: 600 !important;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.markdown-body h1 {
+    font-size: 2em;
+}
+
+.markdown-body h2 {
+    font-size: 1.5em;
+}
+
+.markdown-body h3 {
+    font-size: 1.25em;
+}
+
+.markdown-body h4 {
+    font-size: 1em;
+}
+
+.markdown-body h5 {
+    font-size: 0.875em;
+}
+
+.markdown-body h6 {
+    font-size: 0.85em;
+    color: #6a737d;
+}
+.markdown-body dl dt {
+    padding: 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.markdown-body table th {
+    font-weight: 600;
+}
+.markdown-body code {
+    font-size: 85%;
+}
+.markdown-body pre > code {
+    font-size: 100%;
+}
+
+.markdown-body pre {
+    font-size: 85%;
+}
+
+" --highlight-style "tomorrow"
 	echo -e "\n"
 }
 
