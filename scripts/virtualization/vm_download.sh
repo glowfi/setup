@@ -1003,14 +1003,14 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>*</ComputerName>
       <OEMInformation>
-        <Manufacturer>qemu&KVM Project</Manufacturer>
-        <Model>qemu&KVM</Model>
+        <Manufacturer>qemuNkvm Project</Manufacturer>
+        <Model>qemuNkvm</Model>
         <SupportHours>24/7</SupportHours>
         <SupportPhone></SupportPhone>
-        <SupportProvider>qemu&KVM Project</SupportProvider>
+        <SupportProvider>qemuNkvm Project</SupportProvider>
         <SupportURL>https://www.qemu.org</SupportURL>
       </OEMInformation>
-      <OEMName>qemu&KVM Project</OEMName>
+      <OEMName>qemuNkvm Project</OEMName>
       <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
     </component>
     <component name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1122,8 +1122,8 @@ unattended_windows() {
       </UpgradeData>
       <UserData>
         <AcceptEula>true</AcceptEula>
-        <FullName>qemu&KVM</FullName>
-        <Organization>qemu&KVM Project</Organization>
+        <FullName>qemuNkvm</FullName>
+        <Organization>qemuNkvm Project</Organization>
         <!-- https://docs.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys -->
         <ProductKey>
           <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
@@ -1183,11 +1183,11 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <AutoLogon>
         <Password>
-          <Value>qemu&KVM</Value>
+          <Value>qemuNkvm</Value>
           <PlainText>true</PlainText>
         </Password>
         <Enabled>true</Enabled>
-        <Username>qemu&KVM</Username>
+        <Username>qemuNkvm</Username>
       </AutoLogon>
       <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
       <OOBE>
@@ -1208,18 +1208,18 @@ unattended_windows() {
         <LocalAccounts>
           <LocalAccount wcm:action="add">
             <Password>
-              <Value>qemu&KVM</Value>
+              <Value>qemuNkvm</Value>
               <PlainText>true</PlainText>
             </Password>
-            <Description>qemu&KVM</Description>
-            <DisplayName>qemu&KVM</DisplayName>
+            <Description>qemuNkvm</Description>
+            <DisplayName>qemuNkvm</DisplayName>
             <Group>Administrators</Group>
-            <Name>qemu&KVM</Name>
+            <Name>qemuNkvm</Name>
           </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
-      <RegisteredOrganization>qemu&KVM Project</RegisteredOrganization>
-      <RegisteredOwner>qemu&KVM</RegisteredOwner>
+      <RegisteredOrganization>qemuNkvm Project</RegisteredOrganization>
+      <RegisteredOwner>qemuNkvm</RegisteredOwner>
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add">
           <CommandLine>msiexec /i E:\guest-agent\qemu-ga-x86_64.msi /quiet /passive /qn</CommandLine>
@@ -1283,7 +1283,7 @@ winget() {
 		callMido "$1"
 
 		mkdir mnt
-		sudo mount -o loop "${output}" mnt
+		sudo mount -o loop "$1.iso" mnt
 
 		epoch=$(date +%s)
 		mkdir "win-${epoch}"
@@ -1302,6 +1302,8 @@ winget() {
 		sudo umount mnt
 		sudo rm -rf mnt
 
+		cd "${VMS_ISO}/unattended"
+
 		mkisofs \
 			-iso-level 4 \
 			-rock \
@@ -1314,7 +1316,7 @@ winget() {
 			-eltorito-platform efi \
 			-b efi/microsoft/boot/efisys.bin \
 			-o "../${output}" \
-			"win-${epoch}" "modifications-${epoch}"
+			"./win-${epoch}" "./modifications-${epoch}"
 	fi
 
 	# DELETE CACHED PASSWORD
