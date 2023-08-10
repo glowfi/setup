@@ -281,7 +281,7 @@ sudo systemctl restart --now nftables
 # SETUP dnscrypt-proxy
 
 ### Install dnscrypt-proxy
-sudo pacman -S --noconfirm dnscrypt-proxy dnsmasq
+sudo pacman -S --noconfirm dnscrypt-proxy
 
 ### Put Server Name
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
@@ -295,12 +295,25 @@ getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "list
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+### Edit /etc/resolv.conf
+sudo chattr -i /etc/resolv.conf
+sudo truncate -s 0 /etc/resolv.conf
+sudo echo '### Custom DNS Resolver
+nameserver ::1
+nameserver 127.0.0.1
+options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
+sudo chattr +i /etc/resolv.conf
+
 ### Start dnscrypt-proxy at startup
 sudo systemctl start dnscrypt-proxy
 sudo systemctl enable dnscrypt-proxy
 
+### Install dnsmasq
+sudo pacman -S --noconfirm dnsmasq
+
 ### Setup dnsmasq
 sudo echo '
+port=5353
 no-resolv
 server=::1#53000
 server=127.0.0.1#53000
@@ -312,12 +325,3 @@ dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 ### Start dnsmasq at startup
 sudo systemctl start dnsmasq
 sudo systemctl enable dnsmasq
-
-### Edit /etc/resolv.conf
-sudo chattr -i /etc/resolv.conf
-sudo truncate -s 0 /etc/resolv.conf
-sudo echo '### Custom DNS Resolver
-nameserver ::1
-nameserver 127.0.0.1
-options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
-sudo chattr +i /etc/resolv.conf

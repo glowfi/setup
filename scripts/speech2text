@@ -173,7 +173,11 @@ filelocation() {
 
 # Download Model
 downloadModel() {
-	modelType=$(echo -e "1.tiny.en\n2.tiny\n3.base.en\n4.base\n5.small.en\n6.small\n7.medium.en\n8.medium\n9.large" | gum filter --placeholder "Choose Model to Download" | awk -F"." '{print $2}' | xargs)
+	if [[ "$1" = "first" ]]; then
+		modelType="small"
+	else
+		modelType=$(echo -e "1.tiny.en\n2.tiny\n3.base.en\n4.base\n5.small.en\n6.small\n7.medium.en\n8.medium\n9.large" | gum filter --placeholder "Choose Model to Download" | awk -F"." '{print $2}' | xargs)
+	fi
 
 	python - <<END
 import sys
@@ -229,7 +233,7 @@ else
 	mkdir -p "$MODEL_PATH"
 	clear
 	echo -e "${YELLOW}Downloading Model ...${NORMAL}"
-	downloadModel
+	downloadModel "first"
 	clear
 	echo -e "${GREEN}Model Downloaded! Run the script Again to convert speech to text!${NORMAL}"
 fi
