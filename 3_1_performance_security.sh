@@ -286,14 +286,19 @@ sudo pacman -S --noconfirm dnscrypt-proxy
 ### Put Server Name
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
 getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
-newServers="server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl']"
+newServers="server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams']"
 sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Configure Listening Port
-newListenAddresses="listen_addresses = ['127.0.0.1:53000', '[::1]:53000']"
+newListenAddresses="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
 getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | head -1 | xargs)
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
-sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+sudo sed -i "${old}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
+rep="require_dnssec = true"
+getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
+getLineNumber=$(echo "$getLine" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Edit /etc/resolv.conf
 sudo chattr -i /etc/resolv.conf
@@ -314,9 +319,13 @@ sudo pacman -S --noconfirm dnsmasq
 ### Setup dnsmasq
 sudo echo '
 port=5353
+bogus-priv
 no-resolv
-server=::1#53000
-server=127.0.0.1#53000
+domain-needed
+strict-order
+
+server=::1#5300
+server=127.0.0.1#5300
 listen-address=::1,127.0.0.1
 
 conf-file=/usr/share/dnsmasq/trust-anchors.conf
