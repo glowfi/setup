@@ -46,12 +46,14 @@ kitty
 
 ## Browser
 #super + b
-choice=$(echo -e "1.Default Profile\n2.Temp Profile" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
+choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" != "" ]]; then
 	if [[ "$choice" = "1" ]]; then
 		brave --profile-directory=Default
-	else
+	elif [[ "$choice" = "2" ]]; then
 		brave --profile-directory="Tmp"
+	else
+		libw
 	fi
 fi
 
