@@ -15,8 +15,8 @@ git clone https://github.com/glowfi/DS
 
 # Core Packages
 
-sudo xbps-install make awk gcc curl wget git xz unzip zip nano vim gptfdisk xtools mtools mlocate ntfs-3g fuse-exfat bash-completion linux-headers gtksourceview4 ffmpeg mesa-vdpau mesa-vaapi
-sudo xbps-install autoconf automake bison m4 make libtool flex meson ninja optipng sassc
+sudo xbps-install -Sy make awk gcc curl wget git xz unzip zip nano vim gptfdisk xtools mtools mlocate ntfs-3g fuse-exfat bash-completion linux-headers gtksourceview4 ffmpeg mesa-vdpau mesa-vaapi
+sudo xbps-install -Sy autoconf automake bison m4 make libtool flex meson ninja optipng sassc
 sudo xbps-install -Sy git xfce4-screenshooter
 sudo xbps-install -Sy xdg-utils
 
@@ -54,21 +54,21 @@ sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo xbps-install -Sy nodejs
 
 # Docker
-sudo xbps-install -Sy docker docker-compose
-sudo ln -s /etc/sv/containerd /var/service
-sudo ln -s /etc/sv/docker /var/service
-sudo sv up containerd
-sudo sv up docker
-sudo groupadd docker
-sudo usermod -aG docker ${USER}
-sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
-sudo chmod g+rwx "$HOME/.docker" -R
+# sudo xbps-install -Sy docker docker-compose
+# sudo ln -s /etc/sv/containerd /var/service
+# sudo ln -s /etc/sv/docker /var/service
+# sudo sv up containerd
+# sudo sv up docker
+# sudo groupadd docker
+# sudo usermod -aG docker ${USER}
+# sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+# sudo chmod g+rwx "$HOME/.docker" -R
 
 # NixOS 23.05
-sudo xbps-install -Sy nix
-sudo ln -s /etc/sv/nix-daemon /var/service/
-sudo sv up nix-daemon
-nix-channel --add https://nixos.org/channels/nixos-22.05 nixpkgs
+# sudo xbps-install -Sy nix
+# sudo ln -s /etc/sv/nix-daemon /var/service/
+# sudo sv up nix-daemon
+# nix-channel --add https://nixos.org/channels/nixos-22.05 nixpkgs
 nix-channel --update
 
 # REPLACEMENTS OF SOME GNU COREUTILS AND SOME OTHER *nix PROGRAMS
