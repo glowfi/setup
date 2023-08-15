@@ -35,6 +35,7 @@ alias egrep='egrep --color=auto'
 # ===================================================================
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export FZF_DEFAULT_OPTS='--color=spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 # ===================================================================
 #                           Custom Functions
@@ -93,7 +94,7 @@ function searchDirCurrent() {
 
 # Search Inside Files
 function searchContents() {
-	args=$(rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}')
+	args=$(rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}')
 	fl=$(echo "$args" | awk -F" " '{print $1}')
 	ln=$(echo "$args" | awk -F" " '{print $2}')
 

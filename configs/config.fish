@@ -367,7 +367,7 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --preview 'set loc {}
+    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
 bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
@@ -474,9 +474,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "662s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "663s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "662s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "663s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -725,6 +725,7 @@ set -U fish_pager_color_progress brwhite --background=cyan
 # ENV Export
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass
+export FZF_DEFAULT_OPTS='--color=spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 # Bar as Manpager
 set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-dark -l man -p'"
