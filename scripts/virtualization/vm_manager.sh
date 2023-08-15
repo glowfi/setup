@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Virtual Machines Location
-VM_PATH="$HOME/Downloads/VMS/"
+VM_PATH="$HOME/Downloads/VMS"
 
 # Choose VM
 vmlist=$(fd . "$VM_PATH" --type directory --max-depth 1 | rev | cut -d"/" -f2 | rev)

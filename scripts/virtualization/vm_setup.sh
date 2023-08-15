@@ -481,8 +481,9 @@ else
 	else
 		cd "${goto}"
 		takeInput "resize"
+		configPath="${goto}/${CONFIG_FILE}"
+		isWindows=$(sed -n '6p' <"$configPath")
 		find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
-		isWindows=$(sed -n '6p' <"$CONFIG_FILE")
 		addScripts
 	fi
 
