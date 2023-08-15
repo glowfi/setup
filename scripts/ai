@@ -1,6 +1,7 @@
 #!/bin/python3
 
-import poe
+import g4f
+from pyfzf.pyfzf import FzfPrompt
 import subprocess
 import os
 from colorama import init, Fore, Style
@@ -11,10 +12,12 @@ import tempfile
 # Constants
 token = ""
 file = "conversations.md"
-location = os.path.expanduser("~/.local/share/poe")
+location = os.path.expanduser("~/.local/share/g4f")
 openviewer = "no"
+choosemodel = "no"
 
 
+# Print help
 def help():
     print("Any one out of the below arguments can be passed at a time.\n")
     print("Example: ai k\n")
@@ -22,8 +25,8 @@ def help():
     print("h  open help")
     print("k  Kill all nvim processes")
     print("d  Delete all conversations stored on this computer")
-    print("p  Delete all conversations stored on the server")
     print("v  Open conversations viewer stored on this computer")
+    print("m  Choose model type")
 
 
 # Kill all nvim processes associated with this script
@@ -50,16 +53,12 @@ if len(args) > 1:
         exit(0)
     elif args[1] == "v":
         openviewer = "yes"
+    elif args[1] == "m":
+        choosemodel = "yes"
     elif args[1] == "h":
         help()
         exit(0)
 
-
-# Initialize Poe
-print(Fore.RED + "Initializing .....")
-client = poe.Client(token)
-print(Fore.GREEN + "Client Initialized!")
-print(Style.RESET_ALL)
 
 # Initialize colorama
 init()
@@ -83,9 +82,6 @@ def _read():
 
 # Save Conversation
 def save(message, data):
-    # words = message.split()
-    # capitalized_words = [word.capitalize() for word in words]
-    # message = " ".join(capitalized_words)
     with open(f"{location}/{file}", "a+") as f:
         f.write(
             "\n\n"
@@ -128,16 +124,35 @@ def get_input():
     return input_text
 
 
+def get_terminal_width():
+    try:
+        _, columns = os.popen("stty size", "r").read().split()
+        return int(columns)
+    except:
+        return 80
+
+
+def selectModel():
+    models = list(g4f.models.ModelUtils.convert.keys())
+    fzf = FzfPrompt()
+    choice = fzf.prompt(models, "--cycle")
+    choice = choice[0]
+    return choice
+
+
 def prompt():
     conversationNumber = 1
-    chunk = {"text": ""}
+    width = int(get_terminal_width() / 1.5)
+    if choosemodel == "yes":
+        choice = selectModel()
+    else:
+        choice = "gpt-3.5-turbo"
 
-    print("========= Start of Conversation ==========")
     # Take User Input
     while True:
         print("\n")
         print(Fore.BLUE + f"Converation {conversationNumber} :", Style.RESET_ALL)
-        print("========================================")
+        print("=" * width)
 
         choose = input(
             Fore.LIGHTBLUE_EX
@@ -159,22 +174,24 @@ def prompt():
         if choose != "e":
             print("")
 
-        print(Fore.GREEN + "Reply :", Fore.YELLOW)
-        for chunk in client.send_message("capybara", message):
-            print(chunk["text_new"], end="", flush=True)
-        print(Style.RESET_ALL)
-        print("========================================")
+        # Get Response
+        response = g4f.ChatCompletion.create(
+            model=f"{choice}",
+            messages=[{"role": "user", "content": f"{message}"}],
+            stream=True,
+        )
 
-        save(message, chunk["text"])
+        print(Fore.GREEN + "Reply :", Fore.YELLOW)
+        savedMessage = ""
+        for text in response:
+            savedMessage += text
+            print(text, end="")
+        print(Style.RESET_ALL)
+        print("=" * width)
+
+        save(message, savedMessage)
         conversationNumber += 1
 
-
-# Purge all conversations
-if len(args) > 1:
-    if args[1] == "p":
-        client.purge_all_conversations()
-        print("Purged all Conversations")
-        exit(0)
 
 # Check File exists
 fileCheck()

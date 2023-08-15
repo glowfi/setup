@@ -1,4 +1,4 @@
-# GPU Passthrough helper for Arch Base Linux
+# GPU Passthrough helper for Arch Based Linux
 
 > Toggle GPU Passthrough state
 

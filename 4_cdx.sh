@@ -251,7 +251,7 @@ chmod +x $HOME/.local/bin/lowbat.sh
 cp -r $HOME/setup/scripts/klp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/klp
 
-pip install poe-api 
+pip install -U g4f 
 cp -r $HOME/setup/scripts/ai $HOME/.local/bin/
 chmod +x $HOME/.local/bin/ai
 
