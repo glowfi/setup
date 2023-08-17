@@ -50,6 +50,65 @@ pip install pyfzf
 install "libxres openslide" "pac"
 install "ueberzugpp" "yay"
 
+###### PYTHON Playground
+
+### Utility Function to download
+function download
+    aria2c -j 16 -x 16 -s 16 -k 1M "$argv[1]" -o "$argv[2]"
+end
+
+### System Modules
+install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum numactl" "pac"
+
+### Install Pyenv
+
+# Download pyenv
+curl https://pyenv.run | bash
+
+# Create a Virtual env
+set venvname (echo "play")
+pyenv virtualenv "$venvname"
+acv "$venvname"
+
+### Create a Package
+
+# Clone Repo
+git clone https://github.com/h2oai/h2ogpt
+cd h2ogpt
+
+# Install Base Packages
+pip install -r requirements.txt
+pip install -r reqs_optional/requirements_optional_langchain.txt
+pip install -r reqs_optional/requirements_optional_gpt4all.txt
+for i in (seq 2)
+    pip install torch torchvision torchaudio
+    pip install -U g4f
+    pip uninstall tensorflow
+    pip install wrapt gast astunparse opt_einsum
+end
+
+## Copy and Download required scripts
+
+# Copy tensorflow
+set destinationLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/")
+sudo cp -r /usr/lib/python3.11/site-packages/tensorflow "$destinationLocation"
+
+# Copy libiomp5.so
+set libiomp5Location (fd . /usr/lib/python3.11/site-packages | grep "solib" | head -1)
+sudo cp -r "$libiomp5Location" "$destinationLocation"
+
+# Copy a script
+cp -r $HOME/setup/scripts/ai .
+chmod +x ai
+
+# Download LLM Models
+download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
+download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+deactivate
+cd ..
+cd
+
+
 echo ""
 echo ------------------------------------------------------------------------
 echo "--------------Installing Node Modules...--------------------------------"
@@ -250,10 +309,6 @@ chmod +x $HOME/.local/bin/lowbat.sh
 
 cp -r $HOME/setup/scripts/klp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/klp
-
-pip install -U g4f 
-cp -r $HOME/setup/scripts/ai $HOME/.local/bin/
-chmod +x $HOME/.local/bin/ai
 
 yes | pip uninstall pathlib
 pip install pyinstaller

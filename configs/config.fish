@@ -742,3 +742,32 @@ if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
+
+# ENV Nvidia CUDA Export
+set venvname (echo "play")
+set cudnnLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/nvidia/cudnn")
+if test -d "$cudnnLocation"
+    set CUDNN_PATH $cudnnLocation $CUDNN_PATH
+    set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
+    set PATH /opt/cuda/bin/ $PATH
+end
+
+### Pyenv 
+
+# Function to activate virtual environment
+function acv
+    set pyenvLocation (echo "$HOME/.pyenv")
+    if test -d "$pyenvLocation"
+        set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
+        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
+        source "$venvLocation"
+    end
+end
+
+# Source Pyenv
+set pyenvLocation (echo "$HOME/.pyenv")
+if test -d "$pyenvLocation"
+    set -Ux PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
+    pyenv init - | source
+end
