@@ -52,6 +52,7 @@ install "ueberzugpp" "yay"
 
 ###### PYTHON Playground
 
+cd
 ### Utility Function to download
 function download
     aria2c -j 16 -x 16 -s 16 -k 1M "$argv[1]" -o "$argv[2]"
@@ -105,7 +106,9 @@ chmod +x ai
 download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
 download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
 deactivate
+rm -rf blog/ ci/ docs .git papers/ docker-compose.yml Dockerfile h2o-logo.svg LICENSE README.md
 cd ..
+mv h2ogpt llm
 cd
 
 
