@@ -725,7 +725,7 @@ set -U fish_pager_color_progress brwhite --background=cyan
 # ENV Export
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass
-export FZF_DEFAULT_OPTS='--color=spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
+export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 # Bar as Manpager
 set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-dark -l man -p'"
