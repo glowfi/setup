@@ -105,11 +105,18 @@ chmod +x ai
 # Download LLM Models
 download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
 download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+
+# Create a script
+echo 'python generate.py --base_model="llama" --model-path=llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin --prompt_type=llama2 --hf_embedding_model=sentence-transformers/all-MiniLM-L6-v2 --langchain_mode=UserData --user_path=user_path --llamacpp_dict="{'n_gpu_layers':25,'n_batch':128,'n_threads':6}" --load_8bit=True' > run.sh
+chmod +x run.sh
+
+# Cleanup
 deactivate
 rm -rf blog/ ci/ docs .git papers/ docker-compose.yml Dockerfile h2o-logo.svg LICENSE README.md
 cd ..
 mv h2ogpt llm
 cd
+
 
 
 echo ""

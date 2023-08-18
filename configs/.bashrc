@@ -115,4 +115,9 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
 	export TERM='xterm-256color'
 fi
 
-PS1='\[\e[92;5m\]\u \[\e[0;1m\]\\$ \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+user=$(whoami)
+if [[ "$user" = "root" ]]; then
+	PS1='\[\e[91m\]\u\[\e[0;1m\] ◆  \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+else
+	PS1='\[\e[92;5m\]\u\[\e[0;1m\] ◆  \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+fi

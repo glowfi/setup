@@ -67,21 +67,7 @@ alias gt='gitui'
 
 # Neovim aliases
 alias v='nvim'
-alias upgv='sudo rm /usr/local/bin/nvim;
-sudo rm -r /usr/local/share/nvim;
-rm -rf ~/.config/nvim;
-rm -rf ~/.local/share/nvim;
-pip uninstall cmake -y;
-sudo pacman -S --noconfirm cmake ninja tree-sitter;
-git clone https://github.com/neovim/neovim --depth 1;
-cd neovim;
-sudo make CMAKE_BUILD_TYPE=Release install || sudo pacman -S --noconfirm neovim;
-cd ..;
-sudo rm -rf neovim;
-cp -r ~/setup/configs/nvim ~/.config;
-nvim -c "PackerSync";
-nvim -c "PackerSync";
-nvim -c "PackerSync"'
+alias upgv="upgradeNeovim $argv[1]"
 
 # Synchronize mirrorlist
 alias mirru='sudo rm -rf /var/lib/pacman/db.lck;
@@ -466,6 +452,50 @@ function micVOl
     end
 end
 
+# Upgrade Neovim
+function upgradeNeovim
+    # Save input as a variable
+    set choice (echo "")
+    set input (echo "$argv[1]")
+
+    # Get choice
+    if [ "$input" = repo ]
+        set choice (echo "2")
+    else if [ "$input" = source ]
+        set choice (echo "1")
+    else
+        set choice (echo -e "1.Build from source\n2.Install from repository" | fzf | awk -F"." '{print $1}')
+    end
+
+    if [ "$choice" != "" ]
+        # Remove old config
+        sudo rm /usr/local/bin/nvim
+        sudo rm -r /usr/local/share/nvim
+        rm -rf ~/.config/nvim
+        rm -rf ~/.local/share/nvim
+        pip uninstall cmake -y
+
+        # Start Installation
+        sudo pacman -S --noconfirm cmake ninja tree-sitter
+
+        if [ $choice = 1 ]
+            git clone https://github.com/neovim/neovim --depth 1
+            cd neovim
+            sudo make CMAKE_BUILD_TYPE=Release install || sudo pacman -S --noconfirm neovim
+        else
+            sudo pacman -S --noconfirm neovim
+        end
+
+        # Cleanup
+        cd ..
+        sudo rm -rf neovim
+        cp -r ~/setup/configs/nvim ~/.config
+        nvim -c PackerSync
+        nvim -c PackerSync
+        nvim -c PackerSync
+    end
+end
+
 # ===================================================================
 #                            Theme
 # ===================================================================
@@ -474,9 +504,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "663s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "693s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "663s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "693s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -757,10 +787,35 @@ end
 # Function to activate virtual environment
 function acv
     set pyenvLocation (echo "$HOME/.pyenv")
-    if test -d "$pyenvLocation"
-        set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
-        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
-        source "$venvLocation"
+    mkdir -p "$HOME/.pyenv/versions/systempython"
+
+    if test -n "$VIRTUAL_ENV"
+        echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
+    else
+        if test -d "$pyenvLocation"
+            set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
+            if [ $getChoice = systempython ]
+                echo "Switch to systems python!"
+                pyenv local --unset
+                python --version
+            else
+                if test -z "$getChoice"
+                    true
+                else
+                    set isPython (echo "$getChoice" | grep -E '^([0-9]+)\.[0-9]+(\.[0-9]+)?$')
+                    if test -z "$isPython"
+                        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
+                        source "$venvLocation"
+                        echo "Swtiched to virtual environment $getChoice!"
+                    else
+                        pyenv local --unset
+                        pyenv local "$getChoice"
+                        echo "Python Interpreter switched!"
+                        python --version
+                    end
+                end
+            end
+        end
     end
 end
 
