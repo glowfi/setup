@@ -51,6 +51,7 @@ install "zip unzip unrar p7zip lzop" "pac"
 install "fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts" "pac"
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 install "bluez bluez-utils" "pac"
+install "net-tools" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 mkdir test
 cd test

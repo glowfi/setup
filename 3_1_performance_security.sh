@@ -323,6 +323,7 @@ bogus-priv
 no-resolv
 domain-needed
 strict-order
+clear-on-reload
 
 server=::1#5300
 server=127.0.0.1#5300

@@ -782,6 +782,38 @@ if test -d "$cudnnLocation"
     set PATH /opt/cuda/bin/ $PATH
 end
 
+### SystemD
+
+function sysd
+    set services (systemctl list-unit-files --type=service | fzf | awk '{print $1}'| xargs)
+    set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable" | fzf | xargs)
+
+    if [ "$choice" = Start ]
+        sudo systemctl start "$services"
+        echo "Started!"
+
+    else if [ "$choice" = Stop ]
+        sudo systemctl stop "$services"
+        echo "Stopped!"
+
+    else if [ "$choice" = Restart ]
+        sudo systemctl restart "$services"
+        echo "Restarted!"
+
+    else if [ "$choice" = Status ]
+        echo "Status check"
+        sudo systemctl status "$services"
+
+    else if [ "$choice" = Enable ]
+        sudo systemctl enable "$services"
+        echo "Enabled!"
+
+    else if [ "$choice" = Disable ]
+        sudo systemctl disable "$services"
+        echo "Disabled!"
+    end
+end
+
 ### Pyenv 
 
 # Function to activate virtual environment
