@@ -165,6 +165,10 @@ cp -r $HOME/setup/configs/.bashrc $HOME
 cp -r $HOME/setup/configs/.inputrc $HOME
 cp -r $HOME/setup/configs/.vimrc $HOME
 cp -r $HOME/setup/configs/.tmux.conf $HOME
+git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git
+make -C ble.sh install PREFIX=~/.local
+sudo
+echo 'source ~/.local/share/blesh/ble.sh' >>~/.bashrc
 
 # COPY BASH inputrc VIM TMUX TO ROOT
 
@@ -172,6 +176,7 @@ sudo cp $HOME/.bashrc /root/
 sudo cp $HOME/.inputrc /root/
 sudo cp $HOME/.vimrc /root/
 sudo cp $HOME/.tmux.conf /root/
+sudo su -c "git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git;make -C ble.sh install PREFIX=~/.local"
 
 # INSTALL AND COPY NNN FM SETTINGS
 

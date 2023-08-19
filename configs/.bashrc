@@ -117,7 +117,8 @@ fi
 
 user=$(whoami)
 if [[ "$user" = "root" ]]; then
-	PS1='\[\e[91m\]\u\[\e[0;1m\] ◆  \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+	PS1='◆  \[\e[91m\]\u\[\e[0;1m\] \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
 else
-	PS1='\[\e[92;5m\]\u\[\e[0;1m\] ◆  \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+	PS1='◆  \[\e[92;5m\]\u\[\e[0;1m\] \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
 fi
+source ~/.local/share/blesh/ble.sh
