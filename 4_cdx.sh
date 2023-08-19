@@ -50,9 +50,16 @@ pip install pyfzf
 install "libxres openslide" "pac"
 install "ueberzugpp" "yay"
 
-###### PYTHON Playground
+# Install pyenv , setup local GPT
+
+echo ""
+echo -----------------------------------------------------------------------------------------------------------------
+echo "--------------Installing pyenv , Setting up local GPT , Installing base packages...------------------------------"
+echo -----------------------------------------------------------------------------------------------------------------
+echo ""
 
 cd
+
 ### Utility Function to download
 function download
     aria2c -j 16 -x 16 -s 16 -k 1M "$argv[1]" -o "$argv[2]"
@@ -60,6 +67,7 @@ end
 
 ### System Modules
 install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum numactl" "pac"
+install "python-opencv" "pac"
 
 ### Install Pyenv
 
@@ -69,26 +77,36 @@ curl https://pyenv.run | bash
 # Create a Virtual env
 set venvname (echo "play")
 pyenv virtualenv "$venvname"
-acv "$venvname"
+set venvLocation (echo "$HOME/.pyenv/versions/$venvname/bin/activate.fish")
+source "$venvLocation"
 
-### Create a Package
+### Setup local GPT
 
 # Clone Repo
 git clone https://github.com/h2oai/h2ogpt
 cd h2ogpt
-
-# Install Base Packages
 pip install -r requirements.txt
 pip install -r reqs_optional/requirements_optional_langchain.txt
 pip install -r reqs_optional/requirements_optional_gpt4all.txt
+
+# Download LLM Models
+download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
+download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+
+# Create a script
+echo 'python generate.py --base_model="llama" --model-path=llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin --prompt_type=llama2 --hf_embedding_model=sentence-transformers/all-MiniLM-L6-v2 --langchain_mode=UserData --user_path=user_path --llamacpp_dict="{'n_gpu_layers':25,'n_batch':128,'n_threads':6}" --load_8bit=True' > run.sh
+chmod +x run.sh
+
+### Install Base Packages for this env
+
 for i in (seq 2)
     pip install torch torchvision torchaudio
-    pip install -U g4f
-    pip uninstall tensorflow
+    pip install opencv-contrib-python
     pip install wrapt gast astunparse opt_einsum
+    pip uninstall tensorflow
 end
 
-## Copy and Download required scripts
+### Copy and Download required scripts
 
 # Copy tensorflow
 set destinationLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/")
@@ -99,24 +117,17 @@ set libiomp5Location (fd . /usr/lib/python3.11/site-packages | grep "solib" | he
 sudo cp -r "$libiomp5Location" "$destinationLocation"
 
 # Copy a script
+pip install -U g4f
 cp -r $HOME/setup/scripts/ai .
 chmod +x ai
 
-# Download LLM Models
-download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
-download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+### Cleanup
 
-# Create a script
-echo 'python generate.py --base_model="llama" --model-path=llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin --prompt_type=llama2 --hf_embedding_model=sentence-transformers/all-MiniLM-L6-v2 --langchain_mode=UserData --user_path=user_path --llamacpp_dict="{'n_gpu_layers':25,'n_batch':128,'n_threads':6}" --load_8bit=True' > run.sh
-chmod +x run.sh
-
-# Cleanup
 deactivate
 rm -rf blog/ ci/ docs .git papers/ docker-compose.yml Dockerfile h2o-logo.svg LICENSE README.md
 cd ..
 mv h2ogpt llm
 cd
-
 
 
 echo ""
