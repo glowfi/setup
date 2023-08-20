@@ -48,7 +48,20 @@ end
 pip install pyfzf
 
 install "libxres openslide" "pac"
-install "ueberzugpp" "yay"
+git clone https://github.com/jstkdng/ueberzugpp.git
+cd ueberzugpp
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+mv ./ueberzug ~/.local/bin/ueberzugpp
+cd ..
+rm -rf ueberzugpp
+
+git clone https://github.com/ueber-devel/ueberzug
+cd ueberzug/
+pip install .
+cd ..
+rm -rf ueberzug
 
 # Install pyenv , setup local GPT
 
