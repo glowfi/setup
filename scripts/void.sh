@@ -54,6 +54,7 @@ sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo xbps-install -Sy nodejs
 
 # Docker
+
 # sudo xbps-install -Sy docker docker-compose
 # sudo ln -s /etc/sv/containerd /var/service
 # sudo ln -s /etc/sv/docker /var/service
@@ -65,11 +66,12 @@ sudo xbps-install -Sy nodejs
 # sudo chmod g+rwx "$HOME/.docker" -R
 
 # NixOS 23.05
+
 # sudo xbps-install -Sy nix
 # sudo ln -s /etc/sv/nix-daemon /var/service/
 # sudo sv up nix-daemon
 # nix-channel --add https://nixos.org/channels/nixos-22.05 nixpkgs
-nix-channel --update
+# nix-channel --update
 
 # REPLACEMENTS OF SOME GNU COREUTILS AND SOME OTHER *nix PROGRAMS
 
