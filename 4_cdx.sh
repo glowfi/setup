@@ -411,6 +411,9 @@ pip install pyautogui pynput
 
 # SETUP DOCKER
 
+if lspci | grep -E "NVIDIA|GeForce"
+    install "nvidia-container-toolkit" "yay"
+end
 install "docker docker-compose" "pac"
 sudo systemctl start docker.service
 sudo usermod -aG docker $USER
