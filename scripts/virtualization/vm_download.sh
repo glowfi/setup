@@ -776,7 +776,7 @@ openbsdurl() {
 
 ghostbsdurl() {
 	mirror="http://download.fr.ghostbsd.org/development/amd64/latest/"
-	x=$(curl -s -L $mirror | grep ".iso<" | tail -1 | awk -F\" '{ print $2 }')
+	x=$(curl -s -L $mirror | grep ".iso<" | head -1 | awk -F\" '{ print $2 }')
 	new="$mirror$x"
 	output="ghostbsd.iso"
 	notlinux
