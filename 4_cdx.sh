@@ -56,7 +56,8 @@ cd ueberzugpp
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
-mv ./ueberzug ~/.local/bin/
+mv ./ueberzug ./ueberzugpp
+mv ./ueberzugpp ~/.local/bin/
 cd ..;cd ..
 rm -rf ueberzugpp
 
@@ -75,11 +76,6 @@ echo ---------------------------------------------------------------------------
 echo ""
 
 cd
-
-### Utility Function to download
-function download
-    aria2c -j 16 -x 16 -s 16 -k 1M "$argv[1]" -o "$argv[2]"
-end
 
 ### System Modules
 install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum numactl" "pac"
@@ -108,8 +104,8 @@ pip install -r reqs_optional/requirements_optional_langchain.txt
 pip install -r reqs_optional/requirements_optional_gpt4all.txt
 
 # Download LLM Models
-download "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" "llama-2-7b-chat.ggmlv3.q8_0.bin"
-download "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+aria2c -j 16 -x 16 -s 16 -k 1M "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" -o "llama-2-7b-chat.ggmlv3.q8_0.bin"
+aria2c -j 16 -x 16 -s 16 -k 1M "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" -o "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
 
 # Create a script
 echo 'python generate.py --base_model="llama" --model-path=llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin --prompt_type=llama2 --hf_embedding_model=sentence-transformers/all-MiniLM-L6-v2 --langchain_mode=UserData --user_path=user_path --llamacpp_dict="{'n_gpu_layers':25,'n_batch':128,'n_threads':6}" --load_8bit=True' > run.sh

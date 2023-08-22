@@ -297,7 +297,7 @@ sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/dnscrypt-proxy/dnscrypt-p
 newListenAddresses="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
 getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | head -1 | xargs)
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
-sudo sed -i "${old}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 rep="require_dnssec = true"
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)

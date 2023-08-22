@@ -819,6 +819,7 @@ end
 # Function to activate virtual environment
 function acv
     set pyenvLocation (echo "$HOME/.pyenv")
+    mkdir -p "$pyenvLocation/versions/systempython"
 
     if test -n "$VIRTUAL_ENV"
         echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
