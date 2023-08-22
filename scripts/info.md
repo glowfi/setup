@@ -11,7 +11,7 @@ yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa qemu-ui-sdl
 ### FULL
 
 ```bash
-sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent
+sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent qemu-hw-display-virtio-vga qemu-hw-display-virtio-gpu qemu-hw-usb-smartcard qemu-hw-usb-redirect qemu-hw-usb-host qemu-ui-spice-app qemu-audio-spice
 yay -S --noconfirm quickemu quickgui-bin qemu-audio-pa
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd

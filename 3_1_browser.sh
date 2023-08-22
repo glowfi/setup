@@ -46,6 +46,10 @@ sudo -u "$USER" librewolf --headless &
 sleep 6
 pkill -u "$USER" librewolf
 
+### Copy a script to start librewolf without volume auto adjust
+cp -r $HOME/setup/scripts/libw $HOME/.local/bin/
+chmod +x $HOME/.local/bin/libw
+
 ###### Arkenfox Profile ######
 
 # Get Default-release Location
@@ -81,7 +85,3 @@ echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.
 echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >>user.js
 
 cd
-
-### Copy a script to start librewolf without volume auto adjust
-cp -r $HOME/setup/scripts/libw $HOME/.local/bin/
-chmod +x $HOME/.local/bin/libw
