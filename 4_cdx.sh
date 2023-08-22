@@ -22,39 +22,42 @@ sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 # UPGRADE PIP TO LATEST VERSION
 
 for i in (seq 2)
-python -m ensurepip --upgrade
-pip install --upgrade pip
-pip install setuptools
+    python -m ensurepip --upgrade
+    pip install --upgrade pip
+    pip install setuptools
 end
 
 # PYTHON MODULES
 
 for i in (seq 2)
-pip install virtualenv twine wheel
+    pip install virtualenv twine wheel
 end
 
 # JUPYTER SETUP
 
-for i in (seq 2)
-pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
-pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert lxml pygments
-jupyter contrib nbextension install --user
-jupyter nbextensions_configurator enable --user
-pyppeteer-install
+for i in (seq 3)
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install notebook==6.4.12
+    pip install pygments tqdm lxml
+    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
+    jupyter contrib nbextension install --user
+    jupyter nbextensions_configurator enable --user
+    pyppeteer-install
 end
 
 # PYTHON MISC
 
 pip install pyfzf
 
-install "libxres openslide" "pac"
+pip uninstall -y cmake
+install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
 git clone https://github.com/jstkdng/ueberzugpp.git
 cd ueberzugpp
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
-mv ./ueberzug ~/.local/bin/ueberzugpp
-cd ..
+mv ./ueberzug ~/.local/bin/
+cd ..;cd ..
 rm -rf ueberzugpp
 
 git clone https://github.com/ueber-devel/ueberzug
@@ -86,6 +89,7 @@ install "python-opencv" "pac"
 
 # Download pyenv
 curl https://pyenv.run | bash
+source $HOME/.config/fish/config.fish
 
 # Create a Virtual env
 set venvname (echo "play")
@@ -96,6 +100,7 @@ source "$venvLocation"
 ### Setup local GPT
 
 # Clone Repo
+cd
 git clone https://github.com/h2oai/h2ogpt
 cd h2ogpt
 pip install -r requirements.txt
@@ -117,6 +122,16 @@ for i in (seq 2)
     pip install opencv-contrib-python
     pip install wrapt gast astunparse opt_einsum
     pip uninstall tensorflow
+end
+
+for i in (seq 3)
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install notebook==6.4.12
+    pip install pygments tqdm lxml
+    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
+    jupyter contrib nbextension install --user
+    jupyter nbextensions_configurator enable --user
+    pyppeteer-install
 end
 
 ### Copy and Download required scripts
@@ -433,6 +448,22 @@ sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exi
 sudo systemctl start postgresql
 sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
 
+# SETUP VIRTUALIZATION
+
+echo ""
+echo --------------------------------------------------------------------------------
+echo "--------------Setting up Virtualization...--------------------------------------"
+echo --------------------------------------------------------------------------------
+echo ""
+
+install "dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent" "pac"
+install "quickemu quickgui-bin qemu-audio-pa" "yay"
+sudo usermod -G libvirt -a "$USER"
+sudo systemctl start libvirtd
+cp -r $HOME/setup/scripts/virtualization/vm_download.sh $HOME/setup/scripts/virtualization/vm_setup.sh $HOME/setup/scripts/virtualization/vm_manager.sh $HOME/.local/bin
+chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
+
+
 # DOWNLOAD NEOVIM
 
 echo ""
@@ -442,9 +473,9 @@ echo ---------------------------------------------------------------------------
 echo ""
 
 for i in (seq 2)
-pip install neovim black flake8
-npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
-pip uninstall -y cmake
+    pip install neovim black flake8
+    npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
+    pip uninstall -y cmake
 end
 install "cmake ninja tree-sitter xclip shfmt" "pac"
 git clone https://github.com/neovim/neovim --depth 1

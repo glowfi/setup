@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Source Helper
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+source "$SCRIPT_DIR/helper.sh"
+
 ### PERFORMANCE AND SECURITY
 
 echo ""
@@ -300,17 +304,7 @@ getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec 
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-### Edit /etc/resolv.conf
-sudo chattr -i /etc/resolv.conf
-sudo truncate -s 0 /etc/resolv.conf
-sudo echo '### Custom DNS Resolver
-nameserver ::1
-nameserver 127.0.0.1
-options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
-sudo chattr +i /etc/resolv.conf
-
 ### Start dnscrypt-proxy at startup
-sudo systemctl start dnscrypt-proxy
 sudo systemctl enable dnscrypt-proxy
 
 ### Install dnsmasq
@@ -333,5 +327,13 @@ conf-file=/usr/share/dnsmasq/trust-anchors.conf
 dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 
 ### Start dnsmasq at startup
-sudo systemctl start dnsmasq
 sudo systemctl enable dnsmasq
+
+### Edit /etc/resolv.conf
+sudo chattr -i /etc/resolv.conf
+sudo truncate -s 0 /etc/resolv.conf
+sudo echo '### Custom DNS Resolver
+nameserver ::1
+nameserver 127.0.0.1
+options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
+sudo chattr +i /etc/resolv.conf

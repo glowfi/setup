@@ -22,11 +22,8 @@ cd
 chmod +x ~/setup/3_0_packages.sh
 ~/setup/3_0_packages.sh
 
-chmod +x ~/setup/3_1_performance_security.sh
-~/setup/3_1_performance_security.sh
-
-chmod +x ~/setup/3_2_browser.sh
-~/setup/3_2_browser.sh
+chmod +x ~/setup/3_1_browser.sh
+~/setup/3_1_browser.sh
 
 chmod +x ~/setup/4_cdx.sh
 ~/setup/4_cdx.sh
@@ -71,12 +68,15 @@ echo "-----------------------------------------------------------"
 echo ""
 
 cd
-if [ -s "$HOME/setup/err.txt" ]; then
+if [ -f "$HOME/setup/err.txt" ]; then
 	cp -r "$HOME/Downloads/err.txt"
 fi
 
 rm -rf setup
 git clone https://github.com/glowfi/setup
+
+chmod +x ~/setup/3_2_performance_security.sh
+~/setup/3_2_performance_security.sh
 
 ## END
 
