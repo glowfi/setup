@@ -69,7 +69,7 @@ echo ""
 
 cd
 if [ -f "$HOME/setup/err.txt" ]; then
-	cp -r "$HOME/Downloads/err.txt"
+	cp -r "$HOME/setup/err.txt" "$HOME/Downloads/"
 fi
 
 rm -rf setup
