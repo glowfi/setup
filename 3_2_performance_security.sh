@@ -304,6 +304,21 @@ getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec 
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "netprobe_timeout" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep="netprobe_timeout = -1"
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "http3" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep="http3 = true"
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "force_tcp" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep="force_tcp = true"
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
 ### Start dnscrypt-proxy at startup
 sudo systemctl enable dnscrypt-proxy
 
