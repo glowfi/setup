@@ -474,6 +474,7 @@ function upgradeNeovim
         rm -rf ~/.config/nvim
         rm -rf ~/.local/share/nvim
         pip uninstall cmake -y
+        sudo pacman -Rns --noconfirm neovim
 
         # Start Installation
         sudo pacman -S --noconfirm cmake ninja tree-sitter
@@ -504,9 +505,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "693s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "694s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "693s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "694s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
