@@ -142,6 +142,7 @@ sudo cp -r "$libiomp5Location" "$destinationLocation"
 
 # Copy a script
 pip install -U g4f
+pip install pyfzf
 cp -r $HOME/setup/scripts/ai .
 chmod +x ai
 
@@ -171,12 +172,14 @@ source $HOME/.config/fish/config.fish
 
 # NODE MODULES
 
-npm i -g yarn
-npm update -g npm
-npm install npm@latest -g
-npm i -g md-to-pdf
-sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
-sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
+for i in (seq 3)
+    npm i -g yarn
+    npm update -g npm
+    npm install npm@latest -g
+    npm i -g md-to-pdf
+    sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
+    sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
+end
 
 echo ""
 echo ------------------------------------------------------------------------
