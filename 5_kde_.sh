@@ -71,9 +71,6 @@ sh $HOME/.local/bin/wall.sh &
 
 # Clipboard
 clipmenud &
-
-# Volume Notification
-volnoti &
 " >>$HOME/.xprofile
 
 # ENABLE SDDM
