@@ -55,6 +55,7 @@ sleep 6
 pkill -u "$USER" librewolf
 
 ### Copy a script to start librewolf without volume auto adjust
+mkdir -p $HOME/.local/bin/
 cp -r $HOME/setup/scripts/libw $HOME/.local/bin/
 chmod +x $HOME/.local/bin/libw
 
