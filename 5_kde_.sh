@@ -18,7 +18,7 @@ install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
 
 install "powerdevil xdg-desktop-portal-kde" "pac"
 
-install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm" "pac"
+install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm libnotify" "pac"
 
 # PACKAGES
 

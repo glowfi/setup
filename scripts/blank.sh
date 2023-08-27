@@ -122,7 +122,13 @@ disableFirewall() {
 }
 
 BlacklistModules() {
-	sudo echo -e "# Disable webcam\nblacklist uvcvideo" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+	sudo echo "# Disable webcam
+blacklist uvcvideo
+
+# Disable bluetooth
+blacklist btusb
+blacklist bluetooth
+" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
 	echo "Modules blacklisted!"
 }
 
@@ -142,8 +148,6 @@ disableNetworkSecurity() {
 }
 
 enablePerformanceTweaks() {
-	sudo echo -e "# Disable webcam\nblacklist uvcvideo" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
-
 	echo "# The swappiness sysctl parameter represents the kernel's preference (or avoidance) of swap space. Swappiness can have a value between 0 and 100, the default value is 60.
 # A low value causes the kernel to avoid swapping, a higher value causes the kernel to try to use swap space. Using a low value on sufficient memory is known to improve responsiveness on many systems.
 vm.swappiness=10

@@ -26,6 +26,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 install "apparmor" "pac"
 sudo systemctl enable --now apparmor.service
 sudo echo "write-cache" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
+sudo echo "Optimize=compress-fast" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
 
 # INCREASE VIRTUAL MEMORY
 
@@ -65,7 +66,12 @@ IPV4_SUBNET=24' | sudo tee -a /etc/sshguard.conf >/dev/null
 # SECURITY FEATURES
 
 sudo echo "# Disable webcam
-blacklist uvcvideo" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+blacklist uvcvideo
+
+# Disable bluetooth
+blacklist btusb
+blacklist bluetooth
+" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
 
 # Better IO Scheduler
 
