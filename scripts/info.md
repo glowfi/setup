@@ -96,7 +96,8 @@ echo '
 			"Install": [
 				"https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi",
 				"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
-				"https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi"
+				"https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi",
+				"https://addons.mozilla.org/firefox/downloads/latest/libredirect/latest.xpi"
 				]
 		},
             "FirefoxHome": {

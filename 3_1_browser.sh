@@ -36,6 +36,14 @@ cat $HOME/setup/configs/brave/settings.json >$HOME/.config/BraveSoftware/Brave-B
 sleep 3
 cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/Brave-Browser/Tmp/Preferences"
 
+### Download Libredirect
+
+cd $HOME/Downloads
+wget "https://0x0.st/H96j.json" -O "libredirect-settings.json"
+ver=$(echo "2.7.1")
+wget "https://github.com/libredirect/browser_extension/releases/download/v$ver/libredirect-$ver.crx"
+cd
+
 ######## Librewolf ########
 
 rm -rf $HOME/.librewolf/
