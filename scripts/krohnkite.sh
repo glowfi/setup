@@ -4,7 +4,6 @@
 
 cd
 git clone https://github.com/esjeon/krohnkite
-sed -i '226 a //@ts-ignore' $HOME/krohnkite/src/driver/kwin/kwindriver.ts
 cd krohnkite
 make install
 mkdir -p $HOME/.local/share/kservices5/
