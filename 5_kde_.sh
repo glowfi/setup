@@ -169,6 +169,11 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
+# Disable app launch feedback
+
+sudo kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
+sudo kwriteconfig5 --file klaunchrc --group FeedbackStyle --key "BusyCursor" --type bool false
+
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
