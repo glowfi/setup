@@ -81,15 +81,34 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group 'Containments' --group '1' --group 'Wallpaper' --group 'org.kde.image' --group 'General' --key 'Image' "$(find ~/wall -type f | shuf -n 1)"
+randImage=$(find ~/wall -type f | shuf -n 1)
+dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
+var Desktops = desktops();                                                                                                                       
+for (i=0;i<Desktops.length;i++) {
+        d = Desktops[i];
+        d.wallpaperPlugin = 'org.kde.image';
+        d.currentConfigGroup = Array('Wallpaper',
+                                    'org.kde.image',
+                                    'General');
+        d.writeConfig('Image', '$randImage');
+}"
 
 ## Favourite Wallpaper
 #super + c
 randWall=$(printf "143.jpg\n40.png" | shuf -n 1)
-kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group 'Containments' --group '1' --group 'Wallpaper' --group 'org.kde.image' --group 'General' --key 'Image' "~/wall/$randWall"
+dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
+var Desktops = desktops();                                                                                                                       
+for (i=0;i<Desktops.length;i++) {
+        d = Desktops[i];
+        d.wallpaperPlugin = 'org.kde.image';
+        d.currentConfigGroup = Array('Wallpaper',
+                                    'org.kde.image',
+                                    'General');
+        d.writeConfig('Image', '$HOME/wall/$randWall');
+}"
 
 ## Clipboard
-#super + e
+#super + m
 clipmenu
 
 ## Intelligent Tools

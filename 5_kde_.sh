@@ -41,12 +41,24 @@ echo ""
 # WALLPAPER SCRIPT
 
 touch $HOME/.local/bin/wall.sh
-echo '#!/bin/sh
+cat <<EOF >> $HOME/.local/bin/wall.sh
+#!/bin/sh
 while true; do
-    kwriteconfig5 --file "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" --group "Containments" --group "1" --group "Wallpaper" --group "org.kde.image" --group "General" --key "Image" "$(find $HOME/wall -type f | shuf -n 1)"
+    randImage=\$(find ~/wall -type f | shuf -n 1)
+    dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
+    var Desktops = desktops();                                                                                                                       
+    for (i=0;i<Desktops.length;i++) {
+            d = Desktops[i];
+            d.wallpaperPlugin = 'org.kde.image';
+            d.currentConfigGroup = Array('Wallpaper',
+                                        'org.kde.image',
+                                        'General');
+            d.writeConfig('Image', '\$randImage');
+    }"
 	sleep 900s
 done
-' >>$HOME/.local/bin/wall.sh
+EOF
+chmod +x $HOME/.local/bin/wall.sh
 
 ### MISC
 
