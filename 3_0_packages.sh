@@ -161,13 +161,11 @@ echo "--------------THEMING GRUB...-------------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-git clone --depth=1 https://github.com/vinceliuice/grub2-themes.git
-cd grub2-themes/
-rm backgrounds/1080p/background-tela.jpg
-cp -r $HOME/setup/scripts/background-tela.jpg backgrounds/1080p/
-sudo ./install.sh -b -t tela
+git clone https://github.com/semimqmo/sekiro_grub_theme
+cd sekiro_grub_theme
+sudo ./install.sh
 cd ..
-rm -rf grub2-themes
+rm -rf sekiro_grub_theme
 
 echo ""
 echo "------------------------------------------------------------------------"
