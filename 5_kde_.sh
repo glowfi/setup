@@ -29,6 +29,7 @@ install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
 # Volnoti
+install "gtk2" "pac"
 git clone https://github.com/hcchu/volnoti
 cd volnoti
 cd res
