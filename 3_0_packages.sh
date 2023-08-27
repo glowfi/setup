@@ -46,13 +46,47 @@ echo ""
 ## Xorg packages
 install "xorg-server" "pac"
 
-### CORE
+### CORE (Main)
 install "zip unzip unrar p7zip lzop" "pac"
-install "fish kitty ttf-fantasque-sans-mono man-db noto-fonts-emoji noto-fonts" "pac"
-install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+install "ouch" "pac"
+
+install "man-db" "pac"
+install "fish kitty" "pac"
+
 install "bluez bluez-utils" "pac"
-install "net-tools" "pac"
+
+### CORE (Fonts)
+install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
+
+### CORE (IMAGE)
+install "imagemagick ffmpegthumbnailer" "pac"
+
+### CORE (AUDIO)
+install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+install "songrec" "pac"
+install "easyeffects lsp-plugins" "pac"
+mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
+wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
+chmod +x ./install.sh
+echo | ./install.sh
+rm install.sh
+
+### CORE (VIDEO)
+install "ffmpeg yt-dlp" "pac"
+install "mujs" "pac"
+install "mpv" "pac"
+
+### CORE (PERIPHERALS)
+install "openrazer-meta polychromatic" "yay"
+sudo gpasswd -a $USER plugdev
+
+### CORE (EXTRAS)
+install "android-tools scrcpy" "pac"
+install "kdeconnect kcolorchooser" "pac"
+install "mediainfo perl-image-exiftool" "pac"
+
+### CORE (Use old package version)
 mkdir test
 cd test
 wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
@@ -62,17 +96,14 @@ sudo pacman -U --noconfirm ./iptables-nft-1:1.8.8-3-x86_64.pkg.tar.zst
 sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd iptables-nft/" /etc/pacman.conf
 cd ..
 rm -rf test
-install "android-tools scrcpy" "pac"
 
-### PACKAGES
-install "kdeconnect kcolorchooser" "pac"
-install "tesseract tesseract-data-afr tesseract-data-amh tesseract-data-ara tesseract-data-asm tesseract-data-aze tesseract-data-aze_cyrl tesseract-data-bel tesseract-data-ben tesseract-data-bod tesseract-data-bos tesseract-data-bre tesseract-data-bul tesseract-data-cat tesseract-data-ceb tesseract-data-ces tesseract-data-chi_sim tesseract-data-chi_tra tesseract-data-chr tesseract-data-cos tesseract-data-cym tesseract-data-dan tesseract-data-dan_frak tesseract-data-deu tesseract-data-deu_frak tesseract-data-div tesseract-data-dzo tesseract-data-ell tesseract-data-eng tesseract-data-enm tesseract-data-epo tesseract-data-equ tesseract-data-est tesseract-data-eus tesseract-data-fao tesseract-data-fas tesseract-data-fil tesseract-data-fin tesseract-data-fra tesseract-data-frk tesseract-data-frm tesseract-data-fry tesseract-data-gla tesseract-data-gle tesseract-data-glg tesseract-data-grc tesseract-data-guj tesseract-data-hat tesseract-data-heb tesseract-data-hin tesseract-data-hrv tesseract-data-hun tesseract-data-hye tesseract-data-iku tesseract-data-ind tesseract-data-isl tesseract-data-ita tesseract-data-ita_old tesseract-data-jav tesseract-data-jpn tesseract-data-jpn_vert tesseract-data-kan tesseract-data-kat tesseract-data-kat_old tesseract-data-kaz tesseract-data-khm tesseract-data-kir tesseract-data-kmr tesseract-data-kor tesseract-data-kor_vert tesseract-data-lao tesseract-data-lat tesseract-data-lav tesseract-data-lit tesseract-data-ltz tesseract-data-mal tesseract-data-mar tesseract-data-mkd tesseract-data-mlt tesseract-data-mon tesseract-data-mri tesseract-data-msa tesseract-data-mya tesseract-data-nep tesseract-data-nld tesseract-data-nor tesseract-data-oci tesseract-data-ori tesseract-data-osd tesseract-data-pan tesseract-data-pol tesseract-data-por tesseract-data-pus tesseract-data-que tesseract-data-ron tesseract-data-rus tesseract-data-san tesseract-data-sin tesseract-data-slk tesseract-data-slk_frak tesseract-data-slv tesseract-data-snd tesseract-data-spa tesseract-data-spa_old tesseract-data-sqi tesseract-data-srp tesseract-data-srp_latn tesseract-data-sun tesseract-data-swa tesseract-data-swe tesseract-data-syr tesseract-data-tam tesseract-data-tat tesseract-data-tel tesseract-data-tgk tesseract-data-tgl tesseract-data-tha tesseract-data-tir tesseract-data-ton tesseract-data-tur tesseract-data-uig tesseract-data-ukr tesseract-data-urd tesseract-data-uzb tesseract-data-uzb_cyrl tesseract-data-vie tesseract-data-yid tesseract-data-yor" "pac"
-install "ouch" "pac"
-install "gource" "pac"
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
+#### ADDITIONAL PACKAGES
 
 ### IMAGE
-install "imagemagick ffmpegthumbnailer" "pac"
-install "gimp kolourpaint" "pac"
+install "kolourpaint" "pac"
+install "gimp" "pac"
 install "gimp-plugin-registry" "yay"
 rm -rf $HOME/.config/GIMP/2.10
 mkdir -p $HOME/.config/GIMP/2.10
@@ -82,28 +113,20 @@ mv ./PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* .
 rm -rf PhotoGIMP filters plug-ins splashes
 cd
 
-### VIDEO
-install "kdenlive ffmpeg yt-dlp mujs" "pac"
-install "mpv" "pac"
-
 ### AUDIO
-install "songrec" "pac"
+# None
 
-install "easyeffects lsp-plugins" "pac"
-mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
-wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
-chmod +x ./install.sh
-echo | ./install.sh
-rm install.sh
+### VIDEO
+install "kdenlive" "pac"
 
-### PERIPHERAL
-install "openrazer-meta polychromatic" "yay"
-sudo gpasswd -a $USER plugdev
+### PERIPHERALS
+# None
 
 ### EXTRAS
-install "mediainfo perl-image-exiftool" "pac"
-install "onlyoffice-bin tectonic" "yay"
-install "pandoc-bin" "yay"
+install "onlyoffice-bin" "yay"
+install "pandoc-bin tectonic" "yay"
+
+# ======================================================= END ======================================================================================
 
 ### TERMINAL TOMFOOLERY
 install "fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl" "pac"

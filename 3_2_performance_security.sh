@@ -25,6 +25,7 @@ sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 install "apparmor" "pac"
 sudo systemctl enable --now apparmor.service
+sudo echo "write-cache" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
 
 # INCREASE VIRTUAL MEMORY
 
@@ -79,7 +80,6 @@ ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue
 
 sudo sed -i 's/^umask.*/umask\ 077/' /etc/profile
 sudo echo "tcp_bbr" | sudo tee -a /etc/modules-load.d/bbr.conf >/dev/null
-sudo echo "write-cache" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
 
 echo "# The swappiness sysctl parameter represents the kernel's preference (or avoidance) of swap space. Swappiness can have a value between 0 and 100, the default value is 60.
 # A low value causes the kernel to avoid swapping, a higher value causes the kernel to try to use swap space. Using a low value on sufficient memory is known to improve responsiveness on many systems.
@@ -281,6 +281,21 @@ table inet dev {
 sudo chmod 700 /etc/{iptables,nftables.conf}
 sudo systemctl enable --now nftables
 sudo systemctl restart --now nftables
+
+# POWERPLAN LINUX
+
+git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
+cd
+..
+sudo rm -rf auto-cpufreq
+
+cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/powerplan.sh
+
+# TIMESHIFT
+
+install "timeshift timeshift-autosnap" "yay"
 
 # SETUP dnscrypt-proxy
 

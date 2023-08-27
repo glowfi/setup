@@ -4,11 +4,6 @@
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
 source "$SCRIPT_DIR/helperf.fish"
 
-### PACKAGES
-install "postgresql python-pip gitui github-cli" "pac"
-install "insomnia-bin" "yay"
-cp -r $HOME/setup/configs/Insomnia/ $HOME/.config
-
 echo ""
 echo ------------------------------------------------------------------------
 echo "--------------Installing Python Modules...------------------------------"
@@ -21,11 +16,15 @@ sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
 
 # UPGRADE PIP TO LATEST VERSION
 
+install "python-pip" "pac"
+
 for i in (seq 2)
     python -m ensurepip --upgrade
     pip install --upgrade pip
     pip install setuptools
 end
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
 
 # PYTHON MODULES
 
@@ -47,25 +46,9 @@ end
 
 # PYTHON MISC
 
+pip install pyautogui pynput
 pip install pyfzf
 
-pip uninstall -y cmake
-install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
-git clone https://github.com/jstkdng/ueberzugpp.git
-cd ueberzugpp
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build .
-mv ./ueberzug ./ueberzugpp
-mv ./ueberzugpp ~/.local/bin/
-cd ..;cd ..
-rm -rf ueberzugpp
-
-git clone https://github.com/ueber-devel/ueberzug
-cd ueberzug/
-pip install .
-cd ..
-rm -rf ueberzug
 
 # Install pyenv , setup local GPT
 
@@ -154,6 +137,12 @@ cd ..
 mv h2ogpt llm
 cd
 
+### Insomnia
+install "insomnia-bin" "yay"
+cp -r $HOME/setup/configs/Insomnia/ $HOME/.config
+
+# ======================================================= END ======================================================================================
+
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -180,6 +169,8 @@ for i in (seq 3)
     sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
 end
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
 
 echo ""
 echo ------------------------------------------------------------------------
@@ -259,6 +250,8 @@ echo "--------------Installing Fuzzy File Finder (fzf)...-----------------------
 echo -----------------------------------------------------------------------------------
 echo ""
 
+# ======================================================= END ======================================================================================
+
 
 # FZF TERMINAL INTEGRATION
 
@@ -317,10 +310,6 @@ cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 cp -r $HOME/setup/scripts/int.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/int.sh
 
-cp -r $HOME/setup/scripts/speech2text $HOME/.local/bin/
-chmod +x $HOME/.local/bin/speech2text
-$HOME/.local/bin/speech2text
-
 cp -r $HOME/setup/scripts/formatDisk.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/formatDisk.sh
 
@@ -361,6 +350,52 @@ chmod +x $HOME/.local/bin/klp
 cp -r $HOME/setup/scripts/kdeconnect $HOME/.local/bin/
 chmod +x $HOME/.local/bin/kdeconnect
 
+git clone https://github.com/thameera/vimv
+cd vimv
+cp -r vimv $HOME/.local/bin/
+cd ..
+rm -rf vimv
+
+cp -r $HOME/setup/scripts/fixWords.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/fixWords.py
+
+cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/blank.sh
+
+cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/mp
+
+cp -r $HOME/setup/scripts/batchmover $HOME/.local/bin/
+chmod +x $HOME/.local/bin/batchmover
+
+cp -r $HOME/setup/scripts/dex.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dex.py
+
+wget https://git.io/translate -O trans
+chmod +x ./trans
+mv ./trans $HOME/.local/bin/
+cp -r $HOME/setup/scripts/tran.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/tran.sh
+
+install "ani-cli-git" "yay"
+install "lobster-git" "yay"
+
+pip install poetry
+git clone https://github.com/mov-cli/mov-cli
+cd mov-cli
+cp -r $HOME/setup/scripts/scraper.py ./mov_cli/utils/
+pip install -r requirements.txt
+poetry build
+pip install dist/*.tar.gz
+cd ..
+rm -rf mov-cli
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
+cp -r $HOME/setup/scripts/speech2text $HOME/.local/bin/
+chmod +x $HOME/.local/bin/speech2text
+$HOME/.local/bin/speech2text
+
 yes | pip uninstall pathlib
 pip install pyinstaller
 pip install ffmpeg-python typing-extensions
@@ -377,65 +412,8 @@ yes | pip uninstall pyinstaller
 cp -r $HOME/setup/scripts/edit.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/edit.sh
 
-install "ani-cli-git" "yay"
-install "lobster-git" "yay"
 
-pip install poetry
-git clone https://github.com/mov-cli/mov-cli
-cd mov-cli
-cp -r $HOME/setup/scripts/scraper.py ./mov_cli/utils/
-pip install -r requirements.txt
-poetry build
-pip install dist/*.tar.gz
-cd ..
-rm -rf mov-cli
-
-git clone https://github.com/thameera/vimv
-cd vimv
-cp -r vimv $HOME/.local/bin/
-cd ..
-rm -rf vimv
-
-cp -r $HOME/setup/scripts/dex.py $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dex.py
-
-wget https://git.io/translate -O trans
-chmod +x ./trans
-mv ./trans $HOME/.local/bin/
-cp -r $HOME/setup/scripts/tran.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/tran.sh
-
-cp -r $HOME/setup/scripts/fixWords.py $HOME/.local/bin/
-chmod +x $HOME/.local/bin/fixWords.py
-
-cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/blank.sh
-
-cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
-chmod +x $HOME/.local/bin/mp
-
-cp -r $HOME/setup/scripts/batchmover $HOME/.local/bin/
-chmod +x $HOME/.local/bin/batchmover
-
-# ADDITIONAL PROGRAMS
-
-install "atbswp" "yay"
-install "tk python-wxpython" "pac"
-pip install pyautogui pynput
-
-# SETUP DOCKER
-
-if lspci | grep -E "NVIDIA|GeForce"
-    install "nvidia-container-toolkit" "yay"
-end
-install "docker docker-compose" "pac"
-sudo systemctl start docker.service
-sudo usermod -aG docker $USER
-sudo chmod 666 /var/run/docker.sock
-sudo systemctl stop docker.service && sudo systemctl disable docker.service
-
-
-# SETUP POSTGRES
+### SETUP POSTGRES
 
 echo ""
 echo ---------------------------------------------------------------------------------
@@ -443,11 +421,12 @@ echo "--------------Setting up Database...--------------------------------------
 echo ---------------------------------------------------------------------------------
 echo ""
 
+install "postgresql" "pac"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
 sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
 
-# SETUP VIRTUALIZATION
+### SETUP VIRTUALIZATION
 
 echo ""
 echo --------------------------------------------------------------------------------
@@ -465,8 +444,21 @@ sudo systemctl start libvirtd
 cp -r $HOME/setup/scripts/virtualization/vm_download.sh $HOME/setup/scripts/virtualization/vm_setup.sh $HOME/setup/scripts/virtualization/vm_manager.sh $HOME/.local/bin
 chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
 
+# ======================================================= END ======================================================================================
 
-# DOWNLOAD NEOVIM
+
+### SETUP DOCKER
+
+if lspci | grep -E "NVIDIA|GeForce"
+    install "nvidia-container-toolkit" "yay"
+end
+install "docker docker-compose" "pac"
+sudo systemctl start docker.service
+sudo usermod -aG docker $USER
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl stop docker.service && sudo systemctl disable docker.service
+
+### DOWNLOAD NEOVIM
 
 echo ""
 echo ---------------------------------------------------------------------------------------------
@@ -498,8 +490,37 @@ nvim -c PackerSync
 nvim -c PackerSync
 nvim -c PackerSync
 
+### Visualization
+
+install "gource" "pac"
+
+### OCR 
+
+install "tesseract tesseract-data-afr tesseract-data-amh tesseract-data-ara tesseract-data-asm tesseract-data-aze tesseract-data-aze_cyrl tesseract-data-bel tesseract-data-ben tesseract-data-bod tesseract-data-bos tesseract-data-bre tesseract-data-bul tesseract-data-cat tesseract-data-ceb tesseract-data-ces tesseract-data-chi_sim tesseract-data-chi_tra tesseract-data-chr tesseract-data-cos tesseract-data-cym tesseract-data-dan tesseract-data-dan_frak tesseract-data-deu tesseract-data-deu_frak tesseract-data-div tesseract-data-dzo tesseract-data-ell tesseract-data-eng tesseract-data-enm tesseract-data-epo tesseract-data-equ tesseract-data-est tesseract-data-eus tesseract-data-fao tesseract-data-fas tesseract-data-fil tesseract-data-fin tesseract-data-fra tesseract-data-frk tesseract-data-frm tesseract-data-fry tesseract-data-gla tesseract-data-gle tesseract-data-glg tesseract-data-grc tesseract-data-guj tesseract-data-hat tesseract-data-heb tesseract-data-hin tesseract-data-hrv tesseract-data-hun tesseract-data-hye tesseract-data-iku tesseract-data-ind tesseract-data-isl tesseract-data-ita tesseract-data-ita_old tesseract-data-jav tesseract-data-jpn tesseract-data-jpn_vert tesseract-data-kan tesseract-data-kat tesseract-data-kat_old tesseract-data-kaz tesseract-data-khm tesseract-data-kir tesseract-data-kmr tesseract-data-kor tesseract-data-kor_vert tesseract-data-lao tesseract-data-lat tesseract-data-lav tesseract-data-lit tesseract-data-ltz tesseract-data-mal tesseract-data-mar tesseract-data-mkd tesseract-data-mlt tesseract-data-mon tesseract-data-mri tesseract-data-msa tesseract-data-mya tesseract-data-nep tesseract-data-nld tesseract-data-nor tesseract-data-oci tesseract-data-ori tesseract-data-osd tesseract-data-pan tesseract-data-pol tesseract-data-por tesseract-data-pus tesseract-data-que tesseract-data-ron tesseract-data-rus tesseract-data-san tesseract-data-sin tesseract-data-slk tesseract-data-slk_frak tesseract-data-slv tesseract-data-snd tesseract-data-spa tesseract-data-spa_old tesseract-data-sqi tesseract-data-srp tesseract-data-srp_latn tesseract-data-sun tesseract-data-swa tesseract-data-swe tesseract-data-syr tesseract-data-tam tesseract-data-tat tesseract-data-tel tesseract-data-tgk tesseract-data-tgl tesseract-data-tha tesseract-data-tir tesseract-data-ton tesseract-data-tur tesseract-data-uig tesseract-data-ukr tesseract-data-urd tesseract-data-uzb tesseract-data-uzb_cyrl tesseract-data-vie tesseract-data-yid tesseract-data-yor" "pac"
+
+### Ueberzug and Ueberzugpp
+
+pip uninstall -y cmake
+install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
+git clone https://github.com/jstkdng/ueberzugpp.git
+cd ueberzugpp
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+mv ./ueberzug ./ueberzugpp
+mv ./ueberzugpp ~/.local/bin/
+cd ..;cd ..
+rm -rf ueberzugpp
+
+git clone https://github.com/ueber-devel/ueberzug
+cd ueberzug/
+pip install .
+cd ..
+rm -rf ueberzug
 
 # CONFIGURING GIT
+
+install "gitui github-cli" "pac"
 
 git config --global user.name -
 git config --global user.email -

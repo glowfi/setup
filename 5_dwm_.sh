@@ -308,23 +308,6 @@ echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
 
-
-
 # REMOVE KWALLET
 
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
-
-# POWERPLAN LINUX
-
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
-cd
-..
-sudo rm -rf auto-cpufreq
-
-cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/powerplan.sh
-
-# TIMESHIFT
-
-install "timeshift timeshift-autosnap" "yay"

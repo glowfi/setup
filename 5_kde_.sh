@@ -46,10 +46,6 @@ rm -rf volnoti
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
-# REMOVE KWALLET
-
-sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
-
 echo ""
 echo "----------------------------------------------------------------------------------------"
 echo "--------------Creating wallpaper script...----------------------------------------------"
@@ -173,17 +169,6 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
-# POWERPLAN LINUX
+# REMOVE KWALLET
 
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
-cd
-..
-sudo rm -rf auto-cpufreq
-
-cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/powerplan.sh
-
-# TIMESHIFT
-
-install "timeshift timeshift-autosnap" "yay"
+sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service

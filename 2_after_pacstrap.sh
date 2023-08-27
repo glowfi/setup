@@ -145,10 +145,10 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 if [[ "$driveType" = "ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+	for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof net-tools rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
 
 elif [[ "$driveType" = "non-ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+	for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof net-tools rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
 
 fi
 

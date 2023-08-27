@@ -66,10 +66,12 @@ git clone https://github.com/glowfi/setup
 
 **DE/WM install**
 
-> Restart before running the script below
+> Restart before running the script below.
+
+<b>Run the below commands from home directory only.</b>
 
 ```sh
-
+cd
 git clone https://github.com/glowfi/setup
 ./setup/run_2.sh
 
