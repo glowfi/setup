@@ -39,7 +39,7 @@ cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/Brave-
 ### Download Libredirect
 
 cd $HOME/Downloads
-wget "https://0x0.st/H96j.json" -O "libredirect-settings.json"
+wget "https://0x0.st/H96W.1.json" -O "libredirect-settings.json"
 ver=$(echo "2.7.1")
 wget "https://github.com/libredirect/browser_extension/releases/download/v$ver/libredirect-$ver.crx"
 cd
