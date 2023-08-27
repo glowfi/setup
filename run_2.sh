@@ -38,6 +38,25 @@ elif [[ $choice == "DWM" ]]; then
 	~/setup/5_dwm_.sh $uname
 fi
 
+## REFETCHING SETUP
+
+echo ""
+echo "-----------------------------------------------------------"
+echo "--------------Refetching Setup ...-------------------------"
+echo "-----------------------------------------------------------"
+echo ""
+
+cd
+if [ -f "$HOME/setup/err.txt" ]; then
+	cp -r "$HOME/setup/err.txt" "$HOME/Downloads/"
+fi
+
+rm -rf setup
+git clone https://github.com/glowfi/setup
+
+chmod +x ~/setup/3_2_performance_security.sh
+~/setup/3_2_performance_security.sh
+
 ## CLEANUP
 
 echo ""
@@ -58,25 +77,6 @@ yes | printf "Cleaned Orphans!"
 
 ## DELETE CACHED PASSWORD
 sudo sed -i '72d' /etc/sudoers
-
-## REFETCHING SETUP
-
-echo ""
-echo "-----------------------------------------------------------"
-echo "--------------Refetching Setup ...-------------------------"
-echo "-----------------------------------------------------------"
-echo ""
-
-cd
-if [ -f "$HOME/setup/err.txt" ]; then
-	cp -r "$HOME/setup/err.txt" "$HOME/Downloads/"
-fi
-
-rm -rf setup
-git clone https://github.com/glowfi/setup
-
-chmod +x ~/setup/3_2_performance_security.sh
-~/setup/3_2_performance_security.sh
 
 ## END
 
