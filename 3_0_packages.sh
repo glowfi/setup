@@ -68,13 +68,13 @@ chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
 
-### CORE (IMAGE)
-install "imagemagick ffmpegthumbnailer" "pac"
-
 ### CORE (VIDEO)
 install "ffmpeg yt-dlp" "pac"
 install "mujs" "pac"
 install "mpv" "pac"
+
+### CORE (IMAGE)
+install "imagemagick ffmpegthumbnailer" "pac"
 
 ### CORE (PERIPHERALS)
 install "openrazer-meta polychromatic" "yay"
