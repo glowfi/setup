@@ -57,9 +57,6 @@ install "fish kitty" "pac"
 install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 
-### CORE (IMAGE)
-install "imagemagick ffmpegthumbnailer" "pac"
-
 ### CORE (AUDIO)
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 install "bluez bluez-utils" "pac"
@@ -70,6 +67,9 @@ wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/in
 chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
+
+### CORE (IMAGE)
+install "imagemagick ffmpegthumbnailer" "pac"
 
 ### CORE (VIDEO)
 install "ffmpeg yt-dlp" "pac"
