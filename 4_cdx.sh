@@ -4,6 +4,9 @@
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
 source "$SCRIPT_DIR/helperf.fish"
 
+# Create the user local bin
+mkdir -p $HOME/.local/bin/
+
 echo ""
 echo ------------------------------------------------------------------------
 echo "--------------Installing Python Modules...------------------------------"
