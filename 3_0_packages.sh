@@ -53,8 +53,6 @@ install "ouch" "pac"
 install "man-db" "pac"
 install "fish kitty" "pac"
 
-install "bluez bluez-utils" "pac"
-
 ### CORE (Fonts)
 install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
@@ -64,6 +62,7 @@ install "imagemagick ffmpegthumbnailer" "pac"
 
 ### CORE (AUDIO)
 install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+install "bluez bluez-utils" "pac"
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
 mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
