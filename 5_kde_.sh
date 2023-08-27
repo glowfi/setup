@@ -28,21 +28,6 @@ install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
-# Volnoti
-install "gtk2" "pac"
-git clone https://github.com/hcchu/volnoti
-cd volnoti
-cd res
-rm display-brightness-symbolic.svg
-wget https://0x0.st/Ho5Y.svg -O display-brightness-symbolic.svg
-cd ..
-./prepare.sh
-./configure --prefix=/usr
-make
-sudo make clean install
-cd ..
-rm -rf volnoti
-
 # Setup nsxiv key-handler
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec

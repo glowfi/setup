@@ -13,11 +13,21 @@ echo ""
 ## GET THE NAME OF CURRENTLY LOGGED IN USER
 uname=$(echo "$USER")
 
+echo -e "Want a minimal setup :"
+isMinimal=$(gum choose "No" "Yes")
+
+clear
+
 echo -e "Choose DE/WM to Install :"
 choice=$(gum choose "DWM" "KDE")
 
 ## MAKE SCRIPTS EXECUTABLE
 cd
+
+if [[ "$isMinimal" == "Yes" ]]; then
+	chmod +x ~/setup/create_minimal.sh
+	~/setup/create_minimal.sh
+fi
 
 chmod +x ~/setup/3_0_packages.sh
 ~/setup/3_0_packages.sh
