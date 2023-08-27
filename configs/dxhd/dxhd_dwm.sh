@@ -2,7 +2,7 @@
 
 ## File Manager
 #super + f
-fish -c "pcmanfm-qt"
+fish -c "pcmanfm"
 
 ## Logout/Restart/Shutdown
 #super+x

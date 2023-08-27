@@ -18,7 +18,7 @@ install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
 
 install "powerdevil xdg-desktop-portal-kde" "pac"
 
-install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm libnotify" "pac"
+install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm libnotify konqueror" "pac"
 
 # PACKAGES
 
@@ -106,9 +106,6 @@ install "dxhd-bin" "yay"
 mkdir -p $HOME/.config/dxhd
 mv $HOME/setup/configs/dxhd/dxhd_kde.sh $HOME/.config/dxhd
 mv $HOME/.config/dxhd/dxhd_kde.sh $HOME/.config/dxhd/dxhd.sh
-# mkdir -p $HOME/.config/systemd/user
-# cp -r $HOME/setup/configs/dxhd/dxhd.service $HOME/.config/systemd/user
-# systemctl --user enable dxhd.service
 
 echo ""
 echo "------------------------------------------------------------------------------------------"

@@ -15,17 +15,13 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-install "pcmanfm-qt ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
+install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
 install "wmctrl" "pac"
 install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "pulsemixer pamixer" "pac"
 install "lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils" "pac"
 install "mtpfs gvfs-mtp" "pac"
 install "jmtpfs nsxiv-git" "yay"
-
-### Copy pcmanfm-qt config files
-
-cp -r $HOME/setup/configs/pcmanfm-qt $HOME/.config
 
 ### MISC
 
@@ -290,7 +286,7 @@ wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a
 bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
 
-xdg-mime default pcmanfm-qt.desktop inode/directory
+xdg-mime default pcmanfm.desktop inode/directory
 
 xdg-settings set default-web-browser brave-browser.desktop
 
