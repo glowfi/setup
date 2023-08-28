@@ -60,3 +60,11 @@ vim.cmd("inoremap <m-o> Ö")
 vim.cmd("inoremap <c-u> ü")
 vim.cmd("inoremap <m-u> Ü")
 vim.cmd("inoremap <c-b> ß")
+
+-- Disable Completion
+vim.api.nvim_set_keymap(
+	"n",
+	"<Leader>l",
+	":lua require('cmp').setup { enabled = false }<CR>:LspStop<CR>",
+	{ noremap = true, silent = true }
+)
