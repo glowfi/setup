@@ -68,3 +68,11 @@ vim.api.nvim_set_keymap(
 	":lua require('cmp').setup { enabled = false }<CR>:LspStop<CR>",
 	{ noremap = true, silent = true }
 )
+
+-- Enable Completion
+vim.api.nvim_set_keymap(
+	"n",
+	"<M-l>",
+	":lua require('cmp').setup { enabled = true }<CR>:LspStart<CR>",
+	{ noremap = true, silent = true }
+)
