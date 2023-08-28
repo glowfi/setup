@@ -147,20 +147,20 @@ require("lspconfig").gopls.setup({
 require("lspconfig").clangd.setup({})
 
 -- Lua LSP
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
+-- local runtime_path = vim.split(package.path, ";")
+-- table.insert(runtime_path, "lua/?.lua")
+-- table.insert(runtime_path, "lua/?/init.lua")
 
-lspconfig.lua_ls.setup({
-	settings = {
-		Lua = {
-			runtime = { version = "LuaJIT", path = runtime_path },
-			diagnostics = { globals = { "vim" } },
-			workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-			telemetry = { enable = false },
-		},
-	},
-})
+-- lspconfig.lua_ls.setup({
+-- 	settings = {
+-- 		Lua = {
+-- 			runtime = { version = "LuaJIT", path = runtime_path },
+-- 			diagnostics = { globals = { "vim" } },
+-- 			workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+-- 			telemetry = { enable = false },
+-- 		},
+-- 	},
+-- })
 
 -- HTML CSS
 lspconfig.html.setup({ capabilities = capabilities })
