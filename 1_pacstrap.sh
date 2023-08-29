@@ -118,11 +118,18 @@ if [[ "$FS" = "btrfs" ]]; then
 	else
 		mount "${DISK}2" /mnt
 		btrfs su cr /mnt/@
+		btrfs su cr /mnt/@home
+		btrfs su cr /mnt/@snapshots
+		btrfs su cr /mnt/@var_log
 		umount /mnt
 
-		mount -o noatime,compress-force=zstd,space_cache=v2,subvol=@ "${DISK}2" /mnt
-		mkdir -p /mnt/boot
-		mount "${DISK}1" /mnt/boot
+		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ "${DISK}2" /mnt
+		mkdir -p /mnt/{home,.snapshots,var_log}
+		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home "${DISK}2" /mnt/home
+		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots "${DISK}2" /mnt/.snapshots
+		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log "${DISK}2" /mnt/var_log
+		mkdir -p /mnt/boot/efi
+		mount "${DISK}1" /mnt/boot/efi
 	fi
 elif [[ "$FS" = "ext4" ]]; then
 	if [[ ${DISK} =~ "nvme" ]]; then
@@ -135,8 +142,8 @@ elif [[ "$FS" = "ext4" ]]; then
 		mount -t ext4 "${DISK}2" /mnt
 		umount /mnt
 
-		mkdir -p /mnt/boot
-		mount "${DISK}1" /mnt/boot
+		mkdir -p /mnt/boot/efi
+		mount "${DISK}1" /mnt/boot/efi
 	fi
 fi
 
