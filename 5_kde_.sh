@@ -27,6 +27,7 @@ install "wmctrl" "pac"
 install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
+install "xorg-xrandr" "pac"
 
 # Setup nsxiv key-handler
 mkdir -p $HOME/.config/nsxiv/exec

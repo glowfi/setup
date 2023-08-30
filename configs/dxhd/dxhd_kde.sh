@@ -72,7 +72,7 @@ windowshot.sh
 sed -i '126s/.*/fading = true;/' ~/.config/picom/picom.conf
 
 ## Dmenu
-#super + w
+#super + p
 dmenu_run -p "Run:" -i
 
 ## Scrap YT
@@ -108,7 +108,7 @@ for (i=0;i<Desktops.length;i++) {
 }"
 
 ## Clipboard
-#super + m
+#super + e
 clipmenu
 
 ## Intelligent Tools
