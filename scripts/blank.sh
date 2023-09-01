@@ -139,11 +139,28 @@ removeBlacklistedModules() {
 
 enableNetworkSecurity() {
 	sudo echo -e 'DNSOverTLS=yes\nLLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+
+	sudo systemctl enable dnscrypt-proxy
+	sudo systemctl enable dnsmasq
+
+	sudo chattr -i /etc/resolv.conf
+	sudo truncate -s 0 /etc/resolv.conf
+	sudo echo '### Custom DNS Resolver
+nameserver ::1
+nameserver 127.0.0.1
+options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
+	sudo chattr +i /etc/resolv.conf
+
 	echo "Enabled Network Security"
 }
 
 disableNetworkSecurity() {
 	sudo sed -i '$d; $d; $d; $d; $d; $d' /etc/systemd/resolved.conf
+
+	sudo systemctl disable dnscrypt-proxy
+	sudo systemctl disable dnsmasq
+	sudo chattr -i /etc/resolv.conf
+
 	echo "Disabled Network Security"
 }
 
