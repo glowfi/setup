@@ -128,7 +128,13 @@ install "pandoc-bin tectonic" "yay"
 # ======================================================= END ======================================================================================
 
 ### TERMINAL TOMFOOLERY
-install "fortune-mod figlet lolcat cmatrix asciiquarium cowsay sl" "pac"
+install "fortune-mod lolcat cmatrix asciiquarium cowsay sl" "pac"
+
+install "figlet" "pac"
+install "toilet toilet-fonts" "yay"
+git clone https://github.com/xero/figlet-fonts
+sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
+rm -rf figlet-fonts
 
 git clone https://github.com/pipeseroni/pipes.sh
 cd pipes.sh
