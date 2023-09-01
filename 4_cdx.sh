@@ -15,7 +15,8 @@ echo ""
 
 # FIX WARNING
 
-sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+set pyloc (sudo fd . /usr/lib/ --type f --max-depth 2 | grep "EXTERNALLY-MANAGED" | head -1)
+sudo rm -rf "$pyloc"
 
 # UPGRADE PIP TO LATEST VERSION
 
@@ -428,6 +429,9 @@ install "postgresql" "pac"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
 sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
+for i in (seq 2)
+    pip install pgcli
+end
 
 ### SETUP VIRTUALIZATION
 
@@ -460,6 +464,7 @@ sudo systemctl start docker.service
 sudo usermod -aG docker $USER
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl stop docker.service && sudo systemctl disable docker.service
+go install github.com/jesseduffield/lazydocker@latest
 
 ### DOWNLOAD NEOVIM
 
