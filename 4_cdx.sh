@@ -416,6 +416,9 @@ yes | pip uninstall pyinstaller
 cp -r $HOME/setup/scripts/edit.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/edit.sh
 
+cp -r $HOME/setup/scripts/bfilter.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/bfilter.sh
+
 
 ### SETUP POSTGRES
 

@@ -20,6 +20,7 @@ install "wmctrl" "pac"
 install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "pulsemixer pamixer" "pac"
 install "lxrandr brightnessctl feh xdg-user-dirs xdg-desktop-portal-kde xdg-utils" "pac"
+install "redshift" "pac"
 install "mtpfs gvfs-mtp" "pac"
 install "jmtpfs nsxiv-git" "yay"
 
@@ -151,6 +152,9 @@ volnoti &
 
 # Autolock
 xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
+
+# Bluelight Filter
+$HOME/.local/bin/bfilter.sh
 
 # dwmblocks
 dwmblocks &

@@ -163,7 +163,7 @@ convertFormat() {
 
 # Location of file
 filelocation() {
-	filename="$HOME/$(gum file -a $HOME)"
+	filename="$(gum file -a $HOME)"
 	filename_without_extension="$(echo "$filename" | sed 's/\.[^.]*$//')"
 }
 
