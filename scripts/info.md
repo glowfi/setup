@@ -78,7 +78,7 @@ sudo echo ""
 ```bash
 
 rm -rf $HOME/.mozilla
-sudo rm -rf /usr/lib/firefox/distribution
+sudo rm -rf /usr/lib/firefox/
 
 ### Policies
 
