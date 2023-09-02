@@ -440,3 +440,68 @@ pip install -U mypy
 stubgen -m cv2
 rm -rf out
 ```
+
+# NVIDIA DRIVERS
+
+### Official
+
+```bash
+
+### Install
+
+bash -c 'for i in {1..5}; do sudo pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime opencl-nvidia && break || sleep 1; done;
+yay -S --noconfirm nvidia-container-toolkit'
+
+### Uninstall
+
+sudo pacman -Rdd --noconfirm opencl-nvidia
+sudo pacman -Rdd --noconfirm nvidia-dkms
+sudo pacman -Rdd --noconfirm egl-wayland
+
+sudo pacman -Rdd --noconfirm nvidia-settings
+sudo pacman -Rdd --noconfirm nvidia-utils
+sudo pacman -Rdd --noconfirm nvidia-prime
+
+sudo pacman -Rdd --noconfirm libnvidia-container-tools
+sudo pacman -Rdd --noconfirm libnvidia-container
+sudo pacman -Rdd --noconfirm nvidia-container-toolkit
+```
+
+### TKG
+
+```bash
+
+### Install
+
+bash -c 'git clone https://github.com/Frogging-Family/nvidia-all.git
+cd nvidia-all
+(
+	echo 2
+	echo 1
+	echo N
+	echo y
+	echo y
+) | makepkg -si
+for i in {1..5}; do sudo pacman -Syyy --noconfirm nvidia-prime && break || sleep 1; done;
+yay -S --noconfirm nvidia-container-toolkit'
+
+### Uninstall
+
+sudo pacman -Rdd opencl-nvidia-tkg
+sudo pacman -Rdd nvidia-dkms-tkg
+sudo pacman -Rdd nvidia-egl-wayland-tkg
+
+sudo pacman -Rdd nvidia-settings-tkg
+sudo pacman -Rdd nvidia-utils-tkg
+sudo pacman -Rdd --noconfirm nvidia-prime
+
+sudo pacma -Rdd libnvidia-container-tools
+sudo pacma -Rdd libnvidia-container
+sudo pacma -Rdd nvidia-container-toolkit
+```
+
+### Check any errors
+
+```
+journalctl -b -p3 --no-hostname --no-pager
+```
