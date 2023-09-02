@@ -160,7 +160,7 @@ volnoti &
 xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Bluelight Filter
-$HOME/.local/bin/bfilter.sh
+$HOME/.local/bin/bfilter.sh &
 
 # dwmblocks
 dwmblocks &
