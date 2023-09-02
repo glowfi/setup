@@ -206,7 +206,7 @@ operation=$(echo -e "1. Trim Audio File
 5. Convert Video to gif
 6. Extract Audio Only
 7. Extract Video Only
-8. Convert to format
+8. Convert from any to any format
 9. Download a Youtube Video
 10.Download a Youtube Audio
 11.Download Youtube Video with custom audio and video quality")
