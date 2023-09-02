@@ -39,7 +39,6 @@ cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/Brave-
 ######## Librewolf ########
 
 rm -rf $HOME/.librewolf/
-sudo rm -rf /usr/lib/librewolf/
 
 ###### Start Librewolf ######
 
