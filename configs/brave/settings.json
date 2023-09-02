@@ -21,56 +21,47 @@
                 "version": 12
             }
         },
-        "default_private_search_provider_data": {
-            "alternate_urls": [
-                "{google:baseURL}#q={searchTerms}",
-                "{google:baseURL}search#q={searchTerms}",
-                "{google:baseURL}webhp#q={searchTerms}",
-                "{google:baseURL}s#q={searchTerms}",
-                "{google:baseURL}s?q={searchTerms}"
-            ],
-            "contextual_search_url": "{google:baseURL}_/contextualsearch?{google:contextualSearchVersion}{google:contextualSearchContextData}",
-            "created_by_policy": false,
-            "created_from_play_api": false,
-            "date_created": "0",
-            "doodle_url": "",
-            "enforced_by_policy": false,
-            "favicon_url": "https://www.google.com/images/branding/product/ico/googleg_lodp.ico",
-            "id": "3",
-            "image_search_branding_label": "",
-            "image_translate_source_language_param_key": "sourcelang",
-            "image_translate_target_language_param_key": "targetlang",
-            "image_translate_url": "{google:baseSearchByImageURL}upload?filtertype=tr&{imageTranslateSourceLocale}{imageTranslateTargetLocale}",
-            "image_url": "{google:baseSearchByImageURL}upload",
-            "image_url_post_params": "encoded_image={google:imageThumbnail},image_url={google:imageURL},sbisrc={google:imageSearchSource},original_width={google:imageOriginalWidth},original_height={google:imageOriginalHeight},processed_image_dimensions={google:processedImageDimensions}",
-            "input_encodings": [
-                "UTF-8"
-            ],
-            "is_active": 0,
-            "keyword": ":g",
-            "last_modified": "0",
-            "last_visited": "0",
-            "logo_url": "",
-            "new_tab_url": "",
-            "originating_url": "",
-            "preconnect_to_search_url": true,
-            "prefetch_likely_navigations": true,
-            "prepopulate_id": 1,
-            "safe_for_autoreplace": true,
-            "search_intent_params": [
-                "si",
-                "gs_ssp"
-            ],
-            "search_url_post_params": "",
-            "short_name": "Google",
-            "side_image_search_param": "sideimagesearch",
-            "side_search_param": "sidesearch",
-            "starter_pack_id": 0,
-            "suggestions_url": "{google:baseSuggestURL}search?{google:searchFieldtrialParameter}client={google:suggestClient}&gs_ri={google:suggestRid}&xssi=t&q={searchTerms}&{google:inputType}{google:omniboxFocusType}{google:cursorPosition}{google:currentPageUrl}{google:pageClassification}{google:clientCacheTimeToLive}{google:searchVersion}{google:sessionToken}{google:prefetchQuery}sugkey={google:suggestAPIKeyParameter}",
-            "suggestions_url_post_params": "",
-            "synced_guid": "",
-            "url": "{google:baseURL}search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}",
-            "usage_count": 0
+        "default_search_provider_data": {
+            "template_url_data": {
+                "alternate_urls": [],
+                "contextual_search_url": "",
+                "created_by_policy": false,
+                "created_from_play_api": false,
+                "date_created": "",
+                "doodle_url": "",
+                "enforced_by_policy": false,
+                "favicon_url": "https://paulgo.io/static/themes/simple/img/favicon.svg?ee99f2c4793c32451062177672c8ab309dbef940",
+                "id": "5",
+                "image_search_branding_label": "",
+                "image_translate_source_language_param_key": "",
+                "image_translate_target_language_param_key": "",
+                "image_translate_url": "",
+                "image_url": "",
+                "image_url_post_params": "",
+                "input_encodings": [],
+                "is_active": 1,
+                "keyword": ":sx",
+                "last_modified": "",
+                "last_visited": "",
+                "logo_url": "",
+                "new_tab_url": "",
+                "originating_url": "",
+                "preconnect_to_search_url": false,
+                "prefetch_likely_navigations": false,
+                "prepopulate_id": 0,
+                "safe_for_autoreplace": false,
+                "search_intent_params": [],
+                "search_url_post_params": "",
+                "short_name": "SearXNG",
+                "side_image_search_param": "",
+                "side_search_param": "",
+                "starter_pack_id": 0,
+                "suggestions_url": "",
+                "suggestions_url_post_params": "",
+                "synced_guid": "",
+                "url": "https://paulgo.io/search?q={searchTerms}",
+                "usage_count": 0
+            }
         },
         "default_private_search_provider_guid": "",
         "enable_media_router_on_restart": false,
@@ -141,21 +132,9 @@
                 "coin_type_migrated": true
             },
             "hidden_networks": {
-                "ethereum": [
-                    "0x5",
-                    "0xaa36a7",
-                    "0x539",
-                    "0x4cb2f"
-                ],
-                "filecoin": [
-                    "t",
-                    "0x539"
-                ],
-                "solana": [
-                    "0x67",
-                    "0x66",
-                    "0x539"
-                ]
+                "ethereum": ["0x5", "0xaa36a7", "0x539", "0x4cb2f"],
+                "filecoin": ["t", "0x539"],
+                "solana": ["0x67", "0x66", "0x539"]
             },
             "keyrings": {},
             "last_transaction_sent_time_dict": {},
@@ -248,9 +227,7 @@
             "image_translate_url": "{google:baseSearchByImageURL}upload?filtertype=tr&{imageTranslateSourceLocale}{imageTranslateTargetLocale}",
             "image_url": "{google:baseSearchByImageURL}upload",
             "image_url_post_params": "encoded_image={google:imageThumbnail},image_url={google:imageURL},sbisrc={google:imageSearchSource},original_width={google:imageOriginalWidth},original_height={google:imageOriginalHeight},processed_image_dimensions={google:processedImageDimensions}",
-            "input_encodings": [
-                "UTF-8"
-            ],
+            "input_encodings": ["UTF-8"],
             "is_active": 0,
             "keyword": ":g",
             "last_modified": "0",
@@ -262,10 +239,7 @@
             "prefetch_likely_navigations": true,
             "prepopulate_id": 1,
             "safe_for_autoreplace": true,
-            "search_intent_params": [
-                "si",
-                "gs_ssp"
-            ],
+            "search_intent_params": ["si", "gs_ssp"],
             "search_url_post_params": "",
             "short_name": "Google",
             "side_image_search_param": "sideimagesearch",
@@ -319,9 +293,7 @@
                         "launch": {
                             "web_url": "https://chrome.google.com/webstore"
                         },
-                        "urls": [
-                            "https://chrome.google.com/webstore"
-                        ]
+                        "urls": ["https://chrome.google.com/webstore"]
                     },
                     "description": "Discover great apps, games, extensions and themes for Brave.",
                     "icons": {
@@ -484,9 +456,7 @@
                     "incognito": "split",
                     "key": "",
                     "manifest_version": 2,
-                    "mime_types": [
-                        "application/pdf"
-                    ],
+                    "mime_types": ["application/pdf"],
                     "mime_types_handler": "index.html",
                     "name": "Chrome PDF Viewer",
                     "offline_enabled": true,
@@ -500,9 +470,7 @@
                         "resourcesPrivate",
                         "tabs",
                         {
-                            "fileSystem": [
-                                "write"
-                            ]
+                            "fileSystem": ["write"]
                         }
                     ],
                     "version": "1"
@@ -519,9 +487,7 @@
                     "api": [],
                     "explicit_host": [],
                     "manifest_permissions": [],
-                    "scriptable_host": [
-                        "https://vimeo.com/*"
-                    ]
+                    "scriptable_host": ["https://vimeo.com/*"]
                 },
                 "state": 1
             },
@@ -568,30 +534,19 @@
                 "manifest": {
                     "background": {
                         "persistent": true,
-                        "scripts": [
-                            "out/brave_extension_background.bundle.js"
-                        ]
+                        "scripts": ["out/brave_extension_background.bundle.js"]
                     },
                     "content_scripts": [
                         {
                             "all_frames": true,
-                            "js": [
-                                "out/content_element_picker.bundle.js"
-                            ],
-                            "matches": [
-                                "http://*/*",
-                                "https://*/*"
-                            ],
+                            "js": ["out/content_element_picker.bundle.js"],
+                            "matches": ["http://*/*", "https://*/*"],
                             "run_at": "document_start"
                         },
                         {
                             "all_frames": true,
-                            "js": [
-                                "out/webstore.bundle.js"
-                            ],
-                            "matches": [
-                                "https://chrome.google.com/webstore/*"
-                            ],
+                            "js": ["out/webstore.bundle.js"],
+                            "matches": ["https://chrome.google.com/webstore/*"],
                             "run_at": "document_start"
                         }
                     ],
@@ -599,12 +554,8 @@
                     "default_locale": "en_US",
                     "description": "__MSG_appName__",
                     "externally_connectable": {
-                        "ids": [
-                            "*"
-                        ],
-                        "matches": [
-                            "chrome://newtab/*"
-                        ]
+                        "ids": ["*"],
+                        "matches": ["chrome://newtab/*"]
                     },
                     "icons": {
                         "128": "assets/img/icon-128.png",
@@ -668,9 +619,7 @@
                 "commands": {},
                 "content_settings": [],
                 "creation_flags": 1,
-                "events": [
-                    "runtime.onConnectExternal"
-                ],
+                "events": ["runtime.onConnectExternal"],
                 "first_install_time": "",
                 "from_webstore": false,
                 "incognito_content_settings": [],
@@ -683,9 +632,7 @@
                         "persistent": false
                     },
                     "externally_connectable": {
-                        "matches": [
-                            "https://*.google.com/*"
-                        ]
+                        "matches": ["https://*.google.com/*"]
                     },
                     "incognito": "split",
                     "key": "",
@@ -980,9 +927,7 @@
         "allowed": false
     },
     "spellcheck": {
-        "dictionaries": [
-            "en-US"
-        ],
+        "dictionaries": ["en-US"],
         "dictionary": ""
     },
     "supervised_user": {
