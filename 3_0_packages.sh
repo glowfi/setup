@@ -84,6 +84,7 @@ sudo gpasswd -a $USER plugdev
 install "android-tools scrcpy" "pac"
 install "kdeconnect kcolorchooser" "pac"
 install "mediainfo perl-image-exiftool" "pac"
+install "inotify-tools" "pac"
 
 ### CORE (Use old package version)
 mkdir test
