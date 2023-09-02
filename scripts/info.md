@@ -487,17 +487,17 @@ yay -S --noconfirm nvidia-container-toolkit'
 
 ### Uninstall
 
-sudo pacman -Rdd opencl-nvidia-tkg
-sudo pacman -Rdd nvidia-dkms-tkg
-sudo pacman -Rdd nvidia-egl-wayland-tkg
+sudo pacman -Rdd --noconfirm opencl-nvidia-tkg
+sudo pacman -Rdd --noconfirm nvidia-dkms-tkg
+sudo pacman -Rdd --noconfirm nvidia-egl-wayland-tkg
 
-sudo pacman -Rdd nvidia-settings-tkg
-sudo pacman -Rdd nvidia-utils-tkg
+sudo pacman -Rdd --noconfirm nvidia-settings-tkg
+sudo pacman -Rdd --noconfirm nvidia-utils-tkg
 sudo pacman -Rdd --noconfirm nvidia-prime
 
-sudo pacma -Rdd libnvidia-container-tools
-sudo pacma -Rdd libnvidia-container
-sudo pacma -Rdd nvidia-container-toolkit
+sudo pacma -Rdd --noconfirm libnvidia-container-tools
+sudo pacma -Rdd --noconfirm libnvidia-container
+sudo pacma -Rdd --noconfirm nvidia-container-toolkit
 ```
 
 ### Check any errors
