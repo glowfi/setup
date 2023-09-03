@@ -35,7 +35,6 @@ alias egrep='egrep --color=auto'
 # ===================================================================
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-# morhetz/gruvbox
 export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 # ===================================================================
