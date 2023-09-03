@@ -215,6 +215,9 @@ alias shd="sudo systemctl disable sshd;sudo systemctl disable sshguard"
 # Regenerate initramfs and grub 
 alias rgi="sudo grub-mkconfig -o /boot/grub/grub.cfg;sudo mkinitcpio -p linux-zen"
 
+# Fix audio
+alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service'
+
 
 # ===================================================================
 #                         Git Functions
@@ -505,9 +508,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "694s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "697s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "694s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "697s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
