@@ -141,6 +141,9 @@ xrandr --output eDP-1 --mode 1920x1080 &
 # Picom
 picom -b
 
+# Pipewire
+systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
+
 # Hotkey daemon
 dxhd -b &
 

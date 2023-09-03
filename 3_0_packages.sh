@@ -67,6 +67,7 @@ wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/in
 chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
+systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 
 ### CORE (VIDEO)
 install "ffmpeg yt-dlp" "pac"

@@ -79,6 +79,9 @@ touch $HOME/.xprofile
 echo "# Hotkey daemon
 dxhd -b &
 
+# Pipewire
+systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
+
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
 
