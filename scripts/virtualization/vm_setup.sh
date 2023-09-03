@@ -93,24 +93,8 @@ rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
 # Kill any running python script qemu spicy
-ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-
-# Create Main socket
-setsid python createsocket.py &
-
-# Create the monitor socket file
-monitor_socket=\"${name}-monitor.socket\"
-if [ ! -e \"\$monitor_socket\" ]; then
-    mkfifo \"\$monitor_socket\"
-fi
-
-# Create the serial socket file
-serial_socket=\"${name}-serial.socket\"
-if [ ! -e \"\$serial_socket\" ]; then
-    mkfifo \"\$serial_socket\"
-fi
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
@@ -150,8 +134,8 @@ qemu-system-x86_64 \\
 	-drive file=Image.img \\
     -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
-    -monitor unix:"${name}.socket",server,nowait \\
-    -serial unix:"${name}.socket",server,nowait \\
+    -monitor unix:"${name}-monitor.socket",server,nowait \\
+    -serial unix:"${name}-serial.socket",server,nowait \\
     -drive file=${name}.iso,media=cdrom \\
     -drive file=virtio.iso,media=cdrom \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
@@ -175,7 +159,6 @@ rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
 # Kill any running python script qemu spicy
-ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
         ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 	else
@@ -188,24 +171,8 @@ rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
 # Kill any running python script qemu spicy
-ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-
-# Create Main socket
-setsid python createsocket.py &
-
-# Create the monitor socket file
-monitor_socket=\"${name}-monitor.socket\"
-if [ ! -e \"\$monitor_socket\" ]; then
-    mkfifo \"\$monitor_socket\"
-fi
-
-# Create the serial socket file
-serial_socket=\"${name}-serial.socket\"
-if [ ! -e \"\$serial_socket\" ]; then
-    mkfifo \"\$serial_socket\"
-fi
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
@@ -246,8 +213,8 @@ qemu-system-x86_64 \\
     -device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=Image.img \\
     -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
-    -monitor unix:"${name}.socket",server,nowait \\
-    -serial unix:"${name}.socket",server,nowait \\
+    -monitor unix:"${name}-monitor.socket",server,nowait \\
+    -serial unix:"${name}-serial.socket",server,nowait \\
     -drive media=cdrom,index=0,file=${name}.iso \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
 
@@ -269,41 +236,12 @@ rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
 # Kill any running python script qemu spicy
-ps aux | grep \"createsocket.py\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
         ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 
 	fi
 
 	chmod +x clean.sh
-
-	### Socket Script
-
-	touch createsocket.py
-
-	echo "import socket
-
-# create a socket object
-sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-
-# specify the path for the socket file
-sock_path = \"${name}-agent.sock\"
-
-# bind the socket to the specified path
-sock.bind(sock_path)
-
-# listen for incoming connections
-sock.listen(1)
-
-# accept incoming connections
-conn, addr = sock.accept()
-
-# use the connection object to send or receive data
-# ...
-
-# close the connection and socket
-conn.close()
-sock.close()" >>createsocket.py
 
 	#### Include a minimal start Script
 
