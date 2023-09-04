@@ -39,7 +39,7 @@ Minimal DWM setup with minimal patches.
 
 -   movestack
 -   noborder
--   vanity
+-   vanity gaps
 
 **DMENU PATCHES**
 
