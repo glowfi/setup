@@ -10,26 +10,36 @@
 -   Btrfs
 -   Zram
 -   Apparmor
+-   Dnscrypt
+-   Tweaks for security and performance
+-   Hardened SSH
+-   Hardened Firewall
+-   Hardened browser with custom settings and user policy
 
 ## KDE
 
-> Minimal KDE setup with minimal packages.
+Minimal KDE setup with minimal packages.
 
 ## DWM
 
-> Minimal DWM setup with minimal patches.
+Minimal DWM setup with minimal patches.
 
 **DWM PATCHES**
 
 > Enabled Emoji support
 
+-   Cycle Layout
+-   fibonacci_spiral
+-   fibonacci_dwindle
 -   3 column Layout
--   Fibonacci Layout
--   Cycle across layouts
--   Move Stack
--   Vanity gaps
--   Always center
+
+-   Fullscreen
+-   always center
 -   Fade Inactive
+
+-   movestack
+-   noborder
+-   vanity
 
 **DMENU PATCHES**
 
