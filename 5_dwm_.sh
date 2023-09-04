@@ -193,7 +193,7 @@ cp -r $HOME/setup/configs/dwm-${DWM_VER}/ $HOME/.config/
 mv $HOME/.config/dwm-${DWM_VER}/ $HOME/.config/DWM
 cd $HOME/.config/DWM/
 make
-cd ..
+cd
 echo "Done Installing DWM!"
 echo ""
 
@@ -206,7 +206,7 @@ echo ""
 
 cd $HOME/setup/configs/dmenu
 sudo make clean install
-cd ..
+cd
 echo "Done Installing DEMNU!"
 echo ""
 

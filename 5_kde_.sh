@@ -24,10 +24,16 @@ install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm s
 
 install "xorg-xrandr" "pac"
 install "wmctrl" "pac"
-install "dolphin ark zathura zathura-pdf-mupdf clipmenu dmenu" "pac"
+install "dolphin ark zathura zathura-pdf-mupdf clipmenu" "pac"
 install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
+
+# DMENU
+
+cd $HOME/setup/configs/dmenu
+sudo make clean install
+cd
 
 # Setup nsxiv key-handler
 mkdir -p $HOME/.config/nsxiv/exec
