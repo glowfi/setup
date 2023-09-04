@@ -188,7 +188,7 @@ echo "--------------Installing DWM ...------------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-DWM_VER=$(echo "6.4")
+DWM_VER=$(echo "6.2")
 cp -r $HOME/setup/configs/dwm-${DWM_VER}/ $HOME/.config/
 mv $HOME/.config/dwm-${DWM_VER}/ $HOME/.config/DWM
 cd $HOME/.config/DWM/
