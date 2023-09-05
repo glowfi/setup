@@ -3,12 +3,34 @@
 tmpfile="$HOME/.config/blank"
 
 generate() {
-	echo "Generated!"
-	touch "$tmpfile"
-	ps aux | grep -E "wall.sh" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
-	ps aux | grep -E "xautolock" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
-	convert -size 1920x1080 xc:black png:- | feh --bg-fill -
-	xdotool key alt+b
+	DE=$(echo $XDG_CURRENT_DESKTOP)
+
+	if [[ "$DE" = "KDE" ]]; then
+		echo "Generated!"
+		touch "$tmpfile"
+		ps aux | grep -E "wall.sh" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
+		ps aux | grep -E "xautolock" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
+		img="/usr/share/wallpapers/Next/contents/images/5120x2880.png"
+
+		dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
+    var Desktops = desktops();                                                                                                                       
+    for (i=0;i<Desktops.length;i++) {
+            d = Desktops[i];
+            d.wallpaperPlugin = 'org.kde.image';
+            d.currentConfigGroup = Array('Wallpaper',
+                                        'org.kde.image',
+                                        'General');
+            d.writeConfig('Image', '$img');
+    }"
+	else
+		echo "Generated!"
+		touch "$tmpfile"
+		ps aux | grep -E "wall.sh" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
+		ps aux | grep -E "xautolock" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
+		convert -size 1920x1080 xc:black png:- | feh --bg-fill -
+		xdotool key alt+b
+	fi
+
 }
 
 restore() {
@@ -16,7 +38,10 @@ restore() {
 	sh $HOME/.local/bin/wall.sh &
 	xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 	rm -rf "$tmpfile"
-	xdotool key alt+b
+
+	if [[ "$DE" != "KDE" ]]; then
+		xdotool key alt+b
+	fi
 }
 
 enableFirewall() {

@@ -12,7 +12,7 @@ systemsettings5
 
 ## Toggle Panel
 #alt + p
-qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=25?-1:25;"
+qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=25?-1:44;"
 
 ## Toggle Tiling/Floating mode
 #alt + t
@@ -151,9 +151,9 @@ if [ "$VOL" -gt "$cap" ]; then
 	notify-send 100
 else
 	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-		notify-send "Volume on mute!"
+		notify-send "Volume on mute! [Speaker]"
 	else
-		notify-send $VOL
+		notify-send "$VOL [Speaker]"
 	fi
 fi
 
@@ -167,9 +167,9 @@ if [ "$VOL" -gt "$cap" ]; then
 	notify-send 100
 else
 	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-		notify-send "Volume on mute!"
+		notify-send "Volume on mute! [Speaker]"
 	else
-		notify-send $VOL
+		notify-send "$VOL [Speaker]"
 	fi
 fi
 
@@ -181,7 +181,7 @@ pamixer -t
 if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
 	notify-send $VOL
 else
-	notify-send "Volume on mute!"
+	notify-send "Volume on mute! [Speaker]"
 fi
 
 ## Increase Brightness
@@ -224,9 +224,9 @@ if [ "$VOL" -gt "$cap" ]; then
 	notify-send 100
 else
 	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-		notify-send "Volume on mute!"
+		notify-send "Volume on mute! [Mic]"
 	else
-		notify-send $MVOL
+		"notify-send $MVOL [Mic]"
 	fi
 fi
 
@@ -240,9 +240,9 @@ if [ "$VOL" -gt "$cap" ]; then
 	notify-send 100
 else
 	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-		notify-send "Volume on mute!"
+		notify-send "Volume on mute! [Mic]"
 	else
-		notify-send $MVOL
+		"notify-send $MVOL [Mic]"
 	fi
 fi
 
@@ -252,7 +252,7 @@ amixer -D pulse sset Capture toggle
 MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }')
 MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 if [ "$MSTATE" = "[on]" ] || [ "$VOL" -eq 0 ]; then
-	notify-send $MVOL
+	"notify-send $MVOL [Mic]"
 else
-	notify-send "Volume on mute!"
+	notify-send "Volume on mute! [Mic]"
 fi

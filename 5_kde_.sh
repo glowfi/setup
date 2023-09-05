@@ -29,15 +29,31 @@ install "nsxiv-git" "yay"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
+# Setup nsxiv key-handler
+mkdir -p $HOME/.config/nsxiv/exec
+cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
+
 # DMENU
 
 cd $HOME/setup/configs/dmenu
 sudo make clean install
 cd
 
-# Setup nsxiv key-handler
-mkdir -p $HOME/.config/nsxiv/exec
-cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
+# INSTALL SCREENLOCKER
+
+echo ""
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo ""
+
+pip install opencv-python tk pynput playsound pathlib pyautogui
+git clone https://github.com/glowfi/screenlocker
+cd screenlocker
+fish -c "cargo build --release"
+mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
+cd ..
+rm -rf screenlocker
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
@@ -90,6 +106,9 @@ systemctl --user start pipewire.service pipewire.socket wireplumber.service pipe
 
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
+
+# Autolock
+xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Clipboard
 clipmenud &
@@ -244,6 +263,11 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Wi
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 10" "Meta+),none,Window to Desktop 10"
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window Close" "Ctrl+Shift+Q,none,Close Window"
+
+sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Toggle Tiles Editor" "none,none,Toggle Tiles Editor"
+
+sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Make Window Fullscreen" "none,none,Make Window Fullscreen"
+sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Make Window Fullscreen" "Meta+Shift+F,none,Make Window Fullscreen"
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-choosen=$(printf "1.Image search in Google\n2.Extract Text From Image\n3.Take screenshot and search image in Google\n4.Extract Text From Image Multi Language\n5.Extract Text From File\n6.Extract Text From File MultiLanguage" | dmenu -i -p "Choose:")
+choosen=$(printf "1.Image search in Google\n2.Extract Text From Image\n3.Take screenshot and search image in Google\n4.Extract Text From [ Image ] Multi Language\n5.Extract Text From File\n6.Extract Text From [ File ] MultiLanguage" | dmenu -i -p "Choose:")
 choosen=$(echo "$choosen" | awk -F"." '{print $1}')
 
 #### Functions
