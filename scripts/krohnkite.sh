@@ -20,3 +20,6 @@ kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionPatte
 kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionType 0
 kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key HideTitleBar true
 kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Mask 16
+
+# Shortcuts
+sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Krohnkite: Cycle Layout" "Meta+ctrl+\.,none,Krohnkite: Cycle Layout"
