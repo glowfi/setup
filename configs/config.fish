@@ -218,6 +218,9 @@ alias rgi="sudo grub-mkconfig -o /boot/grub/grub.cfg;sudo mkinitcpio -p linux-ze
 # Fix audio
 alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service'
 
+# Journal Logs
+alias jl='journalctl -b -p3 --no-hostname --no-pager'
+
 
 # ===================================================================
 #                         Git Functions
@@ -524,9 +527,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "713s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "716s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "713s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "716s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
