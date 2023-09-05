@@ -497,9 +497,14 @@ xdg-mime default nvim.desktop text/plain
 # COPY NEOVIM SETTINGS
 
 cp -r $HOME/setup/configs/nvim $HOME/.config
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
 nvim -c PackerSync
 nvim -c PackerSync
 nvim -c PackerSync
+
+# ======================================================= END ======================================================================================
 
 ### Visualization
 
