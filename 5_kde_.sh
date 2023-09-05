@@ -171,11 +171,33 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
+# Set Plasma theme
+sudo kwriteconfig5 --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
+
+# Set SDDM theme
+kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Theme --key "Current" "breeze"
+
+# Disable splash screen
+sudo kwriteconfig5 --file ksplashrc --group KSplash --key Engine "none"
+sudo kwriteconfig5 --file ksplashrc --group KSplash --key Theme "none"
+
 # Disable app launch feedback
 
 sudo kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
 sudo kwriteconfig5 --file klaunchrc --group FeedbackStyle --key "BusyCursor" --type bool false
 
+# Enable 9 desktops
+
+for i in {1..9}
+do
+    sudo kwriteconfig5 --file kwinrc --group Desktops --key "Name_${i}" "Desktop ${i}"
+    sudo kwriteconfig5 --file kwinrc --group Desktops --key Number "${i}"
+    sudo kwriteconfig5 --file kwinrc --group Desktops --key Rows "1"
+done
+
+
 # REMOVE KWALLET
 
+sudo kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
+sudo kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service

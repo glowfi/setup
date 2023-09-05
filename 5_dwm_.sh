@@ -319,4 +319,6 @@ echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
 
 # REMOVE KWALLET
 
+kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
+kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
