@@ -103,7 +103,15 @@ echo "--------------ENABLE LOGIN MANAGER SDDM...--------------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
+# Enable
 sudo systemctl enable sddm
+
+# Set SDDM theme
+getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep="Current=breeze"
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /usr/lib/sddm/sddm.conf.d/default.conf
+
 
 # REGISTER KITTY IN DOLPHIN
 
@@ -175,9 +183,6 @@ echo ""
 
 # Set Plasma theme
 sudo -u "${USER}" kwriteconfig5 --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
-
-# Set SDDM theme
-sudo -u "${USER}" kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Theme --key "Current" "breeze"
 
 # Disable splash screen
 sudo -u "${USER}" kwriteconfig5 --file ksplashrc --group KSplash --key Engine "none"
