@@ -197,6 +197,17 @@ do
     sudo -u "${USER}" kwriteconfig5 --file kwinrc --group Desktops --key Rows "1"
 done
 
+# Add resource monitor widget
+
+wget 'https://github.com/orblazer/plasma-applet-resources-monitor/releases/download/v2.10.2/resourcesMonitor-fork-2.10.2.plasmoid'
+plasmapkg2 -u resourcesMonitor-fork-2.10.2.plasmoid
+rm -rf resourcesMonitor-fork-2.10.2.plasmoid
+
+# Restore Settings
+
+cp -r $HOME/setup/configs/plasma/plasmashellrc ~/.config/
+cp -r $HOME/setup/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc ~/.config/
+
 ### Shortcuts
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 1" "none,none,Activate Task Manager Entry 1"
