@@ -222,6 +222,13 @@ wget 'https://github.com/orblazer/plasma-applet-resources-monitor/releases/downl
 plasmapkg2 -i resourcesMonitor-fork-2.10.2.plasmoid
 rm -rf resourcesMonitor-fork-2.10.2.plasmoid
 
+# Add command output widget
+
+wget 'https://0x0.st/Hph4.plasmoid' -O command-output.plasmoid
+plasmapkg2 -i command-output.plasmoid
+rm -rf command-output.plasmoid
+cp -r ~/setup/configs/plasma/kdestatus.sh ~/.local/bin/
+
 # Restore Settings
 
 cp -r $HOME/setup/configs/plasma/plasmashellrc ~/.config/

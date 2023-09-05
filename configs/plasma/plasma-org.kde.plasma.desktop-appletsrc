@@ -6,27 +6,6 @@ wheel:Vertical;NoModifier=org.kde.switchdesktop
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
-[Containments][1]
-ItemGeometries-1920x1080=
-ItemGeometriesHorizontal=
-activityId=467ff670-da33-4351-ac17-e3984555336a
-formfactor=0
-immutability=1
-lastScreen=0
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][1][Configuration]
-PreloadWeight=42
-
-[Containments][1][General]
-ToolBoxButtonState=topcenter
-ToolBoxButtonX=559
-
-[Containments][1][Wallpaper][org.kde.image][General]
-Image=
-
 [Containments][2]
 activityId=
 formfactor=2
@@ -44,62 +23,19 @@ plugin=org.kde.plasma.digitalclock
 immutability=1
 plugin=org.kde.plasma.showdesktop
 
-[Containments][2][Applets][21]
+[Containments][2][Applets][25]
 immutability=1
-plugin=org.kde.resourcesMonitor-fork
+plugin=com.github.zren.commandoutput
 
-[Containments][2][Applets][21][Configuration][Appearance]
-fontScale=38
-graphHeight=1
-graphWidth=1
-
-[Containments][2][Applets][21][Configuration][ConfigDialog]
+[Containments][2][Applets][25][Configuration][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
 
-[Containments][2][Applets][21][Configuration][General]
-showNetMonitor=true
-
-[Containments][2][Applets][22]
-immutability=1
-plugin=org.kde.plasma.systemmonitor.diskactivity
-
-[Containments][2][Applets][22][Configuration]
-CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=100
-
-[Containments][2][Applets][22][Configuration][Appearance]
-chartFace=org.kde.ksysguard.linechart
-title=Hard Disk Activity
-
-[Containments][2][Applets][22][Configuration][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
-
-[Containments][2][Applets][22][Configuration][FaceGrid][Appearance]
-chartFace=org.kde.ksysguard.linechart
-showTitle=false
-
-[Containments][2][Applets][22][Configuration][FaceGrid][SensorColors]
-disk/all/free=61,233,108
-disk/all/read=233,120,61
-disk/all/total=61,195,233
-disk/all/used=165,61,233
-disk/all/write=61,174,233
-
-[Containments][2][Applets][22][Configuration][FaceGrid][Sensors]
-highPrioritySensorIds=["disk/all/free"]
-
-[Containments][2][Applets][22][Configuration][SensorColors]
-disk/all/free=61,233,108
-disk/all/read=233,120,61
-disk/all/total=61,195,233
-disk/all/used=165,61,233
-disk/all/write=61,174,233
-
-[Containments][2][Applets][22][Configuration][Sensors]
-highPrioritySensorIds=["disk/all/total","disk/all/used","disk/all/free"]
-lowPrioritySensorIds=["disk/all/total","disk/all/used","disk/all/free"]
+[Containments][2][Applets][25][Configuration][General]
+bold=true
+command=~/.local/bin/kdestatus.sh
+fontFamily=FantasqueSansMono Nerd Font
+fontSize=14
 
 [Containments][2][Applets][3]
 immutability=1
@@ -146,7 +82,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=85
+PreloadWeight=100
 SystrayContainmentId=8
 
 [Containments][2][ConfigDialog]
@@ -154,31 +90,25 @@ DialogHeight=84
 DialogWidth=1920
 
 [Containments][2][General]
-AppletOrder=3;4;5;21;22;6;7;17;18
+AppletOrder=3;4;5;25;6;7;17;18
 
-[Containments][23][Applets][24][Configuration]
-PreloadWeight=92
+[Containments][23]
+ItemGeometries-1920x1080=
+ItemGeometriesHorizontal=
+activityId=727820a8-dcdb-41e6-8043-76b7dfd09609
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
 
-[Containments][23][Applets][25][Configuration]
-PreloadWeight=42
+[Containments][23][General]
+ToolBoxButtonState=topcenter
+ToolBoxButtonX=559
 
-[Containments][23][Applets][26][Configuration]
-PreloadWeight=42
-
-[Containments][23][Applets][27][Configuration]
-PreloadWeight=42
-
-[Containments][23][Applets][28][Configuration]
-PreloadWeight=47
-
-[Containments][23][Applets][38][Configuration]
-PreloadWeight=42
-
-[Containments][23][Applets][39][Configuration]
-PreloadWeight=42
-
-[Containments][23][Configuration]
-PreloadWeight=42
+[Containments][23][Wallpaper][org.kde.image][General]
+Image=/usr/share/wallpapers/Next/contents/images/5120x2880.png
 
 [Containments][29][Applets][30][Configuration]
 PreloadWeight=42
@@ -229,7 +159,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][8][Applets][10][Configuration]
-PreloadWeight=70
+PreloadWeight=100
 
 [Containments][8][Applets][11]
 immutability=1
@@ -252,10 +182,9 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][8][Applets][15][Configuration]
-PreloadWeight=60
+PreloadWeight=80
 
 [Containments][8][Applets][15][Configuration][General]
-currentTab=streams
 migrated=true
 
 [Containments][8][Applets][16]
@@ -269,6 +198,16 @@ plugin=org.kde.plasma.battery
 [Containments][8][Applets][20]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
+
+[Containments][8][Applets][20][Configuration]
+PreloadWeight=55
+
+[Containments][8][Applets][24]
+immutability=1
+plugin=org.kde.plasma.mediacontroller
+
+[Containments][8][Applets][24][Configuration]
+PreloadWeight=34
 
 [Containments][8][Applets][9]
 immutability=1

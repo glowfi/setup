@@ -3,6 +3,9 @@ Recent Files[$e]=resourcesMonitor-fork-2.10.2.plasmoid,file:$HOME/Downloads/reso
 Recent URLs[$e]=file:$HOME/Downloads/,file:$HOME/
 detailViewIconSize=16
 
+[PlasmaTransientsConfig]
+PreloadWeight=18
+
 [PlasmaViews][Panel 2][Defaults]
 thickness=44
 
