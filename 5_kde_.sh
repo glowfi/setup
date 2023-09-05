@@ -231,6 +231,8 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Wi
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
 
+### Remove Telemetry
+
 # Disable app launch feedback
 
 sudo -u "${USER}" kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
