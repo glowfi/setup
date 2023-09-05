@@ -278,6 +278,12 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphi
 sudo -u "${USER}" kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
 sudo -u "${USER}" kwriteconfig5 --file klaunchrc --group FeedbackStyle --key "BusyCursor" --type bool false
 
+# Disable baloo file indexer
+
+sudo -u ${USER} balooctl suspend
+sudo -u ${USER} balooctl disable
+sudo -u ${USER} balooctl purge
+
 # REMOVE KWALLET
 
 sudo -u "${USER}" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
