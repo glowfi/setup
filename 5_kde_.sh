@@ -200,7 +200,7 @@ done
 # Add resource monitor widget
 
 wget 'https://github.com/orblazer/plasma-applet-resources-monitor/releases/download/v2.10.2/resourcesMonitor-fork-2.10.2.plasmoid'
-plasmapkg2 -u resourcesMonitor-fork-2.10.2.plasmoid
+plasmapkg2 -i resourcesMonitor-fork-2.10.2.plasmoid
 rm -rf resourcesMonitor-fork-2.10.2.plasmoid
 
 # Restore Settings
