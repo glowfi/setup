@@ -48,6 +48,11 @@ plugin=org.kde.plasma.showdesktop
 immutability=1
 plugin=org.kde.resourcesMonitor-fork
 
+[Containments][2][Applets][21][Configuration][Appearance]
+fontScale=38
+graphHeight=1
+graphWidth=1
+
 [Containments][2][Applets][21][Configuration][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
@@ -61,10 +66,10 @@ plugin=org.kde.plasma.systemmonitor.diskactivity
 
 [Containments][2][Applets][22][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=85
+PreloadWeight=100
 
 [Containments][2][Applets][22][Configuration][Appearance]
-chartFace=org.kde.ksysguard.textonly
+chartFace=org.kde.ksysguard.linechart
 title=Hard Disk Activity
 
 [Containments][2][Applets][22][Configuration][ConfigDialog]
@@ -141,7 +146,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=80
+PreloadWeight=85
 SystrayContainmentId=8
 
 [Containments][2][ConfigDialog]
@@ -224,7 +229,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][8][Applets][10][Configuration]
-PreloadWeight=65
+PreloadWeight=70
 
 [Containments][8][Applets][11]
 immutability=1

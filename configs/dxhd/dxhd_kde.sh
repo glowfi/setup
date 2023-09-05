@@ -29,7 +29,7 @@ elif [ $current = "false" ]; then
 	kwriteconfig5 --file kwinrc --group Plugins --key krohnkiteEnabled true
 	kwriteconfig5 --file kwinrc --group Plugins --key diminactiveEnabled true
 	kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled true
-	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 25;"
+	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 35;"
 	notify-send 'Tiling Mode'
 fi
 qdbus org.kde.KWin /KWin reconfigure
