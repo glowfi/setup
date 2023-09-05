@@ -12,7 +12,7 @@ systemsettings5
 
 ## Toggle Panel
 #alt + p
-qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=25?-1:44;"
+qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=35?-1:35;"
 
 ## Toggle Tiling/Floating mode
 #alt + t
