@@ -95,7 +95,7 @@ for (i=0;i<Desktops.length;i++) {
 
 ## Favourite Wallpaper
 #super + c
-randWall=$(printf "143.jpg\n40.png" | shuf -n 1)
+favwall=$(printf "143.jpg\n40.png" | shuf -n 1)
 dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
 var Desktops = desktops();                                                                                                                       
 for (i=0;i<Desktops.length;i++) {
@@ -104,7 +104,7 @@ for (i=0;i<Desktops.length;i++) {
         d.currentConfigGroup = Array('Wallpaper',
                                     'org.kde.image',
                                     'General');
-        d.writeConfig('Image', '$HOME/wall/$randWall');
+        d.writeConfig('Image', '$HOME/wall/$favwall');
 }"
 
 ## Clipboard

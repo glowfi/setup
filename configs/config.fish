@@ -389,8 +389,24 @@ end
 # Set Wallpaper
 function setWall
     set getWall (prev.sh -p .)
+    set wallPath (realpath "$getWall")
+    set DE (echo $XDG_CURRENT_DESKTOP)
+
     if test -n "$getWall"
-        feh --bg-fill $getWall
+        if [ "$DE" = KDE ]
+            dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
+    var Desktops = desktops();                                                                                                                       
+    for (i=0;i<Desktops.length;i++) {
+            d = Desktops[i];
+            d.wallpaperPlugin = 'org.kde.image';
+            d.currentConfigGroup = Array('Wallpaper',
+                                        'org.kde.image',
+                                        'General');
+            d.writeConfig('Image', '$wallPath');
+    }"
+        else
+            feh --bg-fill "$wallPath"
+        end
     end
 end
 
@@ -508,9 +524,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "697s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "713s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "697s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "713s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
