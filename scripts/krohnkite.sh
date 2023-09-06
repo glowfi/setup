@@ -34,3 +34,4 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Kr
 # Enable and configure Tiling
 # Enable Night Color
 # Disable Screenlocking and configure screenlocker
+# Set Mouse acc profile to adaptive
