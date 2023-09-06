@@ -67,7 +67,6 @@ kde_resources() {
 	printf "󰍛 %s/%s  🖥 %s  󰋊 %s/%s:%s" "$MEMUSED" "$MEMTOT" "$CPU" "$STOUSED" "$STOTOT" "$STOPER"
 
 	printf "%s" "$SEP2"
-	echo ""
 }
 
 kde_pulse() {
@@ -89,9 +88,9 @@ kde_pulse() {
 	fi
 
 	if [ "$MSTATE" = "[off]" ] || [ "$VOL" -eq 0 ]; then
-		printf " 󰍭"
+		printf " 󰍭 $SEP2"
 	else
-		printf " 󰍮 %s%" "$MVOL"
+		printf " 󰍮 %s%" "$MVOL $SEP2"
 	fi
 }
 

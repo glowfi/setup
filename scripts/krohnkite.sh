@@ -29,6 +29,8 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Kr
 
 ###### Post Setup Steps ######
 
+# Add gaps and Set new window as master
+# Set Screen-edge to none top left corner
 # Add Fullscreen shortcut
 # Set Default Terminal
 # Enable and configure Tiling

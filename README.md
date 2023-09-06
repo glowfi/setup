@@ -28,18 +28,26 @@ Minimal DWM setup with minimal patches.
 
 > Enabled Emoji support
 
+**Layout Patches**
+
 -   Cycle Layout
 -   fibonacci_spiral
 -   fibonacci_dwindle
 -   3 column Layout
+<hr/>
 
--   Fullscreen
--   always center
--   Fade Inactive
+**UI Patches**
 
 -   movestack
 -   noborder
 -   vanity gaps
+-   Fade Inactive
+<hr/>
+
+**Misc Patches**
+
+-   Fullscreen
+-   always center
 
 **DMENU PATCHES**
 
