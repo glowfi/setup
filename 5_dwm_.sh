@@ -36,6 +36,7 @@ mkdir -p $HOME/.misc
 cp -r $HOME/setup/configs/misc/* $HOME/.misc/
 
 # Volnoti
+
 install "dbus-glib" "pac"
 git clone https://github.com/hcchu/volnoti
 cd volnoti
@@ -51,6 +52,7 @@ cd ..
 rm -rf volnoti
 
 # Setup nsxiv key-handler
+
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
@@ -94,6 +96,25 @@ tar xzvf HryC.tar.gz
 rm HryC.tar.gz
 sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
 cd
+
+# Theming
+
+echo ""
+echo "------------------------------------------------------------------------------------------"
+echo "--------------Theming...------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------------------"
+echo ""
+
+cp -r $HOME/setup/configs/.Xresources $HOME
+cd $HOME/.config;rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
+
+cp -r $HOME/setup/configs/theming/qt5ct/ $HOME/setup/configs/theming/gtk-2.0 $HOME/setup/configs/theming/gtk-3.0 $HOME/setup/configs/theming/Kvantum $HOME/.config
+cp -r $HOME/setup/configs/theming/.gtkrc-2.0 $HOME
+echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
+echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
+
 
 # SETUP DXHD
 
@@ -181,7 +202,8 @@ done
 exec $HOME/.config/DWM/dwm
 ' >>$HOME/.xinitrc
 
-# INSTALL DWM
+# Install DWM
+
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
 echo "--------------Installing DWM ...-------------------------------------------------------------------"
@@ -197,7 +219,8 @@ cd
 echo "Done Installing DWM!"
 echo ""
 
-# INSTALL DEMNU
+# Install DEMNU
+
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
 echo "--------------Installing DMENU ...-----------------------------------------------------------------"
@@ -210,7 +233,8 @@ cd
 echo "Done Installing DEMNU!"
 echo ""
 
-# INSTALL SCREENLOCKER
+# Install screenlocker
+
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
 echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
@@ -226,8 +250,8 @@ cd ..
 rm -rf screenlocker
 
 
+# Copy TOPBAR Settings
 
-# COPY TOPBAR SETTINGS
 echo ""
 echo "----------------------------------------------------------------------------------------------------"
 echo "--------------Copying TOPBAR settings...------------------------------------------------------------"
@@ -241,7 +265,8 @@ cd
 echo "Done Copying TOPBAR settings!"
 echo ""
 
-# COPY DUNST SETTINGS
+# Copy DUNST Settings
+
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
 echo "--------------Copying DUNST settings...------------------------------------------------------------"
@@ -255,22 +280,13 @@ cd
 echo "Done Copying DUNST settings!"
 echo ""
 
-# Copy XRESOURCES
-echo ""
-echo "------------------------------------------------------------------------------------------"
-echo "--------------Copying Xresources...----------------------------------------------------------"
-echo "------------------------------------------------------------------------------------------"
-echo ""
-
-cp -r $HOME/setup/configs/.Xresources $HOME
-
 echo ""
 echo "------------------------------------------------------------------------------------------"
 echo "--------------Setting default application for filetypes...--------------------------------"
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# UPDATE MIMETYPE
+# Update MIMETYPE
 
 touch $HOME/zathura.desktop
 sudo touch zathura.desktop
@@ -306,18 +322,7 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
-# THEMING
-
-cd $HOME/.config;rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
-
-cp -r $HOME/setup/configs/theming/qt5ct/ $HOME/setup/configs/theming/gtk-2.0 $HOME/setup/configs/theming/gtk-3.0 $HOME/setup/configs/theming/Kvantum $HOME/.config
-cp -r $HOME/setup/configs/theming/.gtkrc-2.0 $HOME
-echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
-echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
-echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
-echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
-
-# REMOVE KWALLET
+# Remove kwallet
 
 kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
 kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'

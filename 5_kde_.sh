@@ -33,7 +33,7 @@ install "brightnessctl" "pac"
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
-# DMENU
+# Install DEMNU
 
 cd $HOME/setup/configs/dmenu
 sudo make clean install
@@ -162,7 +162,7 @@ echo "--------------Setting default application for filetypes...----------------
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-# UPDATE MIMETYPE
+# Update MIMETYPE
 
 touch $HOME/zathura.desktop
 sudo touch zathura.desktop
@@ -201,9 +201,11 @@ echo ""
 ### Plasma UI Settings
 
 # Set Plasma theme
+
 sudo -u "${USER}" kwriteconfig5 --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
 
 # Disable splash screen
+
 sudo -u "${USER}" kwriteconfig5 --file ksplashrc --group KSplash --key Engine "none"
 sudo -u "${USER}" kwriteconfig5 --file ksplashrc --group KSplash --key Theme "none"
 
@@ -216,18 +218,20 @@ do
     sudo -u "${USER}" kwriteconfig5 --file kwinrc --group Desktops --key Rows "1"
 done
 
-# Add resource monitor widget
-
-wget 'https://github.com/orblazer/plasma-applet-resources-monitor/releases/download/v2.10.2/resourcesMonitor-fork-2.10.2.plasmoid'
-plasmapkg2 -i resourcesMonitor-fork-2.10.2.plasmoid
-rm -rf resourcesMonitor-fork-2.10.2.plasmoid
-
 # Add command output widget
 
 wget 'https://0x0.st/Hph4.plasmoid' -O command-output.plasmoid
 plasmapkg2 -i command-output.plasmoid
 rm -rf command-output.plasmoid
 cp -r ~/setup/configs/plasma/kdestatus.sh ~/.local/bin/
+
+# Use KDE file picker in GTK applications
+
+sudo tee -a /etc/environment << EOF
+
+# KDE file picker
+GTK_USE_PORTAL=1
+EOF
 
 # Restore Settings
 
@@ -278,8 +282,6 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Ma
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
 
-### Remove Telemetry
-
 # Disable app launch feedback
 
 sudo -u "${USER}" kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
@@ -291,7 +293,7 @@ sudo -u ${USER} balooctl suspend
 sudo -u ${USER} balooctl disable
 sudo -u ${USER} balooctl purge
 
-# REMOVE KWALLET
+# Remove kwallet
 
 sudo -u "${USER}" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
 sudo -u "${USER}" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
