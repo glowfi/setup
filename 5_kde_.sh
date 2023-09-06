@@ -234,6 +234,10 @@ sudo tee -a /etc/environment << EOF
 GTK_USE_PORTAL=1
 EOF
 
+# Copy Xresources
+
+cp -r $HOME/setup/configs/.Xresources $HOME
+
 # Restore Settings
 
 cp -r $HOME/setup/configs/plasma/plasmashellrc ~/.config/
