@@ -1,4 +1,6 @@
-#!/bin/fish
+#!/usr/bin/env bash
+
+###### Add Tiling ######
 
 # Download Krohnkite
 
@@ -14,12 +16,20 @@ rm -rf krohnkite
 # Creating Breezerc to hide title bars
 
 touch $HOME/.config/breezerc
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key BorderSize 0
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled false
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionPattern .\*
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionType 0
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key HideTitleBar true
-kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Mask 16
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key BorderSize 0
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled false
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionPattern .\*
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionType 0
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key HideTitleBar true
+sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Mask 16
 
-# Shortcuts
+# Tiling Shortcuts
+
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Krohnkite: Cycle Layout" "Meta+ctrl+\.,none,Krohnkite: Cycle Layout"
+
+###### Post Setup Steps ######
+
+# Add Fullscreen shortcut
+# Set Default Terminal
+# Enable and configure Tiling
+# Enable Night Color

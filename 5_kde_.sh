@@ -282,10 +282,10 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Wi
 
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Toggle Tiles Editor" "none,none,Toggle Tiles Editor"
 
+sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
+
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Make Window Fullscreen" "none,none,Make Window Fullscreen"
 sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Make Window Fullscreen" "Meta+Shift+F,none,Make Window Fullscreen"
-
-sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
 
 # Disable app launch feedback
 
