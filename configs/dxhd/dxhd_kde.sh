@@ -38,6 +38,10 @@ qdbus org.kde.KWin /KWin reconfigure
 #super+x
 qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
 
+## PlasmaShell Replace
+#super+shift+q
+nohup plasmashell --replace
+
 ### Global bindings
 
 ## Terminal
