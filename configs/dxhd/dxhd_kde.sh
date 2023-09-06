@@ -148,7 +148,7 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-	notify-send 100
+	notify-send "$VOL [Speaker]"
 else
 	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
 		notify-send "Volume on mute! [Speaker]"
@@ -164,7 +164,7 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-	notify-send 100
+	notify-send "$VOL [Speaker]"
 else
 	if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
 		notify-send "Volume on mute! [Speaker]"
@@ -179,7 +179,7 @@ VOL=$(pamixer --get-volume)
 STATE=$(pamixer --get-mute)
 pamixer -t
 if [ "$STATE" = "true" ] || [ "$VOL" -eq 0 ]; then
-	notify-send $VOL
+	notify-send "$VOL [Speaker]"
 else
 	notify-send "Volume on mute! [Speaker]"
 fi
@@ -221,7 +221,7 @@ MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'
 MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-	notify-send 100
+	notify-send "$MVOL [Mic]"
 else
 	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
 		notify-send "Volume on mute! [Mic]"
@@ -237,7 +237,7 @@ MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }'
 MSTATE=$(amixer get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}')
 cap=100
 if [ "$VOL" -gt "$cap" ]; then
-	notify-send 100
+	notify-send "$MVOL [Mic]"
 else
 	if [ "$MSTATE" = "true" ] || [ "$VOL" -eq 0 ]; then
 		notify-send "Volume on mute! [Mic]"

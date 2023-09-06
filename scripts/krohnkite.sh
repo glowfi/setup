@@ -33,3 +33,4 @@ sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Kr
 # Set Default Terminal
 # Enable and configure Tiling
 # Enable Night Color
+# Disable Screenlocking and configure screenlocker
