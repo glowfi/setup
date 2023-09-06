@@ -23,6 +23,7 @@ install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm s
 # PACKAGES
 
 install "xorg-xrandr" "pac"
+install "xautolock" "pac"
 install "wmctrl" "pac"
 install "dolphin ark zathura zathura-pdf-mupdf clipmenu" "pac"
 install "nsxiv-git" "yay"
