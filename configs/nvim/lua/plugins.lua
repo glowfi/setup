@@ -153,7 +153,7 @@ return require("packer").startup(function(use)
 	use({ "nvim-treesitter/playground" })
 
 	-- Treesitter(integrated) Rainbow pairs
-	use({ "p00f/nvim-ts-rainbow" })
+	-- use({ "p00f/nvim-ts-rainbow" })
 
 	-- Bracket Matchup
 	use({ "andymass/vim-matchup" })
