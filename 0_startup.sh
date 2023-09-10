@@ -9,9 +9,10 @@ if [ ! -f $CONFIG_FILE ]; then # check if file exists
 	touch -f $CONFIG_FILE         # create file if not exists
 fi
 
+# Install dependency
+
 installDependency() {
 
-	### Install dependency
 	echo ""
 	echo "-------------------------------------------------------------"
 	echo "--------------Installing Dependency ....---------------------"
@@ -24,6 +25,7 @@ installDependency() {
 }
 
 # Logo
+
 logo() {
 
 	f=3 b=4
@@ -259,5 +261,45 @@ diskpart
 clear
 userinfo
 clear
+
+# Confirmation
+
+_filesystemType=$(cat "$CONFIG_FILE" | sed -n '1p')
+_timezone=$(cat "$CONFIG_FILE" | sed -n '2p')
+_keyboardLayout=$(cat "$CONFIG_FILE" | sed -n '3p')
+_hardDiskType=$(cat "$CONFIG_FILE" | sed -n '4p')
+_OS_Install_Disk=$(cat "$CONFIG_FILE" | sed -n '5p')
+_username=$(cat "$CONFIG_FILE" | sed -n '6p')
+_fullname=$(cat "$CONFIG_FILE" | sed -n '7p')
+_userPassword=$(cat "$CONFIG_FILE" | sed -n '8p')
+_rootPassword=$(cat "$CONFIG_FILE" | sed -n '9p')
+_hostname=$(cat "$CONFIG_FILE" | sed -n '10p')
+
+out=$(
+	echo -e "====== Final Configuration ====== \n"
+	echo "filesystem : ${_filesystemType}"
+	echo "timezone : ${_timezone}"
+	echo "keyboard layout : ${_keyboardLayout}"
+	echo "Disk Type : ${_hardDiskType}"
+	echo "OS Install Disk : ${_OS_Install_Disk}"
+	echo "username : ${_username}"
+	echo "fullname : ${_fullname}"
+	echo "userPassword : ${_userPassword}"
+	echo "rootPassword : ${_rootPassword}"
+	echo "hostname : ${_hostname}"
+)
+
+gum style \
+	--foreground 255 --border-foreground 212 --border double \
+	--align center --width 50 --margin "1 2" --padding "2 4" \
+	"$out"
+
+echo "Are you sure want to go with above Configuration ?"
+confirm=$(gum choose "yes" "no")
+
+if [[ "$confirm" = "no" ]]; then
+	rm -rf "$CONFIG_FILE"
+	exit 1
+fi
 
 logo
