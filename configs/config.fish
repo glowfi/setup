@@ -505,13 +505,13 @@ function upgradeNeovim
             git clone https://github.com/neovim/neovim --depth 1
             cd neovim
             sudo make CMAKE_BUILD_TYPE=Release install || sudo pacman -S --noconfirm neovim
+            cd ..
+            sudo rm -rf neovim
         else
             sudo pacman -S --noconfirm neovim
         end
 
         # Copy Config and sync plugins
-        cd ..
-        sudo rm -rf neovim
         cp -r ~/setup/configs/nvim ~/.config
         for i in (seq 100)
             nvim --headless "+Lazy! sync" +qa
