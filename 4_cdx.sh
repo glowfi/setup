@@ -287,7 +287,6 @@ pip install xhibit
 # INSTALL sYT
 
 pip install numerize
-install "jq aria2" "pac"
 git clone https://github.com/glowfi/sYT
 cp -r sYT/sYT.py $HOME/.local/bin/
 cp -r sYT/sYT.sh $HOME/.local/bin/
@@ -500,7 +499,7 @@ cp -r $HOME/setup/configs/nvim $HOME/.config
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
-for i in (seq 6)
+for i in (seq 100)
     nvim --headless "+Lazy! sync" +qa
 end
 

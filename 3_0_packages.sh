@@ -52,6 +52,8 @@ install "ouch" "pac"
 
 install "man-db" "pac"
 install "fish kitty" "pac"
+install "jq" "pac"
+install "aria2" "pac"
 
 ### CORE (Fonts)
 install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"

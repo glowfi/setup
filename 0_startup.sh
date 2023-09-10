@@ -280,8 +280,8 @@ out=$(
 	echo "filesystem : ${_filesystemType}"
 	echo "timezone : ${_timezone}"
 	echo "keyboard layout : ${_keyboardLayout}"
-	echo "Disk Type : ${_hardDiskType}"
-	echo "OS Install Disk : ${_OS_Install_Disk}"
+	echo "disk type : ${_hardDiskType}"
+	echo "OS install disk : ${_OS_Install_Disk}"
 	echo "username : ${_username}"
 	echo "fullname : ${_fullname}"
 	echo "userPassword : ${_userPassword}"
@@ -302,4 +302,5 @@ if [[ "$confirm" = "no" ]]; then
 	exit 1
 fi
 
+clear
 logo
