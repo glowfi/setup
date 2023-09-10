@@ -1,4 +1,4 @@
-local fn = vim.fn
+-- Settings
 
 -- Automatically install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -34,11 +34,8 @@ return require("lazy").setup({
 
 	-- Fuzzy search
 	{
-		"nvim-lua/plenary.nvim",
-	},
-	{
 		"nvim-telescope/telescope.nvim",
-		requires = {
+		dependencies = {
 			{ "nvim-lua/popup.nvim" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-fzy-native.nvim" },
@@ -51,7 +48,7 @@ return require("lazy").setup({
 	-- Git Integration
 	{
 		"lewis6991/gitsigns.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("core.gitsigns")
 		end,
@@ -87,7 +84,7 @@ return require("lazy").setup({
 	-- Tabs
 	{
 		"romgrk/barbar.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "kyazdani42/nvim-web-devicons" },
 		event = "BufRead",
 		config = function()
 			require("core.bufferline")
@@ -108,7 +105,7 @@ return require("lazy").setup({
 	-- Gruvbox theme
 	{
 		"ellisonleao/gruvbox.nvim",
-		requires = { "rktjmp/lush.nvim" },
+		dependencies = { "rktjmp/lush.nvim" },
 		config = function()
 			require("core.colorscheme")
 		end,
@@ -117,7 +114,7 @@ return require("lazy").setup({
 	-- Status line
 	{
 		"hoob3rt/lualine.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			require("core.statusline")
 		end,
@@ -218,7 +215,12 @@ return require("lazy").setup({
 	{ "hrsh7th/cmp-vsnip", after = "nvim-cmp" },
 
 	--   Signature popup on typing
-	{ "ray-x/lsp_signature.nvim", config = [[require('lsp.sigHelp')]] },
+	{
+		"ray-x/lsp_signature.nvim",
+		config = function()
+			require("lsp.sigHelp")
+		end,
+	},
 
 	--   Auto pairs
 	{
