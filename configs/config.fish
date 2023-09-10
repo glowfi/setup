@@ -513,7 +513,7 @@ function upgradeNeovim
         cd ..
         sudo rm -rf neovim
         cp -r ~/setup/configs/nvim ~/.config
-        for i in (seq 6)
+        for i in (seq 100)
             nvim --headless "+Lazy! sync" +qa
         end
     end
