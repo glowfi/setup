@@ -1,168 +1,175 @@
 local fn = vim.fn
 
--- Automatically install packer
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-	PACKER_BOOTSTRAP = fn.system({
+-- Automatically install lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
 		"git",
 		"clone",
-		"--depth",
-		"1",
-		"https://github.com/wbthomason/packer.nvim",
-		install_path,
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
 	})
-	print("Installing packer close and reopen Neovim...")
-	vim.cmd([[packadd packer.nvim]])
 end
-
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]])
+vim.opt.rtp:prepend(lazypath)
 
 -- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
+local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
 	return
 end
 
--- Have packer use a popup window
-packer.init({
-	display = {
-		open_fn = function()
-			return require("packer.util").float({ border = "rounded" })
-		end,
-	},
-})
-
 -- Plugins
-return require("packer").startup(function(use)
-	-- Packer Plugin Manager
-	use("wbthomason/packer.nvim")
-
+return require("lazy").setup({
 	-- Utilities
 
 	-- NNN File Manager
-	use({ "mcchrish/nnn.vim", config = [[require('core.filemanager')]] })
+	{
+		"mcchrish/nnn.vim",
+		config = function()
+			require("core.filemanager")
+		end,
+	},
 
 	-- Fuzzy search
-	use({
+	{
+		"nvim-lua/plenary.nvim",
+	},
+	{
 		"nvim-telescope/telescope.nvim",
 		requires = {
 			{ "nvim-lua/popup.nvim" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-fzy-native.nvim" },
 		},
-		config = [[require('core.telescope')]],
-	})
+		config = function()
+			require("core.telescope")
+		end,
+	},
 
 	-- Git Integration
-	use({
+	{
 		"lewis6991/gitsigns.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
-		config = [[require('core.gitsigns')]],
+		config = function()
+			require("core.gitsigns")
+		end,
 		event = "BufRead",
-	})
+	},
 
 	-- Code Runner
-	use({
+	{
 		"sbdchd/vim-run",
-		config = [[require('core.coderunner')]],
+		config = function()
+			require("core.coderunner")
+		end,
 		ft = { "javascript", "typescript", "python" },
-	})
+	},
 
 	-- Multi Cursor
-	use({
+	{
 		"mg979/vim-visual-multi",
-		branch = "master",
-		config = [[require('core.visualMulti')]],
-	})
+		config = function()
+			require("core.visualMulti")
+		end,
+	},
 
 	-- Auto Comments
-	use({
+	{
 		"terrortylor/nvim-comment",
-		config = [[require('core.comments')]],
+		config = function()
+			require("core.comments")
+		end,
 		event = "BufRead",
-	})
+	},
 
 	-- Tabs
-	use({
+	{
 		"romgrk/barbar.nvim",
 		requires = { "kyazdani42/nvim-web-devicons" },
 		event = "BufRead",
-		config = [[require('core.bufferline')]],
-	})
+		config = function()
+			require("core.bufferline")
+		end,
+	},
 
 	-- Colorizer
-	use({
+	{
 		"norcalli/nvim-colorizer.lua",
 		ft = { "css", "javascript", "vim", "html", "cpp", "conf" },
-		config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html','cpp','conf'}]],
-	})
+		config = function()
+			require("colorizer").setup({ "css", "javascript", "vim", "html", "cpp", "conf" })
+		end,
+	},
 
 	-- Ricing
 
 	-- Gruvbox theme
-	use({
+	{
 		"ellisonleao/gruvbox.nvim",
 		requires = { "rktjmp/lush.nvim" },
-		config = [[require('core.colorscheme')]],
-	})
+		config = function()
+			require("core.colorscheme")
+		end,
+	},
 
 	-- Status line
-	use({
+	{
 		"hoob3rt/lualine.nvim",
 		requires = { "kyazdani42/nvim-web-devicons" },
-		config = [[require('core.statusline')]],
+		config = function()
+			require("core.statusline")
+		end,
 		event = "BufWinEnter",
-	})
+	},
 
 	-- Devicons
-	use({ "kyazdani42/nvim-web-devicons" })
+	{ "kyazdani42/nvim-web-devicons" },
 
 	-- -- Dashboard
-	use({
+	{
 		"glepnir/dashboard-nvim",
 		event = "BufWinEnter",
-		config = [[require('core.dashboard')]],
-	})
+		config = function()
+			require("core.dashboard")
+		end,
+	},
 
 	-- Indentline
-	use({
+	{
 		"lukas-reineke/indent-blankline.nvim",
 		event = "BufRead",
-		config = [[require('core.indentline')]],
-	})
+		config = function()
+			require("core.indentline")
+		end,
+	},
 
 	-- Treesitter integrations
 
 	-- Treesitter
-	use({
+	{
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
-		config = [[require('core.treesitter')]],
-	})
+		config = function()
+			require("core.treesitter")
+		end,
+	},
 
 	-- Treesitter text-objects
-	use({ "nvim-treesitter/nvim-treesitter-textobjects" })
+	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 
 	-- Treesitter playground
-	use({ "nvim-treesitter/playground" })
-
-	-- Treesitter(integrated) Rainbow pairs
-	-- use({ "p00f/nvim-ts-rainbow" })
+	{ "nvim-treesitter/playground" },
 
 	-- Bracket Matchup
-	use({ "andymass/vim-matchup" })
+	{ "andymass/vim-matchup" },
 
 	-- Smart Commenting for complex filetypes
-	use({ "JoosepAlviste/nvim-ts-context-commentstring" })
+	{ "JoosepAlviste/nvim-ts-context-commentstring" },
 
 	-- HTML Autotag and Autorename tags
-	use({
+	{
 		"windwp/nvim-ts-autotag",
 		ft = {
 			"html",
@@ -173,59 +180,66 @@ return require("packer").startup(function(use)
 			"javascript.jsx",
 			"typescript.tsx",
 		},
-	})
+	},
 
 	-- Native LSP (ENGINE)
 
 	--   Nvim native LSP
-	use({ "neovim/nvim-lspconfig" })
+	{ "neovim/nvim-lspconfig" },
 
 	--   Auto completion
-	use({
+	{
 		"hrsh7th/nvim-cmp",
 		after = "nvim-lspconfig",
 		event = "InsertEnter *",
-		config = [[require('lsp.cmp')]],
-	})
-	use({
+		config = function()
+			require("lsp.cmp")
+		end,
+	},
+
+	{
 		"hrsh7th/cmp-nvim-lsp",
 		config = function()
 			require("cmp_nvim_lsp").setup({})
 		end,
-	})
-	use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
-	use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
+	},
+	{ "hrsh7th/cmp-path", after = "nvim-cmp" },
+	{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
 
 	--   Snippet engine
-	use({
+	{
 		"hrsh7th/vim-vsnip",
 		after = "nvim-cmp",
 		event = "InsertCharPre",
-		config = [[require('lsp.vsnip')]],
-	})
-	use({ "hrsh7th/cmp-vsnip", after = "nvim-cmp" })
+		config = function()
+			require("lsp.vsnip")
+		end,
+	},
+	{ "hrsh7th/cmp-vsnip", after = "nvim-cmp" },
 
 	--   Signature popup on typing
-	use({ "ray-x/lsp_signature.nvim", config = [[require('lsp.sigHelp')]] })
+	{ "ray-x/lsp_signature.nvim", config = [[require('lsp.sigHelp')]] },
 
 	--   Auto pairs
-	use({
+	{
 		"windwp/nvim-autopairs",
 		after = "nvim-cmp",
-		config = [[require('lsp.autopairs')]],
-	})
+		config = function()
+			require("lsp.autopairs")
+		end,
+	},
 
 	--   Null-ls
-	use({ "jose-elias-alvarez/null-ls.nvim" })
+	{ "jose-elias-alvarez/null-ls.nvim" },
 
 	-- Languages Plugins
 
 	--   Snippets
-	use({ "rafamadriz/friendly-snippets", event = "InsertCharPre" })
-	use({ "wyattferguson/jinja2-kit-vscode", event = "InsertCharPre" })
+	{ "rafamadriz/friendly-snippets", event = "InsertCharPre" },
+	{ "wyattferguson/jinja2-kit-vscode", event = "InsertCharPre" },
 
 	--   Typescript
-	use({
+	{
 		"jose-elias-alvarez/typescript.nvim",
 		ft = {
 			"javascript",
@@ -235,25 +249,31 @@ return require("packer").startup(function(use)
 			"javascript.jsx",
 			"typescript.tsx",
 		},
-	})
+	},
 
 	--   Markdown
-	use({
+	{
 		"iamcco/markdown-preview.nvim",
 		run = "cd app && yarn install",
 		ft = { "markdown" },
-		config = [[require('core.mkdp')]],
+		config = function()
+			require("core.mkdp")
+		end,
 		cmd = "MarkdownPreview",
-	})
+	},
 
-	use({
+	{
 		"folke/zen-mode.nvim",
-		config = [[require('core.zenmode')]],
-	})
+		config = function()
+			require("core.zenmode")
+		end,
+	},
 
-	use({
+	{
 		"lukas-reineke/headlines.nvim",
-		config = [[require('core.headlines')]],
+		config = function()
+			require("core.headlines")
+		end,
 		ft = { "markdown" },
-	})
-end)
+	},
+})

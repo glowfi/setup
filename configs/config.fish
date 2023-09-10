@@ -509,13 +509,13 @@ function upgradeNeovim
             sudo pacman -S --noconfirm neovim
         end
 
-        # Cleanup
+        # Copy Config and sync plugins
         cd ..
         sudo rm -rf neovim
         cp -r ~/setup/configs/nvim ~/.config
-        nvim -c PackerSync
-        nvim -c PackerSync
-        nvim -c PackerSync
+        for i in (seq 6)
+            nvim --headless "+Lazy! sync" +qa
+        end
     end
 end
 

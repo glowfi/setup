@@ -39,7 +39,6 @@ gitsigns.setup({
 	},
 	numhl = false,
 	linehl = false,
-	-- keymaps = { noremap = true, buffer = true },
 	watch_gitdir = { interval = 1000 },
 	sign_priority = 6,
 	update_debounce = 200,

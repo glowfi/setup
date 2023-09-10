@@ -14,7 +14,6 @@ if not cmp_status_ok then
 end
 
 cmp.setup({
-
 	window = {
 		documentation = {
 			border = "single",
@@ -25,13 +24,11 @@ cmp.setup({
 			min_height = 1,
 		},
 	},
-
 	snippet = {
 		expand = function(args)
 			vim.fn["vsnip#anonymous"](args.body)
 		end,
 	},
-
 	mapping = {
 		["<C-d>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -62,17 +59,14 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 	},
-
 	sources = {
 		{ name = "nvim_lsp" },
 		{ name = "path" },
 		{ name = "buffer" },
 		{ name = "vsnip" },
 	},
-
 	completion = { completeopt = "menu,menuone,noinsert", keyword_length = 1 },
 	experimental = { ghost_text = true, native_menu = false },
-
 	formatting = {
 		format = function(entry, vim_item)
 			local comp_kind = {

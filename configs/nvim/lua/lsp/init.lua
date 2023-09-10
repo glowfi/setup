@@ -6,11 +6,22 @@ vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text =
 vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "", numhl = "" })
 
 -- Keymappings
-vim.cmd("nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>")
-vim.cmd("nnoremap <silent> <F1>  <cmd>lua vim.lsp.buf.code_action()<CR>")
-vim.cmd("nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>")
-vim.cmd("nnoremap <silent> ga    <cmd>lua vim.lsp.buf.declaration()<CR>")
-vim.cmd("nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>")
+local nmap = function(keys, func, desc)
+	if desc then
+		desc = "LSP: " .. desc
+	end
+
+	vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+end
+
+nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
+nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 vim.cmd("nnoremap <silent> K     :lua vim.lsp.buf.hover()<CR>")
 vim.cmd(
 	"nnoremap <silent> <S-p> :lua vim.diagnostic.goto_prev({popup_opts = {border = 'rounded',max_width = 65,min_width = 35,max_height = math.floor(vim.o.lines * 0.3),min_height = 1}})<CR>"
@@ -147,20 +158,14 @@ require("lspconfig").gopls.setup({
 require("lspconfig").clangd.setup({})
 
 -- Lua LSP
--- local runtime_path = vim.split(package.path, ";")
--- table.insert(runtime_path, "lua/?.lua")
--- table.insert(runtime_path, "lua/?/init.lua")
-
--- lspconfig.lua_ls.setup({
--- 	settings = {
--- 		Lua = {
--- 			runtime = { version = "LuaJIT", path = runtime_path },
--- 			diagnostics = { globals = { "vim" } },
--- 			workspace = { library = vim.api.nvim_get_runtime_file("", true) },
--- 			telemetry = { enable = false },
--- 		},
--- 	},
--- })
+lspconfig.lua_ls.setup({
+	settings = {
+		Lua = {
+			workspace = { checkThirdParty = false },
+			telemetry = { enable = false },
+		},
+	},
+})
 
 -- HTML CSS
 lspconfig.html.setup({ capabilities = capabilities })

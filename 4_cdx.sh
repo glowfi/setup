@@ -500,9 +500,9 @@ cp -r $HOME/setup/configs/nvim $HOME/.config
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
-nvim -c PackerSync
-nvim -c PackerSync
-nvim -c PackerSync
+for i in (seq 6)
+    nvim --headless "+Lazy! sync" +qa
+end
 
 # ======================================================= END ======================================================================================
 

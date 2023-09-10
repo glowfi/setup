@@ -5,7 +5,6 @@ if not status_ok then
 end
 
 configs.setup({
-
 	-- Treesitter
 	ensure_installed = "all",
 	highlight = { enable = true, additional_vim_regex_highlighting = true },
@@ -19,24 +18,51 @@ configs.setup({
 			node_decremental = "grm",
 		},
 	},
-
-	-- Rainbow-pairs
-	rainbow = { enable = true, extended_mode = true, max_file_lines = 1000 },
-
 	-- Textobjects
 	textobjects = {
 		select = {
 			enable = true,
-			lookahead = true,
+			lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
 			keymaps = {
+				-- You can use the capture groups defined in textobjects.scm
+				["aa"] = "@parameter.outer",
+				["ia"] = "@parameter.inner",
 				["af"] = "@function.outer",
 				["if"] = "@function.inner",
 				["ac"] = "@class.outer",
 				["ic"] = "@class.inner",
 			},
 		},
+		move = {
+			enable = true,
+			set_jumps = true, -- whether to set jumps in the jumplist
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+		},
+		swap = {
+			enable = true,
+			swap_next = {
+				["<leader>a"] = "@parameter.inner",
+			},
+			swap_previous = {
+				["<leader>A"] = "@parameter.inner",
+			},
+		},
 	},
-
 	-- Playground
 	playground = {
 		enable = true,
@@ -56,10 +82,8 @@ configs.setup({
 			show_help = "?",
 		},
 	},
-
 	-- Matchup
 	matchup = { enable = true },
-
 	-- Autotag/Auto Rename HTML Tags
 	autotag = {
 		enable = true,
@@ -71,7 +95,6 @@ configs.setup({
 			"typescriptreact",
 		},
 	},
-
 	-- Smart Commenting
 	context_commentstring = { enable = true, enable_autocmd = false },
 })

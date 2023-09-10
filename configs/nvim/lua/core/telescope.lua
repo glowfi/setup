@@ -1,8 +1,11 @@
 -- Keymappings
-vim.cmd("nnoremap <silent><s-F> <cmd>lua require('telescope.builtin').find_files()<cr>")
-vim.cmd("nnoremap <silent><s-c> <cmd>Telescope live_grep<cr>")
-vim.cmd("nnoremap <silent>fb <cmd>Telescope buffers<cr>")
-vim.cmd("nnoremap <silent>fh <cmd>Telescope help_tags<cr>")
+vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]resume" })
 
 -- Settings
 local status_ok, telescope = pcall(require, "telescope")
