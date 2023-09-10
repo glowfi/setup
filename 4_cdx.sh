@@ -481,7 +481,7 @@ for i in (seq 2)
     npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
     pip uninstall -y cmake
 end
-install "cmake ninja tree-sitter xclip shfmt meson" "pac"
+install "cmake ninja tree-sitter tree-sitter-cli xclip shfmt meson" "pac"
 git clone https://github.com/neovim/neovim --depth 1
 cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"
@@ -499,7 +499,7 @@ cp -r $HOME/setup/configs/nvim $HOME/.config
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
-for i in (seq 100)
+for i in (seq 6)
     nvim --headless "+Lazy! sync" +qa
 end
 

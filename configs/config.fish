@@ -513,7 +513,7 @@ function upgradeNeovim
 
         # Copy Config and sync plugins
         cp -r ~/setup/configs/nvim ~/.config
-        for i in (seq 100)
+        for i in (seq 6)
             nvim --headless "+Lazy! sync" +qa
         end
     end
