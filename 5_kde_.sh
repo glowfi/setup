@@ -113,7 +113,13 @@ xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Clipboard
 clipmenud &
+
+# Kill Useless Process at startup
+~/.local/bin/uselesskill.sh &
 " >>$HOME/.xprofile
+
+cp -r ~/setup/scripts/uselesskill.sh ~/.local/bin/
+chmod +x ~/.local/bin/uselesskill.sh
 
 # ENABLE SDDM
 
