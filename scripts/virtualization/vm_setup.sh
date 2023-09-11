@@ -345,7 +345,7 @@ takeCliArguments() {
 			isWindows="$_isWindows"
 		else
 			echo "Please Enter Properly if you are trying to install Windows or not!"
-			exit 0
+			exit 1
 		fi
 	fi
 

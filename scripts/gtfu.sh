@@ -68,5 +68,5 @@ if [ -d "$PWD/.git" ]; then
 	fi
 else
 	echo "Not a Git Repository"
-	exit 0
+	exit 1
 fi

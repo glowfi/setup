@@ -244,8 +244,6 @@ userinfo() {
 
 configure() {
 
-	# Call above functions to take user input
-
 	clear
 	logo
 
@@ -296,15 +294,23 @@ configure() {
 		--align center --width 50 --margin "1 2" --padding "2 4" \
 		"$out"
 
-	echo "Are you sure want to go with above Configuration ?"
-	confirm=$(gum choose "yes" "restart")
+	echo "Are you sure want to go with above configuration ?"
+	confirm=$(gum choose "yes" "restart" "exit")
 
 	if [[ "$confirm" = "restart" ]]; then
 		rm -rf "$CONFIG_FILE"
 		configure
 	elif [[ "$confirm" = "yes" ]]; then
 		return
+	else
+		rm -rf "$CONFIG_FILE"
+		echo "Exited !"
+		exit 1
 	fi
-	clear
-	logo
 }
+
+# Take user input
+
+configure
+clear
+logo
