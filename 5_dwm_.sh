@@ -56,7 +56,7 @@ rm -rf volnoti
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
-# PICOM DISPLAY COMPOSITOR
+# Install picom compositor
 
 install "libev libconfig meson ninja uthash" "pac"
 # git clone https://github.com/pijulius/picom
@@ -70,7 +70,7 @@ cd ..
 rm -rf picom
 cp -r $HOME/setup/configs/picom $HOME/.config/
 
-# APPEARANCE
+# Appearance
 
 install "lxappearance-gtk3 qt5ct kvantum-qt5" "pac"
 
@@ -116,7 +116,7 @@ echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
 
 
-# SETUP DXHD
+# SETUP dxhd
 
 echo ""
 echo "-------------------------------------------------------------------------------"

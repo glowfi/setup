@@ -75,7 +75,7 @@ sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https -
 sudo pacman -Syyy'
 
 # Upgrade
-alias upgrade='mirru;sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm'
+alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done'"
 
 # Archive Unarchive aliases 
 alias comp='ouch compress'

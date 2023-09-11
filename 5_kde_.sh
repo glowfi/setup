@@ -31,6 +31,7 @@ install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
 # Setup nsxiv key-handler
+
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
@@ -149,7 +150,7 @@ echo ""
 mkdir -p $HOME/.local/share/kservices5
 cp -r $HOME/setup/configs/kittyhere.desktop $HOME/.local/share/kservices5
 
-# SETUP DXHD
+# SETUP dxhd
 
 echo ""
 echo "-------------------------------------------------------------------------------"
