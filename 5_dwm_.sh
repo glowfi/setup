@@ -193,20 +193,13 @@ dwmblocks &
 find "$HOME/.cache/" -name "lowbat*" -delete
 $HOME/.local/bin/lowbat.sh &
 
-# Kill Useless Process at startup
-~/.local/bin/uselesskill.sh &
-
 # Infinte loop
 while true;do
     $HOME/.config/DWM/dwm >/dev/null 2>&1
 done
 
 # DWM Execute
-exec $HOME/.config/DWM/dwm
-' >>$HOME/.xinitrc
-
-cp -r ~/setup/scripts/uselesskill.sh ~/.local/bin/
-chmod +x ~/.local/bin/uselesskill.sh
+exec $HOME/.config/DWM/dwm' >>$HOME/.xinitrc
 
 # Install DWM
 
