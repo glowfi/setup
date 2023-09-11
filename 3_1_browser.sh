@@ -99,7 +99,7 @@ cd
 ### Download Libredirect
 
 cd $HOME/Downloads
-wget "https://0x0.st/HfBK.0.json" -O "libredirect-settings.json"
+wget "https://0x0.st/Hfw2.0.json" -O "libredirect-settings.json"
 ver=$(echo "2.7.1")
 wget "https://github.com/libredirect/browser_extension/releases/download/v$ver/libredirect-$ver.crx"
 cd
