@@ -204,6 +204,13 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
+echo ""
+echo "-----------------------------------------------------------------"
+echo "--------------Configuring KDE Plasma...--------------------------"
+echo "-----------------------------------------------------------------"
+echo ""
+
+
 ### Plasma UI Settings
 
 # Set Plasma theme

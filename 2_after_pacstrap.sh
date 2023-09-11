@@ -4,7 +4,7 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
-# SET LOCATION AND SYNCHRONIZE HARDWARE CLOCK
+# Set location and Synchronize hardware clock
 
 echo ""
 echo "---------------------------------------------------------------------------------------"
@@ -17,7 +17,7 @@ ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
 hwclock --systohc
 echo "Done setting location and synchronizing hardware clock!"
 
-# SET KEYMAP
+# Set Keymap
 
 echo ""
 echo "---------------------------------------------------------------------------------------"
@@ -29,7 +29,7 @@ KEYMAP=$(sed -n '3p' <"$CONFIG_FILE")
 echo "KEYMAP=$KEYMAP" >>/etc/vconsole.conf
 echo "Keyboard layout set!"
 
-# OPTIMIZE MAKEPKG
+# Optimize makepkg flags
 
 echo ""
 echo "--------------------------------------------------------------"
@@ -48,7 +48,7 @@ if [[ $TOTALMEM -gt 8000000 ]]; then
 	sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 fi
 
-# LOCALE GENERATION
+# Set Locale
 
 echo ""
 echo "-----------------------------------------------------"
@@ -60,7 +60,7 @@ sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >>/etc/locale.conf
 
-# ADD FEATURES TO pacman.conf
+# Add features to pacman.conf
 
 echo ""
 echo "----------------------------------------------------------------"
@@ -72,7 +72,7 @@ sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 sudo pacman -Syy
 
-# SET HOSTNAME
+# Set Hostname
 
 echo ""
 echo "------------------------------------------------------"
@@ -87,12 +87,12 @@ echo "::1       localhost" >>/etc/hosts
 echo "127.0.1.1 $hostname.localdomain $hostname" >>/etc/hosts
 echo "Done setting hostname!"
 
-# SET USER
+# Add User
 
 echo ""
-echo "----------------------------------------------------------"
-echo "--------------Adding you as user...-----------------------"
-echo "----------------------------------------------------------"
+echo "----------------------------------------------"
+echo "--------------Adding user...------------------"
+echo "----------------------------------------------"
 echo ""
 
 uname=$(sed -n '6p' <"$CONFIG_FILE")
@@ -108,7 +108,7 @@ rpass=$(sed -n '9p' <"$CONFIG_FILE")
 echo "$uname:$upass" | chpasswd
 echo "root:$rpass" | chpasswd
 
-# DISPLAY DRIVERS
+# Install display drivers
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -116,7 +116,7 @@ echo "--------------Installing display driver...------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-## Determine GPU
+## Auto detect GPU and install drivers
 
 if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
@@ -142,12 +142,12 @@ elif lspci | grep -E "Integrated Graphics Controller"; then
 	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 fi
 
-# PACAKGES
+# Essential Packages
 
 echo ""
-echo "----------------------------------------------------------------"
-echo "--------------Installing some packages...-----------------------"
-echo "----------------------------------------------------------------"
+echo "---------------------------------------------------------------------"
+echo "--------------Installing Essential Packages...-----------------------"
+echo "---------------------------------------------------------------------"
 echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
@@ -159,7 +159,8 @@ elif [[ "$driveType" = "non-ssd" ]]; then
 
 fi
 
-# REPLACEMENTS OF SOME GNU COREUTILS AND SOME OTHER *nix PROGRAMS
+# Replacement of some GNU COREUTILS and some other *nix programs
+
 for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine && break || sleep 1; done
 
 # GRUB
@@ -208,12 +209,12 @@ else
 	fi
 fi
 
-# DISABLE WIFI POWERSAVER MODE
+# Disable WIFI powersaver mode
 
 LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
 echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
 
-# ENABLE PACKAGES
+# Enable Services
 
 echo ""
 echo "---------------------------------------------------------"
@@ -225,10 +226,10 @@ systemctl enable NetworkManager
 systemctl enable reflector.timer
 systemctl enable acpid
 
-# REMOVE SCRIPT DIRECTORY
-
-rm -rf setup
-
-# FIX AN ISSUE WITH BTRFS
+# Fix an issue with Timeshift related to BTRFS
 
 sed -i 's/subvolid.*,//' /etc/fstab
+
+# Remove setup files
+
+rm -rf setup

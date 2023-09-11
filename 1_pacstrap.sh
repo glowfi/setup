@@ -147,7 +147,7 @@ elif [[ "$FS" = "ext4" ]]; then
 	fi
 fi
 
-# INSTALL BASE SETUP
+# INSTALL BASE SYSTEM
 
 echo ""
 echo "----------------------------------------------------"
@@ -155,7 +155,8 @@ echo "--------------Pacstrapping...-----------------------"
 echo "----------------------------------------------------"
 echo ""
 
-## Determine Intel or AMD CPU
+## Auto Detect Intel or AMD CPU
+
 proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
 if [[ ${proc_type} =~ "GenuineIntel" ]]; then
 	echo ""
