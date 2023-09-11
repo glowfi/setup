@@ -15,7 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Use a protected call so we don't error out on first use
-local status_ok, lazy = pcall(require, "lazy")
+local status_ok, _ = pcall(require, "lazy")
 if not status_ok then
 	return
 end
@@ -91,16 +91,7 @@ return require("lazy").setup({
 		end,
 	},
 
-	-- Colorizer
-	{
-		"norcalli/nvim-colorizer.lua",
-		ft = { "css", "javascript", "vim", "html", "cpp", "conf" },
-		config = function()
-			require("colorizer").setup({ "css", "javascript", "vim", "html", "cpp", "conf" })
-		end,
-	},
-
-	-- Ricing
+	-- Visual
 
 	-- Gruvbox theme
 	{
@@ -121,15 +112,20 @@ return require("lazy").setup({
 		event = "BufWinEnter",
 	},
 
-	-- Devicons
-	{ "kyazdani42/nvim-web-devicons" },
-
-	-- -- Dashboard
+	-- Dashboard
 	{
 		"glepnir/dashboard-nvim",
 		event = "BufWinEnter",
 		config = function()
 			require("core.dashboard")
+		end,
+	},
+
+	-- Zenmode
+	{
+		"folke/zen-mode.nvim",
+		config = function()
+			require("core.zenmode")
 		end,
 	},
 
@@ -179,9 +175,9 @@ return require("lazy").setup({
 		},
 	},
 
-	-- Native LSP (ENGINE)
+	-- LSP
 
-	--   Nvim native LSP
+	--   nvim native LSP
 	{ "neovim/nvim-lspconfig" },
 
 	--   Auto completion
@@ -203,7 +199,7 @@ return require("lazy").setup({
 	{ "hrsh7th/cmp-path", after = "nvim-cmp" },
 	{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
 
-	--   Snippet engine
+	--   Snippet Engine and Snippets
 	{
 		"hrsh7th/vim-vsnip",
 		after = "nvim-cmp",
@@ -213,6 +209,8 @@ return require("lazy").setup({
 		end,
 	},
 	{ "hrsh7th/cmp-vsnip", after = "nvim-cmp" },
+	{ "rafamadriz/friendly-snippets", event = "InsertCharPre" },
+	{ "wyattferguson/jinja2-kit-vscode", event = "InsertCharPre" },
 
 	--   Signature popup on typing
 	{
@@ -236,10 +234,6 @@ return require("lazy").setup({
 
 	-- Languages Plugins
 
-	--   Snippets
-	{ "rafamadriz/friendly-snippets", event = "InsertCharPre" },
-	{ "wyattferguson/jinja2-kit-vscode", event = "InsertCharPre" },
-
 	--   Typescript
 	{
 		"jose-elias-alvarez/typescript.nvim",
@@ -262,13 +256,6 @@ return require("lazy").setup({
 			require("core.mkdp")
 		end,
 		cmd = "MarkdownPreview",
-	},
-
-	{
-		"folke/zen-mode.nvim",
-		config = function()
-			require("core.zenmode")
-		end,
 	},
 
 	{
