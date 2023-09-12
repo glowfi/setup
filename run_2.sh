@@ -40,12 +40,12 @@ chmod +x ~/setup/4_cdx.sh
 
 if [[ $choice == "KDE" ]]; then
 	clear
-	chmod +x ~/setup/5_kde_.sh
-	~/setup/5_kde_.sh
+	chmod +x ~/setup/5_kde.sh
+	~/setup/5_kde.sh
 elif [[ $choice == "DWM" ]]; then
 	clear
-	chmod +x ~/setup/5_dwm_.sh
-	~/setup/5_dwm_.sh $uname
+	chmod +x ~/setup/5_dwm.sh
+	~/setup/5_dwm.sh $uname
 fi
 
 ## REFETCHING SETUP
