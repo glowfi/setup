@@ -6,7 +6,7 @@ helpsection() {
 	echo "| It consist of the file with distro download functions (distrofunctions.sh) as well as this script (download.sh).                       | "
 	echo "| Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       | "
 	echo "| Change the download URL or something else, it might be required to do manual changes.                                                  | "
-	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr (these tools usually are preinstalled on linux)                            | "
+	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf (some tools usually are preinstalled on linux)                 | "
 	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
 	echo "| Scripts Used : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)                 | "
 	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
