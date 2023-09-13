@@ -347,7 +347,7 @@ takeInput() {
 
 	gpuList=$(lspci -k | grep VGA)
 	gpuList=$(echo -e "$gpuList\nSoftware")
-	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/None] :" | awk -F" " '{print $1}' | xargs)
+	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Software] :" | awk -F" " '{print $1}' | xargs)
 
 	if [[ "$_cores" != "" ]]; then
 		cores="$_cores"
