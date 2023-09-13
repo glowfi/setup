@@ -10,6 +10,7 @@ threads="2"
 ram="4G"
 vga="virtio"
 diskSize="30G"
+gpu=""
 VMS_PATH="$HOME/Downloads/VMS"
 VMS_ISO="$HOME/Downloads/VMS_ISO"
 CONFIG_FILE=".config"
@@ -84,6 +85,12 @@ addScripts() {
 		### Copy virtio
 		cp -r "${VMS_ISO}/virtio.iso" "${VMS_PATH}/${name}"
 
+		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		else
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-0000:${gpu}-render,seamless-migration=on \\"
+		fi
+
 		echo "#!/usr/bin/env bash
 
 # Kill all sockets
@@ -98,15 +105,19 @@ ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
-    -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \\
-    -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
+    -enable-kvm -machine q35,smm=on,vmport=off -cpu host,kvm=on,topoext \\
+    -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     -vga ${vga} \\
     -display none \\
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
     -device hda-duplex,audiodev=audio0 \\
+    -no-user-config \\
     -rtc base=localtime,clock=host,driftfix=slew \\
-    -spice disable-ticketing=on,port=5930,addr=127.0.0.1 \\
+	-global kvm-pit.lost_tick_policy=delay \\
+	-no-shutdown \\
+	-boot strict=on \\
+	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
     -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
@@ -136,6 +147,7 @@ qemu-system-x86_64 \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
     -monitor unix:"${name}-monitor.socket",server,nowait \\
     -serial unix:"${name}-serial.socket",server,nowait \\
+	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     -drive file=${name}.iso,media=cdrom \\
     -drive file=virtio.iso,media=cdrom \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
@@ -161,7 +173,16 @@ rm -rf "${name}.socket"
 # Kill any running python script qemu spicy
 ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
         ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
+
+		### Other OS
 	else
+
+		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		else
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-0000:${gpu}-render,seamless-migration=on \\"
+		fi
+
 		echo "#!/usr/bin/env bash
 
 # Kill all sockets
@@ -176,15 +197,19 @@ ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
-    -enable-kvm -machine q35,smm=off,vmport=off -cpu host,kvm=on,topoext \\
-    -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
+    -enable-kvm -machine q35,smm=on,vmport=off -cpu host,kvm=on,topoext \\
+    -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     -vga ${vga} \\
     -display none \\
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
     -device hda-duplex,audiodev=audio0 \\
+    -no-user-config \\
     -rtc base=localtime,clock=host,driftfix=slew \\
-    -spice disable-ticketing=on,port=5930,addr=127.0.0.1 \\
+	-global kvm-pit.lost_tick_policy=delay \\
+	-no-shutdown \\
+	-boot strict=on \\
+	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
     -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
@@ -215,6 +240,7 @@ qemu-system-x86_64 \\
     -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
     -monitor unix:"${name}-monitor.socket",server,nowait \\
     -serial unix:"${name}-serial.socket",server,nowait \\
+	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     -drive media=cdrom,index=0,file=${name}.iso \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
 
@@ -251,6 +277,8 @@ qemu-system-x86_64 -enable-kvm \\
 	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \\
 	-machine q35,accel=kvm,smm=on \\
 	-cpu host \\
+	-device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \\
+    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \\
 	-boot menu=on \\
 	-global driver=cfi.pflash01,property=secure,value=on \\
 	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
@@ -270,6 +298,8 @@ qemu-system-x86_64 -enable-kvm \\
 qemu-system-x86_64 -enable-kvm \\
 	-machine q35,accel=kvm,smm=on \\
 	-cpu host \\
+	-device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \\
+    -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \\
 	-boot menu=on \\
 	-drive file=Image.img \\
 	-m ${ram} \\
@@ -288,6 +318,7 @@ qemu-system-x86_64 -enable-kvm \\
 	echo "${ram}" >>"${CONFIG_FILE}"
 	echo "${cores}" >>"${CONFIG_FILE}"
 	echo "${vga}" >>"${CONFIG_FILE}"
+	echo "${gpu}" >>"${CONFIG_FILE}"
 	echo "${isWindows}" >>"${CONFIG_FILE}"
 }
 
@@ -314,6 +345,10 @@ takeInput() {
 	echo "Enter video drivers to use: (Default virtio) [virtio/qxl]"
 	read _vga
 
+	gpuList=$(lspci -k | grep VGA)
+	gpuList=$(echo -e "$gpuList\nSoftware")
+	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/None] :" | awk -F" " '{print $1}' | xargs)
+
 	if [[ "$_cores" != "" ]]; then
 		cores="$_cores"
 	fi
@@ -332,6 +367,10 @@ takeInput() {
 
 	if [[ "$_vga" != "" ]]; then
 		vga="$_vga"
+	fi
+
+	if [[ "$_gpu" != "" ]]; then
+		gpu="$_gpu"
 	fi
 
 }
@@ -408,7 +447,8 @@ if [[ "$unattendedUpdateScripts" = "yes" ]]; then
 	ram=$(sed -n '3p' <"$CONFIG_FILE")
 	cores=$(sed -n '4p' <"$CONFIG_FILE")
 	vga=$(sed -n '5p' <"$CONFIG_FILE")
-	isWindows=$(sed -n '6p' <"$CONFIG_FILE")
+	gpu=$(sed -n '6p' <"$CONFIG_FILE")
+	isWindows=$(sed -n '7p' <"$CONFIG_FILE")
 
 	find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
 	addScripts
@@ -420,7 +460,7 @@ else
 		cd "${goto}"
 		takeInput "resize"
 		configPath="${goto}/${CONFIG_FILE}"
-		isWindows=$(sed -n '6p' <"$configPath")
+		isWindows=$(sed -n '7p' <"$configPath")
 		find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
 		addScripts
 	fi
