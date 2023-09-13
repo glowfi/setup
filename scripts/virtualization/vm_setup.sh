@@ -71,6 +71,53 @@ while [[ $# > 0 ]]; do
 	shift
 done
 
+getGPUlist() {
+
+	#Initializing the list of all IOMMU groups
+	GROUP=$(find /sys/kernel/iommu_groups/ -type l | cut -d '/' -f 5,7 --output-delimiter='-')
+
+	for i in $GROUP; do
+
+		#K holds the group number
+		k=$(echo $i | cut -d '-' -f 1)
+
+		#L holds the address
+		l=$(echo $i | cut -d '-' -f 2)
+
+		#J holds the part of the address that's pasted into lspci to get the name
+		j=$(echo $i | cut -d ':' -f 2,3,4)
+
+		#M holds the kernel driver in use
+		m=$(lspci -k -s $j | grep "Kernel driver in use")
+
+		echo -n "Group: "
+
+		#This if-statement is here for proper alignment. If group is less than 10, a space is added.
+		if [ $k -lt 10 ]; then
+			echo -n " $k  "
+		else
+			echo -n " $k "
+		fi
+
+		#Outputting the address
+		echo -n " $l "
+
+		#Outputting the name and id
+		echo -n "$(lspci -nn | grep $j | cut -d ' ' -f 2-)"
+
+		#Only displays "   Driver:" if m is not an empty string
+		if ! [ -z "$m" ]; then
+			echo -n "   Driver:"
+		fi
+
+		#Outputting the kernel driver in use
+		echo "$m" | cut -d ':' -f 2
+
+		#The output is sorted numerically based on the second space-separated field.
+	done | sort -nk2
+
+}
+
 addScripts() {
 
 	### Copy OVMF_VARS
@@ -88,7 +135,7 @@ addScripts() {
 		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
 			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
 		else
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-0000:${gpu}-render,seamless-migration=on \\"
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
 		fi
 
 		echo "#!/usr/bin/env bash
@@ -105,7 +152,7 @@ ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
-    -enable-kvm -machine q35,smm=on,vmport=off -cpu host,kvm=on,topoext \\
+	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     -vga ${vga} \\
     -display none \\
@@ -115,7 +162,6 @@ qemu-system-x86_64 \\
     -no-user-config \\
     -rtc base=localtime,clock=host,driftfix=slew \\
 	-global kvm-pit.lost_tick_policy=delay \\
-	-no-shutdown \\
 	-boot strict=on \\
 	${spiceSettings}
     -device virtio-serial-pci \\
@@ -180,7 +226,7 @@ ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"
 		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
 			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
 		else
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-0000:${gpu}-render,seamless-migration=on \\"
+			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
 		fi
 
 		echo "#!/usr/bin/env bash
@@ -197,7 +243,7 @@ ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
-    -enable-kvm -machine q35,smm=on,vmport=off -cpu host,kvm=on,topoext \\
+	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     -vga ${vga} \\
     -display none \\
@@ -207,7 +253,6 @@ qemu-system-x86_64 \\
     -no-user-config \\
     -rtc base=localtime,clock=host,driftfix=slew \\
 	-global kvm-pit.lost_tick_policy=delay \\
-	-no-shutdown \\
 	-boot strict=on \\
 	${spiceSettings}
     -device virtio-serial-pci \\
@@ -345,9 +390,10 @@ takeInput() {
 	echo "Enter video drivers to use: (Default virtio) [virtio/qxl]"
 	read _vga
 
-	gpuList=$(lspci -k | grep VGA)
+	echo "Please be patient. This may take a couple seconds to detect GPU."
+	gpuList=$(getGPUlist | grep "VGA")
 	gpuList=$(echo -e "$gpuList\nSoftware")
-	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Software] :" | awk -F" " '{print $1}' | xargs)
+	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Software] :" | awk -F" " '{print $3}' | xargs)
 
 	if [[ "$_cores" != "" ]]; then
 		cores="$_cores"
