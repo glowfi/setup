@@ -132,10 +132,18 @@ addScripts() {
 		### Copy virtio
 		cp -r "${VMS_ISO}/virtio.iso" "${VMS_PATH}/${name}"
 
-		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		### Check video
+		if [[ "$vga" == "qxl" ]]; then
+			videoSettings="-vga qxl \\"
 		else
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
+			videoSettings="-device virtio-vga \\"
+		fi
+
+		### Check GPU
+		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		else
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
 		fi
 
 		echo "#!/usr/bin/env bash
@@ -154,7 +162,7 @@ qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
 	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
-    -vga ${vga} \\
+    ${videoSettings}
     -display none \\
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
@@ -166,26 +174,28 @@ qemu-system-x86_64 \\
 	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
-    -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
-    -chardev spicevmc,id=vdagent0,name=vdagent \\
-    -device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
-    -chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
-    -device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
-    -device virtio-rng-pci,rng=rng0 \\
-    -object rng-random,id=rng0,filename=/dev/urandom \\
-    -device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
-    -chardev spicevmc,id=usbredirchardev2,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
-    -chardev spicevmc,id=usbredirchardev3,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
-    -device pci-ohci,id=smartpass -device usb-ccid \\
-    -chardev spicevmc,id=ccid,name=smartcard \\
-    -device ccid-card-passthru,chardev=ccid \\
-    -device usb-ehci,id=input \\
-    -device usb-kbd,bus=input.0 \\
-    -k en-us \\
-    -device usb-mouse,bus=input.0 \\
+	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
+	-chardev spicevmc,id=vdagent0,name=vdagent \\
+	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
+	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
+	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
+	-device virtio-rng-pci,rng=rng0 \\
+	-object rng-random,id=rng0,filename=/dev/urandom \\
+	-device ich9-usb-ehci1,id=usb \\
+	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \\
+	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \\
+	-device ich9-usb-uhci3,masterbus=usb.0,firstport=4 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev1 \\
+	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev2 \\
+	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \\
+	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
+	-device usb-ccid -chardev spicevmc,name=smartcard,id=ccid -device ccid-card-passthru,chardev=ccid \\
+	-k en-us \\
+	-device usb-ehci,id=input \\
+	-device usb-kbd,bus=input.0 \\
+	-device usb-mouse,bus=input.0 \\
     -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
 	-drive file=Image.img \\
@@ -199,8 +209,8 @@ qemu-system-x86_64 \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
 
 
-# Open Spice Window
-        setsid spicy -p 5930 --title="${name}" &" >>start.sh
+        # Open remote viewer
+        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start.sh
 
 		chmod +x start.sh
 
@@ -223,10 +233,18 @@ ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"
 		### Other OS
 	else
 
-		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		### Check video
+		if [[ "$vga" == "qxl" ]]; then
+			videoSettings="-vga qxl \\"
 		else
-			spiceSettings="-spice port=5930,addr=127.0.0.1,disable-ticketing=on,image-compression=off,gl=off,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
+			videoSettings="-device virtio-vga \\"
+		fi
+
+		### Check GPU
+		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		else
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
 		fi
 
 		echo "#!/usr/bin/env bash
@@ -245,7 +263,7 @@ qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
 	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
-    -vga ${vga} \\
+    ${videoSettings}
     -display none \\
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
@@ -257,26 +275,29 @@ qemu-system-x86_64 \\
 	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
-    -device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
-    -chardev spicevmc,id=vdagent0,name=vdagent \\
-    -device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
-    -chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
-    -device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
-    -device virtio-rng-pci,rng=rng0 \\
-    -object rng-random,id=rng0,filename=/dev/urandom \\
-    -device qemu-xhci,id=spicepass -chardev spicevmc,id=usbredirchardev1,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
-    -chardev spicevmc,id=usbredirchardev2,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
-    -chardev spicevmc,id=usbredirchardev3,name=usbredir \\
-    -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
-    -device pci-ohci,id=smartpass -device usb-ccid \\
-    -chardev spicevmc,id=ccid,name=smartcard \\
-    -device ccid-card-passthru,chardev=ccid \\
-    -device usb-ehci,id=input \\
-    -device usb-kbd,bus=input.0 \\
-    -k en-us \\
-    -device usb-mouse,bus=input.0 -device virtio-net,netdev=nic \\
+	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
+	-chardev spicevmc,id=vdagent0,name=vdagent \\
+	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
+	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
+	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
+	-device virtio-rng-pci,rng=rng0 \\
+	-object rng-random,id=rng0,filename=/dev/urandom \\
+	-device ich9-usb-ehci1,id=usb \\
+	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \\
+	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \\
+	-device ich9-usb-uhci3,masterbus=usb.0,firstport=4 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev1 \\
+	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev2 \\
+	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \\
+	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
+	-device usb-ccid -chardev spicevmc,name=smartcard,id=ccid -device ccid-card-passthru,chardev=ccid \\
+	-k en-us \\
+	-device usb-ehci,id=input \\
+	-device usb-kbd,bus=input.0 \\
+	-device usb-mouse,bus=input.0 \\
+    -device virtio-net,netdev=nic \\
     -netdev user,hostname="${name}",hostfwd=tcp::22220-:22,id=nic \\
     -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
@@ -289,8 +310,8 @@ qemu-system-x86_64 \\
     -drive media=cdrom,index=0,file=${name}.iso \\
     -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
 
-# Open Spice Window
-        setsid spicy -p 5930 --title="${name}" &" >>start.sh
+        # Open remote viewer
+        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start.sh
 
 		chmod +x start.sh
 
