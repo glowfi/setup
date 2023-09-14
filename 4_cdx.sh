@@ -446,7 +446,7 @@ echo ""
 bash -c '(
 	echo n
 	echo y
-) | for i in {1..5}; do sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent qemu-hw-display-virtio-vga qemu-hw-display-virtio-gpu qemu-hw-usb-smartcard qemu-hw-usb-redirect qemu-hw-usb-host qemu-ui-spice-app qemu-audio-spice && break || sleep 1; done'
+) | for i in {1..5}; do sudo pacman -S dnsmasq virt-manager qemu-base ebtables edk2-ovmf qemu-ui-sdl spice spice-gtk spice-vdagent qemu-hw-display-virtio-vga qemu-hw-display-virtio-vga-gl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-gl virglrenderer virtiofsd qemu-hw-usb-smartcard qemu-hw-usb-redirect qemu-hw-usb-host qemu-ui-spice-app qemu-audio-spice && break || sleep 1; done'
 install "quickemu quickgui-bin qemu-audio-pa" "yay"
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
