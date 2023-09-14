@@ -196,6 +196,7 @@ qemu-system-x86_64 \\
 	-device usb-ehci,id=input \\
 	-device usb-kbd,bus=input.0 \\
 	-device usb-mouse,bus=input.0 \\
+    -usb -device usb-tablet \\
     -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
 	-drive file=Image.img \\
@@ -297,6 +298,7 @@ qemu-system-x86_64 \\
 	-device usb-ehci,id=input \\
 	-device usb-kbd,bus=input.0 \\
 	-device usb-mouse,bus=input.0 \\
+    -usb -device usb-tablet \\
     -device virtio-net,netdev=nic \\
     -netdev user,hostname="${name}",hostfwd=tcp::22220-:22,id=nic \\
     -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\

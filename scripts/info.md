@@ -60,17 +60,30 @@ qemu-system-x86_64 -enable-kvm \
 
 ### GPU Passthrough VFIO Devices
 
-#### Add sudo ####
-echo "Please Enter Your account Password :"
-sudo echo ""
+# Note
+login as sudo to qemu
+delete devices, set opengl off,delete drinode,vga none
 
+# Passthrough arguments
 -device vfio-pci,host=01:00.0,multifunction=on \
 -device vfio-pci,host=01:00.1 \
 
-### Delete everyting related to net netdev virtio-net devices to disable network Completely
+# Add this if u want to use lookin glass
+touch /dev/shm/looking-glass
+chown root:kvm /dev/shm/looking-glass
+chmod 660 /dev/shm/looking-glass
+
+
+### Extras
+
+# Delete everyting related to net netdev virtio-net devices to disable network Completely
 -nic none \
 -net none \
 -nodefaults \
+
+# Add Usb Devices
+-usb -device usb-host,vendorid=0x,productid=0x \
+-usb -device usb-tablet \
 ```
 
 ### FIREFOX
