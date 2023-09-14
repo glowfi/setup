@@ -136,7 +136,7 @@ addScripts() {
 		if [[ "$vga" == "qxl" ]]; then
 			videoSettings="-vga qxl \\"
 		else
-			videoSettings="-device virtio-vga \\"
+			videoSettings="-device virtio-vga-gl \\"
 		fi
 
 		### Check GPU
@@ -237,7 +237,7 @@ ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"
 		if [[ "$vga" == "qxl" ]]; then
 			videoSettings="-vga qxl \\"
 		else
-			videoSettings="-device virtio-vga \\"
+			videoSettings="-device virtio-vga-gl \\"
 		fi
 
 		### Check GPU
