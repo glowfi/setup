@@ -10,6 +10,7 @@ helpsection() {
 	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
 	echo "| Scripts Used : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)                 | "
 	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
+	echo ""
 	echo "+ How to use?"
 	echo "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading"
 	echo "+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading"
@@ -86,7 +87,7 @@ archurl() {
 
 manjarourl() {
 	mirror="https://manjaro.org/download/"
-	x=$(curl -s $mirror | grep btn-fi | grep xfce | awk -F"\"" '{ print $4 }')
+	x=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep minimal | grep kde | grep -E ".+.iso$")
 	new="$x"
 	output="manjaro.iso"
 	checkfile $1
