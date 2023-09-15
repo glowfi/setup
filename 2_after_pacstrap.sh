@@ -172,7 +172,7 @@ echo "-------------------------------------------------------"
 echo ""
 
 if [[ "$driveType" = "ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
 	grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "$driveType" = "non-ssd" ]]; then
 	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
@@ -245,6 +245,10 @@ fi
 
 LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
 echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+
+# Regenerate initramfs and install GRUB
+mkinitcpio -p linux-zen
+grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable Services
 
