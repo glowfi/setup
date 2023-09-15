@@ -263,8 +263,8 @@ diskEncryption() {
 		echo "encrypt" >>"$CONFIG_FILE"
 
 		# Input LUKS Password
-		echo ""
 		echo "Input LUKS Password"
+		echo ""
 		echo "What would be the password for LUKS Disk Encryption?"
 		passl1=$(gum input --password --placeholder "Password :")
 		echo "Type password for root account again"

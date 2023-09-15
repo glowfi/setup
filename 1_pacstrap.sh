@@ -54,17 +54,19 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 	# Encrypt and open LUKS partition
 	LUKS_PASSWORD=$(sed -n '12p' <"$CONFIG_FILE")
-	echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 -c aes-xts-plain64 -y --use-random /dev/disk/by-partlabel/Arch
-	echo "${LUKS_PASSWORD}" | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
 
 	# ADD FLAGS FOR SSD PERFORMANCE
 	driveType=$(sed -n '4p' <"$CONFIG_FILE")
 	if [[ "$driveType" = "ssd" ]]; then
+		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --type luks1 -c aes-xts-plain64 -s 512 --use-random /dev/disk/by-partlabel/Arch
 		if [[ ${DISK} =~ "nvme" ]]; then
 			echo "${LUKS_PASSWORD}" | cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent open "${DISK}p2" cryptroot
 		else
 			echo "${LUKS_PASSWORD}" | cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent open "${DISK}2" cryptroot
 		fi
+	else
+		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 -c aes-xts-plain64 -s 512 --use-random /dev/disk/by-partlabel/Arch
+		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
 	fi
 
 	# FORMAT
