@@ -92,7 +92,7 @@
     "NativeWindowOcclusionEnabled": true,
     "NearbyShareAllowed": false,
     "NetworkPredictionOptions": 2,
-    "NetworkServiceSandboxEnabled": true,
+    "NetworkServiceSandboxEnabled": false,
     "PasswordLeakDetectionEnabled": false,
     "PasswordManagerEnabled": false,
     "PaymentMethodQueryEnabled": false,
