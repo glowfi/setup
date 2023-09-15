@@ -171,11 +171,20 @@ echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
 echo ""
 
+encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
+
+if [[ "$encryptStatus" = "encrypt" ]]; then
+	tee -a /etc/default/grub <<EOF
+# Device encryption
+GRUB_ENABLE_CRYPTODISK=y
+EOF
+fi
+
 if [[ "$driveType" = "ssd" ]]; then
 	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
 	grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "$driveType" = "non-ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --recheck
 	grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
@@ -210,8 +219,6 @@ else
 fi
 
 # ENCRYPTED DEVICE
-
-encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
 
 if [[ "$encryptStatus" = "encrypt" ]]; then
 
