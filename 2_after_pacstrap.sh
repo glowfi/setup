@@ -226,16 +226,21 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	# Add to mkinitcpio
 	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-
-	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keyboard//g')
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keymap //g')
 	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
-	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keymap//g')
+	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keyboard //g')
 	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
+	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 	rep=$(echo $getReq | cut -d":" -f2 | sed 's/autodetect/autodetect keyboard keymap/g')
 	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
+	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 	rep=$(echo $getReq | cut -d":" -f2 | sed 's/filesystems/encrypt filesystems/g')
 	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
