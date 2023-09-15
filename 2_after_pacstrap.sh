@@ -226,13 +226,18 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	# Add to mkinitcpio
 	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-	rep=$(echo $getReq | cut -d":" -f2 | sed 's/filesystems/encrypt filesystems/g')
+
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keyboard//g')
 	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
-	# Add to GRUB
-	getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
-	getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
-	getOldArgs=$(echo "$getGrubDefaultArgs" | cut -d ":" -f2 | sed 's/.$//')
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/keymap//g')
+	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
+
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/autodetect/autodetect keyboard keymap/g')
+	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
+
+	rep=$(echo $getReq | cut -d":" -f2 | sed 's/filesystems/encrypt filesystems/g')
+	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 
 	DISK=$(sed -n '5p' <"$CONFIG_FILE")
 	if [[ ${DISK} =~ "nvme" ]]; then
@@ -264,6 +269,11 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 		echo "${LUKS_PASSWORD}" | cryptsetup -v luksAddKey "${DISK}2" /root/cryptlvm.keyfile
 
 	fi
+
+	# Add to GRUB
+	getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
+	getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
+	getOldArgs=$(echo "$getGrubDefaultArgs" | cut -d ":" -f2 | sed 's/.$//')
 
 	cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot root=\/dev\/mapper\/cryptroot cryptkey=rootfs:\/root\/cryptlvm.keyfile"
 	combinedArgsWithcryptstring="${getOldArgs} ${cryptstring}\""
