@@ -219,7 +219,7 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	getReq=$(cat /etc/mkinitcpio.conf | grep -En "^HOOKS=(.+)$" | head -1 | xargs)
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 	rep=$(echo $getReq | cut -d":" -f2 | sed 's/filesystems/encrypt filesystems/g')
-	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
+	sed -i "${getLineNumber}s/.*/${rep}/" /etc/mkinitcpio.conf
 	mkinitcpio -p linux-zen
 
 	# Add to GRUB
@@ -234,7 +234,7 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 		UUID_CRYPT_DEVICE=$(blkid | grep "${DISK}2" | cut -d" " -f2 | xargs)
 	fi
 
-	cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot root=/dev/mapper/cryptroot"
+	cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot root=\/dev\/mapper\/cryptroot"
 	combinedArgsWithcryptstring="${getOldArgs} ${cryptstring}\""
 	sed -i "${getLineNumber}s/.*/${combinedArgsWithcryptstring}/" /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
