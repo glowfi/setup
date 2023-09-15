@@ -220,6 +220,7 @@ fi
 
 # ENCRYPTED DEVICE
 
+LUKS_PASSWORD=$(sed -n '12p' <"$CONFIG_FILE")
 if [[ "$encryptStatus" = "encrypt" ]]; then
 
 	# Add to mkinitcpio
@@ -246,7 +247,7 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 		dd bs=512 count=4 if=/dev/random of=/root/cryptlvm.keyfile iflag=fullblock
 		chmod 000 /root/cryptlvm.keyfile
-		cryptsetup -v luksAddKey "${DISK}p2" /root/cryptlvm.keyfile
+		echo "${LUKS_PASSWORD}" | cryptsetup -v luksAddKey "${DISK}p2" /root/cryptlvm.keyfile
 
 	else
 		UUID_CRYPT_DEVICE=$(blkid | grep "${DISK}2" | cut -d" " -f2 | xargs)
@@ -260,7 +261,7 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 		dd bs=512 count=4 if=/dev/random of=/root/cryptlvm.keyfile iflag=fullblock
 		chmod 000 /root/cryptlvm.keyfile
-		cryptsetup -v luksAddKey "${DISK}2" /root/cryptlvm.keyfile
+		echo "${LUKS_PASSWORD}" | cryptsetup -v luksAddKey "${DISK}2" /root/cryptlvm.keyfile
 
 	fi
 
