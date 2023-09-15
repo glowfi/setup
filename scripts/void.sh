@@ -215,9 +215,9 @@ echo "[core]
 
 # Editor
 
-pip install neovim black flake8 beautysh
-pip uninstall -y cmake
+pip install neovim black flake8 shfmt
 sudo npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
+pip uninstall -y cmake
 sudo xbps-install -Sy cmake ninja tree-sitter xclip
 
 sudo xbps-install -Sy fortune-mod
