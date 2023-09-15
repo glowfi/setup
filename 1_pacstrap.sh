@@ -54,7 +54,7 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 	# Encrypt and open LUKS partition
 	LUKS_PASSWORD=$(sed -n '12p' <"$CONFIG_FILE")
-	echo "${LUKS_PASSWORD}" | cryptsetup --type luks2 --hash sha512 --use-random luksFormat /dev/disk/by-partlabel/Arch
+	echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 /dev/disk/by-partlabel/Arch
 	echo "${LUKS_PASSWORD}" | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
 
 	# FORMAT
