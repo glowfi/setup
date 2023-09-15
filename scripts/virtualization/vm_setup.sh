@@ -227,9 +227,8 @@ rm -rf "${name}-serial.socket"
 rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
-# Kill any running python script qemu spicy
-ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-        ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
+# Kill any running python script qemu with the vm name
+ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 
 		### Other OS
 	else
@@ -329,9 +328,8 @@ rm -rf "${name}-serial.socket"
 rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
-# Kill any running python script qemu spicy
-ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-        ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
+# Kill any running python script qemu with the vm name
+ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
 
 	fi
 
