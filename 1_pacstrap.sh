@@ -19,20 +19,7 @@ reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort
 pacman -S --noconfirm archlinux-keyring
 pacman -Syyy
 
-# ALIGN DISK
-
-echo ""
-echo "--------------------------------------------------"
-echo "-------Aligning new GPT partition...--------------"
-echo "--------------------------------------------------"
-echo ""
-
-DISK=$(sed -n '5p' <"$CONFIG_FILE")
-
-sgdisk -Z ${DISK}
-sgdisk -a 2048 -o ${DISK}
-
-# PARTITION
+# PARTITIONING
 
 echo ""
 echo "--------------------------------------------------"
@@ -40,111 +27,209 @@ echo "-------Auto partitioning the disk...--------------"
 echo "--------------------------------------------------"
 echo ""
 
-(
-	echo n
-	echo
-	echo
-	echo +300M
-	echo ef00
-	echo n
-	echo
-	echo
-	echo
-	echo
-	echo c
-	echo 1
-	echo "EFI"
-	echo c
-	echo 2
-	echo "Arch Linux"
-	echo w
-	echo Y
-) | gdisk ${DISK}
+DISK=$(sed -n '5p' <"$CONFIG_FILE")
 
-# FORMAT
+# Delete old partition layout and re-read partition table
+wipefs -af "${DISK}"
+sgdisk --zap-all --clear "${DISK}"
+partprobe "${DISK}"
 
-echo ""
-echo "-----------------------------------------------------"
-echo "--------------Formatting disk...---------------------"
-echo "-----------------------------------------------------"
-echo ""
+# Partition disk and re-read partition table
+sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI /dev/nvme0n1
+sgdisk -n 2:0:0 -t 2:8309 -c 2:Arch /dev/nvme0n1
+partprobe /dev/nvme0n1
 
-FS=$(sed -n '1p' <"$CONFIG_FILE")
+# Encryption status
+encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
 
-if [[ "$FS" = "btrfs" ]]; then
-	if [[ ${DISK} =~ "nvme" ]]; then
-		mkfs.fat -F32 "${DISK}p1"
-		mkfs.btrfs -f "${DISK}p2"
-	else
-		mkfs.fat -F32 "${DISK}1"
-		mkfs.btrfs -f "${DISK}2"
+if [[ "$encryptStatus" = "encrypt" ]]; then
+
+	# LUKS Setup
+
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "--------------LUKS Setup...--------------------------"
+	echo "-----------------------------------------------------"
+	echo ""
+
+	# Encrypt and open LUKS partition
+	echo ${LUKS_PASSWORD} | cryptsetup --type luks2 --hash sha512 --use-random luksFormat /dev/disk/by-partlabel/Arch
+	echo ${LUKS_PASSWORD} | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
+
+	# FORMAT
+
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "--------------Formatting disk...---------------------"
+	echo "-----------------------------------------------------"
+	echo ""
+
+	FS=$(sed -n '1p' <"$CONFIG_FILE")
+
+	if [[ "$FS" = "btrfs" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mkfs.fat -F32 "${DISK}p1"
+			mkfs.btrfs -f /dev/mapper/cryptroot
+		else
+			mkfs.fat -F32 "${DISK}1"
+			mkfs.btrfs -f /dev/mapper/cryptroot
+		fi
+
+	elif [[ "$FS" = "ext4" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mkfs.fat -F32 "${DISK}p1"
+			mkfs.ext4 -f /dev/mapper/cryptroot
+		else
+			mkfs.fat -F32 "${DISK}1"
+			mkfs.ext4 -f /dev/mapper/cryptroot
+		fi
+
 	fi
 
-elif [[ "$FS" = "ext4" ]]; then
-	if [[ ${DISK} =~ "nvme" ]]; then
-		mkfs.fat -F32 "${DISK}p1"
-		mkfs.ext4 -f "${DISK}p2"
-	else
-		mkfs.fat -F32 "${DISK}1"
-		mkfs.ext4 -f "${DISK}2"
+	# MOUNT
+
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "--------------Mounting disk...-----------------------"
+	echo "-----------------------------------------------------"
+	echo ""
+
+	if [[ "$FS" = "btrfs" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mount /dev/mapper/cryptroot /mnt
+			btrfs su cr /mnt/@
+			btrfs su cr /mnt/@home
+			btrfs su cr /mnt/@snapshots
+			btrfs su cr /mnt/@var_log
+			umount /mnt
+
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ /dev/mapper/cryptroot /mnt
+			mkdir -p /mnt/{home,.snapshots,var_log}
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home /dev/mapper/cryptroot /mnt/home
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots /dev/mapper/cryptroot /mnt/.snapshots
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log /dev/mapper/cryptroot /mnt/var_log
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}p1" /mnt/boot/efi
+		else
+			mount /dev/mapper/cryptroot /mnt
+			btrfs su cr /mnt/@
+			btrfs su cr /mnt/@home
+			btrfs su cr /mnt/@snapshots
+			btrfs su cr /mnt/@var_log
+			umount /mnt
+
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ /dev/mapper/cryptroot /mnt
+			mkdir -p /mnt/{home,.snapshots,var_log}
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home /dev/mapper/cryptroot /mnt/home
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots /dev/mapper/cryptroot /mnt/.snapshots
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log /dev/mapper/cryptroot /mnt/var_log
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}1" /mnt/boot/efi
+		fi
+	elif [[ "$FS" = "ext4" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mount -t ext4 /dev/mapper/cryptroot /mnt
+			umount /mnt
+
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}p1" /mnt/boot/efi
+		else
+			mount -t ext4 /dev/mapper/cryptroot /mnt
+			umount /mnt
+
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}1" /mnt/boot/efi
+		fi
 	fi
 
-fi
+elif [[ "$encryptStatus" = "noencrypt" ]]; then
 
-# MOUNT
+	# FORMAT
 
-echo ""
-echo "-----------------------------------------------------"
-echo "--------------Mounting disk...-----------------------"
-echo "-----------------------------------------------------"
-echo ""
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "--------------Formatting disk...---------------------"
+	echo "-----------------------------------------------------"
+	echo ""
 
-if [[ "$FS" = "btrfs" ]]; then
-	if [[ ${DISK} =~ "nvme" ]]; then
-		mount "${DISK}p2" /mnt
-		btrfs su cr /mnt/@
-		btrfs su cr /mnt/@home
-		btrfs su cr /mnt/@snapshots
-		btrfs su cr /mnt/@var_log
-		umount /mnt
+	FS=$(sed -n '1p' <"$CONFIG_FILE")
 
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ "${DISK}p2" /mnt
-		mkdir -p /mnt/{home,.snapshots,var_log}
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home "${DISK}p2" /mnt/home
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots "${DISK}p2" /mnt/.snapshots
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log "${DISK}p2" /mnt/var_log
-		mkdir -p /mnt/boot/efi
-		mount "${DISK}p1" /mnt/boot/efi
-	else
-		mount "${DISK}2" /mnt
-		btrfs su cr /mnt/@
-		btrfs su cr /mnt/@home
-		btrfs su cr /mnt/@snapshots
-		btrfs su cr /mnt/@var_log
-		umount /mnt
+	if [[ "$FS" = "btrfs" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mkfs.fat -F32 "${DISK}p1"
+			mkfs.btrfs -f "${DISK}p2"
+		else
+			mkfs.fat -F32 "${DISK}1"
+			mkfs.btrfs -f "${DISK}2"
+		fi
 
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ "${DISK}2" /mnt
-		mkdir -p /mnt/{home,.snapshots,var_log}
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home "${DISK}2" /mnt/home
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots "${DISK}2" /mnt/.snapshots
-		mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log "${DISK}2" /mnt/var_log
-		mkdir -p /mnt/boot/efi
-		mount "${DISK}1" /mnt/boot/efi
+	elif [[ "$FS" = "ext4" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mkfs.fat -F32 "${DISK}p1"
+			mkfs.ext4 -f "${DISK}p2"
+		else
+			mkfs.fat -F32 "${DISK}1"
+			mkfs.ext4 -f "${DISK}2"
+		fi
+
 	fi
-elif [[ "$FS" = "ext4" ]]; then
-	if [[ ${DISK} =~ "nvme" ]]; then
-		mount -t ext4 "${DISK}p2" /mnt
-		umount /mnt
 
-		mkdir -p /mnt/boot/efi
-		mount "${DISK}p1" /mnt/boot/efi
-	else
-		mount -t ext4 "${DISK}2" /mnt
-		umount /mnt
+	# MOUNT
 
-		mkdir -p /mnt/boot/efi
-		mount "${DISK}1" /mnt/boot/efi
+	echo ""
+	echo "-----------------------------------------------------"
+	echo "--------------Mounting disk...-----------------------"
+	echo "-----------------------------------------------------"
+	echo ""
+
+	if [[ "$FS" = "btrfs" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mount "${DISK}p2" /mnt
+			btrfs su cr /mnt/@
+			btrfs su cr /mnt/@home
+			btrfs su cr /mnt/@snapshots
+			btrfs su cr /mnt/@var_log
+			umount /mnt
+
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ "${DISK}p2" /mnt
+			mkdir -p /mnt/{home,.snapshots,var_log}
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home "${DISK}p2" /mnt/home
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots "${DISK}p2" /mnt/.snapshots
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log "${DISK}p2" /mnt/var_log
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}p1" /mnt/boot/efi
+		else
+			mount "${DISK}2" /mnt
+			btrfs su cr /mnt/@
+			btrfs su cr /mnt/@home
+			btrfs su cr /mnt/@snapshots
+			btrfs su cr /mnt/@var_log
+			umount /mnt
+
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@ "${DISK}2" /mnt
+			mkdir -p /mnt/{home,.snapshots,var_log}
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@home "${DISK}2" /mnt/home
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@snapshots "${DISK}2" /mnt/.snapshots
+			mount -o noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@var_log "${DISK}2" /mnt/var_log
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}1" /mnt/boot/efi
+		fi
+	elif [[ "$FS" = "ext4" ]]; then
+		if [[ ${DISK} =~ "nvme" ]]; then
+			mount -t ext4 "${DISK}p2" /mnt
+			umount /mnt
+
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}p1" /mnt/boot/efi
+		else
+			mount -t ext4 "${DISK}2" /mnt
+			umount /mnt
+
+			mkdir -p /mnt/boot/efi
+			mount "${DISK}1" /mnt/boot/efi
+		fi
 	fi
+
 fi
 
 # INSTALL BASE SYSTEM

@@ -242,6 +242,47 @@ userinfo() {
 
 }
 
+diskEncryption() {
+
+	echo ""
+	echo "---------------------------------------------------"
+	echo "------- Encrypt Full DISK...-----------------------"
+	echo "---------------------------------------------------"
+	echo ""
+
+	echo ""
+	echo ""
+	echo ""
+	echo "Want Full Disk Encryption ? :"
+
+	options=("yes" "no")
+	choose=$(gum choose "${options[@]}")
+
+	if [[ "$choose" == "yes" ]]; then
+		# Append Encryption status
+		echo "encrypt" >>"$CONFIG_FILE"
+
+		# Input LUKS Password
+		echo "Input LUKS Password"
+		echo "What would be the password for LUKS Disk Encryption?"
+		passl1=$(gum input --password --placeholder "Password :")
+		echo "Type password for root account again"
+		passl2=$(gum input --password --placeholder "Retype password:")
+		if [[ "$passl1" == "$passl2" ]]; then
+			LUKSPASS=$passl2
+			echo "$LUKSPASS" >>"$CONFIG_FILE"
+		else
+			echo "Password do not match.Try running the script again!"
+			rm -rf "$CONFIG_FILE"
+			exit 1
+		fi
+
+	else
+		# Append Encryption status
+		echo "noencrypt" >>"$CONFIG_FILE"
+	fi
+}
+
 configure() {
 
 	clear
@@ -261,6 +302,8 @@ configure() {
 	clear
 	userinfo
 	clear
+	diskEncryption
+	clear
 
 	# Confirmation
 
@@ -274,6 +317,11 @@ configure() {
 	_userPassword=$(cat "$CONFIG_FILE" | sed -n '8p')
 	_rootPassword=$(cat "$CONFIG_FILE" | sed -n '9p')
 	_hostname=$(cat "$CONFIG_FILE" | sed -n '10p')
+	_diskencrypt=$(cat "$CONFIG_FILE" | sed -n '11p')
+	if [[ "$_diskencrypt" = "encrypt" ]]; then
+		_lukspass=$(cat "$CONFIG_FILE" | sed -n '12p')
+		_diskencrypt="$_diskencrypt with LUKS  LUKSPASS : ${_lukspass}"
+	fi
 
 	out=$(
 		echo -e "====== Final Configuration ====== \n"
@@ -287,6 +335,7 @@ configure() {
 		echo "userPassword : ${_userPassword}"
 		echo "rootPassword : ${_rootPassword}"
 		echo "hostname : ${_hostname}"
+		echo "Disk Encryption : ${_diskencrypt}"
 	)
 
 	gum style \
