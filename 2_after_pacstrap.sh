@@ -280,7 +280,12 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
 	getOldArgs=$(echo "$getGrubDefaultArgs" | cut -d ":" -f2 | sed 's/.$//')
 
-	cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot root=\/dev\/mapper\/cryptroot cryptkey=rootfs:\/root\/cryptlvm.keyfile"
+	if [[ "$driveType" = "ssd" ]]; then
+		cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot:allow-discards root=\/dev\/mapper\/cryptroot cryptkey=rootfs:\/root\/cryptlvm.keyfile"
+	else
+		cryptstring="cryptdevice=${UUID_CRYPT_DEVICE}:cryptroot root=\/dev\/mapper\/cryptroot cryptkey=rootfs:\/root\/cryptlvm.keyfile"
+	fi
+
 	combinedArgsWithcryptstring="${getOldArgs} ${cryptstring}\""
 	sed -i "${getLineNumber}s/.*/${combinedArgsWithcryptstring}/" /etc/default/grub
 

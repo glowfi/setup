@@ -60,6 +60,9 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	if [[ "$driveType" = "ssd" ]]; then
 		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --type luks1 -c aes-xts-plain64 -s 512 --use-random /dev/disk/by-partlabel/Arch
 		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue /dev/disk/by-partlabel/Arch cryptroot
+	else
+		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 -c aes-xts-plain64 -s 512 --use-random /dev/disk/by-partlabel/Arch
+		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
 	fi
 
 	# FORMAT
