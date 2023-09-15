@@ -5,6 +5,10 @@ VM_PATH="$HOME/Downloads/VMS"
 
 # Choose VM
 vmlist=$(fd . "$VM_PATH" --type directory --max-depth 1 | rev | cut -d"/" -f2 | rev)
+if [[ "$vmlist" = "" ]]; then
+	echo "No VMS exists or created till now!"
+	exit 1
+fi
 choice1=$(echo "$vmlist" | fzf --prompt "Choose VM:")
 
 reconfigure() {
