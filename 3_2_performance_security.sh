@@ -21,12 +21,21 @@ sudo systemctl enable --now zramd
 
 # SETUP APPARMOR
 
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 lsm=landlock,lockdown,yama,apparmor,bpf"/' /etc/default/grub
-sudo grub-mkconfig -o /boot/grub/grub.cfg
 install "apparmor" "pac"
 sudo systemctl enable --now apparmor.service
 sudo echo "write-cache" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
 sudo echo "Optimize=compress-fast" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
+
+getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
+getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
+getOldArgs=$(cat /etc/default/grub | grep "GRUB_CMDLINE_LINUX_DEFAULT" | sed '$ s/.$//')
+req="lsm=landlock,lockdown,yama,apparmor,bpf"
+
+new="${getOldArgs} ${req}\""
+rep=$(echo "$new" | sed 's/\//\\\//g')
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
+
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # INCREASE VIRTUAL MEMORY
 
