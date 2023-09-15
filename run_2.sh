@@ -67,6 +67,11 @@ git clone https://github.com/glowfi/setup
 chmod +x ~/setup/3_2_performance_security.sh
 ~/setup/3_2_performance_security.sh
 
+## Regenerate GRUB and initramfs
+
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo mkinitcpio -p linux-zen
+
 ## CLEANUP
 
 echo ""

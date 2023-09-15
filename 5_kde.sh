@@ -148,7 +148,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 mkdir -p $HOME/.local/share/kservices5
-cp -r $HOME/setup/configs/kittyhere.desktop $HOME/.local/share/kservices5
+cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices5
 
 # SETUP dxhd
 
