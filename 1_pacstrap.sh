@@ -35,9 +35,9 @@ sgdisk --zap-all --clear "${DISK}"
 partprobe "${DISK}"
 
 # Partition disk and re-read partition table
-sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI /dev/nvme0n1
-sgdisk -n 2:0:0 -t 2:8309 -c 2:Arch /dev/nvme0n1
-partprobe /dev/nvme0n1
+sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "${DISK}"
+sgdisk -n 2:0:0 -t 2:8309 -c 2:Arch "${DISK}"
+partprobe "${DISK}"
 
 # Encryption status
 encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
