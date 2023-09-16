@@ -8,11 +8,6 @@ sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
 sudo pacman -Scc && sudo pacman -Syy
 
-# Get Dotfiles
-
-cd
-git clone https://github.com/glowfi/setup
-
 # Enable archlinux
 
 sudo pacman -S --noconfirm artix-archlinux-support
