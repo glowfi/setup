@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-# Synchronize
-
-pacman -Scc && pacman -Syy
-
-sudo pacman -Syyy
-
 # CACHE PASSWORD
 
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
+
+# Synchronize
+
+sudo pacman -Scc && sudo pacman -Syy
 
 # Get Dotfiles
 
