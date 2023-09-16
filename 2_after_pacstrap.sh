@@ -163,12 +163,12 @@ fi
 
 for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine && break || sleep 1; done
 
-# GRUB
+# Configuring GRUB and mkinitcpio
 
 echo ""
-echo "-------------------------------------------------------"
-echo "--------------Installing GRUB...-----------------------"
-echo "-------------------------------------------------------"
+echo "---------------------------------------------------------------------"
+echo "--------------Configuring GRUB and mkinitcpio...---------------------"
+echo "---------------------------------------------------------------------"
 echo ""
 
 ### Add a flag in GRUB config for encrypted disk
