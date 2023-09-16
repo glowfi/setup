@@ -171,21 +171,6 @@ echo "--------------THEMING GRUB...-------------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-### Enable logs while booting
-rep=$(cat /etc/default/grub | grep "GRUB_CMDLINE_LINUX_DEFAULT" | sed '$ s/.$//' | sed 's/ quiet//' | sed 's/\//\\\//g')
-replacewith="${rep}\""
-getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
-getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
-sudo sed -i "${getLineNumber}s/.*/${replacewith}/" /etc/default/grub
-
-### Set Resolution of GRUB
-rep=$(cat /etc/default/grub | grep "GRUB_GFXMODE=auto" | sed 's/auto/1920x1080/')
-getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_GFXMODE")
-getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
-sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
-
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-
 ### Theme
 git clone https://github.com/semimqmo/sekiro_grub_theme
 cd sekiro_grub_theme

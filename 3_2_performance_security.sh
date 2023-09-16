@@ -19,12 +19,17 @@ sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
 sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
 sudo systemctl enable --now zramd
 
-# SETUP APPARMOR
+# Install APPARMOR
 
 install "apparmor" "pac"
 sudo systemctl enable --now apparmor.service
+
+# Setup APPARMOR
+
 sudo echo "write-cache" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
 sudo echo "Optimize=compress-fast" | sudo tee -a /etc/apparmor/parser.conf >/dev/null
+
+# Add flags in GRUB config for apparmor
 
 getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
 getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)

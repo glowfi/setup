@@ -171,6 +171,8 @@ echo "--------------Installing GRUB...-----------------------"
 echo "-------------------------------------------------------"
 echo ""
 
+### Add a flag in GRUB config for encrypted disk
+
 encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
 
 if [[ "$encryptStatus" = "encrypt" ]]; then
@@ -180,6 +182,23 @@ GRUB_ENABLE_CRYPTODISK=y
 EOF
 fi
 
+### Add a flag in GRUB config for enabling logs while booting
+
+rep=$(cat /etc/default/grub | grep "GRUB_CMDLINE_LINUX_DEFAULT" | sed '$ s/.$//' | sed 's/ quiet//' | sed 's/\//\\\//g')
+replacewith="${rep}\""
+getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
+getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
+sudo sed -i "${getLineNumber}s/.*/${replacewith}/" /etc/default/grub
+
+### Add a flag in GRUB config for setting the resolution of the GRUB menu
+
+rep=$(cat /etc/default/grub | grep "GRUB_GFXMODE=auto" | sed 's/auto/1920x1080/')
+getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_GFXMODE")
+getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
+
+### Install GRUB
+
 if [[ "$driveType" = "ssd" ]]; then
 	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
 	grub-mkconfig -o /boot/grub/grub.cfg
@@ -188,7 +207,7 @@ elif [[ "$driveType" = "non-ssd" ]]; then
 	grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# Add Modules to load at start
+### Add Modules to load at start for btrfs and graphics drivers
 
 FS=$(sed -n '1p' <"$CONFIG_FILE")
 
@@ -218,7 +237,7 @@ else
 	fi
 fi
 
-# ENCRYPTED DEVICE
+### Add more flags in GRUB config for encrypted disk
 
 LUKS_PASSWORD=$(sed -n '12p' <"$CONFIG_FILE")
 if [[ "$encryptStatus" = "encrypt" ]]; then
@@ -275,7 +294,6 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 	fi
 
-	# Add to GRUB
 	getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
 	getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
 	getOldArgs=$(echo "$getGrubDefaultArgs" | cut -d ":" -f2 | sed 's/.$//')
