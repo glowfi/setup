@@ -124,7 +124,7 @@ set splitright
 function Func2X11()
 :call system('xclip -selection c', @r)
 endfunction
-vnoremap <F9> "ry:call Func2X11()<cr>
+vnoremap <C-c> "ry:call Func2X11()<cr>
 
 " Set terminal true colors
 set termguicolors
