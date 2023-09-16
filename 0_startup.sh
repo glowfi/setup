@@ -263,9 +263,8 @@ diskEncryption() {
 		echo "encrypt" >>"$CONFIG_FILE"
 
 		# Input LUKS Password
-		echo "Input LUKS Password"
-		echo ""
-		echo "What would be the password for LUKS Disk Encryption?"
+		echo -e "Input LUKS Password : \n"
+		echo -e "What would be the password for LUKS Disk Encryption? \n"
 		passl1=$(gum input --password --placeholder "Password :")
 		echo "Type password for root account again"
 		passl2=$(gum input --password --placeholder "Retype password:")
@@ -321,7 +320,9 @@ configure() {
 	_diskencrypt=$(cat "$CONFIG_FILE" | sed -n '11p')
 	if [[ "$_diskencrypt" = "encrypt" ]]; then
 		_lukspass=$(cat "$CONFIG_FILE" | sed -n '12p')
-		_diskencrypt="$_diskencrypt with LUKS  LUKSPASS : ${_lukspass}"
+		_diskencrypt="LUKS [aes-xts-plain64 256b]  LUKSPASS : ${_lukspass}"
+	else
+		_diskencrypt="none"
 	fi
 
 	out=$(
