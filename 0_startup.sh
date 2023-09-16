@@ -253,7 +253,7 @@ diskEncryption() {
 	echo ""
 	echo ""
 	echo ""
-	echo "Want Full Disk Encryption ? :"
+	echo -e "Want Full Disk Encryption ? :\n"
 
 	options=("yes" "no")
 	choose=$(gum choose "${options[@]}")
@@ -320,7 +320,7 @@ configure() {
 	_diskencrypt=$(cat "$CONFIG_FILE" | sed -n '11p')
 	if [[ "$_diskencrypt" = "encrypt" ]]; then
 		_lukspass=$(cat "$CONFIG_FILE" | sed -n '12p')
-		_diskencrypt="LUKS [aes-xts-plain64 256b]  LUKSPASS : ${_lukspass}"
+		_diskencrypt=$(echo -e "LUKS [aes-xts-plain64 256b] \nLUKSPASS : ${_lukspass}")
 	else
 		_diskencrypt="none"
 	fi
@@ -341,8 +341,8 @@ configure() {
 	)
 
 	gum style \
-		--foreground 255 --border-foreground 212 --border double \
-		--align center --width 50 --margin "1 2" --padding "2 4" \
+		--foreground 255 --border-foreground 39 --border double \
+		--align center --width 53 --margin "1 2" --padding "2 4" \
 		"$out"
 
 	echo "Are you sure want to go with above configuration ?"
