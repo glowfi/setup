@@ -189,7 +189,7 @@ echo ""
 fish -c "exit"
 cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 
-# COPY BASH inputrc VIM TMUX TO HOME
+# COPY BASH inputrc VIM TMUX SETTINGS TO HOME
 
 install "tmux" "pac"
 cp -r $HOME/setup/configs/.bashrc $HOME
@@ -200,7 +200,7 @@ git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyo
 make -C ble.sh install PREFIX=~/.local
 rm -rf ble.sh
 
-# COPY BASH inputrc VIM TMUX TO ROOT
+# COPY BASH inputrc VIM TMUX SETTINGS TO ROOT
 
 sudo cp $HOME/.bashrc /root/
 sudo cp $HOME/.inputrc /root/
