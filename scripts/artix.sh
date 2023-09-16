@@ -6,7 +6,7 @@ sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
 # Synchronize
 
-sudo pacman -Scc && sudo pacman -Syy
+sudo pacman -Syy
 
 # Enable archlinux
 
