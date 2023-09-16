@@ -34,6 +34,7 @@ sudo pacman -S --noconfirm python-pip
 pyloc=$(sudo fd . /usr/lib/ --type f --max-depth 2 | grep "EXTERNALLY-MANAGED" | head -1)
 sudo rm -rf "$pyloc"
 pip intall xhibit
+echo -e "\n" | sudo syslog-ng-update-virtualenv
 
 # nodeJS
 
@@ -214,38 +215,6 @@ cd
 
 ### Performance and Security
 
-# Source Helper
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-
-install() {
-
-	packages=($(echo "$1" | awk -F" " '{ print $0}'))
-	iteration=1
-	max_iteration=5
-
-	# Handle Repository
-	if [[ "$2" == "pac" ]]; then
-		while [ $iteration -le $max_iteration ]; do
-			sudo pacman -S --noconfirm "${packages[@]}" && break
-			iteration=$(($iteration + 1))
-		done
-	elif [[ "$2" == "yay" ]]; then
-		while [ $iteration -le $max_iteration ]; do
-			yay -S --noconfirm "${packages[@]}" && break
-			iteration=$(($iteration + 1))
-		done
-	fi
-
-	# Check Success
-	if [[ $iteration -eq $max_iteration ]]; then
-		# Append Failed to install packages to a file
-		echo "${packages[@]}" >>"$SCRIPT_DIR/err.txt"
-	else
-		echo "All packages installed successfully!"
-	fi
-
-}
-
 echo ""
 echo "------------------------------------------------------------------------------"
 echo "--------------CONFIGURING PERFORMANCE AND SECURITY...-------------------------"
@@ -259,7 +228,7 @@ sudo echo "Optimize=compress-fast" | sudo tee -a /etc/apparmor/parser.conf >/dev
 
 # Install APPARMOR
 
-install "apparmor-openrc" "pac"
+sudo pacman -S --noconfirm apparmor-openrc
 sudo rc-update add apparmor
 sudo rc-service apparmor start
 
@@ -282,7 +251,7 @@ sudo echo "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/90-override.
 
 # SETUP SSH
 
-install "openssh-openrc sshguard-openrc x11-ssh-askpass" "pac"
+sudo pacman -S --noconfirm openssh-openrc sshguard-openrc x11-ssh-askpass
 
 sudo rm -rf /etc/sshguard.conf
 sudo echo '# Full path to backend executable (required, no default)
