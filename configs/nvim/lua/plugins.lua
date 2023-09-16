@@ -143,7 +143,7 @@ return require("lazy").setup({
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate",
+		build = ":TSUpdate",
 		config = function()
 			require("core.treesitter")
 		end,
@@ -250,7 +250,7 @@ return require("lazy").setup({
 	--   Markdown
 	{
 		"iamcco/markdown-preview.nvim",
-		run = "cd app && yarn install",
+		build = "cd app && yarn install",
 		ft = { "markdown" },
 		config = function()
 			require("core.mkdp")
