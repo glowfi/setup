@@ -24,7 +24,7 @@ sudo pacman -Syy
 
 # Install base packages
 
-sudo pacman -S --noconfirm base-devel
+sudo pacman -S --noconfirm base-devel wget jq
 sudo pacman -S --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine fzf
 sudo pacman -S --noconfirm fish fzf git kitty vim
 
