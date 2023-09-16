@@ -220,6 +220,12 @@ if [[ "$FS" = "btrfs" ]]; then
 		grub-mkconfig -o /boot/grub/grub.cfg
 		mkinitcpio -p linux-zen
 		sudo systemctl enable grub-btrfsd
+	else
+		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
+		grub-mkconfig -o /boot/grub/grub.cfg
+		mkinitcpio -p linux-zen
+		sudo systemctl enable grub-btrfsd
 	fi
 else
 	if lspci | grep -E "NVIDIA|GeForce"; then
@@ -229,6 +235,12 @@ else
 	elif lspci | grep -E "Radeon"; then
 		sed -i 's/MODULES=()/MODULES=(amdgpu)/' /etc/mkinitcpio.conf
 		mkinitcpio -p linux-zen
+	else
+		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
+		grub-mkconfig -o /boot/grub/grub.cfg
+		mkinitcpio -p linux-zen
+		sudo systemctl enable grub-btrfsd
 	fi
 fi
 
