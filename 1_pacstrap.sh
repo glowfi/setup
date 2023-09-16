@@ -27,6 +27,10 @@ echo "-------Auto partitioning the disk...--------------"
 echo "--------------------------------------------------"
 echo ""
 
+# Encryption status
+encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
+
+# Disk to operate
 DISK=$(sed -n '5p' <"$CONFIG_FILE")
 
 # Delete old partition layout and re-read partition table
@@ -35,12 +39,14 @@ sgdisk --zap-all --clear "${DISK}"
 partprobe "${DISK}"
 
 # Partition disk and re-read partition table
-sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "${DISK}"
-sgdisk -n 2:0:0 -t 2:8309 -c 2:Arch "${DISK}"
+if [[ "$encryptStatus" = "encrypt" ]]; then
+	sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "${DISK}"
+	sgdisk -n 2:0:0 -t 2:8309 -c 2:"Arch Linux" "${DISK}"
+else
+	sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "${DISK}"
+	sgdisk -n 2:0:0 -t 2:8300 -c 2:"Arch Linux" "${DISK}"
+fi
 partprobe "${DISK}"
-
-# Encryption status
-encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
 
 if [[ "$encryptStatus" = "encrypt" ]]; then
 
@@ -58,11 +64,16 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 	# ADD FLAGS FOR SSD PERFORMANCE
 	driveType=$(sed -n '4p' <"$CONFIG_FILE")
 	if [[ "$driveType" = "ssd" ]]; then
-		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --type luks1 -c aes-xts-plain64 -s 256 --use-random /dev/disk/by-partlabel/Arch
-		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue /dev/disk/by-partlabel/Arch cryptroot
+		if [[ ${DISK} =~ "nvme" ]]; then
+			echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --type luks1 -c aes-xts-plain64 -s 256 --use-random "${DISK}p2"
+			echo "${LUKS_PASSWORD}" | cryptsetup luksOpen --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue "${DISK}p2" cryptroot
+		else
+			echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --type luks1 -c aes-xts-plain64 -s 256 --use-random "${DISK}2"
+			echo "${LUKS_PASSWORD}" | cryptsetup luksOpen --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue "${DISK}2" cryptroot
+		fi
 	else
-		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 -c aes-xts-plain64 -s 256 --use-random /dev/disk/by-partlabel/Arch
-		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen /dev/disk/by-partlabel/Arch cryptroot
+		echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --type luks1 -c aes-xts-plain64 -s 256 --use-random "${DISK}2"
+		echo "${LUKS_PASSWORD}" | cryptsetup luksOpen "${DISK}2" cryptroot
 	fi
 
 	# FORMAT
@@ -238,7 +249,6 @@ elif [[ "$encryptStatus" = "noencrypt" ]]; then
 			mount "${DISK}1" /mnt/boot/efi
 		fi
 	fi
-
 fi
 
 # INSTALL BASE SYSTEM

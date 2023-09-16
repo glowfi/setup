@@ -199,13 +199,8 @@ sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
 
 ### Install GRUB
 
-if [[ "$driveType" = "ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
-	grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ "$driveType" = "non-ssd" ]]; then
-	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --recheck
-	grub-mkconfig -o /boot/grub/grub.cfg
-fi
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
+grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Add Modules to load at start for btrfs and graphics drivers
 
