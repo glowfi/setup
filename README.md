@@ -9,6 +9,7 @@
 -   Zen kernel
 -   Btrfs
 -   Zram
+-   LUKS encryption
 -   Apparmor
 -   Dnscrypt
 -   Tweaks for security and performance
