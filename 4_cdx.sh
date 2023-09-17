@@ -127,12 +127,6 @@ sudo cp -r /usr/lib/python3.11/site-packages/tensorflow "$destinationLocation"
 set libiomp5Location (fd . /usr/lib/python3.11/site-packages | grep "solib" | head -1)
 sudo cp -r "$libiomp5Location" "$destinationLocation"
 
-# Copy a script
-pip install -U g4f
-pip install pyfzf
-cp -r $HOME/setup/scripts/ai .
-chmod +x ai
-
 ### Cleanup
 
 deactivate
@@ -140,10 +134,6 @@ rm -rf blog/ ci/ docs .git papers/ docker-compose.yml Dockerfile h2o-logo.svg LI
 cd ..
 mv h2ogpt llm
 cd
-
-### Insomnia
-install "insomnia-bin" "yay"
-cp -r $HOME/setup/configs/Insomnia/ $HOME/.config
 
 # ======================================================= END ======================================================================================
 
@@ -418,6 +408,9 @@ chmod +x $HOME/.local/bin/edit.sh
 cp -r $HOME/setup/scripts/bfilter.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/bfilter.sh
 
+### Insomnia
+install "insomnia-bin" "yay"
+cp -r $HOME/setup/configs/Insomnia/ $HOME/.config
 
 ### SETUP POSTGRES
 
@@ -482,11 +475,7 @@ for i in (seq 2)
     pip uninstall -y cmake
 end
 install "cmake ninja tree-sitter tree-sitter-cli xclip shfmt meson" "pac"
-git clone https://github.com/neovim/neovim --depth 1
-cd neovim
-sudo make CMAKE_BUILD_TYPE=Release install || install "neovim" "pac"
-cd ..
-sudo rm -rf neovim
+install "neovim" "pac"
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
 
@@ -496,14 +485,6 @@ xdg-mime default nvim.desktop text/plain
 # COPY NEOVIM SETTINGS
 
 cp -r $HOME/setup/configs/nvim $HOME/.config
-
-# ======================================================= Can Be Deleted for minimal install =======================================================
-
-for i in (seq 6)
-    nvim --headless "+Lazy! sync" +qa
-end
-
-# ======================================================= END ======================================================================================
 
 echo ""
 echo "----------------------------------------------------"
@@ -544,7 +525,6 @@ echo "----------------------------------------------------"
 echo "--------------Configuring git...--------------------"
 echo "----------------------------------------------------"
 echo ""
-
 
 # CONFIGURING GIT
 

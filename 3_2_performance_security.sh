@@ -302,17 +302,6 @@ sudo chmod 700 /etc/{iptables,nftables.conf}
 sudo systemctl enable --now nftables
 sudo systemctl restart --now nftables
 
-# POWERPLAN LINUX
-
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
-cd
-..
-sudo rm -rf auto-cpufreq
-
-cp -r $HOME/setup/scripts/powerplan.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/powerplan.sh
-
 # TIMESHIFT
 
 install "timeshift timeshift-autosnap" "yay"
