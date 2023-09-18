@@ -127,24 +127,28 @@ addScripts() {
 
 	touch start.sh
 
+	### Check vga type
+
+	if [[ "$vga" == "qxl" ]]; then
+		videoSettings="-vga qxl \\"
+		spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+	elif [[ "$vga" == "virtio" ]]; then
+		### Check GPU
+		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
+			videoSettings="-device virtio-vga \\"
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		else
+			videoSettings="-device virtio-vga-gl \\"
+			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
+		fi
+	fi
+
+	# Windows OS
+
 	if [[ "$isWindows" == "yes" || "$isWindows" == "y" ]]; then
 
 		### Copy virtio
 		cp -r "${VMS_ISO}/virtio.iso" "${VMS_PATH}/${name}"
-
-		### Check video
-		if [[ "$vga" == "qxl" ]]; then
-			videoSettings="-vga qxl \\"
-		else
-			videoSettings="-device virtio-vga-gl \\"
-		fi
-
-		### Check GPU
-		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
-		else
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
-		fi
 
 		echo "#!/usr/bin/env bash
 
@@ -215,37 +219,8 @@ qemu-system-x86_64 \\
 
 		chmod +x start.sh
 
-		### Cleanup Script
-
-		touch clean.sh
-
-		echo "#!/usr/bin/env bash
-
-# Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
-rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
-
-# Kill any running python script qemu with the vm name
-ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
-
 		### Other OS
 	else
-
-		### Check video
-		if [[ "$vga" == "qxl" ]]; then
-			videoSettings="-vga qxl \\"
-		else
-			videoSettings="-device virtio-vga-gl \\"
-		fi
-
-		### Check GPU
-		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
-		else
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
-		fi
 
 		echo "#!/usr/bin/env bash
 
@@ -316,11 +291,13 @@ qemu-system-x86_64 \\
 
 		chmod +x start.sh
 
-		### Cleanup Script
+	fi
 
-		touch clean.sh
+	### Cleanup Script
 
-		echo "#!/usr/bin/env bash
+	touch clean.sh
+
+	echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -330,8 +307,6 @@ rm -rf "${name}.socket"
 
 # Kill any running python script qemu with the vm name
 ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh
-
-	fi
 
 	chmod +x clean.sh
 
@@ -398,10 +373,12 @@ takeInput() {
 	echo "Enter ram to use: (Default 4G)"
 	read _ram
 
-	if [[ "$1" == "resize" ]]; then
+	if [[ "$1" == "reconf" ]]; then
 		echo "By how much the disk size to be increased : [Enter something sensisble like 100G(in gigabytes),100M(in megabytes),100K(in kilobytes)]"
 		read _diskSize
-		qemu-img resize ./Image.img "+${_diskSize}"
+		if [[ "_diskSize" != "" ]]; then
+			qemu-img resize ./Image.img "+${_diskSize}"
+		fi
 	else
 		echo "Enter Disk Size to use: (Default 30G) [Enter something sensisble like 100G(in gigabytes),100M(in megabytes),100K(in kilobytes)]"
 		read _diskSize
@@ -411,10 +388,14 @@ takeInput() {
 	echo "Enter video drivers to use: (Default virtio) [virtio/qxl]"
 	read _vga
 
-	echo "Please be patient. This may take a couple seconds to detect GPU."
-	gpuList=$(getGPUlist | grep "VGA")
-	gpuList=$(echo -e "$gpuList\nSoftware")
-	_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Software] :" | awk -F" " '{print $3}' | xargs)
+	if [[ "$_vga" != "virtio" && "$_vga" != "" ]]; then
+		_gpu="Software"
+	else
+		echo "Please be patient. This may take a couple seconds to detect GPU."
+		gpuList=$(getGPUlist | grep "VGA")
+		gpuList=$(echo -e "$gpuList\nUse basic Software rendering")
+		_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Bais Software rendering] :" | awk -F" " '{print $3}' | xargs)
+	fi
 
 	if [[ "$_cores" != "" ]]; then
 		cores="$_cores"
@@ -525,7 +506,7 @@ else
 		takeCliArguments
 	else
 		cd "${goto}"
-		takeInput "resize"
+		takeInput "reconf"
 		configPath="${goto}/${CONFIG_FILE}"
 		isWindows=$(sed -n '7p' <"$configPath")
 		find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
