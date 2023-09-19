@@ -202,6 +202,15 @@ xerourl() {
 	checkfile $1
 }
 
+cachyosurl() {
+	mirror="https://mirror.cachyos.org/ISO/kde/"
+	latest=$(curl "$mirror" | grep date | grep -oE '[0-9]{6,10}' | uniq | sort | tail -1)
+	iso=$(curl "$mirror$latest/" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$")
+	new="$mirror$latest/$iso"
+	output="cachyos.iso"
+	checkfile $1
+}
+
 debianurl() {
 	x="https://cdimage.debian.org/cdimage/weekly-builds/amd64/iso-dvd/debian-testing-amd64-DVD-1.iso"
 	new="$x"
@@ -1384,7 +1393,7 @@ netbootipxe() {
 }
 
 # Categories
-arch=(archlinux manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux)
+arch=(archlinux manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
@@ -1418,6 +1427,7 @@ archcraft=("ArchCraft" "amd64" "release" "archcrafturl")
 peux=("Peux" "amd64" "release" "peuxurl")
 bluestar=("Bluestar" "amd64" "release" "bluestarurl")
 xerolinux=("XeroLinux" "amd64" "rolling" "xerourl")
+cachyos=("CachyOS" "amd64" "latest" "cachyosurl")
 
 # Consider in the future if the distros continue to evolve
 # https://sourceforge.net/projects/calinixos/
