@@ -52,20 +52,20 @@ alias cat='bat --theme=gruvbox-dark'
 # Changing top to bottom
 alias top='btm --mem_as_value --color gruvbox'
 
-# Kitty aliases
+# Kitty
 alias disp='kitty +kitten icat'
 alias diff='kitty +kitten diff'
 
-# NNN alias
+# NNN
 alias n='nnn -d -e'
 
 # Reload dxhd
 alias dxrel='dxhd -r'
 
-# Git aliases
+# Git
 alias gt='gitui'
 
-# Neovim aliases
+# Neovim
 alias v='nvim'
 alias upgv="upgradeNeovim $argv[1]"
 
@@ -77,18 +77,18 @@ sudo pacman -Syyy'
 # Upgrade
 alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done'"
 
-# Archive Unarchive aliases 
+# Archive Unarchive
 alias comp='ouch compress'
 alias dcomp='ouch decompress'
 
-# Check-ur-requests alias
+# Check-ur-requests
 alias checkur="checkur.py"
 
-# xhibit alias
+# xhibit
 alias xbt="xhibit -cs gruvbox -rcn t"
 alias xi="randomImagexhibit"
 
-# sYT alais
+# sYT
 alias sYT="sYT.sh"
 
 # Terminal Schenanigans
@@ -98,38 +98,34 @@ alias suprise="suprise"
 alias wl="nsxiv -t ."
 alias pri="setWall"
 
-# PyPI package alias 
+# PyPI package build and upload
 alias pC="rm -rf build/ dist/ xhibit.egg-info/;python3 setup.py sdist bdist_wheel"
 alias tW="twine upload dist/*"
 
 # Browser-sync
 alias bs='browser-sync start --index $argv --server --files "./*.*"'
 
-# Postgres alias
+# Postgres
 alias pst='sudo systemctl start postgresql'
 alias psp='sudo systemctl stop postgresql'
 alias psql='psql -d delta'
 
-# Docker alias
+# Docker
 alias dst='sudo systemctl start docker.service'
 alias dsp='sudo systemctl stop docker.service;sudo systemctl disable docker.service'
 
-# Mongo alias
+# MongoDB
 alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
-# Search Pacakges in Repository
+# Search Packages in official repository
 alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' | xargs -ro sudo pacman -S"
-alias sxb='sudo xbps-query -Rs . | fzf -m | cut -d " " -f2 | xargs -ro sudo xbps-install -Sy'
-alias spkg='pkg search "^" | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg install'
 
 # Search AUR
 alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' | xargs -ro yay -S"
 
 # Uninstall Packages
 alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' | xargs -ro sudo pacman -Rns"
-alias pkgu='pkg info | fzf -m|cut -d " " -f1 |xargs -ro sudo pkg remove'
-alias xbu="xbps-query -m | fzf -m | xargs -ro sudo xbps-remove -R"
 
 # Cleanup
 alias cleanup='yes | sudo pacman -Sc;
@@ -139,7 +135,6 @@ rm -rf ~/.cache/*;
 printf "Cleaned Cache!\n";
 sudo pacman -Rns (pacman -Qtdq)  2> /dev/null;
 yes | printf "Cleaned Orphans!"'
-alias xbc="sudo xbps-remove -Oo;sudo rm /var/cache/xbps/*;sudo rm -rf $HOME/.cache"
 
 # DWM compile
 alias dwc="make clean;make"
@@ -153,7 +148,7 @@ alias sd="searchDirCurrent"
 # Find contents inside of the file and open in the editor
 alias sg="searchContents"
 
-# Bluetooth alias
+# Bluetooth
 alias bst='sudo systemctl enable bluetooth.service;sudo systemctl start bluetooth.service'
 alias bsp='sudo systemctl disable bluetooth.service;sudo systemctl stop bluetooth.service'
 
@@ -185,12 +180,8 @@ alias mvol='micVOl'
 # Open Carbon
 alias cbn='setsid xdg-open "https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=monokai&wt=none&l=auto&width=680&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code="'
 
-# Refresh dwmblocks 
-alias rb='pkill -RTMIN+10 dwmblocks'
-
 # Reset Git Head 
 alias gres="git reset --hard HEAD~1"
-alias gck="git checkout $argv[1]"
 
 # Get Dotfiles
 alias gdot="cd;rm -rf setup;git clone https://github.com/glowfi/setup"
@@ -519,6 +510,83 @@ function upgradeNeovim
     end
 end
 
+### SystemD Utility Functions
+
+function sysd
+    set services (systemctl list-unit-files --type=service | fzf | awk '{print $1}'| xargs)
+    set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable" | fzf | xargs)
+
+    if [ "$choice" = Start ]
+        sudo systemctl start "$services"
+        echo "Started!"
+
+    else if [ "$choice" = Stop ]
+        sudo systemctl stop "$services"
+        echo "Stopped!"
+
+    else if [ "$choice" = Restart ]
+        sudo systemctl restart "$services"
+        echo "Restarted!"
+
+    else if [ "$choice" = Status ]
+        echo "Status check"
+        sudo systemctl status "$services"
+
+    else if [ "$choice" = Enable ]
+        sudo systemctl enable "$services"
+        echo "Enabled!"
+
+    else if [ "$choice" = Disable ]
+        sudo systemctl disable "$services"
+        echo "Disabled!"
+    end
+end
+
+### Pyenv 
+
+# Function to activate virtual environment
+function acv
+    set pyenvLocation (echo "$HOME/.pyenv")
+    mkdir -p "$pyenvLocation/versions/systempython"
+
+    if test -n "$VIRTUAL_ENV"
+        echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
+    else
+        if test -d "$pyenvLocation"
+            set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
+            if [ $getChoice = systempython ]
+                echo "Switch to systems python!"
+                pyenv local --unset
+                python --version
+            else
+                if test -z "$getChoice"
+                    true
+                else
+                    set isPython (echo "$getChoice" | grep -E '^([0-9]+)\.[0-9]+(\.[0-9]+)?$')
+                    if test -z "$isPython"
+                        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
+                        source "$venvLocation"
+                        echo "Swtiched to virtual environment $getChoice!"
+                    else
+                        pyenv local --unset
+                        pyenv local "$getChoice"
+                        echo "Python Interpreter switched!"
+                        python --version
+                    end
+                end
+            end
+        end
+    end
+end
+
+# Source Pyenv
+set pyenvLocation (echo "$HOME/.pyenv")
+if test -d "$pyenvLocation"
+    set -Ux PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
+    pyenv init - | source
+end
+
 # ===================================================================
 #                            Theme
 # ===================================================================
@@ -527,9 +595,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "716s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "784s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "716s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "784s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -772,7 +840,7 @@ set -U fish_pager_color_progress brwhite --background=cyan
 
 
 # ===================================================================
-#                     Miscellaneous
+#                     Environment variables
 # ===================================================================
 
 # ENV Export
@@ -780,7 +848,8 @@ export EDITOR=nvim
 export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass
 export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
-# Bar as Manpager
+# Bat as Manpager
+export MANROFFOPT="-c"
 set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-dark -l man -p'"
 
 # NNN File Manager
@@ -796,88 +865,11 @@ else
     export QT_QPA_PLATFORMTHEME=qt5ct
 end
 
-# ENV Nvidia CUDA Export
+# Nvidia CUDA
 set venvname (echo "play")
 set cudnnLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/nvidia/cudnn")
 if test -d "$cudnnLocation"
     set CUDNN_PATH $cudnnLocation $CUDNN_PATH
     set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
     set PATH /opt/cuda/bin/ $PATH
-end
-
-### SystemD
-
-function sysd
-    set services (systemctl list-unit-files --type=service | fzf | awk '{print $1}'| xargs)
-    set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable" | fzf | xargs)
-
-    if [ "$choice" = Start ]
-        sudo systemctl start "$services"
-        echo "Started!"
-
-    else if [ "$choice" = Stop ]
-        sudo systemctl stop "$services"
-        echo "Stopped!"
-
-    else if [ "$choice" = Restart ]
-        sudo systemctl restart "$services"
-        echo "Restarted!"
-
-    else if [ "$choice" = Status ]
-        echo "Status check"
-        sudo systemctl status "$services"
-
-    else if [ "$choice" = Enable ]
-        sudo systemctl enable "$services"
-        echo "Enabled!"
-
-    else if [ "$choice" = Disable ]
-        sudo systemctl disable "$services"
-        echo "Disabled!"
-    end
-end
-
-### Pyenv 
-
-# Function to activate virtual environment
-function acv
-    set pyenvLocation (echo "$HOME/.pyenv")
-    mkdir -p "$pyenvLocation/versions/systempython"
-
-    if test -n "$VIRTUAL_ENV"
-        echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
-    else
-        if test -d "$pyenvLocation"
-            set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
-            if [ $getChoice = systempython ]
-                echo "Switch to systems python!"
-                pyenv local --unset
-                python --version
-            else
-                if test -z "$getChoice"
-                    true
-                else
-                    set isPython (echo "$getChoice" | grep -E '^([0-9]+)\.[0-9]+(\.[0-9]+)?$')
-                    if test -z "$isPython"
-                        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
-                        source "$venvLocation"
-                        echo "Swtiched to virtual environment $getChoice!"
-                    else
-                        pyenv local --unset
-                        pyenv local "$getChoice"
-                        echo "Python Interpreter switched!"
-                        python --version
-                    end
-                end
-            end
-        end
-    end
-end
-
-# Source Pyenv
-set pyenvLocation (echo "$HOME/.pyenv")
-if test -d "$pyenvLocation"
-    set -Ux PYENV_ROOT $HOME/.pyenv
-    fish_add_path $PYENV_ROOT/bin
-    pyenv init - | source
 end
