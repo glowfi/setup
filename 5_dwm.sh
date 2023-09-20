@@ -60,7 +60,6 @@ cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 # Install picom compositor
 
 install "libev libconfig meson ninja uthash" "pac"
-# git clone https://github.com/pijulius/picom
 git clone https://github.com/FT-Labs/picom
 cd picom
 git submodule update --init --recursive
