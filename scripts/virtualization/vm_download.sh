@@ -28,7 +28,7 @@ VMS_ISO="$HOME/Downloads/VMS_ISO"
 
 # Download functions and commands
 
-wgetcmd() {
+download() {
 	mkdir -p "${VMS_ISO}"
 	cd "${VMS_ISO}"
 	echo "Downloading $new to $output"
@@ -70,7 +70,7 @@ checkfile() {
 	if [ "$1" == "filesize" ]; then
 		[ -s $output ] && getsize || empty
 	else
-		wgetcmd
+		download
 	fi
 }
 
@@ -358,6 +358,14 @@ antixurl() {
 	x=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "sourceforge" | grep -E "runit" | grep -E "64" | grep -E "full")
 	new="$x"
 	output="antix.iso"
+	checkfile $1
+}
+
+trisquelurl() {
+	mirror="https://mirrors.ocf.berkeley.edu/trisquel-images/"
+	iso=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$" | grep trisquel | tail -1)
+	new="$mirror$iso"
+	output="trisquel.iso"
 	checkfile $1
 }
 
@@ -830,7 +838,7 @@ pfsenseurl() {
 		notlinux
 		getsize
 	else
-		[ ! -f $output ] && wgetcmd && echo "Please wait, unpacking pfSense..." && gzip -d $output || echo "pfSense already downloaded."
+		[ ! -f $output ] && download && echo "Please wait, unpacking pfSense..." && gzip -d $output || echo "pfSense already downloaded."
 	fi
 }
 
@@ -844,7 +852,7 @@ opnsenseurl() {
 		notlinux
 		getsize
 	else
-		[ ! -f $output ] && wgetcmd && echo "Please wait, unpacking opnsense..." && bzip2 -k -d $output && rm $output || echo "OpnSense already downloaded."
+		[ ! -f $output ] && download && echo "Please wait, unpacking opnsense..." && bzip2 -k -d $output && rm $output || echo "OpnSense already downloaded."
 	fi
 }
 
@@ -874,7 +882,7 @@ nomadbsdurl() {
 		notlinux
 		getsize
 	else
-		[[ ! -f $output && ! -f "nomadbsd.img" ]] && wgetcmd && echo "Please wait, unpacking NomadBSD..." && lzma -d $output || echo "NomadBSD already downloaded."
+		[[ ! -f $output && ! -f "nomadbsd.img" ]] && download && echo "Please wait, unpacking NomadBSD..." && lzma -d $output || echo "NomadBSD already downloaded."
 	fi
 }
 
@@ -921,7 +929,7 @@ minixurl() {
 		notlive
 		getsize
 	else
-		[ ! -f $output ] && wgetcmd && echo "Please wait, unpacking minix..." && bzip2 -k -d $output || echo "Minix already downloaded."
+		[ ! -f $output ] && download && echo "Please wait, unpacking minix..." && bzip2 -k -d $output || echo "Minix already downloaded."
 	fi
 }
 
@@ -934,7 +942,7 @@ haikuurl() {
 		notlinux
 		getsize
 	else
-		[ ! -f $output ] && wgetcmd && echo "Please wait, unzipping haiku..." && unzip $output && rm ReadMe.md && mv haiku*iso haiku.iso || echo "Haiku already downloaded."
+		[ ! -f $output ] && download && echo "Please wait, unzipping haiku..." && unzip $output && rm ReadMe.md && mv haiku*iso haiku.iso || echo "Haiku already downloaded."
 	fi
 }
 
@@ -946,7 +954,7 @@ menueturl() {
 		notlinux
 		getsize
 	else
-		[ ! -f $output ] && wgetcmd && echo "Wait, unzipping menuetos..." && unzip $output && mv M64*.IMG menuetos.img || echo "Menuet already downloaded."
+		[ ! -f $output ] && download && echo "Wait, unzipping menuetos..." && unzip $output && mv M64*.IMG menuetos.img || echo "Menuet already downloaded."
 	fi
 }
 
@@ -957,7 +965,7 @@ kolibriurl() {
 		notlinux
 		getsize
 	else
-		[[ ! -f $output && ! -f "kolibri.iso" ]] && wgetcmd && echo "Un7zipping kolibri..." && 7z x $output && sleep 7 && rm $output && rm "INSTALL.TXT" || echo "Kolibri already downloaded."
+		[[ ! -f $output && ! -f "kolibri.iso" ]] && download && echo "Un7zipping kolibri..." && 7z x $output && sleep 7 && rm $output && rm "INSTALL.TXT" || echo "Kolibri already downloaded."
 	fi
 }
 
@@ -968,7 +976,7 @@ reactosurl() {
 		notlinux
 		getsize
 	else
-		[[ ! -f $output && ! -f "reactos.iso" ]] && wgetcmd && echo "Please wait, unzipping reactos..." && unzip $output && mv React*iso reactos.iso || echo "ReactOS already downloaded."
+		[[ ! -f $output && ! -f "reactos.iso" ]] && download && echo "Please wait, unzipping reactos..." && unzip $output && mv React*iso reactos.iso || echo "ReactOS already downloaded."
 	fi
 }
 
@@ -982,7 +990,7 @@ freedosurl() {
 		notlinux
 		getsize
 	else
-		[[ ! -f $output && ! -f "freedos.img" ]] && wgetcmd && echo "Please wait, unzipping FreeDOS..." && unzip $output && sleep 10 && rm $output && rm readme.txt && mv FD13BOOT.img freedos.img && mv FD13LIVE.iso freedos.iso || echo "FreeDOS already downloaded."
+		[[ ! -f $output && ! -f "freedos.img" ]] && download && echo "Please wait, unzipping FreeDOS..." && unzip $output && sleep 10 && rm $output && rm readme.txt && mv FD13BOOT.img freedos.img && mv FD13LIVE.iso freedos.iso || echo "FreeDOS already downloaded."
 	fi
 }
 
@@ -1337,12 +1345,14 @@ winget() {
 			"./win-${epoch}" "./modifications-${epoch}"
 	fi
 
+	cd "${VMS_ISO}"
+	rm -rf "virtio.iso"
+	sudo rm -rf "${VMS_ISO}/unattended"
+	clear
+
 	# DELETE CACHED PASSWORD
 	sudo sed -i '72d' /etc/sudoers
 
-	cd "${VMS_ISO}"
-	rm -rf "virtio.iso"
-	clear
 	echo "Downloading Virtio Drivers for setting higher resolution ..."
 	if [[ "$1" != "win7x64-ultimate" ]]; then
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
@@ -1394,7 +1404,7 @@ netbootipxe() {
 
 # Categories
 arch=(archlinux manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix)
+deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
@@ -1452,6 +1462,7 @@ jingos=("JingOS" "amd64" "v0.9" "jingosurl")
 cutefishos=("CutefishOS" "amd64" "release" "cutefishosurl")
 parrot=("Parrot" "amd64" "testing" "parroturl")
 antix=("Antix" "amd64" "full" "antixurl")
+trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
 
 # Add if wanted
 # https://distrowatch.com/table.php?distribution=rebeccablackos

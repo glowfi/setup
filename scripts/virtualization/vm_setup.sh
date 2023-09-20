@@ -143,14 +143,24 @@ addScripts() {
 		fi
 	fi
 
-	# Windows OS
+	### Handle isos and shared folder
 
 	if [[ "$isWindows" == "yes" || "$isWindows" == "y" ]]; then
-
 		### Copy virtio
 		cp -r "${VMS_ISO}/virtio.iso" "${VMS_PATH}/${name}"
 
-		echo "#!/usr/bin/env bash
+		_iso_sharedfolder_string="-drive file=${name}.iso,media=cdrom \\
+		-drive file=virtio.iso,media=cdrom \\
+-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
+		"
+	else
+		_iso_sharedfolder_string="-drive media=cdrom,file=${name}.iso \\
+		-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &"
+	fi
+
+	### Startup script
+
+	echo "#!/usr/bin/env bash
 
 # Kill all sockets
 rm -rf "${name}-monitor.socket"
@@ -158,9 +168,8 @@ rm -rf "${name}-serial.socket"
 rm -rf "${name}-agent.sock"
 rm -rf "${name}.socket"
 
-# Kill any running python script qemu spicy
-ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
+# Kill any running python script qemu with process name as the current os name
+ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
@@ -209,89 +218,13 @@ qemu-system-x86_64 \\
     -monitor unix:"${name}-monitor.socket",server,nowait \\
     -serial unix:"${name}-serial.socket",server,nowait \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
-    -drive file=${name}.iso,media=cdrom \\
-    -drive file=virtio.iso,media=cdrom \\
-    -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
+    ${_iso_sharedfolder_string}
 
 
         # Open remote viewer
         remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start.sh
 
-		chmod +x start.sh
-
-		### Other OS
-	else
-
-		echo "#!/usr/bin/env bash
-
-# Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
-rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
-
-# Kill any running python script qemu spicy
-ps aux | grep \"qemu\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-ps aux | grep \"spicy\"|head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
-
-qemu-system-x86_64 \\
-    -name "${name}",process=${name} \\
-	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
-    -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
-    ${videoSettings}
-    -display none \\
-    -audiodev spice,id=audio0 \\
-    -device intel-hda \\
-    -device hda-duplex,audiodev=audio0 \\
-    -no-user-config \\
-    -rtc base=localtime,clock=host,driftfix=slew \\
-	-global kvm-pit.lost_tick_policy=delay \\
-	-boot strict=on \\
-	${spiceSettings}
-    -device virtio-serial-pci \\
-    -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
-	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
-	-chardev spicevmc,id=vdagent0,name=vdagent \\
-	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
-	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
-	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
-	-device virtio-rng-pci,rng=rng0 \\
-	-object rng-random,id=rng0,filename=/dev/urandom \\
-	-device ich9-usb-ehci1,id=usb \\
-	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \\
-	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \\
-	-device ich9-usb-uhci3,masterbus=usb.0,firstport=4 \\
-	-chardev spicevmc,name=usbredir,id=usbredirchardev1 \\
-	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
-	-chardev spicevmc,name=usbredir,id=usbredirchardev2 \\
-	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
-	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \\
-	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
-	-device usb-ccid -chardev spicevmc,name=smartcard,id=ccid -device ccid-card-passthru,chardev=ccid \\
-	-k en-us \\
-	-device usb-ehci,id=input \\
-	-device usb-kbd,bus=input.0 \\
-	-device usb-mouse,bus=input.0 \\
-    -usb -device usb-tablet \\
-    -device virtio-net,netdev=nic \\
-    -netdev user,hostname="${name}",hostfwd=tcp::22220-:22,id=nic \\
-    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
-    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
-    -device virtio-blk-pci,drive=SystemDisk -drive id=SystemDisk,if=none,format=qcow2,file=Image.img \\
-    -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \\
-    -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
-    -monitor unix:"${name}-monitor.socket",server,nowait \\
-    -serial unix:"${name}-serial.socket",server,nowait \\
-	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
-    -drive media=cdrom,index=0,file=${name}.iso \\
-    -drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
-
-        # Open remote viewer
-        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start.sh
-
-		chmod +x start.sh
-
-	fi
+	chmod +x start.sh
 
 	### Cleanup Script
 
