@@ -163,14 +163,12 @@ addScripts() {
 	echo "#!/usr/bin/env bash
 
 # Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
 rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
 
 # Kill any running python script qemu with process name as the current os name
 ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
 
+# Startup script
 qemu-system-x86_64 \\
     -name "${name}",process=${name} \\
 	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
@@ -192,8 +190,6 @@ qemu-system-x86_64 \\
 	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
 	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
 	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
-	-device virtio-rng-pci,rng=rng0 \\
-	-object rng-random,id=rng0,filename=/dev/urandom \\
 	-device ich9-usb-ehci1,id=usb \\
 	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \\
 	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \\
@@ -204,19 +200,13 @@ qemu-system-x86_64 \\
 	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
 	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \\
 	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
-	-device usb-ccid -chardev spicevmc,name=smartcard,id=ccid -device ccid-card-passthru,chardev=ccid \\
 	-k en-us \\
 	-device usb-ehci,id=input \\
 	-device usb-kbd,bus=input.0 \\
 	-device usb-mouse,bus=input.0 \\
-    -usb -device usb-tablet \\
     -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
 	-drive file=Image.img \\
-    -fsdev local,id=fsdev0,path=/home/$USER/Public,security_model=mapped-xattr \\
-    -device virtio-9p-pci,fsdev=fsdev0,mount_tag=Public-$USER \\
-    -monitor unix:"${name}-monitor.socket",server,nowait \\
-    -serial unix:"${name}-serial.socket",server,nowait \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     ${_iso_sharedfolder_string}
 
@@ -233,10 +223,7 @@ qemu-system-x86_64 \\
 	echo "#!/usr/bin/env bash
 
 # Kill all sockets
-rm -rf "${name}-monitor.socket"
-rm -rf "${name}-serial.socket"
 rm -rf "${name}-agent.sock"
-rm -rf "${name}.socket"
 
 # Kill any running python script qemu with the vm name
 ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"" >>clean.sh

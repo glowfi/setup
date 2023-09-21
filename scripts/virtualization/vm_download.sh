@@ -994,6 +994,31 @@ freedosurl() {
 	fi
 }
 
+netbootxyz() {
+	mirror="https://boot.netboot.xyz/ipxe/netboot.xyz.iso"
+	new="$mirror"
+	output="netboot.xyz.iso"
+	checkfile $1
+}
+
+netbootsal() {
+	mirror="http://boot.salstar.sk/ipxe/ipxe.iso"
+	new="$mirror"
+	output="ipxe.iso"
+	checkfile $1
+}
+
+# this one is currently broken
+netbootipxe() {
+	#mirror="http://cloudboot.nchc.org.tw/cloudboot/cloudboot_img/cloudboot_1.0.iso"
+	mirror="http://boot.ipxe.org/ipxe.iso"
+	new="$mirror"
+	output="bootipxe.iso"
+	checkfile $1
+}
+
+## Windows
+
 unattended_windows() {
 	cat <<'EOF' >"${1}"
 <?xml version="1.0" encoding="utf-8"?>
@@ -1292,21 +1317,45 @@ callMido() {
 	rm -rf mido
 }
 
+downloadWindowsSpice() {
+	echo -e "Downloading Spice Agents for copy paste functionality ..."
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
+}
+
 winget() {
 	# CACHE PASSWORD
 	sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
 	mkdir -p "$VMS_ISO"
 
-	if [[ "$1" == "win7x64-ultimate" || "$1" == "win81x64" ]]; then
+	if [[ "$1" == "win7x64-ultimate" || "$1" == "win81x64" || "$1" == "win10x64-enterprise-ltsc-eval" ]]; then
+
 		cd "${VMS_ISO}"
+
+		# Download vanilla windows iso
+
 		callMido "$1"
+
+		# Download spice setup files
+
+		mkdir "windows-spice-setupfiles"
+		cd "windows-spice-setupfiles"
+		downloadWindowsSpice
+		cd ..
+
 	else
+
 		sudo rm -rf "${VMS_ISO}/unattended"
 		mkdir -p "${VMS_ISO}/unattended"
 		cd "${VMS_ISO}/unattended"
 
+		# Download vanilla windows iso
+
 		callMido "$1"
+
+		# Create iso with unattended.xml
 
 		mkdir mnt
 		sudo mount -o loop "$1.iso" mnt
@@ -1318,10 +1367,7 @@ winget() {
 		mkdir "modifications-${epoch}"
 		cd "modifications-${epoch}"
 		clear
-		echo -e "Downloading Spice Agents for copy paste functionality ..."
-		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
-		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
-		aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
+		downloadWindowsSpice
 		unattended_windows "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
 		cd ..
 
@@ -1347,14 +1393,15 @@ winget() {
 
 	cd "${VMS_ISO}"
 	rm -rf "virtio.iso"
-	sudo rm -rf "${VMS_ISO}/unattended"
 	clear
 
 	# DELETE CACHED PASSWORD
 	sudo sed -i '72d' /etc/sudoers
 
-	echo "Downloading Virtio Drivers for setting higher resolution ..."
+	# Download virtio drivers iso
+
 	if [[ "$1" != "win7x64-ultimate" ]]; then
+		echo "Downloading Virtio Drivers for setting higher resolution ..."
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
 	fi
 }
@@ -1379,27 +1426,9 @@ win11url() {
 	winget "win11x64"
 }
 
-netbootxyz() {
-	mirror="https://boot.netboot.xyz/ipxe/netboot.xyz.iso"
-	new="$mirror"
-	output="netboot.xyz.iso"
-	checkfile $1
-}
-
-netbootsal() {
-	mirror="http://boot.salstar.sk/ipxe/ipxe.iso"
-	new="$mirror"
-	output="ipxe.iso"
-	checkfile $1
-}
-
-# this one is currently broken
-netbootipxe() {
-	#mirror="http://cloudboot.nchc.org.tw/cloudboot/cloudboot_img/cloudboot_1.0.iso"
-	mirror="http://boot.ipxe.org/ipxe.iso"
-	new="$mirror"
-	output="bootipxe.iso"
-	checkfile $1
+win10ltscurl() {
+	output="Windows10-LTSC.iso"
+	winget "win10x64-enterprise-ltsc-eval"
 }
 
 # Categories
@@ -1410,12 +1439,13 @@ other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux 
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
-notlinux=(openindiana minix haiku menuetos kolibri reactos freedos windows7 windows8_1 windows10 windows11)
+notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
+windows=(windows7 windows8_1 windows10 windows11 win10ltsc)
 
 # All distributions
-category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux")
-distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux")
-distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}")
+category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows")
+distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows")
+distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}")
 
 # Legend ## Distroname ## Arch  ## Type     ## Download URL function name
 
@@ -1557,10 +1587,13 @@ menuetos=("MenuetOS" "amd64" "release" "menueturl")
 kolibri=("Kolibri" "amd64" "release" "kolibriurl")
 reactos=("ReactOS" "amd64" "release" "reactosurl")
 freedos=("FreeDOS" "amd64" "release" "freedosurl")
+
+# Windows
 windows7=("Windows7_Ultimate" "amd64" "latest" "win7url")
 windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
+win10ltsc=("Windows10ltsc" "amd64" "longterm-support" "win10ltscurl")
 
 drawmenu() {
 
