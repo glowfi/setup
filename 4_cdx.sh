@@ -209,15 +209,13 @@ echo ""
 
 # INSTALL CLANGD LSP
 
-set clangd_ver (echo "15.0.6")
 install "clang" "pac"
+set clangd_ver (echo "16.0.2")
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O $HOME/clangd.zip
 unzip $HOME/clangd.zip -d $HOME
 rm -rf $HOME/clangd.zip
 mv $HOME/clangd_"$clangd_ver" $HOME/.local/bin/clangd
 source $HOME/.config/fish/config.fish
-
-
 
 echo ""
 echo ---------------------------------------------------------------------------------------------
@@ -227,8 +225,8 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "3.6.10")
-wget "https://github.com/sumneko/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O $HOME/lua-ls.tar.gz
+set lua_ver (echo "3.7.0")
+wget "https://github.com/LuaLS/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O $HOME/lua-ls.tar.gz
 mkdir -p $HOME/lua-ls
 tar -xf $HOME/lua-ls.tar.gz -C $HOME/lua-ls/
 rm -rf $HOME/lua-ls.tar.gz
@@ -238,14 +236,14 @@ mv $HOME/lua-ls $HOME/.local/bin/luaLSP
 
 cargo install stylua
 
+
+# ======================================================= END ======================================================================================
+
 echo ""
 echo -----------------------------------------------------------------------------------
 echo "--------------Installing Fuzzy File Finder (fzf)...--------------------------------"
 echo -----------------------------------------------------------------------------------
 echo ""
-
-# ======================================================= END ======================================================================================
-
 
 # FZF TERMINAL INTEGRATION
 
@@ -532,7 +530,7 @@ echo "--------------Configuring git...--------------------"
 echo "----------------------------------------------------"
 echo ""
 
-# CONFIGURING GIT
+### Configuring git
 
 install "gitui github-cli" "pac"
 
