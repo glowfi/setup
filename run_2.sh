@@ -1,8 +1,14 @@
 #!/bin/sh
 
-clear
+echo ""
+echo "-------------------------------------------------------------"
+echo "--------------Installing Dependency ....---------------------"
+echo "------------------------------------------------------------ "
+echo ""
 
-#### RUN THIS SCRIPT AFTER RESTART
+echo ""
+sudo pacman -Syyy --noconfirm gum
+clear
 
 echo ""
 echo "-------------------------------------------------------------"

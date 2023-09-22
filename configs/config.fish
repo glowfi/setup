@@ -504,8 +504,10 @@ function upgradeNeovim
 
         # Copy Config and sync plugins
         cp -r ~/setup/configs/nvim ~/.config
-        for i in (seq 3)
-            nvim
+
+        # Sync Plugins
+        for i in (seq 6)
+            nvim --headless "+Lazy! sync" +qa
         end
     end
 end
@@ -595,9 +597,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "784s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "786s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "784s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "786s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

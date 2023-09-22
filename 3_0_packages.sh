@@ -152,32 +152,6 @@ sudo make clean install
 cd ..
 rm -rf tty-clock
 
-# ADD FEATURES TO sudoers
-
-echo ""
-echo "-------------------------------------------------------------------------"
-echo "--------------Adding insults on wrong password...------------------------"
-echo "-------------------------------------------------------------------------"
-echo ""
-
-sudo sed -i '71s/.*/Defaults insults/' /etc/sudoers
-echo "Done adding insults!"
-
-# THEMING GRUB
-
-echo ""
-echo "------------------------------------------------------------------------"
-echo "--------------THEMING GRUB...-------------------------------------------"
-echo "------------------------------------------------------------------------"
-echo ""
-
-### Theme
-git clone https://github.com/semimqmo/sekiro_grub_theme
-cd sekiro_grub_theme
-sudo ./install.sh
-cd ..
-rm -rf sekiro_grub_theme
-
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------COPYING SETTINGS...---------------------------------------"

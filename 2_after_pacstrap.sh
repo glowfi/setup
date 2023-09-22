@@ -151,17 +151,38 @@ echo "---------------------------------------------------------------------"
 echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
-if [[ "$driveType" = "ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof net-tools rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
 
-elif [[ "$driveType" = "non-ssd" ]]; then
-	for i in {1..5}; do pacman -Syyy --noconfirm grub efibootmgr ntfs-3g networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools reflector wget lsof net-tools rsync strace acpi acpi_call-dkms acpid && break || sleep 1; done
+for i in {1..5}; do
+	pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g && break || sleep 1
+done
 
-fi
+for i in {1..5}; do
+	pacman -Syyy --noconfirm networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools && break || sleep 1
+done
 
-# Replacement of some GNU COREUTILS and some other *nix programs
+for i in {1..5}; do
+	pacman -Syyy --noconfirm dialog mtools dosfstools && break || sleep 1
+done
 
-for i in {1..5}; do pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine && break || sleep 1; done
+for i in {1..5}; do
+	pacman -Syyy --noconfirm rsync reflector wget && break || sleep 1
+done
+
+for i in {1..5}; do
+	pacman -Syyy --noconfirm lsof strace bc && break || sleep 1
+done
+
+for i in {1..5}; do
+	pacman -Syyy --noconfirm acpi acpi_call-dkms acpid && break || sleep 1
+done
+
+for i in {1..5}; do
+	pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad git-delta tldr duf gping && break || sleep 1
+done
+
+for i in {1..5}; do
+	pacman -Syyy --noconfirm tokei hyperfine && break || sleep 1
+done
 
 # Configuring GRUB and mkinitcpio
 
@@ -319,7 +340,33 @@ if [[ "$encryptStatus" = "encrypt" ]]; then
 
 fi
 
-# Disable WIFI powersaver mode
+# ADD FEATURES TO sudoers
+
+echo ""
+echo "-------------------------------------------------------------------------"
+echo "--------------Adding insults on wrong password...------------------------"
+echo "-------------------------------------------------------------------------"
+echo ""
+
+sudo sed -i '71s/.*/Defaults insults/' /etc/sudoers
+echo "Done adding insults!"
+
+# THEMING GRUB
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "--------------THEMING GRUB...-------------------------------------------"
+echo "------------------------------------------------------------------------"
+echo ""
+
+### Theme
+git clone https://github.com/semimqmo/sekiro_grub_theme
+cd sekiro_grub_theme
+sudo ./install.sh
+cd ..
+rm -rf sekiro_grub_theme
+
+# Disable wifi powersaver mode
 
 LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
 echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
@@ -339,6 +386,17 @@ systemctl enable acpid
 # Fix an issue with Timeshift related to BTRFS
 
 sed -i 's/subvolid.*,//' /etc/fstab
+
+# Regenerate initramfs and update grub
+
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "--------------Regenerating initramfs and updating grub...-----------------------"
+echo "--------------------------------------------------------------------------------"
+echo ""
+
+grub-mkconfig -o /boot/grub/grub.cfg
+mkinitcpio -p linux-zen
 
 # Remove setup files
 
