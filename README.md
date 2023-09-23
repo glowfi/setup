@@ -73,7 +73,7 @@ Minimal DWM setup with minimal patches.
 
 **Base install**
 
-> Ethernet or Wifi must be up before running the script below
+> Connect to internet before running the below script
 
 ```sh
 
@@ -83,11 +83,9 @@ git clone https://github.com/glowfi/setup
 
 ```
 
-**DE/WM install**
+**DE/WM/Server install**
 
-> Restart before running the script below.
-
-<b>Run the below commands from home directory only.</b>
+> Restart and login as the new user created from above script and run the script below
 
 ```sh
 cd

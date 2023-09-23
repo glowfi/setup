@@ -25,7 +25,7 @@ isMinimal=$(gum choose "No" "Yes")
 clear
 
 echo -e "Choose DE/WM to Install :"
-choice=$(gum choose "DWM" "KDE")
+choice=$(gum choose "DWM" "KDE" "Server")
 
 ## MAKE SCRIPTS EXECUTABLE
 cd

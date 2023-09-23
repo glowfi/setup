@@ -270,6 +270,7 @@ chmod +x $HOME/.local/bin/checkur.py
 # INSTALL xhibit
 
 install "lsb-release" "pac"
+install "xorg-xdpyinfo xorg-xprop xorg-xwininfo xdotool" "pac"
 pip install xhibit
 
 # INSTALL sYT
@@ -307,7 +308,7 @@ chmod +x $HOME/.local/bin/formatDisk.sh
 cp -r $HOME/setup/scripts/rename.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/rename.sh
 
-install "xorg-xdpyinfo xdotool xorg-xprop xorg-xwininfo" "pac"
+install "xorg-xrandr" "pac"
 cp -r $HOME/setup/scripts/dm-record.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dm-record.sh
 
@@ -476,9 +477,14 @@ end
 install "cmake ninja tree-sitter tree-sitter-cli xclip shfmt meson" "pac"
 install "neovim" "pac"
 
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
 for i in (seq 6)
     nvim --headless "+Lazy! sync" +qa
 end
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
 

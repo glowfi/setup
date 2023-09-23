@@ -43,9 +43,6 @@ echo "--------------Installing required packages...---------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-## Xorg packages
-install "xorg-server" "pac"
-
 ### CORE (Main)
 install "zip unzip unrar p7zip lzop" "pac"
 install "ouch" "pac"
