@@ -494,6 +494,7 @@ xdg-mime default nvim.desktop text/plain
 # COPY NEOVIM SETTINGS
 
 cp -r $HOME/setup/configs/nvim $HOME/.config
+cp -r $HOME/setup/configs/nvim/.vsnip/ $HOME
 
 echo ""
 echo "----------------------------------------------------"

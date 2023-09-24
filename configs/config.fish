@@ -502,8 +502,9 @@ function upgradeNeovim
             sudo pacman -S --noconfirm neovim
         end
 
-        # Copy Config and sync plugins
+        # Copy Configs and snippets
         cp -r ~/setup/configs/nvim ~/.config
+        cp -r ~/setup/configs/nvim/.vsnip/ ~
 
         # Sync Plugins
         for i in (seq 6)
@@ -597,9 +598,9 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "786s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "787s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     else
-        gsed -i "786s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        gsed -i "787s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
