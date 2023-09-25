@@ -62,11 +62,21 @@ function searchFilesCurrent() {
 		def=$(xdg-mime query default "$ft")
 		case $def in
 		"nvim.desktop")
-			nvim $args
+			if which nvim >/dev/null; then
+				nvim "$args"
+			else
+				clear
+				vim "$args"
+			fi
 			;;
 
 		"")
-			nvim $args
+			if which nvim >/dev/null; then
+				nvim "$args"
+			else
+				clear
+				vim "$args"
+			fi
 			;;
 
 		*)
