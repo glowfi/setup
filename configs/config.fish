@@ -141,12 +141,15 @@ alias dwc="make clean;make"
 
 # Find files in current location and open in editor
 alias sf="searchFilesCurrent"
+alias sfh="searchFilesCurrent h"
 
 # Find directories in current location and cd into it
 alias sd="searchDirCurrent"
+alias sdh="searchDirCurrent h"
 
 # Find contents inside of the file and open in the editor
 alias sg="searchContents"
+alias sgh="searchContents h"
 
 # Bluetooth
 alias bst='sudo systemctl enable bluetooth.service;sudo systemctl start bluetooth.service'
@@ -212,90 +215,6 @@ alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber
 # Journal Logs
 alias jl='journalctl -b -p3 --no-hostname --no-pager'
 
-
-# ===================================================================
-#                         Git Functions
-# ===================================================================
-
-
-function git_is_repo -d "Check if directory is a repository"
-    test -d .git
-    or begin
-        set -l info (command git rev-parse --git-dir --is-bare-repository 2>/dev/null)
-        and test $info[2] = false
-    end
-end
-
-
-function git_ahead -a ahead behind diverged none
-    not git_is_repo; and return
-
-    set -l commit_count (command git rev-list --count --left-right "@{upstream}...HEAD" 2> /dev/null)
-
-    switch "$commit_count"
-        case ""
-            # no upstream
-        case "0"\t"0"
-            test -n "$none"; and echo "$none"; or echo ""
-        case "*"\t"0"
-            test -n "$behind"; and echo "$behind"; or echo -
-        case "0"\t"*"
-            test -n "$ahead"; and echo "$ahead"; or echo "+"
-        case "*"
-            test -n "$diverged"; and echo "$diverged"; or echo "±"
-    end
-end
-
-
-function git_branch_name -d "Get current branch name"
-    git_is_repo; and begin
-        command git symbolic-ref --short HEAD 2>/dev/null
-        or command git show-ref --head -s --abbrev | head -n1 2>/dev/null
-    end
-end
-
-
-function git_is_dirty -d "Check if there are changes to tracked files"
-    git_is_worktree; and not command git diff --no-ext-diff --quiet --exit-code
-end
-
-
-function git_is_staged -d "Check if repo has staged changes"
-    git_is_repo; and begin
-        not command git diff --cached --no-ext-diff --quiet --exit-code
-    end
-end
-
-
-function git_is_stashed -d "Check if repo has stashed contents"
-    git_is_repo; and begin
-        command git rev-parse --verify --quiet refs/stash >/dev/null
-    end
-end
-
-
-function git_is_touched -d "Check if repo has any changes"
-    git_is_worktree; and begin
-        # The first checks for staged changes, the second for unstaged ones.
-        # We put them in this order because checking staged changes is *fast*.
-        not command git diff-index --cached --quiet HEAD -- >/dev/null 2>&1
-        or not command git diff --no-ext-diff --quiet --exit-code >/dev/null 2>&1
-    end
-end
-
-
-function git_is_worktree -d "Check if directory is inside the worktree of a repository"
-    git_is_repo
-    and test (command git rev-parse --is-inside-git-dir) = false
-end
-
-
-function git_untracked -d "Print list of untracked files"
-    git_is_worktree; and begin
-        command git ls-files --other --exclude-standard
-    end
-end
-
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -322,9 +241,19 @@ function searchFilesCurrent
 
         switch $def
             case "nvim.desktop"
-                nvim (realpath "$args"); or clear && vim (realpath "$args")
+                if which nvim >/dev/null
+                    nvim "$args"
+                else
+                    clear
+                    vim "$args"
+                end
             case ""
-                nvim (realpath "$args"); or clear && vim (realpath "$args")
+                if which nvim >/dev/null
+                    nvim "$args"
+                else
+                    clear
+                    vim "$args"
+                end
             case '*'
                 setsid xdg-open (realpath "$args")
         end
@@ -350,10 +279,19 @@ end
 
 # Search Inside Files
 function searchContents
-    rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
+
+    if test -z "$argv[1]"
+        rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
 bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
+    else
+        rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . --hidden | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
+set loc1 (string split ":" {} -f2)
+set loc (string split ":" {} -f1)
+bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
+    end
+
     set fl (string split "``@``" $args -f1)
     set ln (string split "``@``" $args -f2)
     if test -z "$fl"
@@ -582,25 +520,98 @@ function acv
     end
 end
 
-# Source Pyenv
-set pyenvLocation (echo "$HOME/.pyenv")
-if test -d "$pyenvLocation"
-    set -Ux PYENV_ROOT $HOME/.pyenv
-    fish_add_path $PYENV_ROOT/bin
-    pyenv init - | source
+# ===================================================================
+#                    Git Functions [Used in prompt]
+# ===================================================================
+
+
+function git_is_repo -d "Check if directory is a repository"
+    test -d .git
+    or begin
+        set -l info (command git rev-parse --git-dir --is-bare-repository 2>/dev/null)
+        and test $info[2] = false
+    end
+end
+
+
+function git_ahead -a ahead behind diverged none
+    not git_is_repo; and return
+
+    set -l commit_count (command git rev-list --count --left-right "@{upstream}...HEAD" 2> /dev/null)
+
+    switch "$commit_count"
+        case ""
+            # no upstream
+        case "0"\t"0"
+            test -n "$none"; and echo "$none"; or echo ""
+        case "*"\t"0"
+            test -n "$behind"; and echo "$behind"; or echo -
+        case "0"\t"*"
+            test -n "$ahead"; and echo "$ahead"; or echo "+"
+        case "*"
+            test -n "$diverged"; and echo "$diverged"; or echo "±"
+    end
+end
+
+
+function git_branch_name -d "Get current branch name"
+    git_is_repo; and begin
+        command git symbolic-ref --short HEAD 2>/dev/null
+        or command git show-ref --head -s --abbrev | head -n1 2>/dev/null
+    end
+end
+
+
+function git_is_dirty -d "Check if there are changes to tracked files"
+    git_is_worktree; and not command git diff --no-ext-diff --quiet --exit-code
+end
+
+
+function git_is_staged -d "Check if repo has staged changes"
+    git_is_repo; and begin
+        not command git diff --cached --no-ext-diff --quiet --exit-code
+    end
+end
+
+
+function git_is_stashed -d "Check if repo has stashed contents"
+    git_is_repo; and begin
+        command git rev-parse --verify --quiet refs/stash >/dev/null
+    end
+end
+
+
+function git_is_touched -d "Check if repo has any changes"
+    git_is_worktree; and begin
+        # The first checks for staged changes, the second for unstaged ones.
+        # We put them in this order because checking staged changes is *fast*.
+        not command git diff-index --cached --quiet HEAD -- >/dev/null 2>&1
+        or not command git diff --no-ext-diff --quiet --exit-code >/dev/null 2>&1
+    end
+end
+
+
+function git_is_worktree -d "Check if directory is inside the worktree of a repository"
+    git_is_repo
+    and test (command git rev-parse --is-inside-git-dir) = false
+end
+
+
+function git_untracked -d "Print list of untracked files"
+    git_is_worktree; and begin
+        command git ls-files --other --exclude-standard
+    end
 end
 
 # ===================================================================
-#                            Theme
+#                         Prompt Theme
 # ===================================================================
 
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "787s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
-    else
-        gsed -i "787s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "798s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -782,12 +793,12 @@ function minimal
     echo -n ' '
 end
 
-
+# Current prompt theme
 function fish_prompt
     simple
 end
 
-
+# Command execution time
 function fish_right_prompt
 
     set -l S (math --scale 2 $CMD_DURATION/1000)
@@ -804,8 +815,7 @@ function fish_right_prompt
     set_color normal
 end
 
-
-# Fish Title 
+# Set title
 function fish_title
     echo fish
 end
@@ -875,4 +885,12 @@ if test -d "$cudnnLocation"
     set CUDNN_PATH $cudnnLocation $CUDNN_PATH
     set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
     set PATH /opt/cuda/bin/ $PATH
+end
+
+# Source Pyenv
+set pyenvLocation (echo "$HOME/.pyenv")
+if test -d "$pyenvLocation"
+    set -Ux PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
+    pyenv init - | source
 end

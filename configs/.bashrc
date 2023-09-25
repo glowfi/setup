@@ -8,8 +8,11 @@
 #                           Aliases
 # ===================================================================
 alias sf='searchFilesCurrent'
+alias sfh='searchFilesCurrent h'
 alias sd='searchDirCurrent'
+alias sdh='searchDirCurrent h'
 alias sg='searchContents'
+alias sgh='searchContents h'
 alias v='nvim'
 alias n='nnn -d -e'
 alias gt='gitui'
@@ -42,7 +45,7 @@ export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdb
 # ===================================================================
 
 # Utility variable
-go_loc_var=$(echo "$HOME/go")
+go_loc_var=$(echo "go")
 
 # Search Files in current working directory
 function searchFilesCurrent() {
@@ -94,7 +97,12 @@ function searchDirCurrent() {
 
 # Search Inside Files
 function searchContents() {
-	args=$(rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}')
+	if [[ "$1" == "h" ]]; then
+		args=$(rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . --hidden | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}')
+	else
+		args=$(rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {};set loc1 (string split ":" {} -f2);set loc (string split ":" {} -f1);bat --theme "gruvbox-dark" --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 " " $2}')
+	fi
+
 	fl=$(echo "$args" | awk -F" " '{print $1}')
 	ln=$(echo "$args" | awk -F" " '{print $2}')
 
