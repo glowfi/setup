@@ -360,11 +360,17 @@ echo "------------------------------------------------------------------------"
 echo ""
 
 ### Theme
-git clone https://github.com/semimqmo/sekiro_grub_theme
-cd sekiro_grub_theme
-sudo ./install.sh
+mkdir archlinux
+cd archlinux
+wget https://github.com/AdisonCavani/distro-grub-themes/raw/master/themes/arch-linux.tar
+tar -xvf ./arch-linux.tar
+rm -rf arch-linux.tar
 cd ..
-rm -rf sekiro_grub_theme
+sudo mkdir /boot/grub/themes/
+sudo cp -r archlinux /boot/grub/themes/
+rm -rf archlinux
+echo 'GRUB_THEME="/boot/grub/themes/archlinux/theme.txt"' | sudo tee -a /etc/default/grub >/dev/null
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # Disable wifi powersaver mode
 
