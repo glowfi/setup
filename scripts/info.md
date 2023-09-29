@@ -436,12 +436,144 @@ DXVK_ASYNC=1 __NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX
 # PYTHON DL MODULES
 
 ```fish
+
+# Install pyenv , setup local GPT
+
+echo ""
+echo -----------------------------------------------------------------------------------------------------------------
+echo "--------------Installing pyenv , Setting up local GPT , Installing base packages...------------------------------"
+echo -----------------------------------------------------------------------------------------------------------------
+echo ""
+
+cd
+
+### System Modules
+install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum numactl" "pac"
 install "python-opencv" "pac"
-install "cuda cudnn python-tensorflow-opt-cuda python-opt_einsum" "pac"
-install "numactl" "pac"
+
+### Install Pyenv
+
+# Download pyenv
+curl https://pyenv.run | bash
+source $HOME/.config/fish/config.fish
+
+# Create a Virtual env
+set venvname (echo "play")
+pyenv virtualenv "$venvname"
+set venvLocation (echo "$HOME/.pyenv/versions/$venvname/bin/activate.fish")
+source "$venvLocation"
+
+### Setup local GPT
+
+# Clone Repo
+cd
+git clone https://github.com/h2oai/h2ogpt
+cd h2ogpt
+pip install -r requirements.txt
+pip install -r reqs_optional/requirements_optional_langchain.txt
+pip install -r reqs_optional/requirements_optional_gpt4all.txt
+
+# Download LLM Models
+aria2c -j 16 -x 16 -s 16 -k 1M "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin" -o "llama-2-7b-chat.ggmlv3.q8_0.bin"
+aria2c -j 16 -x 16 -s 16 -k 1M "https://huggingface.co/TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGML/resolve/main/codeup-llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin" -o "llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin"
+
+# Create a script
+echo 'python generate.py --base_model="llama" --model-path=llama-2-13b-chat-hf.ggmlv3.q4_K_S.bin --prompt_type=llama2 --hf_embedding_model=sentence-transformers/all-MiniLM-L6-v2 --langchain_mode=UserData --user_path=user_path --llamacpp_dict="{'n_gpu_layers':25,'n_batch':128,'n_threads':6}" --load_8bit=True' > run.sh
+chmod +x run.sh
+
+### Install Base Packages for this env
+
 for i in (seq 2)
-pip install torch torchvision torchaudio
-pip install opencv-contrib-python
+    pip install torch torchvision torchaudio
+    pip install opencv-contrib-python
+    pip install wrapt gast astunparse opt_einsum
+    pip uninstall tensorflow
+end
+
+for i in (seq 3)
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install notebook==6.4.12
+    pip install pygments tqdm lxml
+    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
+    jupyter contrib nbextension install --user
+    jupyter nbextensions_configurator enable --user
+    pyppeteer-install
+end
+
+### Copy and Download required scripts
+
+# Copy tensorflow
+set destinationLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/")
+sudo cp -r /usr/lib/python3.11/site-packages/tensorflow "$destinationLocation"
+
+# Copy libiomp5.so
+set libiomp5Location (fd . /usr/lib/python3.11/site-packages | grep "solib" | head -1)
+sudo cp -r "$libiomp5Location" "$destinationLocation"
+
+### Cleanup
+
+deactivate
+rm -rf blog/ ci/ docs .git papers/ docker-compose.yml Dockerfile h2o-logo.svg LICENSE README.md
+cd ..
+mv h2ogpt llm
+cd
+```
+
+# ENV
+
+```fish
+# Nvidia CUDA
+set venvname (echo "play")
+set cudnnLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/nvidia/cudnn")
+if test -d "$cudnnLocation"
+    set CUDNN_PATH $cudnnLocation $CUDNN_PATH
+    set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
+    set PATH /opt/cuda/bin/ $PATH
+end
+
+### Pyenv
+
+# Function to activate virtual environment
+function acv
+    set pyenvLocation (echo "$HOME/.pyenv")
+    mkdir -p "$pyenvLocation/versions/systempython"
+
+    if test -n "$VIRTUAL_ENV"
+        echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
+    else
+        if test -d "$pyenvLocation"
+            set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
+            if [ $getChoice = systempython ]
+                echo "Switch to systems python!"
+                pyenv local --unset
+                python --version
+            else
+                if test -z "$getChoice"
+                    true
+                else
+                    set isPython (echo "$getChoice" | grep -E '^([0-9]+)\.[0-9]+(\.[0-9]+)?$')
+                    if test -z "$isPython"
+                        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
+                        source "$venvLocation"
+                        echo "Swtiched to virtual environment $getChoice!"
+                    else
+                        pyenv local --unset
+                        pyenv local "$getChoice"
+                        echo "Python Interpreter switched!"
+                        python --version
+                    end
+                end
+            end
+        end
+    end
+end
+
+# Source Pyenv
+set pyenvLocation (echo "$HOME/.pyenv")
+if test -d "$pyenvLocation"
+    set -Ux PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
+    pyenv init - | source
 end
 ```
 

@@ -483,43 +483,6 @@ function sysd
     end
 end
 
-### Pyenv 
-
-# Function to activate virtual environment
-function acv
-    set pyenvLocation (echo "$HOME/.pyenv")
-    mkdir -p "$pyenvLocation/versions/systempython"
-
-    if test -n "$VIRTUAL_ENV"
-        echo -e "You are inside a Python virtual environment. It can create confusion.\nFirst Deactive the virtual env and run this command again"
-    else
-        if test -d "$pyenvLocation"
-            set getChoice (fd . $HOME/.pyenv/versions --type=d --max-depth=1 | rev | awk -F"/" '{print $2}'| rev | fzf)
-            if [ $getChoice = systempython ]
-                echo "Switch to systems python!"
-                pyenv local --unset
-                python --version
-            else
-                if test -z "$getChoice"
-                    true
-                else
-                    set isPython (echo "$getChoice" | grep -E '^([0-9]+)\.[0-9]+(\.[0-9]+)?$')
-                    if test -z "$isPython"
-                        set venvLocation (echo "$HOME/.pyenv/versions/$getChoice/bin/activate.fish")
-                        source "$venvLocation"
-                        echo "Swtiched to virtual environment $getChoice!"
-                    else
-                        pyenv local --unset
-                        pyenv local "$getChoice"
-                        echo "Python Interpreter switched!"
-                        python --version
-                    end
-                end
-            end
-        end
-    end
-end
-
 # ===================================================================
 #                    Git Functions [Used in prompt]
 # ===================================================================
@@ -611,7 +574,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "798s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "761s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -876,21 +839,4 @@ set plat (echo "$XDG_CURRENT_DESKTOP")
 if test -n "$plat"
 else
     export QT_QPA_PLATFORMTHEME=qt5ct
-end
-
-# Nvidia CUDA
-set venvname (echo "play")
-set cudnnLocation (echo "$HOME/.pyenv/versions/$venvname/lib/python3.11/site-packages/nvidia/cudnn")
-if test -d "$cudnnLocation"
-    set CUDNN_PATH $cudnnLocation $CUDNN_PATH
-    set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
-    set PATH /opt/cuda/bin/ $PATH
-end
-
-# Source Pyenv
-set pyenvLocation (echo "$HOME/.pyenv")
-if test -d "$pyenvLocation"
-    set -Ux PYENV_ROOT $HOME/.pyenv
-    fish_add_path $PYENV_ROOT/bin
-    pyenv init - | source
 end
