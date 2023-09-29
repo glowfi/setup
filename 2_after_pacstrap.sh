@@ -371,10 +371,11 @@ sudo cp -r archlinux /boot/grub/themes/
 rm -rf archlinux
 wget "https://preview.redd.it/th4prtdk6xr61.jpg?width=1080&crop=smart&auto=webp&s=29b79be676887164704fd84859206a866fc78570" -O out.jpg
 convert out.jpg background.png
-rm out.jpg
-sudo mv background.png /boot/grub/themes/archlinux/
+convert ./background.png -brightness-contrast -15% out.png
+sudo mv out.png /boot/grub/themes/archlinux/background.png
+rm out.jpg background.png
 echo 'GRUB_THEME="/boot/grub/themes/archlinux/theme.txt"' | sudo tee -a /etc/default/grub >/dev/null
-sudo sed -i 's/#cccccc/#000000/g' /boot/grub/themes/archlinux/theme.txt
+sudo sed -i 's/#cccccc/#aaff00/g' /boot/grub/themes/archlinux/theme.txt
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # Disable wifi powersaver mode
