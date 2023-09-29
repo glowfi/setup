@@ -371,7 +371,7 @@ sudo cp -r archlinux /boot/grub/themes/
 rm -rf archlinux
 wget "https://preview.redd.it/th4prtdk6xr61.jpg?width=1080&crop=smart&auto=webp&s=29b79be676887164704fd84859206a866fc78570" -O out.jpg
 convert out.jpg background.png
-convert ./background.png -brightness-contrast -15% out.png
+convert ./background.png -brightness-contrast -18% out.png
 sudo mv out.png /boot/grub/themes/archlinux/background.png
 rm out.jpg background.png
 echo 'GRUB_THEME="/boot/grub/themes/archlinux/theme.txt"' | sudo tee -a /etc/default/grub >/dev/null
