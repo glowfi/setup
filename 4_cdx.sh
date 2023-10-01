@@ -64,11 +64,11 @@ echo ""
 
 # DOWNLOAD NODEJS
 
-set ver (echo "20.3.0")
-wget https://nodejs.org/dist/v$ver/node-v$ver-linux-x64.tar.xz -O $HOME/node.tar.xz
+set ver (curl https://nodejs.org/en | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "node-v"|head -1|cut -d"/" -f5|xargs)
+wget "https://nodejs.org/dist/$ver/node-$ver-linux-x64.tar.xz" -O $HOME/node.tar.xz
 tar -xf $HOME/node.tar.xz -C $HOME
 rm -rf $HOME/node.tar.xz
-mv $HOME/node-v"$ver"-linux-x64 $HOME/.local/bin/nodeJS
+mv $HOME/node-"$ver"-linux-x64 $HOME/.local/bin/nodeJS
 source $HOME/.config/fish/config.fish
 
 # NODE MODULES

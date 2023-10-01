@@ -1,22 +1,31 @@
-vim.opt.termguicolors = true
-vim.cmd([[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]])
-vim.cmd([[highlight IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]])
-vim.cmd([[highlight IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]])
-vim.cmd([[highlight IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]])
-vim.cmd([[highlight IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]])
-vim.cmd([[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]])
+-- Highlight color
+local highlight = {
+	"RainbowRed",
+	"RainbowYellow",
+	"RainbowBlue",
+	"RainbowOrange",
+	"RainbowGreen",
+	"RainbowViolet",
+	"RainbowCyan",
+}
 
-require("indent_blankline").setup({
-	char = "┊",
-	show_trailing_blankline_indent = false,
-	space_char_blankline = " ",
-	show_end_of_line = true,
-	char_highlight_list = {
-		"IndentBlanklineIndent1",
-		"IndentBlanklineIndent2",
-		"IndentBlanklineIndent3",
-		"IndentBlanklineIndent4",
-		"IndentBlanklineIndent5",
-		"IndentBlanklineIndent6",
+local hooks = require("ibl.hooks")
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+	vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#fb4934" })
+	vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#fabd2f" })
+	vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#83a598" })
+	vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#fe8019" })
+	vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#b8bb26" })
+	vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#d3869b" })
+	vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#8ec07c" })
+end)
+
+-- Settings
+require("ibl").setup({
+	indent = { highlight = highlight, char = "┊" },
+	whitespace = {
+		highlight = highlight,
+		remove_blankline_trail = false,
 	},
+	scope = { enabled = false },
 })
