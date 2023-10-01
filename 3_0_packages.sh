@@ -143,11 +143,13 @@ sudo make clean install
 cd ..
 rm -rf pipes.sh
 
+# ===================== XORG Dependent ===================================
 git clone https://github.com/xorg62/tty-clock
 cd tty-clock
 sudo make clean install
 cd ..
 rm -rf tty-clock
+# ===================== END Dependent ====================================
 
 echo ""
 echo "------------------------------------------------------------------------"

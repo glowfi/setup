@@ -4,7 +4,7 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 source "$SCRIPT_DIR/helper.sh"
 
-# CORE PACKAGES
+# Plasma core PACKAGES
 
 echo ""
 echo "---------------------------------------------------------------------------------"
@@ -20,19 +20,25 @@ install "powerdevil xdg-desktop-portal-kde" "pac"
 
 install "kwrited kwin kgamma5 khotkeys kinfocenter kscreen systemsettings sddm sddm-kcm libnotify konqueror" "pac"
 
-# PACKAGES
+# CORE PACKAGES
 
+# ===================== XORG Dependent ===================================
 install "xorg-server" "pac"
 install "xorg-xrandr" "pac"
 install "xautolock" "pac"
+# ===================== END Dependent ====================================
+
+### Other Core
 install "wmctrl" "pac"
-install "dolphin ark zathura zathura-pdf-mupdf clipmenu" "pac"
-install "nsxiv-git" "yay"
+install "dolphin ark zathura zathura-pdf-mupdf" "pac"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
 
-# Setup nsxiv key-handler
+# ===================== XORG Dependent ===================================
 
+# Install nsxiv and setup nsxiv key-handler
+
+install "nsxiv-git" "yay"
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 
@@ -41,6 +47,13 @@ cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
 cd $HOME/setup/configs/dmenu
 sudo make clean install
 cd
+
+# Install clipmenu
+
+install "clipmenu" "pac"
+
+# ===================== END Dependent ====================================
+
 
 # INSTALL SCREENLOCKER
 
@@ -91,6 +104,8 @@ chmod +x $HOME/.local/bin/wall.sh
 mkdir -p $HOME/.misc
 cp -r $HOME/setup/configs/misc/* $HOME/.misc/
 
+# ===================== XORG Dependent ===================================
+
 echo ""
 echo "------------------------------------------------------------------------------------------"
 echo "--------------Creating xprofile...--------------------------------------------------------"
@@ -122,6 +137,8 @@ clipmenud &
 cp -r ~/setup/scripts/uselesskill.sh ~/.local/bin/
 chmod +x ~/.local/bin/uselesskill.sh
 
+# ===================== END Dependent ====================================
+
 # ENABLE SDDM
 
 echo ""
@@ -151,6 +168,8 @@ echo ""
 mkdir -p $HOME/.local/share/kservices5
 cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices5
 
+# ===================== XORG Dependent ===================================
+
 # SETUP dxhd
 
 echo ""
@@ -158,6 +177,8 @@ echo "--------------------------------------------------------------------------
 echo "--------------Installing Hotkey Daemon...--------------------------------------"
 echo "-------------------------------------------------------------------------------"
 echo ""
+
+# ===================== END Dependent ====================================
 
 install "dxhd-bin" "yay"
 mkdir -p $HOME/.config/dxhd
@@ -189,15 +210,21 @@ MimeType=application/pdf;
 " >>$HOME/zathura.desktop
 sudo mv $HOME/zathura.desktop /usr/share/applications
 
+xdg-mime default zathura.desktop application/pdf
+
+# ===================== XORG Dependent ===================================
+
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default nsxiv.desktop image/jpg
 xdg-mime default nsxiv.desktop image/jpeg
-xdg-mime default mpv.desktop image/gif
-xdg-mime default zathura.desktop application/pdf
+
+# ===================== END Dependent ====================================
+
 
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
 bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
+xdg-mime default mpv.desktop image/gif
 
 xdg-mime default dolphin.desktop inode/directory
 
@@ -248,9 +275,13 @@ sudo tee -a /etc/environment << EOF
 GTK_USE_PORTAL=1
 EOF
 
+# ===================== XORG Dependent ===================================
+
 # Copy Xresources
 
 cp -r $HOME/setup/configs/.Xresources $HOME
+
+# ===================== END Dependent ====================================
 
 # Restore Settings
 

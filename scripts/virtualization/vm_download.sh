@@ -568,9 +568,9 @@ kaosurl() {
 }
 
 clearurl() {
-	mirror="https://clearlinux.org/downloads"
-	x=$(curl -s $mirror | grep live | grep -m1 iso | awk -F\" '{ print $2 }')
-	new="$x"
+	mirror="https://www.clearlinux.org/downloads.html"
+	ver=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep live | grep iso | cut -d"/" -f5 | sort | uniq | xargs)
+	new="https://cdn.download.clearlinux.org/releases/$ver/clear/clear-$ver-live-desktop.iso"
 	output="clearlinux.iso"
 	checkfile $1
 }

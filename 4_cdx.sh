@@ -187,9 +187,11 @@ chmod +x $HOME/.local/bin/checkur.py
 
 # INSTALL xhibit
 
+# ===================== XORG Dependent ===================================
 install "lsb-release" "pac"
 install "xorg-xdpyinfo xorg-xprop xorg-xwininfo xdotool" "pac"
 pip install xhibit
+# ===================== END Dependent ====================================
 
 # INSTALL sYT
 
@@ -226,9 +228,11 @@ chmod +x $HOME/.local/bin/formatDisk.sh
 cp -r $HOME/setup/scripts/rename.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/rename.sh
 
+# ===================== XORG Dependent ===================================
 install "xorg-xrandr" "pac"
 cp -r $HOME/setup/scripts/dm-record.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dm-record.sh
+# ===================== END Dependent ====================================
 
 cp -r $HOME/setup/scripts/dm-bluetooth $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dm-bluetooth
@@ -440,11 +444,13 @@ mv ./ueberzugpp ~/.local/bin/
 cd ..;cd ..
 rm -rf ueberzugpp
 
+# ===================== XORG Dependent ===================================
 git clone https://github.com/ueber-devel/ueberzug
 cd ueberzug/
 pip install .
 cd ..
 rm -rf ueberzug
+# ===================== END Dependent ====================================
 
 echo ""
 echo "----------------------------------------------------"

@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/helper.sh"
 # READ ARGUMENT
 uname=$1
 
-# CORE PACAKAGES
+# CORE PACKAGES
 
 echo ""
 echo "---------------------------------------------------------------------------------"
@@ -304,15 +304,16 @@ MimeType=application/pdf;
 " >>$HOME/zathura.desktop
 sudo mv $HOME/zathura.desktop /usr/share/applications
 
+xdg-mime default zathura.desktop application/pdf
+
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default nsxiv.desktop image/jpg
 xdg-mime default nsxiv.desktop image/jpeg
-xdg-mime default mpv.desktop image/gif
-xdg-mime default zathura.desktop application/pdf
 
 wget https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
 bash ./default-media-player.sh mpv.desktop
 rm -rf default-media-player.sh
+xdg-mime default mpv.desktop image/gif
 
 xdg-mime default pcmanfm.desktop inode/directory
 
