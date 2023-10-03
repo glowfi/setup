@@ -56,7 +56,7 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-feh --bg-fill "$(find ~/wall -type f | shuf -n 1)"
+feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
 
 ## Favourite Wallpaper
 #super + c

@@ -85,7 +85,7 @@ fish -c "sYT -p "dmenu""
 
 ## Random Wallpaper
 #super + z
-randImage=$(find ~/wall -type f | shuf -n 1)
+randImage=$(fd . ~/wall/ --type file | shuf -n 1)
 dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
 var Desktops = desktops();                                                                                                                       
 for (i=0;i<Desktops.length;i++) {
