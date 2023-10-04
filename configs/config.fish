@@ -835,8 +835,4 @@ export NNN_FIFO='/tmp/nnn.fifo'
 export NNN_TRASH=1
 
 # QT Platform
-set plat (echo "$XDG_CURRENT_DESKTOP")
-if test -n "$plat"
-else
-    export QT_QPA_PLATFORMTHEME=qt5ct
-end
+export QT_QPA_PLATFORMTHEME=qt5ct

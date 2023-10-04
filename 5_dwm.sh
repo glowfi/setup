@@ -117,8 +117,8 @@ echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
 getReq=$(cat "$HOME/.gtkrc-2.0" | grep -n "replacethis" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 rep=$(echo 'include "\/home\/$USER\/.gtkrc-2.0.mine"')
-sed "s/\$USER/$USER/" .gtkrc-2.0
 sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
+sed "s/\$USER/$USER/" .gtkrc-2.0
 
 
 # SETUP dxhd
