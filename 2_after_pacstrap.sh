@@ -177,7 +177,7 @@ for i in {1..5}; do
 done
 
 for i in {1..5}; do
-	pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad git-delta tldr duf gping && break || sleep 1
+	pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad git-delta tldr duf gping imagemagick && break || sleep 1
 done
 
 for i in {1..5}; do
