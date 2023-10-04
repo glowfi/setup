@@ -72,7 +72,7 @@ cp -r $HOME/setup/configs/picom $HOME/.config/
 
 # Appearance
 
-install "lxappearance-gtk3 qt5ct kvantum-qt5" "pac"
+install "lxappearance-gtk3 qt5ct kvantum" "pac"
 
 install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
@@ -114,6 +114,11 @@ echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Videos Videos" >> $HOME/.config/gtk-3.0/bookmarks
+getReq=$(cat "$HOME/.gtkrc-2.0" | grep -n "replacethis" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep=$(echo 'include "\/home\/$USER\/.gtkrc-2.0.mine"')
+sed "s/\$USER/$USER/" .gtkrc-2.0
+sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
 
 
 # SETUP dxhd

@@ -156,6 +156,61 @@ getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 rep="Current=breeze"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /usr/lib/sddm/sddm.conf.d/default.conf
 
+# Appearance
+
+install "lxappearance-gtk3 qt5ct kvantum" "pac"
+
+install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
+
+git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
+cd ./Gruvbox-GTK-Theme/
+git checkout 44e81d8226579a24a791f3acf43b97de815bc4b1
+cd themes
+sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
+cd ../../
+rm -rf Gruvbox-GTK-Theme
+
+git clone https://github.com/TheGreatMcPain/gruvbox-material-gtk
+cd gruvbox-material-gtk
+sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
+cd ..
+rm -rf gruvbox-material-gtk
+
+cd $HOME/Downloads/
+wget 'https://0x0.st/HryC.tar.gz'
+tar xzvf HryC.tar.gz
+rm HryC.tar.gz
+sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
+cd
+
+# Theming
+
+echo ""
+echo "------------------------------------------------------------------------------------------"
+echo "--------------Theming...------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------------------"
+echo ""
+
+# ===================== XORG Dependent ===================================
+
+# Copy Xresources
+
+cp -r $HOME/setup/configs/.Xresources $HOME
+
+# ===================== END Dependent ====================================
+
+cd $HOME/.config
+rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/
+cd
+rm $HOME/.gtkrc-2.0
+
+cp -r $HOME/setup/configs/plasma/theming/qt5ct/ $HOME/setup/configs/plasma/theming/gtk-3.0 $HOME/setup/configs/plasma/theming/gtk-4.0 $HOME/setup/configs/plasma/theming/Kvantum $HOME/.config
+cp -r $HOME/setup/configs/plasma/theming/.gtkrc-2.0 $HOME
+getReq=$(cat "$HOME/.gtkrc-2.0" | grep -n "replacethis" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep=$(echo 'include "\/home\/$USER\/.gtkrc-2.0.mine"')
+sed "s/\$USER/$USER/" .gtkrc-2.0
+sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
 
 # REGISTER KITTY IN DOLPHIN
 
@@ -274,14 +329,6 @@ sudo tee -a /etc/environment << EOF
 # KDE file picker
 GTK_USE_PORTAL=1
 EOF
-
-# ===================== XORG Dependent ===================================
-
-# Copy Xresources
-
-cp -r $HOME/setup/configs/.Xresources $HOME
-
-# ===================== END Dependent ====================================
 
 # Restore Settings
 
