@@ -8,7 +8,8 @@ dolphin
 
 ## System Settings
 #super + u
-systemsettings5
+export QT_QPA_PLATFORMTHEME=
+systemsettings
 
 ## Toggle Panel
 #alt + p
