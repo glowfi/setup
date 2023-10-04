@@ -329,18 +329,6 @@ chmod +x $HOME/.local/bin/edit.sh
 cp -r $HOME/setup/scripts/bfilter.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/bfilter.sh
 
-### Restfox
-
-set ver (echo "0.1.0")
-mkdir restfox
-cd restfox
-wget https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=restfox-bin -O PKGBUILD
-sed -i "s/^sha512.*/sha512sums=('SKIP')/" PKGBUILD
-sed -i "s/pkgver=0.0.8/pkgver=${ver}/" PKGBUILD
-makepkg -si
-cd ..
-rm -rf restfox
-
 ### SETUP POSTGRES
 
 echo ""
@@ -377,6 +365,17 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 # ======================================================= END ======================================================================================
 
+### Restfox
+
+set ver (echo "0.1.0")
+mkdir restfox
+cd restfox
+wget "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=restfox-bin" -O PKGBUILD
+sed -i "s/^sha512.*/sha512sums=('SKIP')/" PKGBUILD
+sed -i "s/pkgver=0.0.8/pkgver=$ver/" PKGBUILD
+makepkg -si
+cd ..
+rm -rf restfox
 
 ### SETUP DOCKER
 
@@ -410,7 +409,7 @@ for i in (seq 6)
     nvim --headless "+Lazy! sync" +qa
 end
 
-# ======================================================= Can Be Deleted for minimal install =======================================================
+# ======================================================= END ======================================================================================
 
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
