@@ -1615,7 +1615,7 @@ normalmode() {
 	echo -e "\n\n"
 	allDistros=$(echo "$allDistros" | sed '/^\s*$/d')
 	drawmenu
-	x=$(echo -e "$allDistros" | fzf -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
+	x=$(echo -e "$allDistros" | sed '/^$/d' | fzf -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
 
 	# Happens if the input is empty
 	if [ -z "$x" ]; then
