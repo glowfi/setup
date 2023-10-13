@@ -134,7 +134,8 @@ clipmenud &
 # Kill Useless Process at startup
 ~/.local/bin/uselesskill.sh &' >>$HOME/.xprofile
 
-cp -r ~/setup/scripts/uselesskill.sh ~/.local/bin/
+### System related scripts
+cp -r ~/setup/scripts/system/uselesskill.sh ~/.local/bin/
 chmod +x ~/.local/bin/uselesskill.sh
 
 # ===================== END Dependent ====================================

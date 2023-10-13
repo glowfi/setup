@@ -278,7 +278,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cp -r $HOME/setup/configs/dunst/ $HOME/.config
-cp -r $HOME/setup/scripts/audio.sh $HOME/.local/bin/
+cp -r $HOME/setup/scripts/system/audio.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/audio.sh
 cd
 echo "Done Copying DUNST settings!"

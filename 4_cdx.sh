@@ -217,73 +217,9 @@ echo "osc=no" >>$HOME/.config/mpv/mpv.conf
 
 cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 
-# ADDITIONAL SCRIPTS
+# SCRIPTS 
 
-cp -r $HOME/setup/scripts/int.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/int.sh
-
-cp -r $HOME/setup/scripts/formatDisk.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/formatDisk.sh
-
-cp -r $HOME/setup/scripts/rename.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/rename.sh
-
-# ===================== XORG Dependent ===================================
-install "xorg-xrandr" "pac"
-cp -r $HOME/setup/scripts/dm-record.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dm-record.sh
-# ===================== END Dependent ====================================
-
-cp -r $HOME/setup/scripts/dm-bluetooth $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dm-bluetooth
-
-cp -r $HOME/setup/scripts/sgrec.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/sgrec.sh
-
-cp -r $HOME/setup/scripts/windowshot.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/windowshot.sh
-
-cp -r $HOME/setup/scripts/opa.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/opa.sh
-
-cp -r $HOME/setup/scripts/send.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/send.sh
-
-cp -r $HOME/setup/scripts/prev.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/prev.sh
-
-cp -r $HOME/setup/scripts/gtfu.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/gtfu.sh
-
-cp -r $HOME/setup/scripts/lowbat.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/lowbat.sh
-
-cp -r $HOME/setup/scripts/klp $HOME/.local/bin/
-chmod +x $HOME/.local/bin/klp
-
-cp -r $HOME/setup/scripts/kdeconnect $HOME/.local/bin/
-chmod +x $HOME/.local/bin/kdeconnect
-
-git clone https://github.com/thameera/vimv
-cd vimv
-cp -r vimv $HOME/.local/bin/
-cd ..
-rm -rf vimv
-
-cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/blank.sh
-
-cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
-chmod +x $HOME/.local/bin/mp
-
-cp -r $HOME/setup/scripts/dex.py $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dex.py
-
-wget https://git.io/translate -O trans
-chmod +x ./trans
-mv ./trans $HOME/.local/bin/
-cp -r $HOME/setup/scripts/tran.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/tran.sh
+### Misc related scripts
 
 install "ani-cli-git" "yay"
 install "lobster-git" "yay"
@@ -291,12 +227,65 @@ install "lobster-git" "yay"
 pip install poetry
 git clone https://github.com/mov-cli/mov-cli
 cd mov-cli
-cp -r $HOME/setup/scripts/scraper.py ./mov_cli/utils/
+cp -r $HOME/setup/scripts/misc/scraper.py ./mov_cli/utils/
 pip install -r requirements.txt
 poetry build
 pip install dist/*.tar.gz
 cd ..
 rm -rf mov-cli
+
+### Utils related scripts
+
+# ===================== XORG Dependent ===================================
+install "xorg-xrandr" "pac"
+cp -r $HOME/setup/scripts/utils/dm-record.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dm-record.sh
+# ===================== END Dependent ====================================
+
+cp -r $HOME/setup/scripts/utils/dm-bluetooth $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dm-bluetooth
+
+cp -r $HOME/setup/scripts/utils/sgrec.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/sgrec.sh
+
+cp -r $HOME/setup/scripts/utils/windowshot.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/windowshot.sh
+
+cp -r $HOME/setup/scripts/utils/opa.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/opa.sh
+
+cp -r $HOME/setup/scripts/utils/send.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/send.sh
+
+cp -r $HOME/setup/scripts/utils/prev.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/prev.sh
+
+cp -r $HOME/setup/scripts/utils/gtfu.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/gtfu.sh
+
+cp -r $HOME/setup/scripts/utils/blank.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/blank.sh
+
+cp -r $HOME/setup/scripts/utils/mp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/mp
+
+cp -r $HOME/setup/scripts/utils/dex.py $HOME/.local/bin/
+chmod +x $HOME/.local/bin/dex.py
+
+cp -r $HOME/setup/scripts/utils/int.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/int.sh
+
+cp -r $HOME/setup/scripts/utils/formatDisk.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/formatDisk.sh
+
+cp -r $HOME/setup/scripts/utils/rename.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/rename.sh
+
+git clone https://github.com/thameera/vimv
+cd vimv
+cp -r vimv $HOME/.local/bin/
+cd ..
+rm -rf vimv
 
 yes | pip uninstall pathlib
 pip install pyinstaller
@@ -311,11 +300,22 @@ cd ../..
 rm -rf ezgif-essentials
 pip install pathlib
 yes | pip uninstall pyinstaller
-cp -r $HOME/setup/scripts/edit.sh $HOME/.local/bin/
+cp -r $HOME/setup/scripts/utils/edit.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/edit.sh
 
-cp -r $HOME/setup/scripts/bfilter.sh $HOME/.local/bin/
+### System related scripts
+
+cp -r $HOME/setup/scripts/system/bfilter.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/bfilter.sh
+
+cp -r $HOME/setup/scripts/system/klp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/klp
+
+cp -r $HOME/setup/scripts/system/kdeconnect $HOME/.local/bin/
+chmod +x $HOME/.local/bin/kdeconnect
+
+cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/lowbat.sh
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
