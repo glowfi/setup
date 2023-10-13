@@ -36,6 +36,10 @@ cat $HOME/setup/configs/brave/settings.json >$HOME/.config/BraveSoftware/Brave-B
 sleep 3
 cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/Brave-Browser/Tmp/Preferences"
 
+### Copy Bookmarks
+cp -r $HOME/setup/configs/brave/Bookmarks $HOME/.config/BraveSoftware/Brave-Browser/Default/
+cp -r $HOME/setup/configs/brave/Bookmarks $HOME/.config/BraveSoftware/Brave-Browser/Tmp
+
 ######## Librewolf ########
 
 rm -rf $HOME/.librewolf/
@@ -53,7 +57,7 @@ chmod +x $HOME/.local/bin/libw
 
 ### Add Extensions
 
-extensions=("https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/libredirect/latest.xpi")
+extensions=("https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi")
 
 for i in "${extensions[@]}"; do
 	c=$(cat /usr/lib/librewolf/distribution/policies.json | grep -n "Install" | head -1 | awk -F":" '{print $1}' | xargs)
@@ -94,12 +98,4 @@ echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.
 echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >>user.js
 echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >>user.js
 
-cd
-
-### Download Libredirect
-
-cd $HOME/Downloads
-wget "https://0x0.st/HVZQ.0.json" -O "libredirect-settings.json"
-ver=$(echo "2.8.0")
-wget "https://github.com/libredirect/browser_extension/releases/download/v$ver/libredirect-$ver.crx"
 cd

@@ -33,7 +33,9 @@
         "gbmdgpbipfallnflgajpaliibnhdgobh;https://clients2.google.com/service/update2/crx",
         "lckanjgmijmafbedllaakclkaicjfmnk;https://clients2.google.com/service/update2/crx",
         "hipekcciheckooncpjeljhnekcoolahp;https://clients2.google.com/service/update2/crx",
-        "ldpochfccmkkmhdbclfhpagapcfdljkj;https://clients2.google.com/service/update2/crx"
+        "ldpochfccmkkmhdbclfhpagapcfdljkj;https://clients2.google.com/service/update2/crx",
+        "fmkadmapgofadopljbjfkapdkoienihi;https://clients2.google.com/service/update2/crx",
+        "lmhkpmbekcpmknklioeibfkpmmfibljd;https://clients2.google.com/service/update2/crx"
     ],
     "ExtensionAllowInsecureUpdates": false,
     "VoiceInteractionContextEnabled": false,
