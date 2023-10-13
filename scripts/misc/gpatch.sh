@@ -35,7 +35,7 @@ sudo pacman -S --noconfirm meson systemd git dbus libinih
 sudo pacman -S --noconfirm gamemode
 
 ## Save Scraper and Save Retriever from cloud
-cp -r $HOME/setup/scripts/saveScraper.py $HOME/.local/bin/
+cp -r $HOME/setup/scripts/misc/saveScraper.py $HOME/.local/bin/
 chmod +x $HOME/.local/bin/saveScraper.py
 
 ########### NOTES ###########
