@@ -161,7 +161,7 @@ for i in {1..5}; do
 done
 
 for i in {1..5}; do
-	pacman -Syyy --noconfirm dialog mtools dosfstools && break || sleep 1
+	pacman -Syyy --noconfirm dialog mtools dosfstools gptfdisk && break || sleep 1
 done
 
 for i in {1..5}; do
