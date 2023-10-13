@@ -128,7 +128,7 @@ echo ""
 # INSTALL CLANGD LSP
 
 install "clang" "pac"
-set clangd_ver (echo "16.0.2")
+set clangd_ver (curl "https://github.com/clangd/clangd" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs)
 wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O $HOME/clangd.zip
 unzip $HOME/clangd.zip -d $HOME
 rm -rf $HOME/clangd.zip
@@ -143,7 +143,7 @@ echo ""
 
 # INSTALL LUA LSP
 
-set lua_ver (echo "3.7.0")
+set lua_ver (curl "https://github.com/LuaLS/lua-language-server" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs)
 wget "https://github.com/LuaLS/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O $HOME/lua-ls.tar.gz
 mkdir -p $HOME/lua-ls
 tar -xf $HOME/lua-ls.tar.gz -C $HOME/lua-ls/
@@ -188,10 +188,10 @@ chmod +x $HOME/.local/bin/checkur.py
 # INSTALL xhibit
 
 # ===================== XORG Dependent ===================================
-install "lsb-release" "pac"
 install "xorg-xdpyinfo xorg-xprop xorg-xwininfo xdotool" "pac"
-pip install xhibit
 # ===================== END Dependent ====================================
+install "lsb-release" "pac"
+pip install xhibit
 
 # INSTALL sYT
 
@@ -270,17 +270,11 @@ cp -r vimv $HOME/.local/bin/
 cd ..
 rm -rf vimv
 
-cp -r $HOME/setup/scripts/fixWords.py $HOME/.local/bin/
-chmod +x $HOME/.local/bin/fixWords.py
-
 cp -r $HOME/setup/scripts/blank.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/blank.sh
 
 cp -r $HOME/setup/scripts/mp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/mp
-
-cp -r $HOME/setup/scripts/batchmover $HOME/.local/bin/
-chmod +x $HOME/.local/bin/batchmover
 
 cp -r $HOME/setup/scripts/dex.py $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dex.py
@@ -304,12 +298,6 @@ pip install dist/*.tar.gz
 cd ..
 rm -rf mov-cli
 
-# ======================================================= Can Be Deleted for minimal install =======================================================
-
-cp -r $HOME/setup/scripts/speech2text $HOME/.local/bin/
-chmod +x $HOME/.local/bin/speech2text
-$HOME/.local/bin/speech2text
-
 yes | pip uninstall pathlib
 pip install pyinstaller
 pip install ffmpeg-python typing-extensions
@@ -328,6 +316,8 @@ chmod +x $HOME/.local/bin/edit.sh
 
 cp -r $HOME/setup/scripts/bfilter.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/bfilter.sh
+
+# ======================================================= Can Be Deleted for minimal install =======================================================
 
 ### SETUP POSTGRES
 
@@ -435,7 +425,7 @@ install "gource" "pac"
 ### OCR 
 
 install "tesseract" "pac"
-install "tesseract-data-afr tesseract-data-amh tesseract-data-ara tesseract-data-asm tesseract-data-aze tesseract-data-aze_cyrl tesseract-data-bel tesseract-data-ben tesseract-data-bod tesseract-data-bos tesseract-data-bre tesseract-data-bul tesseract-data-cat tesseract-data-ceb tesseract-data-ces tesseract-data-chi_sim tesseract-data-chi_tra tesseract-data-chr tesseract-data-cos tesseract-data-cym tesseract-data-dan tesseract-data-dan_frak tesseract-data-deu tesseract-data-deu_frak tesseract-data-div tesseract-data-dzo tesseract-data-ell tesseract-data-eng tesseract-data-enm tesseract-data-epo tesseract-data-equ tesseract-data-est tesseract-data-eus tesseract-data-fao tesseract-data-fas tesseract-data-fil tesseract-data-fin tesseract-data-fra tesseract-data-frk tesseract-data-frm tesseract-data-fry tesseract-data-gla tesseract-data-gle tesseract-data-glg tesseract-data-grc tesseract-data-guj tesseract-data-hat tesseract-data-heb tesseract-data-hin tesseract-data-hrv tesseract-data-hun tesseract-data-hye tesseract-data-iku tesseract-data-ind tesseract-data-isl tesseract-data-ita tesseract-data-ita_old tesseract-data-jav tesseract-data-jpn tesseract-data-jpn_vert tesseract-data-kan tesseract-data-kat tesseract-data-kat_old tesseract-data-kaz tesseract-data-khm tesseract-data-kir tesseract-data-kmr tesseract-data-kor tesseract-data-kor_vert tesseract-data-lao tesseract-data-lat tesseract-data-lav tesseract-data-lit tesseract-data-ltz tesseract-data-mal tesseract-data-mar tesseract-data-mkd tesseract-data-mlt tesseract-data-mon tesseract-data-mri tesseract-data-msa tesseract-data-mya tesseract-data-nep tesseract-data-nld tesseract-data-nor tesseract-data-oci tesseract-data-ori tesseract-data-osd tesseract-data-pan tesseract-data-pol tesseract-data-por tesseract-data-pus tesseract-data-que tesseract-data-ron tesseract-data-rus tesseract-data-san tesseract-data-sin tesseract-data-slk tesseract-data-slk_frak tesseract-data-slv tesseract-data-snd tesseract-data-spa tesseract-data-spa_old tesseract-data-sqi tesseract-data-srp tesseract-data-srp_latn tesseract-data-sun tesseract-data-swa tesseract-data-swe tesseract-data-syr tesseract-data-tam tesseract-data-tat tesseract-data-tel tesseract-data-tgk tesseract-data-tgl tesseract-data-tha tesseract-data-tir tesseract-data-ton tesseract-data-tur tesseract-data-uig tesseract-data-ukr tesseract-data-urd tesseract-data-uzb tesseract-data-uzb_cyrl tesseract-data-vie tesseract-data-yid tesseract-data-yor" "pac"
+# install "tesseract-data-afr tesseract-data-amh tesseract-data-ara tesseract-data-asm tesseract-data-aze tesseract-data-aze_cyrl tesseract-data-bel tesseract-data-ben tesseract-data-bod tesseract-data-bos tesseract-data-bre tesseract-data-bul tesseract-data-cat tesseract-data-ceb tesseract-data-ces tesseract-data-chi_sim tesseract-data-chi_tra tesseract-data-chr tesseract-data-cos tesseract-data-cym tesseract-data-dan tesseract-data-dan_frak tesseract-data-deu tesseract-data-deu_frak tesseract-data-div tesseract-data-dzo tesseract-data-ell tesseract-data-eng tesseract-data-enm tesseract-data-epo tesseract-data-equ tesseract-data-est tesseract-data-eus tesseract-data-fao tesseract-data-fas tesseract-data-fil tesseract-data-fin tesseract-data-fra tesseract-data-frk tesseract-data-frm tesseract-data-fry tesseract-data-gla tesseract-data-gle tesseract-data-glg tesseract-data-grc tesseract-data-guj tesseract-data-hat tesseract-data-heb tesseract-data-hin tesseract-data-hrv tesseract-data-hun tesseract-data-hye tesseract-data-iku tesseract-data-ind tesseract-data-isl tesseract-data-ita tesseract-data-ita_old tesseract-data-jav tesseract-data-jpn tesseract-data-jpn_vert tesseract-data-kan tesseract-data-kat tesseract-data-kat_old tesseract-data-kaz tesseract-data-khm tesseract-data-kir tesseract-data-kmr tesseract-data-kor tesseract-data-kor_vert tesseract-data-lao tesseract-data-lat tesseract-data-lav tesseract-data-lit tesseract-data-ltz tesseract-data-mal tesseract-data-mar tesseract-data-mkd tesseract-data-mlt tesseract-data-mon tesseract-data-mri tesseract-data-msa tesseract-data-mya tesseract-data-nep tesseract-data-nld tesseract-data-nor tesseract-data-oci tesseract-data-ori tesseract-data-osd tesseract-data-pan tesseract-data-pol tesseract-data-por tesseract-data-pus tesseract-data-que tesseract-data-ron tesseract-data-rus tesseract-data-san tesseract-data-sin tesseract-data-slk tesseract-data-slk_frak tesseract-data-slv tesseract-data-snd tesseract-data-spa tesseract-data-spa_old tesseract-data-sqi tesseract-data-srp tesseract-data-srp_latn tesseract-data-sun tesseract-data-swa tesseract-data-swe tesseract-data-syr tesseract-data-tam tesseract-data-tat tesseract-data-tel tesseract-data-tgk tesseract-data-tgl tesseract-data-tha tesseract-data-tir tesseract-data-ton tesseract-data-tur tesseract-data-uig tesseract-data-ukr tesseract-data-urd tesseract-data-uzb tesseract-data-uzb_cyrl tesseract-data-vie tesseract-data-yid tesseract-data-yor" "pac"
 
 ### Ueberzug and Ueberzugpp
 

@@ -10,7 +10,7 @@ while true; do
 		if [[ "$isDay" = "no" ]]; then
 			isDay="yes"
 			isNight="no"
-			redshift -P -O 6500K
+			redshift -P -O 5500K
 			echo "Day!"
 		fi
 	else
