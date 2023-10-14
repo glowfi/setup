@@ -357,13 +357,13 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 ### Restfox
 
-set ver (echo "0.1.0")
+set ver (curl "https://github.com/flawiddsouza/Restfox" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6| tr -d "v" | xargs)
 mkdir restfox
 cd restfox
 wget "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=restfox-bin" -O PKGBUILD
 sed -i "s/^sha512.*/sha512sums=('SKIP')/" PKGBUILD
 sed -i "s/pkgver=0.0.8/pkgver=$ver/" PKGBUILD
-makepkg -si
+makepkg -si --noconfirm
 cd ..
 rm -rf restfox
 
