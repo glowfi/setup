@@ -124,7 +124,7 @@ install "kdenlive" "pac"
 
 ### EXTRAS
 install "onlyoffice-bin" "yay"
-install "pandoc-bin tectonic" "yay"
+install "tectonic" "yay"
 
 # ======================================================= END ======================================================================================
 
