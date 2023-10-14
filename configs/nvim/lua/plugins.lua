@@ -175,6 +175,27 @@ return require("lazy").setup({
 		},
 	},
 
+	-- Refactor
+	{
+		"ThePrimeagen/refactoring.nvim",
+		ft = {
+			"javascript",
+			"typescript",
+			"javascriptreact",
+			"typescriptreact",
+			"javascript.jsx",
+			"typescript.tsx",
+			"python",
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("core.refactor")
+		end,
+	},
+
 	-- LSP
 
 	--   nvim native LSP
@@ -236,7 +257,7 @@ return require("lazy").setup({
 
 	--   Typescript
 	{
-		"jose-elias-alvarez/typescript.nvim",
+		"pmizio/typescript-tools.nvim",
 		ft = {
 			"javascript",
 			"typescript",

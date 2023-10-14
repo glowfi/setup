@@ -208,24 +208,26 @@ lspconfig.jsonls.setup({
 })
 
 -- TS TSX JS JSX
-lspconfig.tsserver.setup({
-	capabilities = capabilities,
-	on_attach = function(client, bufnr)
-		client.server_capabilities.document_formatting = false
-		require("typescript").setup({
-			server = {
-				capabilities = capabilities,
-			},
-		})
-
-		-- Keymappings
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TypescriptOrganizeImports<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "qq", ":TypescriptFixAll<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TypescriptRenameFile<CR>", { silent = true })
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TypescriptAddMissingImports<CR>", { silent = true })
-	end,
-	flags = { debounce_text_changes = 150 },
+require("typescript-tools").setup({
+	settings = {
+		separate_diagnostic_server = true,
+		publish_diagnostic_on = "insert_leave",
+		expose_as_code_action = {},
+		tsserver_path = nil,
+		tsserver_plugins = {},
+		tsserver_max_memory = "auto",
+		tsserver_format_options = {},
+		tsserver_file_preferences = {},
+		complete_function_calls = false,
+		include_completions_with_insert_text = true,
+		code_lens = "off",
+		disable_member_code_lens = true,
+	},
 })
+vim.cmd("nnoremap <silent>gi :TSToolsAddMissingImports<CR>")
+vim.cmd("nnoremap <silent>gs :TSToolsOrganizeImports<CR>")
+vim.cmd("nnoremap <silent>qq :TSToolsFixAll<CR>")
+vim.cmd("nnoremap <silent>gr :TSToolsRenameFile<CR>")
 
 -- Bash
 lspconfig.bashls.setup({ capabilities = capabilities })

@@ -74,7 +74,6 @@ source $HOME/.config/fish/config.fish
 # NODE MODULES
 
 for i in (seq 3)
-    npm i -g yarn
     npm update -g npm
     npm install npm@latest -g
     npm i -g md-to-pdf
@@ -386,7 +385,7 @@ echo ""
 
 for i in (seq 2)
     pip install neovim black flake8
-    npm i -g neovim typescript typescript-language-server pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
+    npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server browser-sync
     pip uninstall -y cmake
 end
 
