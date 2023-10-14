@@ -119,13 +119,13 @@ alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 
 # Search Packages in official repository
-alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' | xargs -ro sudo pacman -S"
+alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
 
 # Search AUR
-alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' | xargs -ro yay -S"
+alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
 
 # Uninstall Packages
-alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' | xargs -ro sudo pacman -Rns"
+alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
 
 # Cleanup
 alias cleanup='yes | sudo pacman -Sc;
