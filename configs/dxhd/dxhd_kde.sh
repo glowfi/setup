@@ -124,11 +124,7 @@ sed -i '126s/.*/fading = true;/' ~/.config/picom/picom.conf
 
 ## Kill Process
 #alt + k
-getProcess=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:")
-pid=$(echo "$getProcess" | awk '{print $2}' | xargs)
-kill -9 "$pid"
-processName=$(echo "$getProcess" | awk '{print $NF}' | xargs)
-killall -9 "$processName"
+$HOME/.local/bin/killprocess.sh "unattended"
 
 ## Activate Deactivate Easyeffects
 #alt + g

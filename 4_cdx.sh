@@ -76,6 +76,7 @@ source $HOME/.config/fish/config.fish
 for i in (seq 3)
     npm update -g npm
     npm install npm@latest -g
+    npm i -g yarn
     npm i -g md-to-pdf
     sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
@@ -279,6 +280,9 @@ chmod +x $HOME/.local/bin/formatDisk.sh
 
 cp -r $HOME/setup/scripts/utils/rename.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/rename.sh
+
+cp -r $HOME/setup/scripts/utils/killprocess.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/killprocess.sh
 
 git clone https://github.com/thameera/vimv
 cd vimv
