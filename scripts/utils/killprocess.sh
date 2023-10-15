@@ -2,15 +2,33 @@
 
 if [[ "$1" = "unattended" ]]; then
 	# Get Processes
-	getProcesses=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:" | sed '$d')
+	getProcesses=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:")
 
-	# Kill based on process id
-	pids=$(echo "$getProcesses" | awk '{print $2}')
-	echo "$pids" | xargs -ro kill -9
+	# Multi Processes
+	if [[ "$(echo "$getProcesses" | wc -l)" -gt 1 ]]; then
 
-	# Kill based on process name
-	processNames=$(echo "$getProcesses" | awk '{print $NF}')
-	echo "$processNames" | xargs killall -9
+		# Delete the last process [dmenu fix]
+		getProcesses=$(echo "$getProcesses" | sed '$d')
+
+		# Kill based on process id
+		pids=$(echo "$getProcesses" | awk '{print $2}')
+		echo "$pids" | xargs -ro kill -9
+
+		# Kill based on process name
+		processNames=$(echo "$getProcesses" | awk '{print $NF}')
+		echo "$processNames" | xargs killall -9
+	else
+		# Single Process
+
+		# Kill based on process id
+		pid=$(echo "$getProcesses" | awk '{print $2}' | xargs)
+		kill -9 "$pid"
+
+		# Kill based on process name
+		processName=$(echo "$getProcesses" | awk '{print $NF}' | xargs)
+		killall -9 "$processName"
+	fi
+
 else
 	# Get Processes
 	getProcesses=$(ps aux | sed "1d" | fzf -m --prompt "Kill:")
