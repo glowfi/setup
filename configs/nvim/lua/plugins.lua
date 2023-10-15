@@ -286,4 +286,13 @@ return require("lazy").setup({
 		end,
 		ft = { "markdown" },
 	},
+
+	-- LLM Plugins
+
+	{
+		"David-Kunz/gen.nvim",
+		config = function()
+			require("core.gen")
+		end,
+	},
 })

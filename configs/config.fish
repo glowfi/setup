@@ -215,6 +215,9 @@ alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber
 # Journal Logs
 alias jl='journalctl -b -p3 --no-hostname --no-pager'
 
+# Ollama
+alias ol="ollama run (ollama list | sed '1d' | awk '{print $1}' | cut -d":" -f1 | uniq | sort | fzf)"
+
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -455,7 +458,7 @@ end
 
 function sysd
     set services (systemctl list-unit-files --type=service | fzf | awk '{print $1}'| xargs)
-    set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable" | fzf | xargs)
+    set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
     if [ "$choice" = Start ]
         sudo systemctl start "$services"
@@ -480,6 +483,16 @@ function sysd
     else if [ "$choice" = Disable ]
         sudo systemctl disable "$services"
         echo "Disabled!"
+
+    else if [ "$choice" = "Enable&Start" ]
+        echo "Enable & Start!"
+        sudo systemctl enable "$services"
+        sudo systemctl start "$services"
+
+    else if [ "$choice" = "Disable&Stop" ]
+        echo "Disable & Stop!"
+        sudo systemctl disable "$services"
+        sudo systemctl stop "$services"
     end
 end
 
@@ -574,7 +587,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "761s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "774s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
