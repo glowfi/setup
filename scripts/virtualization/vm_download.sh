@@ -85,6 +85,19 @@ archurl() {
 	checkfile $1
 }
 
+archguiurl() {
+	de_wm=$(echo -e "cutefish\ngnome\nplasma\nmate\nxfce\ncinnamon\nlxqt\nxp\nwayland\nbudgie\ni3\nbspwm" | fzf -m --prompt "Choose DE/WM for Arch:" --cycle | tr "\n" ",")
+	IFS=',' read -ra my_array < <(echo "$de_wm")
+	mirror="https://sourceforge.net/projects/archlinux-gui/files/"
+
+	for element in "${my_array[@]}"; do
+		link=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "iso" | grep "download" | grep "$element")
+		new="$link"
+		output="archlinux-gui-${element}.iso"
+		checkfile $1
+	done
+}
+
 manjarourl() {
 	mirror="https://manjaro.org/download/"
 	x=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep minimal | grep kde | grep -E ".+.iso$")
@@ -1432,7 +1445,7 @@ win10ltscurl() {
 }
 
 # Categories
-arch=(archlinux manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
+arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
@@ -1451,6 +1464,7 @@ distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]
 
 # Archlinux-based distros
 archlinux=("ArchLinux" "amd64" "rolling" "archurl")
+archlinuxgui=("ArchLinuxGUI" "amd64" "rolling" "archguiurl")
 manjaro=("Manjaro" "amd64" "rolling" "manjarourl")
 arcolinux=("Arcolinux" "amd64" "rolling" "arcourl")
 archbang=("Archbang" "amd64" "rolling" "archbangurl")
