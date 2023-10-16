@@ -216,7 +216,7 @@ alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber
 alias jl='journalctl -b -p3 --no-hostname --no-pager'
 
 # Ollama
-alias ol="ollama run (ollama list | sed '1d' | awk '{print $1}' | cut -d":" -f1 | uniq | sort | fzf)"
+alias ol='ollama run (ollama list | sed "1d" | awk -F" " \'{print $1}\' | uniq | sort | fzf)'
 
 # ===================================================================
 #                           Custom Functions
