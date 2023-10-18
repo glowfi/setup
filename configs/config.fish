@@ -215,6 +215,10 @@ alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber
 # Journal Logs
 alias jl='journalctl -b -p3 --no-hostname --no-pager'
 
+# Network start/restart
+alias nmst="systemctl start NetworkManager.service;systemctl start wpa_supplicant.service"
+alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.service"
+
 # Ollama
 alias ol='ollama run (ollama list | sed "1d" | awk -F" " \'{print $1}\' | uniq | sort | fzf)'
 
@@ -587,7 +591,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "774s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "778s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
