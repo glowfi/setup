@@ -52,6 +52,9 @@ alias cat='bat --theme=gruvbox-dark'
 # Changing top to bottom
 alias top='btm --mem_as_value --color gruvbox'
 
+# Changing cp to rsync
+alias cp='rsync -avPhR'
+
 # Kitty
 alias disp='kitty +kitten icat'
 alias diff='kitty +kitten diff'
@@ -591,7 +594,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "778s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "781s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
