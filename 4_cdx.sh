@@ -64,7 +64,6 @@ echo ""
 
 curl https://ollama.ai/install.sh | sh
 ollama serve
-ollama pull mistral:latest
 ollama pull mistral:instruct
 ollama pull zephyr
 sudo systemctl disable ollama.service
