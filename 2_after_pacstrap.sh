@@ -128,17 +128,14 @@ elif lspci | grep -E "Radeon"; then
 
 elif lspci | grep -E "Intel Corporation UHD"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm lib32-vulkan-intel && break || sleep 1; done
 	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 
 elif lspci | grep -E "Intel Corporation HD"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm lib32-vulkan-intel && break || sleep 1; done
 	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 
 elif lspci | grep -E "Integrated Graphics Controller"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm lib32-vulkan-intel && break || sleep 1; done
 	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
 fi
 
