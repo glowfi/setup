@@ -53,7 +53,7 @@ alias cat='bat --theme=gruvbox-dark'
 alias top='btm --mem_as_value --color gruvbox'
 
 # Changing cp to rsync
-alias cp='rsync -avPhR'
+alias cp="copy"
 
 # Kitty
 alias disp='kitty +kitten icat'
@@ -503,6 +503,21 @@ function sysd
     end
 end
 
+function copy
+    if [ -f $argv[1] ]
+        echo "File Detected!"
+        set src (echo "$argv[1]")
+        set dst (echo "$argv[2]")
+        rsync -aPvhW --no-compress --progress --info=progress2 "$src" "$dst"
+    else
+        echo "Folder Detected!"
+        set folder (basename "$argv[1]")
+        set src (realpath "$argv[1]")
+        set dst (echo "$argv[2]")
+        rsync -aPvhW --no-compress --progress --info=progress2 "$src" "$dst"
+    end
+end
+
 # ===================================================================
 #                    Git Functions [Used in prompt]
 # ===================================================================
@@ -594,7 +609,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "781s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "796s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
