@@ -359,15 +359,15 @@ function gotoMounteddrive
         set choice1 (echo "")
 
         if test (exa "/run/media/$USER" 2>/dev/null)
-            set choice0 (exa /run/media/$USER)
+            set choice0 (exa /run/media/$USER| tr -d "'")
         end
 
         if test (exa "/run/user/1000/gvfs" 2>/dev/null)
-            set choice1 (exa /run/user/1000/gvfs)
+            set choice1 (exa /run/user/1000/gvfs| tr -d "'")
         end
 
         if test (echo "$choice0") || test (echo "$choice1")
-            set getChoice (echo -e "$choice0\n$choice1" |fzf)
+            set getChoice (echo -e "$choice0\n$choice1" |sed '/^$/d'|fzf)
             if test -z (string match -i "$getChoice*" "$choice0")
                 if test (echo "$getChoice")
                     cd "/run/user/1000/gvfs/$getChoice"
@@ -382,7 +382,7 @@ function gotoMounteddrive
         end
     else
         set choice0 (exa /media/)
-        set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|fzf --preview "ls /media/{}")
+        set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|sed '/^$/d'|fzf --preview "ls /media/{}")
         cd "/media/$getChoice"
     end
 end
