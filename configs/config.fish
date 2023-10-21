@@ -52,8 +52,8 @@ alias cat='bat --theme=gruvbox-dark'
 # Changing top to bottom
 alias top='btm --mem_as_value --color gruvbox'
 
-# Changing cp to rsync
-alias cp="copy"
+# Fast copy for rsync
+alias cpx="copy"
 
 # Kitty
 alias disp='kitty +kitten icat'
@@ -222,9 +222,6 @@ alias jl='journalctl -b -p3 --no-hostname --no-pager'
 alias nmst="systemctl start NetworkManager.service;systemctl start wpa_supplicant.service"
 alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.service"
 
-# Ollama
-alias ol='ollama run (ollama list | sed "1d" | awk -F" " \'{print $1}\' | uniq | sort | fzf)'
-
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -358,30 +355,34 @@ function gotoMounteddrive
         set choice0 (echo "")
         set choice1 (echo "")
 
-        if test (exa "/run/media/$USER" 2>/dev/null)
-            set choice0 (exa /run/media/$USER| tr -d "'")
+        set cmd0 "$(exa -1 /run/media/$USER)"
+        if [ "$cmd0" != "" ]
+            set choice0 "$(exa -1 /run/media/$USER | tr -d \"\'\")"
         end
 
-        if test (exa "/run/user/1000/gvfs" 2>/dev/null)
-            set choice1 (exa /run/user/1000/gvfs| tr -d "'")
+        set cmd1 "$(exa -1 /run/user/1000/gvfs)"
+        if [ "$cmd1" != "" ]
+            set choice1 "$(exa -1 /run/user/1000/gvfs | tr -d \"\'\")"
         end
 
-        if test (echo "$choice0") || test (echo "$choice1")
+        if [ "$choice0" != "" ] || [ "$choice1" != "" ]
             set getChoice (echo -e "$choice0\n$choice1" |sed '/^$/d'|fzf)
-            if test -z (string match -i "$getChoice*" "$choice0")
-                if test (echo "$getChoice")
-                    cd "/run/user/1000/gvfs/$getChoice"
+            set kmd0 "$(echo "$getChoice" | grep -i "$choice0")"
+            if [ "$kmd0" != "" ]
+                if [ "$getChoice" != "" ]
+                    cd "/run/media/$USER/$getChoice"
                 end
             else
-                if test -z (string match -i "$getChoice*" "$choice1")
-                    if test (echo "$getChoice")
-                        cd "/run/media/$USER/$getChoice"
+                set kmd1 "$(echo "$getChoice" | grep -i "$choice0")"
+                if [ "$kmd1" != "" ]
+                    if [ "$getChoice" != "" ]
+                        cd "/run/user/1000/gvfs/$getChoice"
                     end
                 end
             end
         end
     else
-        set choice0 (exa /media/)
+        set choice0 (exa -1 /media/)
         set getChoice (echo -e "$choice0\n$choice1"|xargs|tr " " "\n"|sed '/^$/d'|fzf --preview "ls /media/{}")
         cd "/media/$getChoice"
     end
@@ -609,7 +610,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "796s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "797s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

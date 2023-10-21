@@ -18,7 +18,6 @@ echo ""
 install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "xdg-user-dirs xdg-desktop-portal-kde xdg-utils" "pac"
 install "wmctrl" "pac"
-install "polkit-dumb-agent" "yay"
 
 install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
 install "feh" "pac"

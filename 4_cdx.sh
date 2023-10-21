@@ -55,20 +55,6 @@ pip install pyfzf
 
 # ======================================================= END ======================================================================================
 
-
-echo ""
-echo "----------------------------------------------------------------------------"
-echo "--------------Installing Local LLM Models...--------------------------------"
-echo "----------------------------------------------------------------------------"
-echo ""
-
-curl https://ollama.ai/install.sh | sh
-ollama serve
-ollama pull mistral:instruct
-ollama pull zephyr
-sudo systemctl disable ollama.service
-sudo systemctl stop ollama.service
-
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing Node Modules...--------------------------------"
