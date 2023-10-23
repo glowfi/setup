@@ -27,15 +27,14 @@ kitty
 
 ## Browser
 #super + b
-choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
+choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf\n4.default-release[Firefox] : (ArkenFoxP) \n5.second[Firefox] : (ArkenFoxT)\n6.third[Firefox] : (BetterFOX)\n7.fourth[Firefox] : (Normal)" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" != "" ]]; then
 	if [[ "$choice" = "1" ]]; then
 		brave --profile-directory=Default
 	elif [[ "$choice" = "2" ]]; then
 		brave --profile-directory="Tmp"
-	else
-		libw
-	fi
+	elif [[ "$choice" = "3" ]]; then
+		libw "librewolf:$(date +%s)"
 fi
 
 ## Network

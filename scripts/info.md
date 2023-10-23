@@ -91,7 +91,7 @@ chmod 660 /dev/shm/looking-glass
 ```bash
 
 rm -rf $HOME/.mozilla
-sudo rm -rf /usr/lib/firefox/
+sudo rm -rf /usr/lib/firefox/distribution/policies.json
 
 ### Policies
 
@@ -278,23 +278,18 @@ firefox -CreateProfile fourth
 ## Alternate Browser
 #ctrl + alt + b
 choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|dmenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
-if [[ "$choice" != "" ]]; then
-    firefox -P "$choice" &
-    sleep 1
-    if [ -f "/tmp/ffpid" ]; then
-        echo "Do Not Do Anything ...!"
-    else
-        while true; do
-            echo "$$" > /tmp/ffpid
-            pgrep firefox > /dev/null
-            if [ $? -ne 0 ]; then
-                rm -rf /tmp/ffpid
-                exit 0
-            fi
-            VOL=$(pamixer --get-volume)
-            pactl list sink-inputs | grep -E 'Sink Input #|application.name = "Firefox"' | grep -oP '#\K\d+' | xargs -I{} pactl set-sink-input-volume {} "$VOL%"
-        done
-    fi
+choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf\n4.default-release[Firefox] : (ArkenFoxP) \n5.second[Firefox] : (ArkenFoxT)\n6.third[Firefox] : (BetterFOX)\n7.fourth[Firefox] : (Normal)" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
+if [[ "$choice" = "4" ]]; then
+    libw "firefox:$(date +%s)" "default-release"
+fi
+if [[ "$choice" = "5" ]]; then
+    libw "firefox:$(date +%s)" "second"
+fi
+if [[ "$choice" = "6" ]]; then
+    libw "firefox:$(date +%s)" "third"
+fi
+if [[ "$choice" = "7" ]]; then
+    libw "firefox:$(date +%s)" "fourth"
 fi
 ```
 

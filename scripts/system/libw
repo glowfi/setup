@@ -1,18 +1,32 @@
 #!/bin/bash
 
-librewolf &
-sleep 1
-if [ -f "/tmp/libwpid" ]; then
-	echo "Do Not Do Anything ...!"
-else
-	while true; do
-		echo "$$" >/tmp/libwpid
-		pgrep librewolf >/dev/null
-		if [ $? -ne 0 ]; then
-			rm -rf /tmp/libwpid
-			exit 0
-		fi
-		VOL=$(pamixer --get-volume)
-		pactl list sink-inputs | grep -E 'Sink Input #|application.name = "librewolf"' | grep -oP '#\K\d+' | xargs -I{} pactl set-sink-input-volume {} "$VOL%"
-	done
+helper() {
+	if [ -f "$2" ]; then
+		echo "Do Not Do Anything ...!"
+	else
+		while true; do
+			echo "$$" >"$2"
+			pgrep "$1" >/dev/null
+			if [ $? -ne 0 ]; then
+				rm -rf "$2"
+				exit 0
+			fi
+			VOL=$(pamixer --get-volume)
+			pactl list sink-inputs | grep -E 'Sink Input #|application.name = "librewolf"' | grep -oP '#\K\d+' | xargs -I{} pactl set-sink-input-volume {} "$VOL%"
+		done
+	fi
+}
+
+if [[ "$1" != "" ]]; then
+	if [[ "$2" != "" ]]; then
+		firefox -P "$2" &
+		sleep 1
+		browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
+		pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
+		helper "$browser" "$pid"
+	else
+		librewolf &
+		sleep 1
+		helper
+	fi
 fi
