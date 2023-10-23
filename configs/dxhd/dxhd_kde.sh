@@ -57,9 +57,8 @@ if [[ "$choice" != "" ]]; then
 		brave --profile-directory=Default
 	elif [[ "$choice" = "2" ]]; then
 		brave --profile-directory="Tmp"
-	else
-		libw
-	fi
+	elif [[ "$choice" = "3" ]]; then
+		libw "librewolf:$(date +%s)"
 fi
 
 ## Network
