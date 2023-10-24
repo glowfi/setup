@@ -101,6 +101,7 @@ rm -rf rust-analyzer
 # RUST MODULES
 
 cargo install ripdrag
+cargo install csvlens
 
 echo ""
 echo "------------------------------------------------------------------------"
