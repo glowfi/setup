@@ -373,7 +373,7 @@ function gotoMounteddrive
                     cd "/run/media/$USER/$getChoice"
                 end
             else
-                set kmd1 "$(echo "$getChoice" | grep -i "$choice0")"
+                set kmd1 "$(echo "$getChoice" | grep -i "$choice1")"
                 if [ "$kmd1" != "" ]
                     if [ "$getChoice" != "" ]
                         cd "/run/user/1000/gvfs/$getChoice"

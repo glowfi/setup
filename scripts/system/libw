@@ -27,6 +27,8 @@ if [[ "$1" != "" ]]; then
 	else
 		librewolf &
 		sleep 1
-		helper
+		browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
+		pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
+		helper "$browser" "$pid"
 	fi
 fi
