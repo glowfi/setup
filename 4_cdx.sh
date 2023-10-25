@@ -427,7 +427,7 @@ install "gource" "pac"
 
 ### OCR 
 
-install "tesseract" "pac"
+install "tesseract tesseract-data-eng" "pac"
 
 ### Ueberzug and Ueberzugpp
 
