@@ -84,9 +84,6 @@ alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm
 alias comp='ouch compress'
 alias dcomp='ouch decompress'
 
-# Check-ur-requests
-alias checkur="checkur.py"
-
 # xhibit
 alias xbt="xhibit -cs gruvbox -rcn t"
 alias xi="randomImagexhibit"
@@ -373,7 +370,7 @@ function gotoMounteddrive
                     cd "/run/media/$USER/$getChoice"
                 end
             else
-                set kmd1 "$(echo "$getChoice" | grep -i "$choice1")"
+                set kmd1 "$(echo "$getChoice" | grep -i "$choice0")"
                 if [ "$kmd1" != "" ]
                     if [ "$getChoice" != "" ]
                         cd "/run/user/1000/gvfs/$getChoice"
@@ -610,7 +607,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "797s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "794s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

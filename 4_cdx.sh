@@ -52,6 +52,7 @@ end
 
 pip install pyautogui pynput
 pip install pyfzf
+pip install rich pygments
 
 # ======================================================= END ======================================================================================
 
@@ -173,17 +174,6 @@ echo "------------------------------------------------------------------------"
 echo "--------------Installing terminal utilities...--------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
-
-# INSTALL checkur
-
-mkdir -p $HOME/.local/bin
-pip install rich
-git clone https://github.com/glowfi/check-ur-requests
-cd check-ur-requests
-cp -r ./checkur.py $HOME/.local/bin/
-cd ..
-rm -rf check-ur-requests
-chmod +x $HOME/.local/bin/checkur.py
 
 # INSTALL xhibit
 
