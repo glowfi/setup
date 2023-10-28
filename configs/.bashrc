@@ -16,12 +16,8 @@ alias sgh='searchContents h'
 alias v='nvim'
 alias n='nnn -d -e'
 alias gt='gitui'
-alias ls='ls --color=auto -1'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
+alias ls='ls -1'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 # ===================================================================
 #                          Miscellaneous
@@ -136,5 +132,5 @@ user=$(whoami)
 if [[ "$user" = "root" ]]; then
 	PS1='◆  \[\e[91m\]\u\[\e[0;1m\] \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
 else
-	PS1='◆  \[\e[92;5m\]\u\[\e[0;1m\] \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
+	PS1='◆  \[\e[94m\]\u\[\e[0;1m\] \[\e[0;38;5;208m\]\w\[\e[0m\] $(git branch 2>/dev/null | grep '"'"'*'"'"' | colrm 1 2) '
 fi
