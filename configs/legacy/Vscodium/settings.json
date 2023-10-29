@@ -1,0 +1,56 @@
+{
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[python]": {
+        "editor.formatOnSave": false,
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.languageServer": "Pylance",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "[sql]": {
+        "editor.formatOnSave": false
+    },
+    "sqltools.highlightQuery": false,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.runInTerminal": true,
+    "editor.formatOnSave": true,
+    "editor.linkedEditing": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+    },
+    "editor.wordWrap": "on",
+    "terminal.integrated.defaultProfile.linux": "fish",
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "code-runner.enableAppInsights": false,
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 15,
+    "workbench.colorTheme": "Gruvbox Minor Dark Medium",
+    "bracket-pair-colorizer-2.colors": ["Gold", "Orchid", "LightSkyBlue"],
+    "indentRainbow.colors": [
+        "rgba(250, 189, 47, 0.05)",
+        "rgba(142, 192, 124, 0.05)",
+        "rgba(131, 165, 152, 0.05)",
+        "rgba(211, 134, 155, 0.05)",
+        "rgba(254, 128, 25, 0.05)"
+    ],
+    "indentRainbow.errorColor": "rgba(251, 73, 52, 0.2)"
+}
