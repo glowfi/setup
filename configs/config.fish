@@ -181,7 +181,7 @@ alias cpc='pwd | xclip -sel c;notify-send "Copied current path to clipboard"'
 alias mvol='micVOl'
 
 # Open Carbon
-alias cbn='setsid xdg-open "https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=monokai&wt=none&l=auto&width=680&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code="'
+alias cbn='nohup xdg-open "https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=monokai&wt=none&l=auto&width=680&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code=";rm nohup.out'
 
 # Reset Git Head 
 alias gres="git reset --hard HEAD~1"
@@ -259,7 +259,8 @@ function searchFilesCurrent
                     vim "$args"
                 end
             case '*'
-                setsid xdg-open (realpath "$args")
+                nohup xdg-open (realpath "$args")
+                rm nohup.out
         end
     end
 end

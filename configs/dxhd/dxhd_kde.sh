@@ -100,7 +100,7 @@ for (i=0;i<Desktops.length;i++) {
 
 ## Favourite Wallpaper
 #super + c
-favwall=$(printf "143.jpg\n40.png" | shuf -n 1)
+favwall=$(printf "143.jpg\n40.png\n103.png" | shuf -n 1)
 dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript "string:
 var Desktops = desktops();                                                                                                                       
 for (i=0;i<Desktops.length;i++) {

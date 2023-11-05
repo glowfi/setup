@@ -275,6 +275,9 @@ chmod +x $HOME/.local/bin/rename.sh
 cp -r $HOME/setup/scripts/utils/killprocess.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/killprocess.sh
 
+cp -r $HOME/setup/scripts/utils/timer $HOME/.local/bin/
+chmod +x $HOME/.local/bin/timer
+
 git clone https://github.com/thameera/vimv
 cd vimv
 cp -r vimv $HOME/.local/bin/

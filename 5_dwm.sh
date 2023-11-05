@@ -54,7 +54,7 @@ rm -rf volnoti
 # Setup nsxiv key-handler
 
 mkdir -p $HOME/.config/nsxiv/exec
-cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
+cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 
 # Install picom compositor
 
@@ -107,8 +107,8 @@ echo ""
 cp -r $HOME/setup/configs/.Xresources $HOME
 cd $HOME/.config;rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
 
-cp -r $HOME/setup/configs/theming/qt5ct/ $HOME/setup/configs/theming/gtk-2.0 $HOME/setup/configs/theming/gtk-3.0 $HOME/setup/configs/theming/Kvantum $HOME/.config
-cp -r $HOME/setup/configs/theming/.gtkrc-2.0 $HOME
+cp -r $HOME/setup/configs/DWM/theming/qt5ct/ $HOME/setup/configs/DWM/theming/gtk-2.0 $HOME/setup/configs/DWM/theming/gtk-3.0 $HOME/setup/configs/DWM/theming/Kvantum $HOME/.config
+cp -r $HOME/setup/configs/DWM/theming/.gtkrc-2.0 $HOME
 echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Pictures Pictures" >> $HOME/.config/gtk-3.0/bookmarks
@@ -214,7 +214,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 DWM_VER=$(echo "6.2")
-cp -r $HOME/setup/configs/dwm-${DWM_VER}/ $HOME/.config/
+cp -r $HOME/setup/configs/DWM/dwm-${DWM_VER}/ $HOME/.config/
 mv $HOME/.config/dwm-${DWM_VER}/ $HOME/.config/DWM
 cd $HOME/.config/DWM/
 make
@@ -230,7 +230,7 @@ echo "--------------Installing DMENU ...----------------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cd $HOME/setup/configs/dmenu
+cd $HOME/setup/configs/DWM/dmenu/
 sudo make clean install
 cd
 echo "Done Installing DEMNU!"
@@ -245,6 +245,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 pip install opencv-python tk pynput playsound pathlib pyautogui
+install "tk" "pac"
 git clone https://github.com/glowfi/screenlocker
 cd screenlocker
 fish -c "cargo build --release"
@@ -261,8 +262,8 @@ echo "--------------Copying TOPBAR settings...----------------------------------
 echo "----------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r $HOME/setup/configs/dwmblocks/modules/* $HOME/.local/bin/
-cd $HOME/setup/configs/dwmblocks/
+cp -r $HOME/setup/configs/DWM/dwmblocks/modules/* $HOME/.local/bin/
+cd $HOME/setup/configs/DWM/dwmblocks/
 sudo make clean install
 cd
 echo "Done Copying TOPBAR settings!"
@@ -276,7 +277,7 @@ echo "--------------Copying DUNST settings...-----------------------------------
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cp -r $HOME/setup/configs/dunst/ $HOME/.config
+cp -r $HOME/setup/configs/DWM/dunst/ $HOME/.config
 cp -r $HOME/setup/scripts/system/audio.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/audio.sh
 cd

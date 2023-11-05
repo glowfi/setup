@@ -23,5 +23,5 @@ if plugged == "p" or plugged == "P":
         promptAccepted = input("Type A/a if prompt accepted:")
         if promptAccepted == "a" or promptAccepted == "A":
             os.system(
-                "setsid scrcpy --display 2 --bit-rate 32M --window-title 'DexOnLinux' --turn-screen-off --stay-awake"
+                "nohup scrcpy --display 2 --bit-rate 32M --window-title 'DexOnLinux' --turn-screen-off --stay-awake;rm nohup.out"
             )

@@ -60,7 +60,7 @@ feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
 
 ## Favourite Wallpaper
 #super + c
-randWall=$(printf "143.jpg\n40.png" | shuf -n 1)
+randWall=$(printf "143.jpg\n40.png\n103.png" | shuf -n 1)
 feh --bg-fill ~/wall/"$randWall"
 
 ## Clipboard

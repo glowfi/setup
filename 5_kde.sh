@@ -40,11 +40,11 @@ install "brightnessctl" "pac"
 
 install "nsxiv-git" "yay"
 mkdir -p $HOME/.config/nsxiv/exec
-cp -r $HOME/setup/configs/key-handler $HOME/.config/nsxiv/exec
+cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 
 # Install DEMNU
 
-cd $HOME/setup/configs/dmenu
+cd $HOME/setup/configs/DWM/dmenu
 sudo make clean install
 cd
 
