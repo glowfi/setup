@@ -4,6 +4,9 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
+# Source Helper
+source "$SCRIPT_DIR/helper.sh"
+
 # Set location and Synchronize hardware clock
 
 echo ""
@@ -70,7 +73,7 @@ echo ""
 
 sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
-sudo pacman -Syy
+sudo pacman -Syyy
 
 # Set Hostname
 
@@ -120,23 +123,23 @@ echo ""
 
 if lspci | grep -E "NVIDIA|GeForce"; then
 	echo "Installing NVIDIA drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm nvidia-dkms nvidia-utils nvidia-settings nvidia-prime && break || sleep 1; done
+	install "nvidia-dkms nvidia-utils nvidia-settings nvidia-prime" "pac"
 
 elif lspci | grep -E "Radeon"; then
 	echo "Installing AMD Radeon drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm xf86-video-amdgpu && break || sleep 1; done
+	install "xf86-video-amdgpu" "pac"
 
 elif lspci | grep -E "Intel Corporation UHD"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
+	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 
 elif lspci | grep -E "Intel Corporation HD"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
+	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 
 elif lspci | grep -E "Integrated Graphics Controller"; then
 	echo "Installing Intel drivers ..."
-	for i in {1..5}; do pacman -Syyy --noconfirm libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils && break || sleep 1; done
+	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 fi
 
 # Essential Packages
@@ -149,37 +152,14 @@ echo ""
 
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 
-for i in {1..5}; do
-	pacman -Syyy --noconfirm os-prober grub efibootmgr ntfs-3g && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm dialog mtools dosfstools gptfdisk && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm rsync reflector wget && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm lsof strace bc && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm acpi acpi_call-dkms acpid && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm exa bat ripgrep fd bottom sad git-delta tldr duf gping imagemagick && break || sleep 1
-done
-
-for i in {1..5}; do
-	pacman -Syyy --noconfirm tokei hyperfine && break || sleep 1
-done
+install "os-prober grub efibootmgr ntfs-3g" "pac"
+install "networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools" "pac"
+install "dialog mtools dosfstools gptfdisk" "pac"
+install "rsync reflector wget" "pac"
+install "lsof strace bc" "pac"
+install "acpi acpi_call-dkms acpid" "pac"
+install "exa bat ripgrep fd bottom sad git-delta tldr duf gping imagemagick" "pac"
+install "tokei hyperfine" "pac"
 
 # Configuring GRUB and mkinitcpio
 
@@ -220,46 +200,38 @@ sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
-### Add Modules to load at start for btrfs and graphics drivers
+### Add Modules to load btrfs or gpu hooks
 
 FS=$(sed -n '1p' <"$CONFIG_FILE")
 
 if [[ "$FS" = "btrfs" ]]; then
+
+	install "grub-btrfs" "pac"
+
 	if lspci | grep -E "NVIDIA|GeForce"; then
 		sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 		sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
-		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
-		grub-mkconfig -o /boot/grub/grub.cfg
-		mkinitcpio -p linux-zen
-		sudo systemctl enable grub-btrfsd
 	elif lspci | grep -E "Radeon"; then
 		sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
-		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
-		grub-mkconfig -o /boot/grub/grub.cfg
-		mkinitcpio -p linux-zen
-		sudo systemctl enable grub-btrfsd
 	else
 		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
-		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
-		grub-mkconfig -o /boot/grub/grub.cfg
-		mkinitcpio -p linux-zen
-		sudo systemctl enable grub-btrfsd
 	fi
+
+	grub-mkconfig -o /boot/grub/grub.cfg
+	mkinitcpio -p linux-zen
+	sudo systemctl enable grub-btrfsd
+
 else
+
 	if lspci | grep -E "NVIDIA|GeForce"; then
 		sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 		sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
-		mkinitcpio -p linux-zen
 	elif lspci | grep -E "Radeon"; then
 		sed -i 's/MODULES=()/MODULES=(amdgpu)/' /etc/mkinitcpio.conf
-		mkinitcpio -p linux-zen
-	else
-		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
-		for i in {1..5}; do pacman -Syyy --noconfirm grub-btrfs && break || sleep 1; done
-		grub-mkconfig -o /boot/grub/grub.cfg
-		mkinitcpio -p linux-zen
-		sudo systemctl enable grub-btrfsd
 	fi
+
+	grub-mkconfig -o /boot/grub/grub.cfg
+	mkinitcpio -p linux-zen
 fi
 
 ### Add more flags in GRUB config for encrypted disk
