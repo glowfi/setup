@@ -26,7 +26,7 @@ gitChangeCommitMessage() {
 	commit_hash=""
 	new_message=""
 
-	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --cycle --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
+	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --prompt "Choose commit:" --cycle --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
 
 	if [[ "$commit_hash" != "" ]]; then
 
@@ -48,12 +48,12 @@ gitChangeCommitMessage() {
 }
 
 gitCheckout() {
-	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --cycle --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
+	commit_hash=$(git log --no-abbrev-commit --pretty=format:"%H %ad %s" --date=short --date-order | fzf --prompt "Choose commit:" --cycle --ansi --preview="git show {1} | delta --syntax-theme 'gruvbox-dark'" --preview-window="up:70%" | awk -F" " '{print $1}')
 	git checkout "$commit_hash"
 }
 
 if [ -d "$PWD/.git" ]; then
-	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit\n3.Checkout to a particular commit" | fzf --cycle | awk -F"." '{print $1}')
+	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit\n3.Checkout to a particular commit" | fzf --cycle --prompt "Choose :" | awk -F"." '{print $1}')
 
 	if [ "$out" = "1" ]; then
 		gitMakeMine
