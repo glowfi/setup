@@ -314,6 +314,15 @@ chmod +x $HOME/.local/bin/kdeconnect
 cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
 
+# Infinite Canvas Drawing App
+
+set Lorienver (echo "v0.6.0")
+wget "https://github.com/mbrlabs/Lorien/releases/download/$Lorienver/Lorien_$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
+tar -xf ~/Lorien.tar.gz
+rm -rf Lorien.tar.gz
+mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
+rm -rf Lorien_"$Lorienver"_Linux
+
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
 ### SETUP POSTGRES
@@ -359,7 +368,10 @@ mkdir restfox
 cd restfox
 wget "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=restfox-bin" -O PKGBUILD
 sed -i "s/^sha512.*/sha512sums=('SKIP')/" PKGBUILD
-sed -i "s/pkgver=0.0.8/pkgver=$ver/" PKGBUILD
+set getPkgVer (cat PKGBUILD | grep -n "pkgver")
+set getLineNumber (echo "$getPkgVer" | cut -d ":" -f1 | xargs | cut -d" " -f1 )
+set replacewith (echo "pkgver=$ver")
+sed -i "$getLineNumber s/.*/$replacewith/" PKGBUILD
 makepkg -si --noconfirm
 cd ..
 rm -rf restfox
