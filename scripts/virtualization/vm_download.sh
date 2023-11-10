@@ -381,6 +381,13 @@ trisquelurl() {
 	output="trisquel.iso"
 	checkfile $1
 }
+peppermintosurl() {
+	mirror="https://peppermintos.com/guide/downloading/"
+	iso=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep -i xfce | grep -i debian | head -1 | xargs)
+	new="$iso"
+	output="peppermintos-XFCE-Debian-base.iso"
+	checkfile $1
+}
 
 fedoraurl() {
 	mirror="https://getfedora.org/en/workstation/download/"
@@ -1446,7 +1453,7 @@ win10ltscurl() {
 
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel)
+deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
@@ -1507,6 +1514,7 @@ cutefishos=("CutefishOS" "amd64" "release" "cutefishosurl")
 parrot=("Parrot" "amd64" "testing" "parroturl")
 antix=("Antix" "amd64" "full" "antixurl")
 trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
+peppermintos=("Peppermintos" "amd64" "latest" "peppermintosurl")
 
 # Add if wanted
 # https://distrowatch.com/table.php?distribution=rebeccablackos
