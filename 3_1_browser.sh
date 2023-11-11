@@ -11,6 +11,9 @@ install "brave-bin librewolf-bin" "yay"
 
 sudo rm -rf /etc/brave/
 rm -rf $HOME/.config/BraveSoftware/
+type=$(echo "brave")
+typeFolder=$(echo "Brave-Browser")
+secProfileName=$(echo "Tmp")
 
 ### Policies
 sudo mkdir -p /etc/brave/policies/managed/
@@ -19,26 +22,31 @@ cat $HOME/setup/configs/brave/policy.json | sudo tee -a /etc/brave/policies/mana
 
 ### Create Default Profile
 
-sudo -u "$USER" brave --headless=new &
+sudo -u "$USER" "$type" --headless=new &
+mkdir -p "/home/$USER/.config/BraveSoftware/$typeFolder/Default"
 sleep 3
-pkill -u "$USER" brave
-rm -rf $HOME/.config/BraveSoftware/Brave-Browser/SingletonLock
+pkill -u "$USER" "$type"
+rm -rf "$HOME/.config/BraveSoftware/$typeFolder/SingletonLock"
 
 ### Create Secondary Profile
-sudo -u "$USER" brave --headless=new --profile-directory=Tmp &
+sudo -u "$USER" "$type" --headless=new --profile-directory="$secProfileName" &
+mkdir -p "/home/$USER/.config/BraveSoftware/$typeFolder/$secProfileName"
 sleep 3
-pkill -u "$USER" brave
-rm -rf $HOME/.config/BraveSoftware/Brave-Browser/SingletonLock
+pkill -u "$USER" "$type"
+rm -rf "$HOME/.config/BraveSoftware/$typeFolder/SingletonLock"
 
 ### Copy Settings
 sleep 3
-cat $HOME/setup/configs/brave/settings.json >$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences
+touch "$HOME/.config/BraveSoftware/$typeFolder/Default/Preferences"
+cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/$typeFolder/Default/Preferences"
+
 sleep 3
-cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/Brave-Browser/Tmp/Preferences"
+touch "$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
+cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
 
 ### Copy Bookmarks
-cp -r $HOME/setup/configs/brave/Bookmarks $HOME/.config/BraveSoftware/Brave-Browser/Default/
-cp -r $HOME/setup/configs/brave/Bookmarks $HOME/.config/BraveSoftware/Brave-Browser/Tmp
+cp -r $HOME/setup/configs/brave/Bookmarks "$HOME/.config/BraveSoftware/$typeFolder/Default/"
+cp -r $HOME/setup/configs/brave/Bookmarks "$HOME/.config/BraveSoftware/$typeFolder/$secProfileName"
 
 ######## Librewolf ########
 

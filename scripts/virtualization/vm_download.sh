@@ -389,6 +389,14 @@ peppermintosurl() {
 	checkfile $1
 }
 
+nitruxurl() {
+	mirror="https://sourceforge.net/projects/nitruxos/files/latest/download"
+	iso=$(echo "$mirror")
+	new="$iso"
+	output="nitrux.iso"
+	checkfile $1
+}
+
 fedoraurl() {
 	mirror="https://getfedora.org/en/workstation/download/"
 	new=$(curl -s $mirror | html2text | grep -m2 iso | awk -F "(" 'NR%2{printf "%s",$0;next;}1' | awk -F"(" '{ print $2 }' | awk -F")" '{ print $1 }')
@@ -1453,7 +1461,7 @@ win10ltscurl() {
 
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos)
+deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
@@ -1515,6 +1523,7 @@ parrot=("Parrot" "amd64" "testing" "parroturl")
 antix=("Antix" "amd64" "full" "antixurl")
 trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
 peppermintos=("Peppermintos" "amd64" "latest" "peppermintosurl")
+nitrux=("nitrux" "amd64" "latest" "nitruxurl")
 
 # Add if wanted
 # https://distrowatch.com/table.php?distribution=rebeccablackos

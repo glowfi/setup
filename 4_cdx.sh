@@ -314,15 +314,6 @@ chmod +x $HOME/.local/bin/kdeconnect
 cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
 
-# Infinite Canvas Drawing App
-
-set Lorienver (echo "v0.6.0")
-wget "https://github.com/mbrlabs/Lorien/releases/download/$Lorienver/Lorien_$Lorienver"_Linux.tar.xz -O ~/Lorien.tar.gz
-tar -xf ~/Lorien.tar.gz
-rm -rf Lorien.tar.gz
-mv ~/Lorien_"$Lorienver"_Linux/*.* ~/.local/bin/
-rm -rf Lorien_"$Lorienver"_Linux
-
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
 ### SETUP POSTGRES
