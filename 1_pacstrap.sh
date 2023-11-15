@@ -12,12 +12,35 @@ echo -e "-----------Setting up mirrors for faster downloads---------------------
 echo -e "-------------------------------------------------------------------------"
 echo ""
 
-timedatectl set-ntp true
-sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
-reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-pacman -S --noconfirm archlinux-keyring
-pacman -Syyy
+_distroType=$(sed '$!d' "$CONFIG_FILE")
+
+if [[ "$_distroType" = "artix" ]]; then
+	timedatectl set-ntp true
+
+	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
+	sudo pacman -Syy
+
+	sudo pacman -S --noconfirm artix-archlinux-support
+	sudo tee -a /etc/pacman.conf <<EOF
+
+[extra]
+Include = /etc/pacman.d/mirrorlist-arch
+
+[community]
+Include = /etc/pacman.d/mirrorlist-arch
+EOF
+	sudo pacman-key --populate archlinux
+	sudo pacman -Syy
+
+else
+	timedatectl set-ntp true
+	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
+	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	pacman -S --noconfirm archlinux-keyring
+	pacman -Syyy
+fi
 
 # PARTITIONING
 
@@ -266,18 +289,31 @@ if [[ ${proc_type} =~ "GenuineIntel" ]]; then
 	echo ""
 	echo "Installing Intel microcode ..."
 	echo ""
-	for i in {1..5}; do pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim && break || sleep 1; done
+	if [[ "$_distroType" = "artix" ]]; then
+		for i in {1..5}; do basestrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim openrc elogind-openrc && break || sleep 1; done
+	else
+		for i in {1..5}; do pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim && break || sleep 1; done
+	fi
+
 elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
 	echo ""
 	echo "Installing AMD microcode ..."
 	echo ""
-	for i in {1..5}; do pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim && break || sleep 1; done
+	if [[ "$_distroType" = "artix" ]]; then
+		for i in {1..5}; do basestrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim openrc elogind-openrc && break || sleep 1; done
+	else
+		for i in {1..5}; do pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim && break || sleep 1; done
+	fi
 
 fi
 
 # GENERATE UUID OF THE DISKS
 
-genfstab -U /mnt >>/mnt/etc/fstab
+if [[ "$_distroType" = "artix" ]]; then
+	fstabgen -U /mnt >>/mnt/etc/fstab
+else
+	genfstab -U /mnt >>/mnt/etc/fstab
+fi
 
 # COPY SCRIPTS TO THE MOUNT DIRECTORY
 

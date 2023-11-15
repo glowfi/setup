@@ -253,7 +253,7 @@ diskEncryption() {
 	echo ""
 	echo ""
 	echo ""
-	echo -e "Want Full Disk Encryption ? :\n"
+	echo -e "Want Full Disk Encryption ? \n"
 
 	options=("yes" "no")
 	choose=$(gum choose "${options[@]}")
@@ -283,6 +283,24 @@ diskEncryption() {
 	fi
 }
 
+distroType() {
+
+	echo ""
+	echo "---------------------------------------------------"
+	echo "------- Choose Distro Variant...-------------------"
+	echo "---------------------------------------------------"
+	echo ""
+
+	echo ""
+	echo ""
+	echo ""
+	echo -e "Which distro to install? \n"
+
+	options=("arch" "artix")
+	distro=$(gum choose "${options[@]}")
+	echo "$distro" >>"$CONFIG_FILE"
+}
+
 configure() {
 
 	clear
@@ -304,6 +322,8 @@ configure() {
 	clear
 	diskEncryption
 	clear
+	distroType
+	clear
 
 	# Confirmation
 
@@ -324,6 +344,7 @@ configure() {
 	else
 		_diskencrypt="none"
 	fi
+	_distroType=$(sed '$!d' "$CONFIG_FILE")
 
 	out=$(
 		echo -e "====== Final Configuration ====== \n"
@@ -338,6 +359,7 @@ configure() {
 		echo "rootPassword : ${_rootPassword}"
 		echo "hostname : ${_hostname}"
 		echo "Disk Encryption : ${_diskencrypt}"
+		echo "Distro variant : ${_distroType}"
 	)
 
 	gum style \

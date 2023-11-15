@@ -71,9 +71,29 @@ echo "--------------Enabling ParallelDownloads...---------------------"
 echo "----------------------------------------------------------------"
 echo ""
 
-sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
-sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
-sudo pacman -Syyy
+_distroType=$(sed '$!d' "$CONFIG_FILE")
+
+if [[ "$_distroType" = "artix" ]]; then
+	sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+	sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
+	sudo pacman -Syyy
+
+	sudo pacman -S --noconfirm artix-archlinux-support
+	sudo tee -a /etc/pacman.conf <<EOF
+
+[extra]
+Include = /etc/pacman.d/mirrorlist-arch
+
+[community]
+Include = /etc/pacman.d/mirrorlist-arch
+EOF
+	sudo pacman-key --populate archlinux
+	sudo pacman -Syy
+else
+	sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
+	sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
+	sudo pacman -Syyy
+fi
 
 # Set Hostname
 
@@ -360,9 +380,15 @@ echo "--------------Enabling Services...-----------------------"
 echo "---------------------------------------------------------"
 echo ""
 
-systemctl enable NetworkManager
-systemctl enable reflector.timer
-systemctl enable acpid
+if [[ "$_distroType" = "artix" ]]; then
+	sudo rc-update add NetworkManager default
+	sudo rc-update add reflector.timer default
+	sudo rc-update add acpid default
+else
+	systemctl enable NetworkManager
+	systemctl enable reflector.timer
+	systemctl enable acpid
+fi
 
 # Fix an issue with Timeshift related to BTRFS
 

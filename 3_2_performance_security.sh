@@ -14,15 +14,23 @@ echo ""
 
 # ENABLE ZRAM
 
-install "zramd" "yay"
-sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
-sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
-sudo systemctl enable --now zramd
+if [[ "$1" != "systemD" ]]; then
+	echo "Skipping for now..."
+else
+	install "zramd" "yay"
+	sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
+	sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
+	sudo systemctl enable --now zramd
+fi
 
 # Install APPARMOR
 
 install "apparmor" "pac"
-sudo systemctl enable --now apparmor.service
+if [[ "$1" != "systemD" ]]; then
+	sudo rc-update add apparmor
+else
+	sudo systemctl enable --now apparmor.service
+fi
 
 # Setup APPARMOR
 
@@ -305,8 +313,13 @@ table inet dev {
 }" | sudo tee -a /etc/nftables.conf >/dev/null
 
 sudo chmod 700 /etc/{iptables,nftables.conf}
-sudo systemctl enable --now nftables
-sudo systemctl restart --now nftables
+if [[ "$1" != "systemD" ]]; then
+	sudo rc-service nftables save
+	sudo rc-update add nftables
+else
+	sudo systemctl enable --now nftables
+	sudo systemctl restart --now nftables
+fi
 
 # TIMESHIFT
 
@@ -325,6 +338,11 @@ newListenAddresses="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
 getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | head -1 | xargs)
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
+find="listen_addresses = ['127.0.0.1:53']"
+getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | tail -2 | head -1 | xargs)
+getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}d" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 rep="require_dnssec = true"
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
@@ -352,7 +370,12 @@ rep="force_tcp = true"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Start dnscrypt-proxy at startup
-sudo systemctl enable dnscrypt-proxy
+if [[ "$1" != "systemD" ]]; then
+	sudo pip install requests
+	sudo rc-update add dnscrypt-proxy
+else
+	sudo systemctl enable dnscrypt-proxy
+fi
 
 ### Install dnsmasq
 sudo pacman -S --noconfirm dnsmasq
@@ -374,7 +397,11 @@ conf-file=/usr/share/dnsmasq/trust-anchors.conf
 dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 
 ### Start dnsmasq at startup
-sudo systemctl enable dnsmasq
+if [[ "$1" != "systemD" ]]; then
+	sudo rc-update add dnsmasq
+else
+	sudo systemctl enable dnsmasq
+fi
 
 ### Edit /etc/resolv.conf
 sudo chattr -i /etc/resolv.conf

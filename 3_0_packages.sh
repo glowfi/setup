@@ -66,7 +66,16 @@ wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/in
 chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
-systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
+if [[ "$1" != "systemD" ]]; then
+	sudo rc-update add pipewire.service
+	sudo rc-update add pipewire.socket
+	sudo rc-update add wireplumber.service
+	sudo rc-update add pipewire-pulse.service
+	sudo rc-update add pipewire-pulse.socket
+	sudo rc-update add pipewire-session-manager.service
+else
+	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
+fi
 
 ### CORE (VIDEO)
 install "ffmpeg yt-dlp" "pac"

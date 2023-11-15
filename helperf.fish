@@ -4,14 +4,38 @@
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
 
 function install
+
+    # Detect init system
+    set os (uname -o)
+    if [ "$os" = Android ]
+        set varInit (echo "init.rc")
+    else if [ (pidof -q systemd) = ""]
+        if [ -f /sbin/openrc ]
+            set varInit (echo "openrc")
+        else
+            set varInit (cat /proc/1/comm)
+        end
+    else
+        set varInit (echo "systemD")
+    end
+
+    # Constants
     set max_iteration 5
+    set initType (echo "$varInit"|xargs)
+
+    echo "$initType Detected!"
 
     # Handle Repository
     if test "$argv[2]" = pac
         for package in (string split " " $argv[1])
             set iteration 1
             for i in (seq "$max_iteration")
-                sudo pacman -S --noconfirm $package && break
+                set packageExist (pacman -Ss "$package-$initType")
+                if [ "$packageExist" != "" ]
+                    sudo pacman -S --noconfirm "$package-$initType" && break
+                else
+                    sudo pacman -S --noconfirm "$package" && break
+                end
                 set iteration (math $iteration + 1)
             end
             # Check Success

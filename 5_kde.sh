@@ -149,7 +149,11 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 # Enable
-sudo systemctl enable sddm
+if [[ "$1" != "systemD" ]]; then
+    sudo rc-update add sddm
+else 
+    sudo systemctl enable sddm
+fi
 
 # Set SDDM theme
 getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head -1 | xargs)
