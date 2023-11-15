@@ -25,7 +25,7 @@ sudo pacman -Syy
 # Install base packages
 
 sudo pacman -S --noconfirm base-devel wget jq
-sudo pacman -S --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine fzf
+sudo pacman -S --noconfirm exa bat ripgrep fd bottom sad bc gum git-delta tldr duf gping tokei hyperfine gitui fzf
 sudo pacman -S --noconfirm fish fzf git kitty vim
 
 # Python
@@ -476,6 +476,253 @@ nameserver ::1
 nameserver 127.0.0.1
 options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 sudo chattr +i /etc/resolv.conf
+
+### Load settings
+
+echo "[apps/light-locker]
+idle-hint=false
+late-locking=true
+lock-after-screensaver=uint32 5
+lock-on-lid=true
+lock-on-suspend=true
+
+[net/connman/gtk]
+launch-to-tray=true
+openconnect-use-fsid-by-default=false
+status-icon-enabled=true
+
+[org/gnome/desktop/interface]
+color-scheme='prefer-dark'
+gtk-theme='Artix-dark'
+
+[org/gnome/epiphany]
+default-search-engine='DuckDuckGo'
+homepage-url='about:blank'
+
+[org/gnome/epiphany/reader]
+color-scheme='dark'
+
+[org/mate/caja/desktop]
+computer-icon-visible=true
+font='Roboto 11'
+
+[org/mate/caja/preferences]
+show-image-thumbnails='always'
+
+[org/mate/caja/window-state]
+geometry='800x550+557+234'
+maximized=false
+start-with-sidebar=true
+start-with-status-bar=true
+start-with-toolbar=true
+
+[org/mate/desktop/accessibility/keyboard]
+bouncekeys-beep-reject=true
+bouncekeys-delay=300
+bouncekeys-enable=false
+enable=false
+feature-state-change-beep=false
+mousekeys-accel-time=1200
+mousekeys-enable=false
+mousekeys-init-delay=160
+mousekeys-max-speed=750
+slowkeys-beep-accept=true
+slowkeys-beep-press=true
+slowkeys-beep-reject=false
+slowkeys-delay=300
+slowkeys-enable=false
+stickykeys-enable=false
+stickykeys-latch-to-lock=true
+stickykeys-modifier-beep=true
+stickykeys-two-key-off=true
+timeout=120
+timeout-enable=false
+togglekeys-enable=false
+
+[org/mate/desktop/applications/terminal]
+exec='kitty'
+
+[org/mate/desktop/background]
+picture-filename='/usr/share/backgrounds/GradientGlowBlue.jpg'
+picture-options='zoom'
+
+[org/mate/desktop/font-rendering]
+hinting='full'
+
+[org/mate/desktop/interface]
+document-font-name='Roboto 11'
+font-name='Roboto 11'
+gtk-color-scheme='base_color:#2B2B2C\nfg_color:#e3e3e3\ntooltip_fg_color:#eaeaea\nselected_bg_color:#4080fb\nselected_fg_color:#eaeaea\ntext_color:#e3e3e3\nbg_color:#323131\ninsensitive_bg_color:#434446\ntooltip_bg_color:#343434\nlink_color:#4080fb'
+gtk-theme='Artix-dark'
+icon-theme='matefaenzadark'
+monospace-font-name='Roboto Mono 11'
+
+[org/mate/desktop/media-handling]
+automount-open=false
+
+[org/mate/desktop/peripherals/mouse]
+cursor-theme='Premium'
+
+[org/mate/desktop/session]
+session-start=1700051742
+
+[org/mate/marco/general]
+num-workspaces=1
+theme='Spidey'
+titlebar-font='Roboto Bold 11'
+
+[org/mate/marco/global-keybindings]
+run-command-terminal='<Mod4>t'
+
+[org/mate/marco/window-keybindings]
+close='<Primary><Shift>q'
+move-to-monitor-n='<Mod4>Up'
+move-to-side-n='disabled'
+move-to-side-s='disabled'
+tile-to-corner-nw='<Mod4>Up'
+tile-to-corner-sw='<Mod4>Down'
+tile-to-side-e='<Mod4>Right'
+tile-to-side-w='<Mod4>Left'
+toggle-maximized='<Shift><Mod4>f'
+
+[org/mate/notification-daemon]
+theme='standard'
+
+[org/mate/panel/general]
+locked-down=false
+object-id-list=['main-menu', 'show-desktop', 'irc', 'window-list', 'drive-mounter', 'notification-area', 'clock-applet', 'object-0', 'object-2']
+toplevel-id-list=['bottom']
+
+[org/mate/panel/objects/browser]
+launcher-location='/usr/share/applications/org.gnome.Epiphany.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/clock-applet]
+applet-iid='ClockAppletFactory::ClockApplet'
+object-type='applet'
+panel-right-stick=true
+position=0
+toplevel-id='bottom'
+
+[org/mate/panel/objects/clock-applet/prefs]
+custom-format=''
+format='24-hour'
+show-date=false
+
+[org/mate/panel/objects/drive-mounter]
+applet-iid='DriveMountAppletFactory::DriveMountApplet'
+object-type='applet'
+panel-right-stick=true
+position=2
+toplevel-id='bottom'
+
+[org/mate/panel/objects/indicators]
+applet-iid='IndicatorAppletCompleteFactory::IndicatorAppletComplete'
+object-type='applet'
+panel-right-stick=true
+position=2
+toplevel-id='bottom'
+
+[org/mate/panel/objects/irc]
+launcher-location='/usr/share/applications/io.github.Hexchat.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/main-menu]
+object-type='menu'
+toplevel-id='bottom'
+
+[org/mate/panel/objects/notification-area]
+applet-iid='NotificationAreaAppletFactory::NotificationArea'
+object-type='applet'
+panel-right-stick=true
+position=1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/object-0]
+launcher-location='/usr/share/applications/kitty.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=-1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/object-1]
+launcher-location='/usr/share/applications/librewolf.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=-1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/object-2]
+launcher-location='/usr/share/applications/librewolf.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=-1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/show-desktop]
+applet-iid='WnckletFactory::ShowDesktopApplet'
+object-type='applet'
+panel-right-stick=false
+position=1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/terminal]
+launcher-location='/usr/share/applications/mate-terminal.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=1
+toplevel-id='bottom'
+
+[org/mate/panel/objects/window-list]
+applet-iid='WnckletFactory::WindowListApplet'
+object-type='applet'
+panel-right-stick=false
+position=2
+toplevel-id='bottom'
+
+[org/mate/panel/toplevels/bottom]
+orientation='bottom'
+size=32
+y=1048
+y-bottom=0
+
+[org/mate/pluma]
+auto-indent=true
+color-scheme='Artix-dark'
+insert-spaces=true
+
+[org/mate/power-manager]
+backlight-battery-reduce=false
+
+[org/mate/screensaver]
+lock-enabled=false
+mode='blank-only'
+themes='[]'
+
+[org/mate/settings-daemon/plugins/media-keys]
+home='<Mod4>f'
+www='<Mod4>b'
+
+[org/mate/terminal/global]
+use-menu-accelerators=false
+use-mnemonics=false
+
+[org/mate/terminal/profiles/default]
+background-color='#000000000000'
+bold-color='#000000000000'
+foreground-color='#AAAAAAAAAAAA'
+palette='#2E2E34343636:#CCCC00000000:#4E4E9A9A0606:#C4C4A0A00000:#34346565A4A4:#757550507B7B:#060698209A9A:#D3D3D7D7CFCF:#555557575353:#EFEF29292929:#8A8AE2E23434:#FCFCE9E94F4F:#72729F9FCFCF:#ADAD7F7FA8A8:#3434E2E2E2E2:#EEEEEEEEECEC'
+scrollback-unlimited=true
+use-theme-colors=false
+visible-name='Default'" >>tmp
+dconf load / <tmp
+rm tmp
 
 # DELETE CACHED PASSWORD
 
