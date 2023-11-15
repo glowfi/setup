@@ -78,15 +78,11 @@ cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
 
 cp -r $HOME/setup/configs/.bashrc $HOME
 cp -r $HOME/setup/configs/.vimrc $HOME
-git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git
-make -C ble.sh install PREFIX=~/.local
-rm -rf ble.sh
 
 # COPY BASH VIM settings TO ROOT
 
 sudo cp $HOME/.bashrc /root/
 sudo cp $HOME/.vimrc /root/
-sudo su -c "git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git;make -C ble.sh install PREFIX=~/.local;rm -rf ble.sh"
 
 # COPY FISH SHELL SETTINGS
 
@@ -162,7 +158,7 @@ chmod +x $HOME/.local/bin/libw
 
 ### Add Extensions
 
-extensions=("https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/libredirect/latest.xpi")
+extensions=("https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi" "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi")
 
 for i in "${extensions[@]}"; do
 	c=$(cat /usr/lib/librewolf/distribution/policies.json | grep -n "Install" | head -1 | awk -F":" '{print $1}' | xargs)
@@ -203,14 +199,6 @@ echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.
 echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >>user.js
 echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >>user.js
 
-cd
-
-### Download Libredirect
-
-cd $HOME/Downloads
-wget "https://0x0.st/Hfw2.0.json" -O "libredirect-settings.json"
-ver=$(echo "2.8.0")
-wget "https://github.com/libredirect/browser_extension/releases/download/v$ver/libredirect-$ver.crx"
 cd
 
 ### Performance and Security
@@ -309,10 +297,6 @@ vm.swappiness=10
 # Lowering it from the default value of 100 makes the kernel less inclined to reclaim VFS cache (do not set it to 0, this may produce out-of-memory conditions)
 vm.vfs_cache_pressure=50
 
-# This action will speed up your boot and shutdown, because one less module is loaded. Additionally disabling watchdog timers increases performance and lowers power consumption
-# Disable NMI watchdog
-#kernel.nmi_watchdog = 0
-
 # Contains, as a percentage of total available memory that contains free pages and reclaimable
 # pages, the number of pages at which a process which is generating disk writes will itself start
 # writing out dirty data (Default is 20).
@@ -327,11 +311,15 @@ vm.dirty_background_ratio = 5
 # kernel flusher threads.  It is expressed in 100'ths of a second.  Data which has been dirty
 # in-memory for longer than this interval will be written out next time a flusher thread wakes up
 # (Default is 3000).
-#vm.dirty_expire_centisecs = 3000
+vm.dirty_expire_centisecs = 3000
 
 # The kernel flusher threads will periodically wake up and write old data out to disk.  This
 # tunable expresses the interval between those wakeups, in 100'ths of a second (Default is 500).
 vm.dirty_writeback_centisecs = 1500
+
+# This action will speed up your boot and shutdown, because one less module is loaded. Additionally disabling watchdog timers increases performance and lowers power consumption
+# Disable NMI watchdog
+kernel.nmi_watchdog = 0
 
 # Enable the sysctl setting kernel.unprivileged_userns_clone to allow normal users to run unprivileged containers.
 kernel.unprivileged_userns_clone=1
@@ -347,6 +335,12 @@ kernel.kptr_restrict = 2
 
 # Disable Kexec, which allows replacing the current running kernel.
 kernel.kexec_load_disabled = 1
+
+# Restricts the BPF JIT compiler to root only. This prevents a lot of possible attacks against the JIT compiler such as heap spraying.
+kernel.unprivileged_bpf_disabled=1
+
+# Hardens the JIT compiler against certain attacks such as heap spraying attacks.
+net.core.bpf_jit_harden=2
 
 # Increasing the size of the receive queue.
 # The received frames will be stored in this queue after taking them from the ring buffer on the network card.
@@ -411,7 +405,7 @@ sudo pip install requests
 ### Setup dnscrypt-proxy
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
 getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
-newServers="server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams']"
+newServers="#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads']"
 sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 newListenAddresses="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
@@ -421,6 +415,11 @@ sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dn
 
 rep="require_dnssec = true"
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
+getLineNumber=$(echo "$getLine" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
+rep="doh_servers = false"
+getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = true" | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
