@@ -227,8 +227,6 @@ FS=$(sed -n '1p' <"$CONFIG_FILE")
 
 if [[ "$FS" = "btrfs" ]]; then
 
-	install "grub-btrfs" "pac"
-
 	if lspci | grep -E "NVIDIA|GeForce"; then
 		sed -i 's/MODULES=()/MODULES=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 		sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' /etc/default/grub
@@ -238,9 +236,13 @@ if [[ "$FS" = "btrfs" ]]; then
 		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
 	fi
 
+	if [[ "$_distroType" == "arch" ]]; then
+		install "grub-btrfs" "pac"
+		sudo systemctl enable grub-btrfsd
+	fi
+
 	grub-mkconfig -o /boot/grub/grub.cfg
 	mkinitcpio -p linux-zen
-	sudo systemctl enable grub-btrfsd
 
 else
 

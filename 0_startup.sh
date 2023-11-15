@@ -347,7 +347,13 @@ configure() {
 	else
 		_diskencrypt="none"
 	fi
+
 	_distroType=$(sed '$!d' "$CONFIG_FILE")
+	if [[ "$_distroType" == "arch" ]]; then
+		_distroType=$(echo "$_distroType [systemd as init]")
+	else
+		_distroType=$(echo "$_distroType [openrc  as init]")
+	fi
 
 	out=$(
 		echo -e "====== Final Configuration ====== \n"
