@@ -28,6 +28,11 @@ for i in (seq 2)
     pip install setuptools
 end
 
+if [ "$1" != "systemD" ]
+    echo -e "\n" | sudo syslog-ng-update-virtualenv
+end
+
+
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
 # PYTHON MODULES

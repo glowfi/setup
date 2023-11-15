@@ -236,7 +236,7 @@ if [[ "$FS" = "btrfs" ]]; then
 		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
 	fi
 
-	if [[ "$_distroType" == "arch" ]]; then
+	if [[ "$_distroType" = "arch" ]]; then
 		install "grub-btrfs" "pac"
 		sudo systemctl enable grub-btrfsd
 	fi
