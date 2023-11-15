@@ -194,6 +194,7 @@ echo ""
 encryptStatus=$(sed -n '11p' <"$CONFIG_FILE")
 
 if [[ "$encryptStatus" = "encrypt" ]]; then
+	install "cryptsetup" "pac"
 	tee -a /etc/default/grub <<EOF
 # Device encryption
 GRUB_ENABLE_CRYPTODISK=y
