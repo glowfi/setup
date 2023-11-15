@@ -20,7 +20,8 @@ installDependency() {
 	echo ""
 
 	echo ""
-	sudo pacman -S --noconfirm gum
+	wget "https://archive.archlinux.org/packages/g/gum/gum-0.11.0-1-x86_64.pkg.tar.zst"
+	sudo pacman -U ./gum-0.11.0-1-x86_64.pkg.tar.zst
 	clear
 }
 
