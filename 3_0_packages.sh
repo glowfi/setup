@@ -15,11 +15,16 @@ echo "--------------Refreshing mirrorlist...------------------------"
 echo "--------------------------------------------------------------"
 echo ""
 
-sudo timedatectl set-ntp true
-sudo hwclock --systohc
-sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-install "archlinux-keyring" "pac"
-sudo pacman -Syy
+if [[ "$1" != "systemD" ]]; then
+	sudo hwclock --systohc
+	sudo pacman -Syy
+else
+	sudo timedatectl set-ntp true
+	sudo hwclock --systohc
+	sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	install "archlinux-keyring" "pac"
+	sudo pacman -Syy
+fi
 
 # AUR HELPER
 

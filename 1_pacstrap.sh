@@ -15,8 +15,6 @@ echo ""
 _distroType=$(sed '$!d' "$CONFIG_FILE")
 
 if [[ "$_distroType" = "artix" ]]; then
-	timedatectl set-ntp true
-
 	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 	sudo pacman -Syy
