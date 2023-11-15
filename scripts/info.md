@@ -280,16 +280,16 @@ firefox -CreateProfile fourth
 choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|dmenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
 choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf\n4.default-release[Firefox] : (ArkenFoxP) \n5.second[Firefox] : (ArkenFoxT)\n6.third[Firefox] : (BetterFOX)\n7.fourth[Firefox] : (Normal)" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" = "4" ]]; then
-    libw "firefox:$(date +%s)" "default-release"
+    libw "firefox:$(date +%s)" "default-release" "firefox"
 fi
 if [[ "$choice" = "5" ]]; then
-    libw "firefox:$(date +%s)" "second"
+    libw "firefox:$(date +%s)" "second" "firefox"
 fi
 if [[ "$choice" = "6" ]]; then
-    libw "firefox:$(date +%s)" "third"
+    libw "firefox:$(date +%s)" "third" "firefox"
 fi
 if [[ "$choice" = "7" ]]; then
-    libw "firefox:$(date +%s)" "fourth"
+    libw "firefox:$(date +%s)" "fourth" "firefox"
 fi
 ```
 

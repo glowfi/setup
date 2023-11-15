@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Helper
 helper() {
 	if [ -f "$2" ]; then
 		echo "Do Not Do Anything ...!"
@@ -17,18 +18,26 @@ helper() {
 	fi
 }
 
+# Parse arguments
 if [[ "$1" != "" ]]; then
-	if [[ "$2" != "" ]]; then
-		firefox -P "$2" &
-		sleep 1
-		browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
-		pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
-		helper "$browser" "$pid"
+	if [[ "$2" == "" ]]; then
+		echo "No Profile given as argument!"
 	else
-		librewolf &
-		sleep 1
-		browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
-		pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
-		helper "$browser" "$pid"
+		if [[ "$3" == "librewolf" ]]; then
+			librewolf -P "$2" &
+			sleep 1
+			browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
+			pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
+			helper "$browser" "$pid"
+
+		elif [[ "$3" == "firefox" ]]; then
+			firefox -P "$2" &
+			sleep 1
+			browser=$(echo "$1" | awk -F":" '{print $1}' | xargs)
+			pid=$(echo "$2" | awk -F":" '{print $2}' | xargs)
+			helper "$browser" "$pid"
+		else
+			echo "No suppported browser given as argument!"
+		fi
 	fi
 fi
