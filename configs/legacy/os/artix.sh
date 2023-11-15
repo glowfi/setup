@@ -413,6 +413,11 @@ getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "list
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+find="listen_addresses = ['127.0.0.1:53']"
+getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | tail -2 | head -1 | xargs)
+getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}d" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
 rep="require_dnssec = true"
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
