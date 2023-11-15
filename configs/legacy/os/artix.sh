@@ -93,6 +93,27 @@ cp -r $HOME/setup/configs/config.fish $HOME/.config/fish/
 
 cp -r $HOME/setup/configs/kitty $HOME/.config/
 
+# Locale Fix
+
+sudo sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sudo su -c 'locale-gen'
+sudo su -c 'echo "LANG=en_US.UTF-8" >>/etc/locale.conf'
+
+# Dmenu
+
+cd $HOME/setup/configs/DWM/dmenu/
+sudo make clean install
+cd
+echo "Done Installing DEMNU!"
+echo ""
+
+# Clipboard Support
+
+sudo pacman -S --noconfirm clipmenu
+echo "## Clipmenu
+clipmenud &
+" >>$HOME/.xprofile
+
 # CHANGE DEFAULT SHELL
 
 sudo usermod --shell /bin/fish "$USER"
@@ -152,6 +173,12 @@ sleep 6
 pkill -u "$USER" librewolf
 
 ### Copy a script to start librewolf without volume auto adjust
+echo '!/bin/bash
+
+"$HOME/.local/bin/libw" "librewolf:$(date +%s)" "default-default" "librewolf"' >>openlibrewolf
+chmod +x openlibrewolf
+sudo mv openlibrewolf /usr/bin/
+
 mkdir -p $HOME/.local/bin/
 cp -r $HOME/setup/scripts/system/libw $HOME/.local/bin/
 chmod +x $HOME/.local/bin/libw
@@ -398,6 +425,104 @@ net.ipv4.conf.default.send_redirects = 0
 # To use the new FQ-PIE Queue Discipline (>= Linux 5.6) in systems with systemd (>= 217), will need to replace the default fq_codel.
 net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performance-tweaks.conf >/dev/null
 
+# Firewall
+
+sudo pacman -S --noconfirm iptables-openrc nftables-openrc
+sudo rm -rf /etc/nftables.conf
+
+echo "#!/usr/sbin/nft -f
+# vim:set ts=2 sw=2 et:
+
+flush ruleset
+
+table ip filter {
+  chain DOCKER-USER {
+    mark set 1
+  }
+  chain LIBVIRT_FWI{
+    mark set 1
+  }
+  chain LIBVIRT_FWO{
+    mark set 1
+  }
+  chain LIBVIRT_FWX{
+    mark set 1
+  }
+  chain LIBVIRT_INP{
+    mark set 1
+  }
+  chain LIBVIRT_OUT{
+    mark set 1
+  }
+}
+
+table inet my_table {
+	chain my_input {
+		type filter hook input priority 0; policy drop;
+
+		iif lo accept comment \"Accept any localhost traffic\"
+		ct state invalid drop comment \"Drop invalid connections\"
+
+		meta l4proto icmp icmp type echo-request limit rate over 10/second burst 4 packets drop comment \"No ping floods\"
+		meta l4proto ipv6-icmp icmpv6 type echo-request limit rate over 10/second burst 4 packets drop comment \"No ping floods\"
+
+		ct state established,related accept comment \"Accept traffic originated from us\"
+
+		# Allow incoming KDE Connect traffic
+        ct state new,established,related accept
+
+		meta l4proto ipv6-icmp icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept comment \"Accept ICMPv6\"
+		meta l4proto ipv6-icmp icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept comment \"Accept ICMPv6\"
+		meta l4proto icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept comment \"Accept ICMP\"
+		ip protocol igmp accept comment \"Accept IGMP\"
+
+		tcp dport ssh ct state new limit rate 15/minute accept comment \"Avoid brute force on SSH\"
+
+		udp dport mdns ip6 daddr ff02::fb accept comment \"Accept mDNS\"
+		udp dport mdns ip daddr 224.0.0.251 accept comment \"Accept mDNS\"
+
+		udp sport 1900 udp dport >= 1024 ip6 saddr { fd00::/8, fe80::/10 } meta pkttype unicast limit rate 4/second burst 20 packets accept comment \"Accept UPnP IGD port mapping reply\"
+		udp sport 1900 udp dport >= 1024 ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16 } meta pkttype unicast limit rate 4/second burst 20 packets accept comment \"Accept UPnP IGD port mapping reply\"
+
+		udp sport netbios-ns udp dport >= 1024 meta pkttype unicast ip6 saddr { fd00::/8, fe80::/10 } accept comment \"Accept Samba Workgroup browsing replies\"
+		udp sport netbios-ns udp dport >= 1024 meta pkttype unicast ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16 } accept comment \"Accept Samba Workgroup browsing replies\"
+
+		counter comment \"Count any other traffic\"
+	}
+
+	chain my_forward {
+		type filter hook forward priority security; policy drop;
+  		mark 1 accept
+		# Drop everything forwarded to that's not from docker us. We do not forward. That is routers job.
+	}
+
+	chain my_output {
+		type filter hook output priority 0; policy accept;
+		# Accept every outbound connection
+	}
+
+}
+
+table inet dev {
+    set blackhole {
+        type ipv4_addr;
+        flags dynamic, timeout;
+        size 65536;
+    }
+
+    chain input {
+        ct state new tcp dport 443 \\
+                meter flood size 128000 { ip saddr timeout 10s limit rate over 10/second } \\
+                add @blackhole { ip saddr timeout 1m }
+
+        ip saddr @blackhole counter drop
+    }
+}" | sudo tee -a /etc/nftables.conf >/dev/null
+
+sudo chmod 700 /etc/{iptables,nftables.conf}
+sudo rc-service nftables save
+sudo rc-update add nftables
+
 ### Install dnscrypt-proxy
 sudo pacman -S --noconfirm dnscrypt-proxy-openrc
 sudo pip install requests
@@ -557,6 +682,21 @@ gtk-theme='Artix-dark'
 icon-theme='matefaenzadark'
 monospace-font-name='Roboto Mono 11'
 
+[org/mate/desktop/keybindings/custom0]
+action='dmenu_run'
+binding='<Mod4>p'
+name='app_menu'
+
+[org/mate/desktop/keybindings/custom1]
+action='clipmenu'
+binding='<Mod4>e'
+name='clip_menu'
+
+[org/mate/desktop/keybindings/custom2]
+action='openlibrewolf'
+binding='<Mod4>b'
+name='librewolf'
+
 [org/mate/desktop/media-handling]
 automount-open=false
 
@@ -564,7 +704,7 @@ automount-open=false
 cursor-theme='Premium'
 
 [org/mate/desktop/session]
-session-start=1700051742
+session-start=1700055777
 
 [org/mate/marco/general]
 num-workspaces=1
