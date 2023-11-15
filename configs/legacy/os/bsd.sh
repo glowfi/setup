@@ -231,10 +231,10 @@ mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 cd
-cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
+cp -r $HOME/setup/scripts/misc/preview-tui $HOME/.config/nnn/plugins
 
 # Null Server Script
-cp -r $HOME/setup/scripts/send.sh $HOME/.local/bin/
+cp -r $HOME/setup/scripts/utils/send.sh $HOME/.local/bin/
 cd $HOME/.local/bin/
 rep=$(fish -c 'printf "#!/usr/local/bin/bash"')
 gawk -v line="1" -v text="$rep" '{

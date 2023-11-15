@@ -184,7 +184,7 @@ mkdir -p .config/nnn/plugins
 cd .config/nnn/plugins/
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 cd
-cp -r $HOME/setup/scripts/preview-tui $HOME/.config/nnn/plugins
+cp -r $HOME/setup/scripts/misc/preview-tui $HOME/.config/nnn/plugins
 
 # CONFIGURING GIT
 
