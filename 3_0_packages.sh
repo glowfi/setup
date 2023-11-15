@@ -144,7 +144,8 @@ install "tectonic" "yay"
 # ======================================================= END ======================================================================================
 
 ### TERMINAL TOMFOOLERY
-install "fortune-mod lolcat cmatrix asciiquarium cowsay sl" "pac"
+install "fortune-mod lolcat cmatrix asciiquarium cowsay" "pac"
+for i in {1..5}; do yes | sudo pacman -S sl && break || sleep 1; done
 
 install "figlet" "pac"
 install "toilet toilet-fonts" "yay"

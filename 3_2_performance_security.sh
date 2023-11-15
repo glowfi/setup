@@ -220,7 +220,11 @@ net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performan
 
 # FIREWALL
 
-for i in {1..5}; do yes | sudo pacman -S nftables && break || sleep 1; done
+if [[ "$1" != "systemD" ]]; then
+	for i in {1..5}; do yes | sudo pacman -S iptables-openrc nftables-openrc && break || sleep 1; done
+else
+	for i in {1..5}; do yes | sudo pacman -S nftables && break || sleep 1; done
+fi
 sudo rm -rf /etc/nftables.conf
 
 echo "#!/usr/sbin/nft -f
@@ -326,7 +330,7 @@ fi
 install "timeshift timeshift-autosnap" "yay"
 
 ### Install dnscrypt-proxy
-sudo pacman -S --noconfirm dnscrypt-proxy
+install "dnscrypt-proxy" "pac"
 
 ### Setup dnscrypt-proxy
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
@@ -378,7 +382,7 @@ else
 fi
 
 ### Install dnsmasq
-sudo pacman -S --noconfirm dnsmasq
+install "dnsmasq" "pac"
 
 ### Setup dnsmasq
 sudo echo '
