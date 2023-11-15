@@ -70,5 +70,3 @@ install() {
 
 # Detect Init System
 detect_INIT_SYSTEM
-
-install "$1" "$2"
