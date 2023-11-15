@@ -1,6 +1,6 @@
-# Arch Setup
+# Arch/Artix Setup
 
-> Arch Linux install script for installing KDE or DWM
+> Arch/Artix Linux install script for installing KDE or DWM
 
 ![Coverpic](./pacman.png)
 
@@ -16,6 +16,8 @@
 -   Hardened SSH
 -   Hardened Firewall
 -   Hardened browser with custom settings and user policy
+-   Openrc as init with artix
+-   SystemD as init with arch
 
 ## KDE
 

@@ -204,19 +204,6 @@ cp -r $HOME/setup/configs/.Xresources $HOME
 
 # ===================== END Dependent ====================================
 
-cd $HOME/.config
-rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/
-cd
-rm $HOME/.gtkrc-2.0
-
-cp -r $HOME/setup/configs/plasma/theming/qt5ct/ $HOME/setup/configs/plasma/theming/gtk-3.0 $HOME/setup/configs/plasma/theming/gtk-4.0 $HOME/setup/configs/plasma/theming/Kvantum $HOME/.config
-cp -r $HOME/setup/configs/plasma/theming/.gtkrc-2.0 $HOME
-getReq=$(cat "$HOME/.gtkrc-2.0" | grep -n "replacethis" | head -1 | xargs)
-getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-rep=$(echo 'include "\/home\/$USER\/.gtkrc-2.0.mine"')
-sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
-sed "s/\$USER/$USER/" .gtkrc-2.0
-
 # REGISTER KITTY IN DOLPHIN
 
 echo ""
