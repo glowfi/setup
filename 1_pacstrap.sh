@@ -30,7 +30,9 @@ Include = /etc/pacman.d/mirrorlist-arch
 EOF
 	sudo pacman-key --populate archlinux
 	sudo pacman -Syy
-
+	sudo pacman -S reflector
+	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
+	sudo pacman -Syy
 else
 	timedatectl set-ntp true
 	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf

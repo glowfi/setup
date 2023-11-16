@@ -73,9 +73,7 @@ alias v='nvim'
 alias upgv="upgradeNeovim $argv[1]"
 
 # Synchronize mirrorlist
-alias mirru='sudo rm -rf /var/lib/pacman/db.lck;
-sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-sudo pacman -Syyy'
+alias mirru='_mirru'
 
 # Upgrade
 alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done'"
@@ -460,6 +458,22 @@ function upgradeNeovim
     end
 end
 
+### Mirror Synchronization
+
+function _mirru
+    set varInit (cat /proc/1/comm)
+    if [ "$varInit" = systemd ]
+        sudo rm -rf /var/lib/pacman/db.lck
+        sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+        sudo pacman -Syyy
+    else
+        sudo rm -rf /var/lib/pacman/db.lck
+        sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
+        sudo pacman -Syyy
+    end
+end
+
+
 ### SystemD Utility Functions
 
 function sysd
@@ -651,7 +665,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "838s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "852s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
