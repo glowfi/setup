@@ -330,12 +330,12 @@ fi
 # TIMESHIFT
 if [[ "$1" != "systemD" ]]; then
 	git clone https://github.com/Antynea/grub-btrfs
-	cd grub-btrfsd
+	cd grub-btrfs
 	sed -i '6s/.*/OPENRC ?= true/' Makefile
 	sed -i '5d' Makefile
 	sudo make install
 	cd ..
-	rm -rf grub-btrfsd
+	rm -rf grub-btrfs
 	sudo rc-update add grub-btrfsd
 	install "timeshift" "yay"
 else

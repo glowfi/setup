@@ -401,6 +401,7 @@ sed -i 's/subvolid.*,//' /etc/fstab
 # ===================== XORG Dependent ===================================
 
 # Enable tap to click
+
 [ ! -f /etc/X11/xorg.conf.d/40-libinput.conf ] && printf 'Section "InputClass"
         Identifier "libinput touchpad catchall"
         MatchIsTouchpad "on"

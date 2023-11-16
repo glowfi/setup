@@ -91,6 +91,10 @@ git clone https://github.com/glowfi/setup
 chmod +x ~/setup/3_2_performance_security.sh
 ~/setup/3_2_performance_security.sh "$initType"
 
+## Load artix pipewireloader for last time
+nohup artix-pipewire-loader &
+rm nohup.out
+
 ## Regenerate GRUB and initramfs
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
