@@ -333,7 +333,7 @@ install "timeshift timeshift-autosnap" "yay"
 install "dnscrypt-proxy" "pac"
 if [[ "$1" != "systemD" ]]; then
 	install "connman-openrc" "pac"
-	rc-update add connmand
+	sudo rc-update add connmand
 fi
 
 ### Setup dnscrypt-proxy
