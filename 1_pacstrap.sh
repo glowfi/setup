@@ -4,6 +4,9 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 
+# Source Helper
+source "$SCRIPT_DIR/helper.sh"
+
 # SYNCHRONIZE
 
 echo ""
@@ -19,7 +22,7 @@ if [[ "$_distroType" = "artix" ]]; then
 	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 	sudo pacman -Syy
 
-	sudo pacman -S --noconfirm artix-archlinux-support
+	install "artix-archlinux-support" "pac"
 	sudo tee -a /etc/pacman.conf <<EOF
 
 [extra]
@@ -30,7 +33,7 @@ Include = /etc/pacman.d/mirrorlist-arch
 EOF
 	sudo pacman-key --populate archlinux
 	sudo pacman -Syy
-	sudo pacman -S reflector
+	install "reflector" "pac"
 	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
 	sudo pacman -Syy
 else
@@ -38,7 +41,7 @@ else
 	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
 	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-	pacman -S --noconfirm archlinux-keyring
+	install "archlinux-keyring" "pac"
 	pacman -Syyy
 fi
 

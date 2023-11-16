@@ -37,7 +37,19 @@ qdbus org.kde.KWin /KWin reconfigure
 
 ## Logout/Restart/Shutdown
 #super+x
-qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
+varInit=$(cat /proc/1/comm)
+if [[ "$varInit" = "systemd" ]]; then
+	ctl="systemctl"
+else
+	ctl="loginctl"
+fi
+case "$(printf "Lock\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
+'Lock') screenlocker ;;
+'Sleep') "$ctl" suspend ;;
+'Reboot') "$ctl" reboot ;;
+'Shutdown') "$ctl" poweroff ;;
+*) exit 1 ;;
+esac
 
 ## PlasmaShell Replace
 #super+shift+q

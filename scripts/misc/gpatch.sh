@@ -1,9 +1,21 @@
 #!/bin/sh
 
 ## Enable Multilib
-sudo sed -i '94s/.*/[multilib]/' /etc/pacman.conf
-sudo sed -i '95s/.*/Include = \/etc\/pacman.d\/mirrorlist/' /etc/pacman.conf
-sudo pacman -Syyy
+varInit=$(cat /proc/1/comm)
+if [[ "$varInit" = "systemd" ]]; then
+	sudo sed -i '94s/.*/[multilib]/' /etc/pacman.conf
+	sudo sed -i '95s/.*/Include = \/etc\/pacman.d\/mirrorlist/' /etc/pacman.conf
+	sudo pacman -Syyy
+else
+	sudo sed -i '97s/.*/[lib32]/' /etc/pacman.conf
+	sudo sed -i '98s/.*/Include = \/etc\/pacman.d\/mirrorlist/' /etc/pacman.conf
+	sudo tee -a /etc/pacman.conf <<EOF
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist-arch
+EOF
+	sudo pacman -Syyy
+fi
 
 ## Required Pacakges
 sudo pacman -S --noconfirm lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader
@@ -31,8 +43,10 @@ cd "$HOME/.config/goverlay/"
 wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
 
 ## Feral gamemode
-sudo pacman -S --noconfirm meson systemd git dbus libinih
-sudo pacman -S --noconfirm gamemode
+if [[ "$varInit" = "systemd" ]]; then
+	sudo pacman -S --noconfirm meson systemd git dbus libinih
+	sudo pacman -S --noconfirm gamemode
+fi
 
 ## Save Scraper and Save Retriever from cloud
 cp -r $HOME/setup/scripts/misc/saveScraper.py $HOME/.local/bin/

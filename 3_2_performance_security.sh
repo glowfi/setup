@@ -12,20 +12,6 @@ echo "--------------CONFIGURING PERFORMANCE AND SECURITY...---------------------
 echo "------------------------------------------------------------------------------"
 echo ""
 
-# ===================== XORG Dependent ===================================
-
-# Enable tap to click
-[ ! -f /etc/X11/xorg.conf.d/40-libinput.conf ] && printf 'Section "InputClass"
-        Identifier "libinput touchpad catchall"
-        MatchIsTouchpad "on"
-        MatchDevicePath "/dev/input/event*"
-        Driver "libinput"
-	# Enable left mouse button by tapping
-	Option "Tapping" "on"
-EndSection' >/etc/X11/xorg.conf.d/40-libinput.conf
-
-# ===================== END Dependent ====================================
-
 # ENABLE ZRAM
 
 if [[ "$1" != "systemD" ]]; then
@@ -361,8 +347,10 @@ fi
 ### Install dnscrypt-proxy
 install "dnscrypt-proxy" "pac"
 if [[ "$1" != "systemD" ]]; then
-	install "connman-openrc" "pac"
-	sudo rc-update add connmand
+	getServerNames=$(cat /etc/conf.d/dnscrypt-proxy | grep -n '#DNSCRYPT_PROXY_USER="dnscrypt"' | head -1 | xargs)
+	getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
+	newServers='DNSCRYPT_PROXY_USER="root"'
+	sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/conf.d/dnscrypt-proxy
 fi
 
 ### Setup dnscrypt-proxy
@@ -376,41 +364,33 @@ getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "list
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-if [[ "$1" != "systemD" ]]; then
-	find="listen_addresses = ['127.0.0.1:53']"
-	getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | tail -2 | head -1 | xargs)
-	getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
-	sudo sed -i "${getLineNumber}d" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
-fi
-
-rep="require_dnssec = true"
-getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
+rep='require_dnssec = true'
+getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'require_dnssec = false' | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-rep="doh_servers = false"
+rep='doh_servers = false'
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = true" | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+rep='netprobe_timeout = -1'
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "netprobe_timeout" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-rep="netprobe_timeout = -1"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+rep='http3 = true'
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "http3" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-rep="http3 = true"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+rep='force_tcp = true'
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "force_tcp" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
-rep="force_tcp = true"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Start dnscrypt-proxy at startup
 if [[ "$1" != "systemD" ]]; then
-	sudo pip install requests
 	sudo rc-update add dnscrypt-proxy
 else
 	sudo systemctl enable dnscrypt-proxy
