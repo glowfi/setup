@@ -213,10 +213,6 @@ cp -r $HOME/setup/scripts/misc/preview-tui $HOME/.config/nnn/plugins
 
 cp -r $HOME/setup/configs/kitty $HOME/.config/
 
-# COPY ICONS
-
-cp -r $HOME/setup/configs/img $HOME/.local/share/
-
 # CHANGE DEFAULT SHELL
 
 echo ""
