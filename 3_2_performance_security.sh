@@ -329,11 +329,19 @@ fi
 
 # TIMESHIFT
 if [[ "$1" != "systemD" ]]; then
+	git clone https://github.com/Antynea/grub-btrfs
+	cd grub-btrfsd
+	sed -i '6s/.*/OPENRC ?= true/' Makefile
+	sed -i '5d' Makefile
+	sudo make install
+	cd ..
+	rm -rf grub-btrfsd
+	sudo rc-update add grub-btrfsd
 	install "timeshift" "yay"
 else
 	install "grub-btrfs" "pac"
-	sudo systemctl enable grub-btrfsd
 	install "timeshift" "yay"
+	sudo systemctl enable grub-btrfsd
 fi
 
 ### Install dnscrypt-proxy
