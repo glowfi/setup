@@ -62,7 +62,14 @@ install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 
 ### CORE (AUDIO)
-install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+if [[ "$1" != "systemD" ]]; then
+	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+	install "artix-pipewire-loader" "yay"
+	artix-pipewire-loader &
+else
+	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+fi
+
 install "bluez bluez-utils" "pac"
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
@@ -72,12 +79,9 @@ chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
 if [[ "$1" != "systemD" ]]; then
-	sudo rc-update add pipewire.service
-	sudo rc-update add pipewire.socket
-	sudo rc-update add wireplumber.service
-	sudo rc-update add pipewire-pulse.service
-	sudo rc-update add pipewire-pulse.socket
-	sudo rc-update add pipewire-session-manager.service
+	sudo rc-update add pipewire
+	sudo rc-update add wireplumber
+	sudo rc-update add pipewire-pulse
 else
 	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi

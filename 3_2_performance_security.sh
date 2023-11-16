@@ -331,6 +331,10 @@ install "timeshift timeshift-autosnap" "yay"
 
 ### Install dnscrypt-proxy
 install "dnscrypt-proxy" "pac"
+if [[ "$1" != "systemD" ]]; then
+	install "connman-openrc" "pac"
+	rc-update add connmand
+fi
 
 ### Setup dnscrypt-proxy
 getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
@@ -343,10 +347,12 @@ getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "list
 getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-find="listen_addresses = ['127.0.0.1:53']"
-getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | tail -2 | head -1 | xargs)
-getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
-sudo sed -i "${getLineNumber}d" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+if [[ "$1" != "systemD" ]]; then
+	find="listen_addresses = ['127.0.0.1:53']"
+	getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | tail -2 | head -1 | xargs)
+	getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}d" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+fi
 
 rep="require_dnssec = true"
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "require_dnssec = false" | head -1 | xargs)
