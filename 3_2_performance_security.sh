@@ -15,7 +15,9 @@ echo ""
 # ENABLE ZRAM
 
 if [[ "$1" != "systemD" ]]; then
-	echo "Skipping for now..."
+	install "zram-openrc" "yay"
+	sudo sed -i '1s/.*/zram_size="32G"/' /etc/conf.d/zram
+	sudo rc-update add zram
 else
 	install "zramd" "yay"
 	sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
