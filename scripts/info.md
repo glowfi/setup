@@ -594,3 +594,43 @@ sudo pacman -S --noconfirm spice-vdagent-openrc
 sudo rc-update add spice-vdagent
 sudo rc-service spice-vdagent start
 ```
+
+# Replace a line number with a text
+
+```sh
+replace_line() {
+	local file="$3" # file name
+	local line_num="$2" # line number to replace
+	local new_line="$1" # new txt
+
+	# Check if file exists
+	if [[ ! -f "$file" ]]; then
+		echo "Error: File '$file' does not exist."
+		return 1
+	fi
+
+	# Get current line count
+	local current_lines=$(sudo wc -l <"$file")
+
+	# Check if line number is within range
+	if [[ $line_num -lt 1 || $line_num -gt $current_lines ]]; then
+		echo "Error: Line number '$line_num' is out of range."
+		return 1
+	fi
+
+	# Read file into an array
+	local lines=()
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+		lines+=("$line")
+	done <"$file"
+
+	# Replace line at specified index
+	lines[${line_num} - 1]="$new_line"
+
+	# Write updated lines back to file
+	echo "${lines[@]}" >~/policies.json
+	sudo mv ~/policies.json /usr/lib/librewolf/distribution/policies.json
+}
+
+replace_line "$rep" "$getLineNumber" "/usr/lib/librewolf/distribution/policies.json"
+```
