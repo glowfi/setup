@@ -127,7 +127,7 @@ dxhd -b &
 
 # Pipewire
 ${pipeStr}
-"+'
+"'
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
 

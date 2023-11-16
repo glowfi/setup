@@ -174,8 +174,7 @@ picom -b
 
 # Pipewire
 ${pipeStr}
-"+'
-
+"'
 # Hotkey daemon
 dxhd -b &
 
