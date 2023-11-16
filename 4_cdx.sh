@@ -82,6 +82,8 @@ for i in (seq 3)
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
 end
 
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing Rust...----------------------------------------"
@@ -153,6 +155,8 @@ mv $HOME/lua-ls $HOME/.local/bin/luaLSP
 # INSTALL LUA FORAMTTER
 
 cargo install stylua
+
+# ======================================================= END ======================================================================================
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -369,7 +373,9 @@ sudo systemctl start docker.service
 sudo usermod -aG docker $USER
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl stop docker.service && sudo systemctl disable docker.service
+# ======================================================= Can Be Deleted for minimal install =======================================================
 go install github.com/jesseduffield/lazydocker@latest
+# ======================================================= END ======================================================================================
 
 ### DOWNLOAD NEOVIM
 

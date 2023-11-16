@@ -242,6 +242,8 @@ cd
 echo "Done Installing DEMNU!"
 echo ""
 
+# ======================================================= Can Be Deleted for minimal install =======================================================
+
 # Install screenlocker
 
 echo ""
@@ -258,6 +260,8 @@ fish -c "cargo build --release"
 mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
 cd ..
 rm -rf screenlocker
+
+# ======================================================= END ======================================================================================
 
 
 # Copy TOPBAR Settings

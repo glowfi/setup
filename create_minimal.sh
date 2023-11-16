@@ -15,7 +15,7 @@ deleteLines() {
 		end=$(echo "$matchesEnd" | cut -d":" -f1)
 
 		sed -i "$start,$end d" "$1"
-		echo "Deleted Line from $start - $end !"
+		echo "Deleted lines between $start - $end from $1 !"
 
 	done
 
@@ -25,4 +25,10 @@ location="$SCRIPT_DIR/3_0_packages.sh"
 deleteLines "$location"
 
 location="$SCRIPT_DIR/4_cdx.sh"
+deleteLines "$location"
+
+location="$SCRIPT_DIR/5_dwm.sh"
+deleteLines "$location"
+
+location="$SCRIPT_DIR/5_kde.sh"
 deleteLines "$location"
