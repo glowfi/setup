@@ -167,27 +167,6 @@ install "lxappearance-gtk3 qt5ct kvantum" "pac"
 
 install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
-git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
-cd ./Gruvbox-GTK-Theme/
-git checkout 44e81d8226579a24a791f3acf43b97de815bc4b1
-cd themes
-sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
-cd ../../
-rm -rf Gruvbox-GTK-Theme
-
-git clone https://github.com/TheGreatMcPain/gruvbox-material-gtk
-cd gruvbox-material-gtk
-sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
-cd ..
-rm -rf gruvbox-material-gtk
-
-cd $HOME/Downloads/
-wget 'https://0x0.st/HryC.tar.gz'
-tar xzvf HryC.tar.gz
-rm HryC.tar.gz
-sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
-cd
-
 # Theming
 
 echo ""
