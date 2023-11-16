@@ -183,6 +183,7 @@ install "tokei hyperfine" "pac"
 if [[ "$_distroType" = "artix" ]]; then
 	install "syslog-ng-openrc"
 	sudo rc-update add syslog-ng
+	echo -e "\n" | sudo syslog-ng-update-virtualenv
 fi
 
 # Configuring GRUB and mkinitcpio
