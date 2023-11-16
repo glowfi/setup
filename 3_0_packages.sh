@@ -58,7 +58,7 @@ install "jq" "pac"
 install "aria2" "pac"
 
 ### CORE (Fonts)
-install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
+install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts ttf-joypixels" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 
 ### CORE (AUDIO)
