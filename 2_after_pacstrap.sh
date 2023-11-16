@@ -138,6 +138,10 @@ rpass=$(sed -n '9p' <"$CONFIG_FILE")
 echo "$uname:$upass" | chpasswd
 echo "root:$rpass" | chpasswd
 
+# Add User to some groups
+
+gpasswd -a "$USER" video
+
 # Install display drivers
 
 echo ""
