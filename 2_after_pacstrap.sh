@@ -15,9 +15,18 @@ echo "--------------Setting Location and Synchronizing hardware clock...--------
 echo "---------------------------------------------------------------------------------------"
 echo ""
 
-TIMEZONE=$(sed -n '2p' <"$CONFIG_FILE")
-ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
-hwclock --systohc
+_distroType=$(sed '$!d' "$CONFIG_FILE")
+if [[ "$_distroType" = "arch" ]]; then
+	TIMEZONE=$(sed -n '2p' <"$CONFIG_FILE")
+	ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
+	hwclock --systohc
+else
+	TIMEZONE=$(sed -n '2p' <"$CONFIG_FILE")
+	ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
+	install "openntpd-openrc" "pac"
+	rc-update add ntpd
+	hwclock --systohc
+fi
 echo "Done setting location and synchronizing hardware clock!"
 
 # Set Keymap
@@ -70,8 +79,6 @@ echo "----------------------------------------------------------------"
 echo "--------------Enabling ParallelDownloads...---------------------"
 echo "----------------------------------------------------------------"
 echo ""
-
-_distroType=$(sed '$!d' "$CONFIG_FILE")
 
 if [[ "$_distroType" = "artix" ]]; then
 	sudo sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
@@ -239,11 +246,6 @@ if [[ "$FS" = "btrfs" ]]; then
 		sed -i 's/MODULES=()/MODULES=(btrfs amdgpu)/' /etc/mkinitcpio.conf
 	else
 		sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
-	fi
-
-	if [[ "$_distroType" = "arch" ]]; then
-		install "grub-btrfs" "pac"
-		sudo systemctl enable grub-btrfsd
 	fi
 
 	grub-mkconfig -o /boot/grub/grub.cfg

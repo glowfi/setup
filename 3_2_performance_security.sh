@@ -328,8 +328,13 @@ else
 fi
 
 # TIMESHIFT
-
-install "timeshift timeshift-autosnap" "yay"
+if [[ "$1" != "systemD" ]]; then
+	install "timeshift" "yay"
+else
+	install "grub-btrfs" "pac"
+	sudo systemctl enable grub-btrfsd
+	install "timeshift" "yay"
+fi
 
 ### Install dnscrypt-proxy
 install "dnscrypt-proxy" "pac"

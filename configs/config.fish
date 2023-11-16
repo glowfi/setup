@@ -465,8 +465,8 @@ end
 function sysd
     set varInit (cat /proc/1/comm)
 
-    if [ "$varInit" = Systemd ]
-        set services (systemctl list-unit-files --type=service | fzf --prompt "Choose Service:" | awk '{print $1}'| xargs)
+    if [ "$varInit" = systemd ]
+        set services (systemctl list-unit-files --type=service | awk '{print $1}' | sed '1d' | sed '$d' | sed '$d' | fzf --cycle --prompt "Choose Service:" | xargs)
         set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
         if [ "$choice" = Start ]
@@ -504,7 +504,7 @@ function sysd
             sudo systemctl stop "$services"
         end
     else
-        set services (rc-update -v show | awk '{print $1}'| fzf --prompt "Choose Service:" | xargs)
+        set services (rc-update -v show | awk '{print $1}'| fzf --cycle --prompt "Choose Service:" | xargs)
         set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
         if [ "$choice" = Start ]

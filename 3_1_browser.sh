@@ -4,18 +4,15 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 source "$SCRIPT_DIR/helper.sh"
 
-### Install
-install "brave-bin librewolf-bin" "yay"
-
-### Constants
-type=$(echo "brave")
-typeFolder=$(echo "Brave-Browser")
-secProfileName=$(echo "Tmp")
-
 ######## Brave ########
 
 sudo rm -rf /etc/brave/
 rm -rf $HOME/.config/BraveSoftware/
+install "brave-bin" "yay"
+# yay -S --noconfirm brave-bin
+type=$(echo "brave")
+typeFolder=$(echo "Brave-Browser")
+secProfileName=$(echo "Tmp")
 
 ### Policies
 sudo mkdir -p /etc/brave/policies/managed/
@@ -52,7 +49,11 @@ cp -r $HOME/setup/configs/brave/Bookmarks "$HOME/.config/BraveSoftware/$typeFold
 
 ######## Librewolf ########
 
+sudo rm -rf /usr/lib/librewolf/
 rm -rf $HOME/.librewolf/
+install "librewolf-bin" "yay"
+# yay -S --noconfirm librewolf-bin
+secProfileName=$(echo "Tmp")
 
 ###### Start Librewolf ######
 
