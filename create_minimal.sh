@@ -10,13 +10,13 @@ deleteLines() {
 	for ((i = 0; i < $length; i++)); do
 		matchesStart=$(cat "$1" | grep -n "# ======================================================= Can Be Deleted for minimal install =======================================================" | head -1 | xargs)
 		start=$(echo "$matchesStart" | cut -d":" -f1)
-		echo "$start"
 
 		matchesEnd=$(cat "$1" | grep -n "# ======================================================= END ======================================================================================" | head -1 | xargs)
 		end=$(echo "$matchesEnd" | cut -d":" -f1)
-		echo "$end"
 
 		sed -i "$start,$end d" "$1"
+		echo "Deleted Line from $start - $end !"
+
 	done
 
 }

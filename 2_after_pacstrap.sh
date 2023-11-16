@@ -385,7 +385,6 @@ echo ""
 
 if [[ "$_distroType" = "artix" ]]; then
 	sudo rc-update add NetworkManager default
-	sudo rc-update add reflector.timer default
 	sudo rc-update add acpid default
 else
 	systemctl enable NetworkManager
