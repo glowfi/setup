@@ -79,11 +79,7 @@ wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/in
 chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
-if [[ "$1" != "systemD" ]]; then
-	sudo rc-update add pipewire
-	sudo rc-update add wireplumber
-	sudo rc-update add pipewire-pulse
-else
+if [[ "$1" == "systemD" ]]; then
 	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi
 
