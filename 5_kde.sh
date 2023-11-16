@@ -112,16 +112,22 @@ echo "--------------Creating xprofile...----------------------------------------
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
+if [[ "$1" != "systemD" ]]; then
+    pipeStr="artix-pipewire-loader &"
+else
+    pipeStr="systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service"
+fi
+
 # XPROFILE SETUP
 
 touch $HOME/.xprofile
 
-echo '# Hotkey daemon
+echo "# Hotkey daemon
 dxhd -b &
 
 # Pipewire
-systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
-
+${pipeStr}
+"+'
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
 
@@ -160,20 +166,6 @@ getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head 
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 rep="Current=breeze"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /usr/lib/sddm/sddm.conf.d/default.conf
-
-# Appearance
-
-install "lxappearance-gtk3 qt5ct kvantum" "pac"
-
-install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
-
-# Theming
-
-echo ""
-echo "------------------------------------------------------------------------------------------"
-echo "--------------Theming...------------------------------------------------------------------"
-echo "------------------------------------------------------------------------------------------"
-echo ""
 
 # ===================== XORG Dependent ===================================
 

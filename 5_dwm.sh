@@ -160,14 +160,21 @@ echo ""
 cp /etc/X11/xinit/xinitrc $HOME/.xinitrc
 sed -i '51,55d' $HOME/.xinitrc
 
-echo '# Resolution
+if [[ "$1" != "systemD" ]]; then
+    pipeStr="artix-pipewire-loader &"
+else
+    pipeStr="systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service"
+fi
+
+echo "# Resolution
 xrandr --output eDP-1 --mode 1920x1080 &
 
 # Picom
 picom -b
 
 # Pipewire
-systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
+${pipeStr}
+"+'
 
 # Hotkey daemon
 dxhd -b &
