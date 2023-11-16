@@ -586,3 +586,11 @@ pip install -U mypy
 stubgen -m cv2
 rm -rf out
 ```
+
+# Artix spice vdagent
+
+```sh
+sudo pacman -S --noconfirm spice-vdagent-openrc
+sudo rc-update add spice-vdagent
+sudo rc-service spice-vdagent start
+```

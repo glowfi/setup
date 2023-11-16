@@ -187,11 +187,6 @@ install "lsof strace bc" "pac"
 install "acpi acpi_call-dkms acpid" "pac"
 install "exa bat ripgrep fd bottom sad git-delta tldr duf gping imagemagick" "pac"
 install "tokei hyperfine" "pac"
-if [[ "$_distroType" = "artix" ]]; then
-	install "syslog-ng-openrc"
-	sudo rc-update add syslog-ng
-	echo -e "\n" | sudo syslog-ng-update-virtualenv
-fi
 
 # Configuring GRUB and mkinitcpio
 

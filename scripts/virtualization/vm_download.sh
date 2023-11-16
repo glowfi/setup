@@ -88,10 +88,10 @@ archurl() {
 archguiurl() {
 	de_wm=$(echo -e "cutefish\ngnome\nplasma\nmate\nxfce\ncinnamon\nlxqt\nxp\nwayland\nbudgie\ni3\nbspwm" | fzf -m --prompt "Choose DE/WM for Arch:" --cycle | tr "\n" ",")
 	IFS=',' read -ra my_array < <(echo "$de_wm")
-	mirror="https://sourceforge.net/projects/archlinux-gui/files/"
+	mirror="https://sourceforge.net/projects/arch-linux-gui/files/"
 
 	for element in "${my_array[@]}"; do
-		link=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "iso" | grep "download" | grep "$element")
+		link=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "iso" | grep "download" | grep "$element" | head -1 | xargs)
 		new="$link"
 		output="archlinux-gui-${element}.iso"
 		checkfile $1
