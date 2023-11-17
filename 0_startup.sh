@@ -55,13 +55,10 @@ logo() {
  $rst
 EOF
 
-	echo "   ▄▄                 █              ▄▄▄▄           ▄                 "
-	echo "   ██    ▄ ▄▄   ▄▄▄   █ ▄▄          █▀   ▀  ▄▄▄   ▄▄█▄▄  ▄   ▄  ▄▄▄▄  "
-	echo "  █  █   █▀  ▀ █▀  ▀  █▀  █         ▀█▄▄▄  █▀  █    █    █   █  █▀ ▀█ "
-	echo "  █▄▄█   █     █      █   █             ▀█ █▀▀▀▀    █    █   █  █   █ "
-	echo " █    █  █     ▀█▄▄▀  █   █         ▀▄▄▄█▀ ▀█▄▄▀    ▀▄▄  ▀▄▄▀█  ██▄█▀ "
-	echo "                                                                █     "
-	echo "                                                                ▀     "
+	echo " ▄▄▄         █               ▄▄▄      ▄   ▀          ▄▄▄      ▄          "
+	echo " █ █ █▀▀ █▀▀ █▀█     ▄█▄     █ █ █▀▀ ▀█▀  █  ▀▄▀     ▀▄  ███ ▀█▀ █ █ █▀█ "
+	echo " █▀█ █   █▄▄ █ █      ▀      █▀█ █    █▄  █  ▄▀▄     ▄▄█ █▄▄  █▄ █▄█ █▄█ "
+	echo "                                                                     █   "
 
 }
 
@@ -295,6 +292,10 @@ distroType() {
 	echo ""
 
 	echo ""
+	echo "Note : For installing arch or artix , you must run this script using arch or artix iso's only!"
+	echo ""
+	echo "+ Want to install arch then boot into the arch iso and run this script!"
+	echo "+ Want to install artix then boot into the artix iso and run this script!"
 	echo ""
 	echo ""
 	echo -e "Which distro to install? \n"

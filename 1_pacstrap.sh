@@ -279,9 +279,15 @@ fi
 
 # INSTALL BASE SYSTEM
 
+if [[ "$_distroType" = "artix" ]]; then
+	strapType="Base"
+else
+	strapType="Pac"
+fi
+
 echo ""
 echo "----------------------------------------------------"
-echo "--------------Pacstrapping...-----------------------"
+echo "--------------${strapType}strapping...--------------"
 echo "----------------------------------------------------"
 echo ""
 

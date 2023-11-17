@@ -191,6 +191,9 @@ install "lsof strace bc" "pac"
 install "acpi acpi_call-dkms acpid" "pac"
 install "exa bat ripgrep fd bottom sad git-delta tldr duf gping imagemagick" "pac"
 install "tokei hyperfine" "pac"
+if [[ "$_distroType" = "artix" ]]; then
+	install "backlight-openrc" "pac"
+fi
 
 # Configuring GRUB and mkinitcpio
 
@@ -392,6 +395,7 @@ echo ""
 if [[ "$_distroType" = "artix" ]]; then
 	sudo rc-update add NetworkManager default
 	sudo rc-update add acpid default
+	sudo rc-update add backlight default
 else
 	systemctl enable NetworkManager
 	systemctl enable reflector.timer
