@@ -467,8 +467,7 @@ sudo chattr +i /etc/resolv.conf
 
 ### Misc Task
 if [[ "$initType" != "systemD" ]]; then
-	sudo rc-service nftables save
-	sudo rc-update add nftables
+	sudo rc-service nftables restart
 
 	nohup artix-pipewire-loader &
 	rm nohup.out

@@ -140,7 +140,7 @@ echo "root:$rpass" | chpasswd
 
 # Add User to some groups
 
-gpasswd -a "$USER" video
+gpasswd -a "$uname" video
 
 # Install display drivers
 
@@ -410,7 +410,8 @@ sed -i 's/subvolid.*,//' /etc/fstab
 
 # Enable tap to click
 
-[ ! -f /etc/X11/xorg.conf.d/40-libinput.conf ] && printf 'Section "InputClass"
+touch /etc/X11/xorg.conf.d/40-libinput.conf
+printf 'Section "InputClass"
         Identifier "libinput touchpad catchall"
         MatchIsTouchpad "on"
         MatchDevicePath "/dev/input/event*"
