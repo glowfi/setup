@@ -408,7 +408,7 @@ sed -i 's/subvolid.*,//' /etc/fstab
 
 # ===================== XORG Dependent ===================================
 
-# Enable tap to click
+# Touchpad Features
 
 touch /etc/X11/xorg.conf.d/40-libinput.conf
 printf 'Section "InputClass"
@@ -419,6 +419,16 @@ printf 'Section "InputClass"
 	# Enable left mouse button by tapping
 	Option "Tapping" "on"
 EndSection' >/etc/X11/xorg.conf.d/40-libinput.conf
+
+touch /etc/X11/xorg.conf.d/30-touchpad.conf
+printf 'Section "InputClass"
+    Identifier "touchpad"
+    Driver "libinput"
+    MatchIsTouchpad "on"
+    Option "Tapping" "on"
+    Option "ClickMethod" "clickfinger"
+    Option "NaturalScrolling" "true"
+EndSection' >/etc/X11/xorg.conf.d/30-touchpad.conf
 
 # ===================== END Dependent ====================================
 
