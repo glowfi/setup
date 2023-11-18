@@ -410,6 +410,7 @@ sed -i 's/subvolid.*,//' /etc/fstab
 
 # Touchpad Features
 
+mkdir -p /etc/X11/xorg.conf.d
 touch /etc/X11/xorg.conf.d/40-libinput.conf
 printf 'Section "InputClass"
         Identifier "libinput touchpad catchall"
@@ -420,6 +421,7 @@ printf 'Section "InputClass"
 	Option "Tapping" "on"
 EndSection' >/etc/X11/xorg.conf.d/40-libinput.conf
 
+mkdir -p /etc/X11/xorg.conf.d
 touch /etc/X11/xorg.conf.d/30-touchpad.conf
 printf 'Section "InputClass"
     Identifier "touchpad"
