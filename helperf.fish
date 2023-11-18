@@ -10,7 +10,13 @@ function install
     set max_iteration 5
     set initType (bash "$DETECT_INIT_SCRIPT")
 
-    echo "$initType Detected!"
+    if [ "$initType" = systemD ]
+        echo "Detected :"
+        echo -e "\e[1;34mInit -> $initType \nDistro -> [Arch]\e[0m"
+    else
+        echo "Detected :"
+        echo -e "\e[32mInit -> $initType \nDistro -> [Artix]\e[0m"
+    end
 
     # Handle Repository
     if test "$argv[2]" = pac

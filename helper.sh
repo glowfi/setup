@@ -6,10 +6,12 @@ DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 
 getPkgString() {
 	if [[ "${initType}" == "systemD" ]]; then
-		echo "systemD Detected!"
+		echo "Detected :"
+		echo -e "\e[1;34mInit -> ${initType} \nDistro -> [Arch]\e[0m"
 		pkgString=($(echo "${packages[@]}" | awk -F" " '{ print $0}'))
 	else
-		echo "$initType Detected!"
+		echo "Detected :"
+		echo -e "\e[32mInit -> $initType \nDistro -> [Artix]\e[0m"
 		pkgString=""
 		for package in "${packages[@]}"; do
 			packageExist=$(pacman -Ss "${package}-${initType}")
