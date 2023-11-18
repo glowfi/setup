@@ -347,22 +347,28 @@ fi
 ### Install dnscrypt-proxy
 install "dnscrypt-proxy" "pac"
 if [[ "$1" != "systemD" ]]; then
-	getServerNames=$(cat /etc/conf.d/dnscrypt-proxy | grep -n '#DNSCRYPT_PROXY_USER="dnscrypt"' | head -1 | xargs)
-	getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
-	newServers='DNSCRYPT_PROXY_USER="root"'
-	sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/conf.d/dnscrypt-proxy
+	rep='DNSCRYPT_PROXY_USER="root"'
+	getReq=$(cat /etc/conf.d/dnscrypt-proxy | grep -n '#DNSCRYPT_PROXY_USER="dnscrypt"' | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/conf.d/dnscrypt-proxy
+
+	rep="user_name = 'nobody'"
+	getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "# user_name = 'nobody'" | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+
 fi
 
 ### Setup dnscrypt-proxy
-getServerNames=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
-getLineNumber=$(echo "$getServerNames" | cut -d":" -f1)
-newServers="#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads']"
-sudo sed -i "${getLineNumber}s/.*/${newServers}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+rep="#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads']"
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-newListenAddresses="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
-getListenAddresses=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | head -1 | xargs)
-getLineNumber=$(echo "$getListenAddresses" | cut -d":" -f1)
-sudo sed -i "${getLineNumber}s/.*/${newListenAddresses}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+rep="listen_addresses = ['127.0.0.1:5300', '[::1]:5300']"
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "listen_addresses" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 rep='require_dnssec = true'
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'require_dnssec = false' | head -1 | xargs)

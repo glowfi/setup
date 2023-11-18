@@ -69,8 +69,8 @@ if [[ "$1" != "systemD" ]]; then
 	artix-pipewire-loader &
 else
 	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
+	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi
-
 install "bluez bluez-utils" "pac"
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
@@ -79,9 +79,6 @@ wget https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/in
 chmod +x ./install.sh
 echo | ./install.sh
 rm install.sh
-if [[ "$1" == "systemD" ]]; then
-	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
-fi
 
 ### CORE (VIDEO)
 install "ffmpeg yt-dlp" "pac"

@@ -1,35 +1,40 @@
 # Arch/Artix Setup
 
-> Arch/Artix Linux install script for installing KDE or DWM
+> Streamlined Arch/Artix Linux install script for installing KDE or DWM
 
 ![Coverpic](./pacman.png)
 
 ## Features
 
--   Zen kernel
--   Btrfs
--   Zram
--   LUKS encryption
--   Apparmor
--   Dnscrypt
--   Tweaks for security and performance
--   Hardened SSH
--   Hardened Firewall
--   Hardened browser with custom settings and user policy
--   Openrc as init with artix
--   SystemD as init with arch
+-   **Openrc** as init with **artix**
+-   **SystemD** as init with **arch**
+-   **Zen** kernel
+-   **Zstd** Compression
+-   **Btrfs**
+-   **Zram**
+-   **LUKS** encryption
+-   **Apparmor**
+-   **Dnscrypt**
+-   **Some tweaks for performance**
+-   **Hardened SSH**
+-   **Hardened Firewall**
+-   **Hardened browser** with custom settings and user policy
 
 ## KDE
 
-Minimal KDE setup with minimal packages.
+#### Features :
+
+-   Minimal KDE install with minimal packages.
+<hr/>
 
 ## DWM
 
-Minimal DWM setup with minimal patches.
+#### Features :
 
-**DWM PATCHES**
+-   Minimal DWM install.
+-   Enabled Emoji support
 
-> Enabled Emoji support
+#### Installed Patches List :
 
 **Layout Patches**
 
@@ -44,38 +49,19 @@ Minimal DWM setup with minimal patches.
 -   movestack
 -   noborder
 -   vanity gaps
--   Fade Inactive
+-   fade inactive
 <hr/>
 
 **Misc Patches**
 
--   Fullscreen
+-   fullscreen
 -   always center
 
-**DMENU PATCHES**
-
-> Enabled Emoji support
-
--   No Patches
-
-**SLOCK PATCHES**
-
--   slock-message
-
-**DWM BAR**
-
--   network (Connection status,upload and download speeds)
--   cpu ram disk usage
--   sound
--   brightness
--   battery
--   date and time
-
-## INSTALLATION STEPS
+## How to Install
 
 **Base install**
 
-> Connect to internet before running the below script
+> Connect to internet before running the below commands
 
 ```sh
 
@@ -87,7 +73,7 @@ git clone https://github.com/glowfi/setup
 
 **DE/WM/Server install**
 
-> Restart and login as the new user created from above script and run the script below
+> Restart and login as the new user created from above script and run the below commands
 
 ```sh
 cd
