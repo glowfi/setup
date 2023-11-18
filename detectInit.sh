@@ -6,7 +6,7 @@ detect_INIT_SYSTEM() {
 		varInit="init.rc"
 	elif ! pidof -q systemd; then
 		if [[ -f "/sbin/openrc" ]]; then
-			varInit="openRC"
+			varInit="openrc"
 		else
 			read -r varInit </proc/1/comm
 		fi
