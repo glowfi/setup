@@ -101,8 +101,11 @@ sudo sed -i '72d' /etc/sudoers
 ## END
 
 echo ""
-echo " ▄▄▄      ▄              ▄▄▄              █       ▄        █   " | lolcat
-echo " ▀▄  ███ ▀█▀ █ █ █▀█     █   █▀█ ███ █▀█  █  ███ ▀█▀ ███   █   " | lolcat
-echo " ▄▄█ █▄▄  █▄ █▄█ █▄█     █▄▄ █▄█ █ █ █▄█  █▄ █▄▄  █▄ █▄▄   ▄   " | lolcat
-echo "                 █                   █                         " | lolcat
 echo ""
+echo ""
+echo " ▄▄▄      ▄              ▄▄▄              █       ▄        █   "
+echo " ▀▄  ███ ▀█▀ █ █ █▀█     █   █▀█ ███ █▀█  █  ███ ▀█▀ ███   █   "
+echo " ▄▄█ █▄▄  █▄ █▄█ █▄█     █▄▄ █▄█ █ █ █▄█  █▄ █▄▄  █▄ █▄▄   ▄   "
+echo "                 █                   █                         "
+
+echo -e "\nReboot Your PC now!"
