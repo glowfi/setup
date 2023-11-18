@@ -27,6 +27,16 @@ else
 	sudo pacman -Syy
 fi
 
+# Systemctl shim
+
+if [[ "$1" != "systemD" ]]; then
+	git clone https://github.com/oz123/systemctl-shim
+	cd systemctl-shim
+	sudo make install
+	cd ..
+	rm -rf systemctl-shim
+fi
+
 # AUR HELPER
 
 echo ""

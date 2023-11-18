@@ -108,13 +108,13 @@ alias pst='sudo systemctl start postgresql'
 alias psp='sudo systemctl stop postgresql'
 alias psql='psql -d delta'
 
+# MongoDB
+alias mst='sudo systemctl start mongodb'
+alias msp='sudo systemctl stop mongodb'
+
 # Docker
 alias dst='sudo systemctl start docker.service'
-alias dsp='sudo systemctl stop docker.service;sudo systemctl disable docker.service'
-
-# MongoDB
-alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
-alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
+alias dsp='sudo systemctl stop docker.service'
 
 # Search Packages in official repository
 alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
