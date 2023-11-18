@@ -2,7 +2,11 @@
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
+
+# Get Init Type
+initType=$(bash "${DETECT_INIT_SCRIPT}")
 
 ### PERFORMANCE AND SECURITY
 
@@ -14,7 +18,7 @@ echo ""
 
 # OpenRC optimizations
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	rep='rc_parallel="YES"'
 	getReq=$(cat /etc/rc.conf | grep -n '#rc_parallel="NO"' | head -1 | xargs)
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
@@ -38,7 +42,7 @@ fi
 
 # ENABLE ZRAM
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	install "zram-openrc" "yay"
 	sudo sed -i '1s/.*/zram_size="32G"/' /etc/conf.d/zram
 	sudo rc-update add zram
@@ -52,7 +56,7 @@ fi
 # Install APPARMOR
 
 install "apparmor" "pac"
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	sudo rc-update add apparmor
 else
 	sudo systemctl enable --now apparmor.service
@@ -246,7 +250,7 @@ net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performan
 
 # FIREWALL
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	for i in {1..5}; do yes | sudo pacman -S iptables-openrc nftables-openrc && break || sleep 1; done
 else
 	for i in {1..5}; do yes | sudo pacman -S nftables && break || sleep 1; done
@@ -343,7 +347,7 @@ table inet dev {
 }" | sudo tee -a /etc/nftables.conf >/dev/null
 
 sudo chmod 700 /etc/{iptables,nftables.conf}
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	sudo rc-service nftables save
 	sudo rc-update add nftables
 else
@@ -352,7 +356,7 @@ else
 fi
 
 # TIMESHIFT
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	git clone https://github.com/Antynea/grub-btrfs
 	cd grub-btrfs
 	sed -i '6s/.*/OPENRC ?= true/' Makefile
@@ -370,7 +374,7 @@ fi
 
 ### Install dnscrypt-proxy
 install "dnscrypt-proxy" "pac"
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	rep='DNSCRYPT_PROXY_USER="root"'
 	getReq=$(cat /etc/conf.d/dnscrypt-proxy | grep -n '#DNSCRYPT_PROXY_USER="dnscrypt"' | head -1 | xargs)
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
@@ -420,7 +424,7 @@ getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ### Start dnscrypt-proxy at startup
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	sudo rc-update add dnscrypt-proxy
 else
 	sudo systemctl enable dnscrypt-proxy
@@ -446,7 +450,7 @@ conf-file=/usr/share/dnsmasq/trust-anchors.conf
 dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 
 ### Start dnsmasq at startup
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	sudo rc-update add dnsmasq
 else
 	sudo systemctl enable dnsmasq
@@ -460,3 +464,12 @@ nameserver ::1
 nameserver 127.0.0.1
 options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 sudo chattr +i /etc/resolv.conf
+
+### Misc Task
+if [[ "$initType" != "systemD" ]]; then
+	sudo rc-service nftables save
+	sudo rc-update add nftables
+
+	nohup artix-pipewire-loader &
+	rm nohup.out
+fi

@@ -602,6 +602,7 @@ replace_line() {
 	local file="$3" # file name
 	local line_num="$2" # line number to replace
 	local new_line="$1" # new txt
+	local tmpFileName="tmp"
 
 	# Check if file exists
 	if [[ ! -f "$file" ]]; then
@@ -628,8 +629,8 @@ replace_line() {
 	lines[${line_num} - 1]="$new_line"
 
 	# Write updated lines back to file
-	echo "${lines[@]}" >~/policies.json
-	sudo mv ~/policies.json /usr/lib/librewolf/distribution/policies.json
+	echo "${lines[@]}" >"~/${tmpFileName}"
+	sudo mv "~/${tmpFileName}" "$file"
 }
 
 replace_line "$rep" "$getLineNumber" "/usr/lib/librewolf/distribution/policies.json"

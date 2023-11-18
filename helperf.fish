@@ -2,26 +2,13 @@
 
 # Script Directory
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
+set DETECT_INIT_SCRIPT (echo "$SCRIPT_DIR/detectInit.sh")
 
 function install
 
-    # Detect init system
-    set os (uname -o)
-    if [ "$os" = Android ]
-        set varInit (echo "init.rc")
-    else if [ (pidof -q systemd) = ""]
-        if [ -f /sbin/openrc ]
-            set varInit (echo "openrc")
-        else
-            set varInit (cat /proc/1/comm)
-        end
-    else
-        set varInit (echo "systemD")
-    end
-
     # Constants
     set max_iteration 5
-    set initType (echo "$varInit"|xargs)
+    set initType (bash "$DETECT_INIT_SCRIPT")
 
     echo "$initType Detected!"
 

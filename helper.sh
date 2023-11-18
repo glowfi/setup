@@ -2,21 +2,7 @@
 
 # Script Directory
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-
-detect_INIT_SYSTEM() {
-	os=$(uname -o)
-	if [[ $os = Android ]]; then
-		varInit="init.rc"
-	elif ! pidof -q systemd; then
-		if [[ -f "/sbin/openrc" ]]; then
-			varInit="openrc"
-		else
-			read -r varInit </proc/1/comm
-		fi
-	else
-		varInit="systemD"
-	fi
-}
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 
 getPkgString() {
 	if [[ "${initType}" == "systemD" ]]; then
@@ -42,7 +28,7 @@ install() {
 	packages=($(echo "$1" | awk -F" " '{ print $0}'))
 	iteration=1
 	max_iteration=5
-	initType="$varInit"
+	initType=$(bash "${DETECT_INIT_SCRIPT}")
 	getPkgString
 
 	# Handle Repository
@@ -67,6 +53,3 @@ install() {
 	fi
 
 }
-
-# Detect Init System
-detect_INIT_SYSTEM

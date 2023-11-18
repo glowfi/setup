@@ -2,7 +2,11 @@
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
+
+# Get Init Type
+initType=$(bash "${DETECT_INIT_SCRIPT}")
 
 # CACHE PASSWORD
 sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
@@ -15,7 +19,7 @@ echo "--------------Refreshing mirrorlist...------------------------"
 echo "--------------------------------------------------------------"
 echo ""
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	sudo hwclock --systohc
 	sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
 	sudo pacman -Syy
@@ -29,7 +33,7 @@ fi
 
 # Systemctl shim
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	git clone https://github.com/oz123/systemctl-shim
 	cd systemctl-shim
 	sudo make install
@@ -68,7 +72,7 @@ install "fish kitty" "pac"
 install "jq" "pac"
 install "aria2" "pac"
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	install "rate-mirrors-bin" "yay"
 fi
 
@@ -77,7 +81,7 @@ install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts ttf-joypixels" "pac
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
 
 ### CORE (AUDIO)
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
 	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 	install "artix-pipewire-loader" "yay"
 	artix-pipewire-loader &

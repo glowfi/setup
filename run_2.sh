@@ -1,23 +1,5 @@
 #!/bin/sh
 
-detect_INIT_SYSTEM() {
-	os=$(uname -o)
-	if [[ $os = Android ]]; then
-		varInit="init.rc"
-	elif ! pidof -q systemd; then
-		if [[ -f "/sbin/openrc" ]]; then
-			varInit="openrc"
-		else
-			read -r varInit </proc/1/comm
-		fi
-	else
-		varInit="systemD"
-	fi
-}
-
-detect_INIT_SYSTEM
-initType=$(echo "$varInit")
-
 echo ""
 echo "-------------------------------------------------------------"
 echo "--------------Installing Dependency ....---------------------"
@@ -33,9 +15,6 @@ echo "-------------------------------------------------------------"
 echo "--------------DE/WM INSTALLATION...--------------------------"
 echo "-------------------------------------------------------------"
 echo ""
-
-## GET THE NAME OF CURRENTLY LOGGED IN USER
-uname=$(echo "$USER")
 
 echo -e "Want a minimal setup :"
 isMinimal=$(gum choose "No" "Yes")
@@ -54,22 +33,22 @@ if [[ "$isMinimal" == "Yes" ]]; then
 fi
 
 chmod +x ~/setup/3_0_packages.sh
-~/setup/3_0_packages.sh "$initType"
+~/setup/3_0_packages.sh
 
 chmod +x ~/setup/3_1_browser.sh
 ~/setup/3_1_browser.sh
 
 chmod +x ~/setup/4_cdx.sh
-~/setup/4_cdx.sh "$initType"
+~/setup/4_cdx.sh
 
 if [[ $choice == "KDE" ]]; then
 	clear
 	chmod +x ~/setup/5_kde.sh
-	~/setup/5_kde.sh "$initType"
+	~/setup/5_kde.sh
 elif [[ $choice == "DWM" ]]; then
 	clear
 	chmod +x ~/setup/5_dwm.sh
-	~/setup/5_dwm.sh "$uname" "$initType"
+	~/setup/5_dwm.sh
 fi
 
 ## REFETCHING SETUP
@@ -88,12 +67,10 @@ fi
 rm -rf setup
 git clone https://github.com/glowfi/setup
 
-chmod +x ~/setup/3_2_performance_security.sh
-~/setup/3_2_performance_security.sh "$initType"
+## Run the performance&security script
 
-## Load artix pipewireloader for last time
-nohup artix-pipewire-loader &
-rm nohup.out
+chmod +x ~/setup/3_2_performance_security.sh
+~/setup/3_2_performance_security.sh
 
 ## Regenerate GRUB and initramfs
 
@@ -115,7 +92,7 @@ printf "Cleaned Unused Pacakges!\n"
 sudo rm -rf ~/.cache/*
 printf "Cleaned Cache!\n"
 
-sudo pacman -Rns $(pacman -Qtdq) 2>/dev/null
+sudo pacman -Rns "$(pacman -Qtdq)"
 yes | printf "Cleaned Orphans!"
 
 ## DELETE CACHED PASSWORD
@@ -124,9 +101,8 @@ sudo sed -i '72d' /etc/sudoers
 ## END
 
 echo ""
-echo "   ▄▄   ▀▀█    ▀▀█           ▄▄▄▄                          ▄   "
-echo "   ██     █      █           █   ▀▄  ▄▄▄   ▄ ▄▄    ▄▄▄     █   "
-echo "  █  █    █      █           █    █ █▀ ▀█  █▀  █  █▀  █    █   "
-echo "  █▄▄█    █      █           █    █ █   █  █   █  █▀▀▀▀    ▀   "
-echo " █    █   ▀▄▄    ▀▄▄         █▄▄▄▀  ▀█▄█▀  █   █  ▀█▄▄▀    █   "
+echo " ▄▄▄      ▄              ▄▄▄              █       ▄        █   " | lolcat
+echo " ▀▄  ███ ▀█▀ █ █ █▀█     █   █▀█ ███ █▀█  █  ███ ▀█▀ ███   █   " | lolcat
+echo " ▄▄█ █▄▄  █▄ █▄█ █▄█     █▄▄ █▄█ █ █ █▄█  █▄ █▄▄  █▄ █▄▄   ▄   " | lolcat
+echo "                 █                   █                         " | lolcat
 echo ""

@@ -2,10 +2,14 @@
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
 
-# READ ARGUMENT
-uname=$1
+# Get Init Type
+initType=$(bash "${DETECT_INIT_SCRIPT}")
+
+## Get username
+uname=$(echo "$USER")
 
 # CORE PACKAGES
 
@@ -160,7 +164,7 @@ echo ""
 cp /etc/X11/xinit/xinitrc $HOME/.xinitrc
 sed -i '51,55d' $HOME/.xinitrc
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
     pipeStr="artix-pipewire-loader &"
 else
     pipeStr="systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service"

@@ -2,7 +2,11 @@
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
+
+# Get Init Type
+initType=$(bash "${DETECT_INIT_SCRIPT}")
 
 # Plasma core PACKAGES
 
@@ -116,7 +120,7 @@ echo "--------------Creating xprofile...----------------------------------------
 echo "------------------------------------------------------------------------------------------"
 echo ""
 
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
     pipeStr="artix-pipewire-loader &"
 else
     pipeStr="systemctl --user start pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service"
@@ -159,7 +163,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 # Enable
-if [[ "$1" != "systemD" ]]; then
+if [[ "$initType" != "systemD" ]]; then
     sudo rc-update add sddm
 else 
     sudo systemctl enable sddm
