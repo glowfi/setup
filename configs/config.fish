@@ -469,6 +469,7 @@ function _mirru
     else
         sudo rm -rf /var/lib/pacman/db.lck
         sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
+        rate-mirrors --protocol https --entry-country DE --disable-comments artix | sudo tee /etc/pacman.d/mirrorlist
         sudo pacman -Syyy
     end
 end
@@ -665,7 +666,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "852s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "853s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

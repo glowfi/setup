@@ -68,6 +68,10 @@ install "fish kitty" "pac"
 install "jq" "pac"
 install "aria2" "pac"
 
+if [[ "$1" != "systemD" ]]; then
+	install "rate-mirrors-bin" "yay"
+fi
+
 ### CORE (Fonts)
 install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts ttf-joypixels" "pac"
 install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"

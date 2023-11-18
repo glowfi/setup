@@ -12,6 +12,30 @@ echo "--------------CONFIGURING PERFORMANCE AND SECURITY...---------------------
 echo "------------------------------------------------------------------------------"
 echo ""
 
+# OpenRC optimizations
+
+if [[ "$1" != "systemD" ]]; then
+	rep='rc_parallel="YES"'
+	getReq=$(cat /etc/rc.conf | grep -n '#rc_parallel="NO"' | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/rc.conf
+
+	rep='rc_send_sighup="YES"'
+	getReq=$(cat /etc/rc.conf | grep -n '#rc_send_sighup="NO"' | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/rc.conf
+
+	rep='rc_timeout_stopsec="10"'
+	getReq=$(cat /etc/rc.conf | grep -n '#rc_timeout_stopsec="90"' | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/rc.conf
+
+	rep='rc_send_sigkill="YES"'
+	getReq=$(cat /etc/rc.conf | grep -n 'rc_send_sigkill="YES"' | head -1 | xargs)
+	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/rc.conf
+fi
+
 # ENABLE ZRAM
 
 if [[ "$1" != "systemD" ]]; then
