@@ -296,7 +296,7 @@ echo ""
 proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
 if [[ ${proc_type} =~ "GenuineIntel" ]]; then
 	echo ""
-	echo "Installing Intel microcode ..."
+	echo -e "\e[34mInstalling Intel microcode ...\e[0m"
 	echo ""
 	if [[ "$_distroType" = "artix" ]]; then
 		for i in {1..5}; do basestrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode btrfs-progs git vim openrc elogind-openrc && break || sleep 1; done
@@ -306,7 +306,7 @@ if [[ ${proc_type} =~ "GenuineIntel" ]]; then
 
 elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
 	echo ""
-	echo "Installing AMD microcode ..."
+	echo -e "\e[31mInstalling AMD microcode ...\e[0m"
 	echo ""
 	if [[ "$_distroType" = "artix" ]]; then
 		for i in {1..5}; do basestrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware amd-ucode btrfs-progs git vim openrc elogind-openrc && break || sleep 1; done

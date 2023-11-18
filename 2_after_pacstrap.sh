@@ -153,23 +153,23 @@ echo ""
 ## Auto detect GPU and install drivers
 
 if lspci | grep -E "NVIDIA|GeForce"; then
-	echo "Installing NVIDIA drivers ..."
+	echo -e "\e[32mInstalling NVIDIA graphics drivers ...\e[0m"
 	install "nvidia-dkms nvidia-utils nvidia-settings nvidia-prime" "pac"
 
 elif lspci | grep -E "Radeon"; then
-	echo "Installing AMD Radeon drivers ..."
+	echo -e "\e[31mInstalling AMD Radeon graphics drivers ...\e[0m"
 	install "xf86-video-amdgpu" "pac"
 
 elif lspci | grep -E "Intel Corporation UHD"; then
-	echo "Installing Intel drivers ..."
+	echo -e "\e[34mInstalling Intel graphics drivers ...\e[0m"
 	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 
 elif lspci | grep -E "Intel Corporation HD"; then
-	echo "Installing Intel drivers ..."
+	echo -e "\e[34mInstalling Intel graphics drivers ...\e[0m"
 	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 
 elif lspci | grep -E "Integrated Graphics Controller"; then
-	echo "Installing Intel drivers ..."
+	echo -e "\e[34mInstalling Intel graphics drivers ...\e[0m"
 	install "libva-intel-driver libvdpau-va-gl vulkan-intel libva-intel-driver libva-utils" "pac"
 fi
 
