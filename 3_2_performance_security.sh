@@ -403,8 +403,8 @@ getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'require_dnssec 
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-rep='doh_servers = false'
-getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = true" | head -1 | xargs)
+rep='doh_servers = true'
+getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = false" | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
@@ -467,6 +467,8 @@ sudo chattr +i /etc/resolv.conf
 
 ### Misc Task
 if [[ "$initType" != "systemD" ]]; then
+	sudo rc-service nftables save
+	sudo rc-update add nftables
 	sudo rc-service nftables restart
 
 	nohup artix-pipewire-loader &
