@@ -355,6 +355,18 @@ else
 	sudo systemctl restart --now nftables
 fi
 
+# Power Saving
+
+checkType=$(sudo dmidecode --string chassis-type)
+if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}" = "Portable" || "${checkType}" = "Sub Notebook" ]]; then
+	install "tlp" "pac"
+	if [[ "$initType" != "systemD" ]]; then
+		sudo rc-update add tlp
+	else
+		sudo systemctl enable --now tlp.service
+	fi
+fi
+
 # TIMESHIFT
 if [[ "$initType" != "systemD" ]]; then
 	git clone https://github.com/Antynea/grub-btrfs

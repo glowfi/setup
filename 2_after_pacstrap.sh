@@ -408,11 +408,16 @@ sed -i 's/subvolid.*,//' /etc/fstab
 
 # ===================== XORG Dependent ===================================
 
-# Touchpad Features
+# Enable Touchpad Features
 
-mkdir -p /etc/X11/xorg.conf.d
-touch /etc/X11/xorg.conf.d/40-libinput.conf
-printf 'Section "InputClass"
+checkType=$(sudo dmidecode --string chassis-type)
+if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}" = "Portable" || "${checkType}" = "Sub Notebook" ]]; then
+
+	install "dmidecode" "pac"
+
+	mkdir -p /etc/X11/xorg.conf.d
+	touch /etc/X11/xorg.conf.d/40-libinput.conf
+	printf 'Section "InputClass"
         Identifier "libinput touchpad catchall"
         MatchIsTouchpad "on"
         MatchDevicePath "/dev/input/event*"
@@ -421,9 +426,9 @@ printf 'Section "InputClass"
 	Option "Tapping" "on"
 EndSection' >/etc/X11/xorg.conf.d/40-libinput.conf
 
-mkdir -p /etc/X11/xorg.conf.d
-touch /etc/X11/xorg.conf.d/30-touchpad.conf
-printf 'Section "InputClass"
+	mkdir -p /etc/X11/xorg.conf.d
+	touch /etc/X11/xorg.conf.d/30-touchpad.conf
+	printf 'Section "InputClass"
     Identifier "touchpad"
     Driver "libinput"
     MatchIsTouchpad "on"
@@ -431,6 +436,8 @@ printf 'Section "InputClass"
     Option "ClickMethod" "clickfinger"
     Option "NaturalScrolling" "true"
 EndSection' >/etc/X11/xorg.conf.d/30-touchpad.conf
+
+fi
 
 # ===================== END Dependent ====================================
 
