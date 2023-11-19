@@ -353,18 +353,7 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 ### Restfox
 
-set ver (curl "https://github.com/flawiddsouza/Restfox" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6| tr -d "v" | xargs)
-mkdir restfox
-cd restfox
-wget "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=restfox-bin" -O PKGBUILD
-sed -i "s/^sha512.*/sha512sums=('SKIP')/" PKGBUILD
-set getPkgVer (cat PKGBUILD | grep -n "pkgver")
-set getLineNumber (echo "$getPkgVer" | cut -d ":" -f1 | xargs | cut -d" " -f1 )
-set replacewith (echo "pkgver=$ver")
-sed -i "$getLineNumber s/.*/$replacewith/" PKGBUILD
-makepkg -si --noconfirm
-cd ..
-rm -rf restfox
+install "restfox-bin" "yay"
 
 ### SETUP DOCKER
 
