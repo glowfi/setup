@@ -481,79 +481,87 @@ function sysd
 
     if [ "$varInit" = systemd ]
         set services (systemctl list-unit-files --type=service | awk '{print $1}' | sed '1d' | sed '$d' | sed '$d' | sort | uniq | fzf --cycle --prompt "Choose Service:" | xargs)
-        set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
-        if [ "$choice" = Start ]
-            sudo systemctl start "$services"
-            echo "Started!"
+        if [ "$services" != "" ]
 
-        else if [ "$choice" = Stop ]
-            sudo systemctl stop "$services"
-            echo "Stopped!"
+            set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
-        else if [ "$choice" = Restart ]
-            sudo systemctl restart "$services"
-            echo "Restarted!"
+            if [ "$choice" = Start ]
+                sudo systemctl start "$services"
+                echo "Started!"
 
-        else if [ "$choice" = Status ]
-            echo "Status check"
-            sudo systemctl status "$services"
+            else if [ "$choice" = Stop ]
+                sudo systemctl stop "$services"
+                echo "Stopped!"
 
-        else if [ "$choice" = Enable ]
-            sudo systemctl enable "$services"
-            echo "Enabled!"
+            else if [ "$choice" = Restart ]
+                sudo systemctl restart "$services"
+                echo "Restarted!"
 
-        else if [ "$choice" = Disable ]
-            sudo systemctl disable "$services"
-            echo "Disabled!"
+            else if [ "$choice" = Status ]
+                echo "Status check"
+                sudo systemctl status "$services"
 
-        else if [ "$choice" = "Enable&Start" ]
-            echo "Enable & Start!"
-            sudo systemctl enable "$services"
-            sudo systemctl start "$services"
+            else if [ "$choice" = Enable ]
+                sudo systemctl enable "$services"
+                echo "Enabled!"
 
-        else if [ "$choice" = "Disable&Stop" ]
-            echo "Disable & Stop!"
-            sudo systemctl disable "$services"
-            sudo systemctl stop "$services"
+            else if [ "$choice" = Disable ]
+                sudo systemctl disable "$services"
+                echo "Disabled!"
+
+            else if [ "$choice" = "Enable&Start" ]
+                echo "Enable & Start!"
+                sudo systemctl enable "$services"
+                sudo systemctl start "$services"
+
+            else if [ "$choice" = "Disable&Stop" ]
+                echo "Disable & Stop!"
+                sudo systemctl disable "$services"
+                sudo systemctl stop "$services"
+            end
         end
     else
         set services (rc-update -v show | awk '{print $1}' | sort | uniq | fzf --cycle --prompt "Choose Service:" | xargs)
-        set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
-        if [ "$choice" = Start ]
-            sudo rc-service "$services" start
-            echo "Started!"
+        if [ "$services" != "" ]
 
-        else if [ "$choice" = Stop ]
-            sudo rc-service "$services" stop
-            echo "Stopped!"
+            set choice (echo -e "Start\nStop\nRestart\nStatus\nEnable\nDisable\nEnable&Start\nDisable&Stop" | fzf | xargs)
 
-        else if [ "$choice" = Restart ]
-            sudo rc-service "$services" restart
-            echo "Restarted!"
+            if [ "$choice" = Start ]
+                sudo rc-service "$services" start
+                echo "Started!"
 
-        else if [ "$choice" = Status ]
-            echo "Status check"
-            sudo rc-service "$services" status
+            else if [ "$choice" = Stop ]
+                sudo rc-service "$services" stop
+                echo "Stopped!"
 
-        else if [ "$choice" = Enable ]
-            sudo rc-update add "$services"
-            echo "Enabled!"
+            else if [ "$choice" = Restart ]
+                sudo rc-service "$services" restart
+                echo "Restarted!"
 
-        else if [ "$choice" = Disable ]
-            sudo rc-update del "$services"
-            echo "Disabled!"
+            else if [ "$choice" = Status ]
+                echo "Status check"
+                sudo rc-service "$services" status
 
-        else if [ "$choice" = "Enable&Start" ]
-            echo "Enable & Start!"
-            sudo rc-update add "$services"
-            sudo rc-service "$services" start
+            else if [ "$choice" = Enable ]
+                sudo rc-update add "$services"
+                echo "Enabled!"
 
-        else if [ "$choice" = "Disable&Stop" ]
-            echo "Disable & Stop!"
-            sudo rc-update del "$services"
-            sudo rc-service "$services" stop
+            else if [ "$choice" = Disable ]
+                sudo rc-update del "$services"
+                echo "Disabled!"
+
+            else if [ "$choice" = "Enable&Start" ]
+                echo "Enable & Start!"
+                sudo rc-update add "$services"
+                sudo rc-service "$services" start
+
+            else if [ "$choice" = "Disable&Stop" ]
+                echo "Disable & Stop!"
+                sudo rc-update del "$services"
+                sudo rc-service "$services" stop
+            end
         end
     end
 
@@ -665,7 +673,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "852s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "860s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
