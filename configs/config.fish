@@ -117,13 +117,13 @@ alias dst='sudo systemctl start docker.service'
 alias dsp='sudo systemctl stop docker.service'
 
 # Search Packages in official repository
-alias spac="pacman -Slq | fzf -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
+alias spac="pacman -Slq | sort | uniq | fzf --prompt 'Install from [official repository]:' --cycle -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
 
 # Search AUR
-alias saur="yay -Slq | fzf -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
+alias saur="yay -Slq | sort | uniq | fzf --prompt 'Install from [AUR]:' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
 
 # Uninstall Packages
-alias pacu="pacman -Q | cut -f 1 -d ' ' | fzf -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
+alias pacu="pacman -Q | cut -f 1 -d ' ' | sort | uniq | fzf --prompt 'Uninstall packages(s):' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
 
 # Cleanup
 alias cleanup='yes | sudo pacman -Sc;
