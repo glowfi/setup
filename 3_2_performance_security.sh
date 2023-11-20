@@ -345,8 +345,8 @@ table inet dev {
         ip saddr @blackhole counter drop
     }
 }" | sudo tee -a /etc/nftables.conf >/dev/null
-
 sudo chmod 700 /etc/{iptables,nftables.conf}
+
 if [[ "$initType" != "systemD" ]]; then
 	sudo rc-service nftables save
 	sudo rc-update add nftables
@@ -359,15 +359,26 @@ fi
 
 checkType=$(sudo dmidecode --string chassis-type)
 if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}" = "Portable" || "${checkType}" = "Sub Notebook" ]]; then
-	install "tlp" "pac"
+	# auto-cpufreq
+	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+	cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
+	cd ..
+	sudo rm -rf auto-cpufreq
+	cp -r $HOME/setup/scripts/utils/powerplan.sh $HOME/.local/bin/
+	chmod +x $HOME/.local/bin/powerplan.sh
+
+	# thermald
 	if [[ "$initType" != "systemD" ]]; then
-		sudo rc-update add tlp
+		install "thermald-openrc thermald"
+		sudo rc-update add thermald
 	else
-		sudo systemctl enable --now tlp.service
+		install "thermald"
+		sudo systemctl enable --now thermald.service
 	fi
 fi
 
-# TIMESHIFT
+# Timeshift
+
 if [[ "$initType" != "systemD" ]]; then
 	git clone https://github.com/Antynea/grub-btrfs
 	cd grub-btrfs
@@ -376,15 +387,16 @@ if [[ "$initType" != "systemD" ]]; then
 	sudo make install
 	cd ..
 	rm -rf grub-btrfs
-	sudo rc-update add grub-btrfsd
 	install "timeshift" "yay"
+	sudo rc-update add grub-btrfsd
 else
 	install "grub-btrfs" "pac"
 	install "timeshift" "yay"
 	sudo systemctl enable grub-btrfsd
 fi
 
-### Install dnscrypt-proxy
+# dnscrypt-proxy
+
 install "dnscrypt-proxy" "pac"
 if [[ "$initType" != "systemD" ]]; then
 	rep='DNSCRYPT_PROXY_USER="root"'
@@ -399,7 +411,7 @@ if [[ "$initType" != "systemD" ]]; then
 
 fi
 
-### Setup dnscrypt-proxy
+## Setup dnscrypt-proxy
 rep="#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads']"
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
@@ -442,10 +454,11 @@ else
 	sudo systemctl enable dnscrypt-proxy
 fi
 
-### Install dnsmasq
+# dnsmasq
+
 install "dnsmasq" "pac"
 
-### Setup dnsmasq
+## Setup dnsmasq
 sudo echo '
 port=5353
 bogus-priv
@@ -461,14 +474,14 @@ listen-address=::1,127.0.0.1
 conf-file=/usr/share/dnsmasq/trust-anchors.conf
 dnssec' | sudo tee -a /etc/dnsmasq.conf >/dev/null
 
-### Start dnsmasq at startup
+## Start dnsmasq at startup
 if [[ "$initType" != "systemD" ]]; then
 	sudo rc-update add dnsmasq
 else
 	sudo systemctl enable dnsmasq
 fi
 
-### Edit /etc/resolv.conf
+## Edit /etc/resolv.conf
 sudo chattr -i /etc/resolv.conf
 sudo truncate -s 0 /etc/resolv.conf
 sudo echo '### Custom DNS Resolver
@@ -477,7 +490,8 @@ nameserver 127.0.0.1
 options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 sudo chattr +i /etc/resolv.conf
 
-### Misc Task
+# Misc Task
+
 if [[ "$initType" != "systemD" ]]; then
 	sudo rc-service nftables save
 	sudo rc-update add nftables
