@@ -415,7 +415,7 @@ getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'require_dnssec 
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-rep='doh_servers = true'
+rep='doh_servers = false'
 getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = false" | head -1 | xargs)
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
