@@ -410,11 +410,10 @@ sed -i 's/subvolid.*,//' /etc/fstab
 
 # Enable Touchpad Features
 
+install "dmidecode" "pac"
 checkType=$(sudo dmidecode --string chassis-type)
+
 if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}" = "Portable" || "${checkType}" = "Sub Notebook" ]]; then
-
-	install "dmidecode" "pac"
-
 	mkdir -p /etc/X11/xorg.conf.d
 	touch /etc/X11/xorg.conf.d/40-libinput.conf
 	printf 'Section "InputClass"
@@ -422,21 +421,9 @@ if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}"
         MatchIsTouchpad "on"
         MatchDevicePath "/dev/input/event*"
         Driver "libinput"
-	# Enable left mouse button by tapping
-	Option "Tapping" "on"
+        Option "Tapping" "on"
+        Option "NaturalScrolling" "true"
 EndSection' >/etc/X11/xorg.conf.d/40-libinput.conf
-
-	mkdir -p /etc/X11/xorg.conf.d
-	touch /etc/X11/xorg.conf.d/30-touchpad.conf
-	printf 'Section "InputClass"
-    Identifier "touchpad"
-    Driver "libinput"
-    MatchIsTouchpad "on"
-    Option "Tapping" "on"
-    Option "ClickMethod" "clickfinger"
-    Option "NaturalScrolling" "true"
-EndSection' >/etc/X11/xorg.conf.d/30-touchpad.conf
-
 fi
 
 # ===================== END Dependent ====================================
