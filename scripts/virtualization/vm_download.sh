@@ -821,8 +821,8 @@ netbsdurl() {
 }
 
 openbsdurl() {
-	mirror="https://www.openbsd.org/faq/faq4.html"
-	new=$(curl -s $mirror | grep -m1 -e 'iso.*amd64' | awk -F\" '{ print $2 }')
+	mirror="https://www.openbsd.org/faq/faq4.html#Download"
+	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep "amd64" | grep "img" | head -1)
 	output="openbsd.iso"
 	notlinux
 	checkfile $1
