@@ -43,10 +43,8 @@ wget https://0x0.st/H-vY.conf -O "MangoHud.conf"
 cd
 
 ## Feral gamemode
-if [[ "$varInit" = "systemd" ]]; then
-	sudo pacman -S --noconfirm meson systemd git dbus libinih
-	sudo pacman -S --noconfirm gamemode
-fi
+sudo pacman -S --noconfirm meson git dbus libinih
+sudo pacman -S --noconfirm gamemode
 
 ## Save Scraper and Save Retriever from cloud
 cp -r $HOME/setup/scripts/misc/saveScraper.py $HOME/.local/bin/
