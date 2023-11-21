@@ -106,10 +106,6 @@ install "mpv" "pac"
 ### CORE (IMAGE)
 install "imagemagick ffmpegthumbnailer" "pac"
 
-### CORE (PERIPHERALS)
-install "openrazer-meta polychromatic" "yay"
-sudo gpasswd -a $USER plugdev
-
 ### CORE (EXTRAS)
 install "android-tools scrcpy" "pac"
 install "kdeconnect kcolorchooser" "pac"
