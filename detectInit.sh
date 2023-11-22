@@ -9,6 +9,9 @@ detect_INIT_SYSTEM() {
 			varInit="openrc"
 		else
 			read -r varInit </proc/1/comm
+			if [[ "$varInit" = "systemd" ]]; then
+				varInit="systemD"
+			fi
 		fi
 	else
 		varInit="systemD"

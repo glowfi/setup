@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
@@ -369,10 +369,10 @@ if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}"
 
 	# thermald
 	if [[ "$initType" != "systemD" ]]; then
-		install "thermald-openrc thermald"
+		install "thermald-openrc thermald" "pac"
 		sudo rc-update add thermald
 	else
-		install "thermald"
+		install "thermald" "pac"
 		sudo systemctl enable --now thermald.service
 	fi
 fi
@@ -409,6 +409,9 @@ if [[ "$initType" != "systemD" ]]; then
 	getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 	sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
+	rep='command_args="${DNSCRYPT_PROXY_OPTS:--config \/etc\/dnscrypt-proxy\/dnscrypt-proxy.toml} --logfile \/var\/log\/dnscrypt-proxy\/dnsprox.txt"'
+	sudo sed -i "7s/.*/${rep}/" /etc/init.d/dnscrypt-proxy
+
 fi
 
 ## Setup dnscrypt-proxy
@@ -427,11 +430,6 @@ getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'require_dnssec 
 getLineNumber=$(echo "$getLine" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-rep='doh_servers = false'
-getLine=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "doh_servers = false" | head -1 | xargs)
-getLineNumber=$(echo "$getLine" | cut -d":" -f1)
-sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
-
 rep='netprobe_timeout = -1'
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "netprobe_timeout" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
@@ -443,7 +441,7 @@ getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 rep='force_tcp = true'
-getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "force_tcp" | head -1 | xargs)
+getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n 'force_tcp' | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 

@@ -3,6 +3,9 @@
 # Script Directory
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
+# Source Logo
+source "${SCRIPT_DIR}/logo.sh"
+
 # Config file checking
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 if [ ! -f $CONFIG_FILE ]; then # check if file exists
@@ -25,41 +28,6 @@ installDependency() {
 	sudo pacman -U --noconfirm ./gum-0.11.0-1-x86_64.pkg.tar.zst
 	rm ./gum-0.11.0-1-x86_64.pkg.tar.zst
 	clear
-}
-
-# Logo
-
-logo() {
-
-	f=3 b=4
-	for j in f b; do
-		for i in {0..7}; do
-			printf -v $j$i %b "\e[${!j}${i}m"
-		done
-	done
-	for i in {0..7}; do
-		printf -v fbright$i %b "\e[9${i}m"
-	done
-	bld=$'\e[1m'
-	rst=$'\e[0m'
-	inv=$'\e[7m'
-
-	cat <<EOF
-
- $fbright3  ▄███████▄                $fbright1  ▄██████▄    $fbright2  ▄██████▄    $fbright4  ▄██████▄    $fbright5  ▄██████▄    $fbright6  ▄██████▄
- $fbright3▄█████████▀▀               $fbright1▄$fbright7█▀█$fbright1██$fbright7█▀█$fbright1██▄  $fbright2▄█$fbright7█ █$fbright2██$fbright7█ █$fbright2█▄  $fbright4▄█$fbright7█ █$fbright4██$fbright7█ █$fbright4█▄  $fbright5▄█$fbright7█ █$fbright5██$fbright7█ █$fbright5█▄  $fbright6▄██$fbright7█▀█$fbright6██$fbright7█▀█$fbright6▄
- $fbright3███████▀      $fbright7▄▄  ▄▄  ▄▄   $fbright1█$fbright7▄▄█$fbright1██$fbright7▄▄█$fbright1███  $fbright2██$fbright7███$fbright2██$fbright7███$fbright2██  $fbright4██$fbright7███$fbright4██$fbright7███$fbright4██  $fbright5██$fbright7███$fbright5██$fbright7███$fbright5██  $fbright6███$fbright7█▄▄$fbright6██$fbright7█▄▄$fbright6█
- $fbright3███████▄      $fbright7▀▀  ▀▀  ▀▀   $fbright1████████████  $fbright2████████████  $fbright4████████████  $fbright5████████████  $fbright6████████████
- $fbright3▀█████████▄▄               $fbright1██▀██▀▀██▀██  $fbright2██▀██▀▀██▀██  $fbright4██▀██▀▀██▀██  $fbright5██▀██▀▀██▀██  $fbright6██▀██▀▀██▀██
- $fbright3  ▀███████▀                $fbright1▀   ▀  ▀   ▀  $fbright2▀   ▀  ▀   ▀  $fbright4▀   ▀  ▀   ▀  $fbright5▀   ▀  ▀   ▀  $fbright6▀   ▀  ▀   ▀
- $rst
-EOF
-
-	echo " ▄▄▄         █               ▄▄▄      ▄   ▀          ▄▄▄      ▄          "
-	echo " █ █ █▀▀ █▀▀ █▀█     ▄█▄     █ █ █▀▀ ▀█▀  █  ▀▄▀     ▀▄  ███ ▀█▀ █ █ █▀█ "
-	echo " █▀█ █   █▄▄ █ █      ▀      █▀█ █    █▄  █  ▄▀▄     ▄▄█ █▄▄  █▄ █▄█ █▄█ "
-	echo "                                                                     █   "
-
 }
 
 # Handle File system
@@ -307,89 +275,103 @@ distroType() {
 
 configure() {
 
+	# Greet
+
 	clear
 	logo
+	echo "Welcome to the pre-install script !"
+	echo "Type p to proceed or e to exit"
+	read keyPressed
 
-	installDependency
-	clear
-	filesystem
-	clear
-	timezone
-	clear
-	keymap
-	clear
-	drivetype
-	clear
-	diskpart
-	clear
-	userinfo
-	clear
-	diskEncryption
-	clear
-	distroType
-	clear
+	if [[ "${keyPressed}" = "p" ]]; then
 
-	# Confirmation
+		installDependency
+		clear
+		filesystem
+		clear
+		timezone
+		clear
+		keymap
+		clear
+		drivetype
+		clear
+		diskpart
+		clear
+		userinfo
+		clear
+		diskEncryption
+		clear
+		distroType
+		clear
 
-	_filesystemType=$(cat "$CONFIG_FILE" | sed -n '1p')
-	_timezone=$(cat "$CONFIG_FILE" | sed -n '2p')
-	_keyboardLayout=$(cat "$CONFIG_FILE" | sed -n '3p')
-	_hardDiskType=$(cat "$CONFIG_FILE" | sed -n '4p')
-	_OS_Install_Disk=$(cat "$CONFIG_FILE" | sed -n '5p')
-	_username=$(cat "$CONFIG_FILE" | sed -n '6p')
-	_fullname=$(cat "$CONFIG_FILE" | sed -n '7p')
-	_userPassword=$(cat "$CONFIG_FILE" | sed -n '8p')
-	_rootPassword=$(cat "$CONFIG_FILE" | sed -n '9p')
-	_hostname=$(cat "$CONFIG_FILE" | sed -n '10p')
-	_diskencrypt=$(cat "$CONFIG_FILE" | sed -n '11p')
-	if [[ "$_diskencrypt" = "encrypt" ]]; then
-		_lukspass=$(cat "$CONFIG_FILE" | sed -n '12p')
-		_diskencrypt=$(echo -e "LUKS [aes-xts-plain64 256b] \nLUKSPASS : ${_lukspass}")
+		# Confirmation
+
+		_filesystemType=$(cat "$CONFIG_FILE" | sed -n '1p')
+		_timezone=$(cat "$CONFIG_FILE" | sed -n '2p')
+		_keyboardLayout=$(cat "$CONFIG_FILE" | sed -n '3p')
+		_hardDiskType=$(cat "$CONFIG_FILE" | sed -n '4p')
+		_OS_Install_Disk=$(cat "$CONFIG_FILE" | sed -n '5p')
+		_username=$(cat "$CONFIG_FILE" | sed -n '6p')
+		_fullname=$(cat "$CONFIG_FILE" | sed -n '7p')
+		_userPassword=$(cat "$CONFIG_FILE" | sed -n '8p')
+		_rootPassword=$(cat "$CONFIG_FILE" | sed -n '9p')
+		_hostname=$(cat "$CONFIG_FILE" | sed -n '10p')
+		_diskencrypt=$(cat "$CONFIG_FILE" | sed -n '11p')
+		if [[ "$_diskencrypt" = "encrypt" ]]; then
+			_lukspass=$(cat "$CONFIG_FILE" | sed -n '12p')
+			_diskencrypt=$(echo -e "LUKS [aes-xts-plain64 256b] \nLUKSPASS : ${_lukspass}")
+		else
+			_diskencrypt="none"
+		fi
+
+		_distroType=$(sed '$!d' "$CONFIG_FILE")
+		if [[ "$_distroType" == "arch" ]]; then
+			_distroType=$(echo "$_distroType [systemd as init]")
+		else
+			_distroType=$(echo "$_distroType [openrc  as init]")
+		fi
+
+		out=$(
+			echo -e "====== Final Configuration ====== \n"
+			echo "filesystem : ${_filesystemType}"
+			echo "timezone : ${_timezone}"
+			echo "keyboard layout : ${_keyboardLayout}"
+			echo "disk type : ${_hardDiskType}"
+			echo "OS install disk : ${_OS_Install_Disk}"
+			echo "username : ${_username}"
+			echo "fullname : ${_fullname}"
+			echo "userPassword : ${_userPassword}"
+			echo "rootPassword : ${_rootPassword}"
+			echo "hostname : ${_hostname}"
+			echo "Disk Encryption : ${_diskencrypt}"
+			echo "Distro variant : ${_distroType}"
+		)
+
+		gum style \
+			--foreground 255 --border-foreground 39 --border double \
+			--align center --width 53 --margin "1 2" --padding "2 4" \
+			"$out"
+
+		echo "Are you sure want to go with above configuration ?"
+		confirm=$(gum choose "yes" "restart" "exit")
+
+		if [[ "$confirm" = "restart" ]]; then
+			rm -rf "$CONFIG_FILE"
+			configure
+		elif [[ "$confirm" = "yes" ]]; then
+			return
+		else
+			rm -rf "$CONFIG_FILE"
+			echo "Exited !"
+			exit 1
+		fi
+
 	else
-		_diskencrypt="none"
-	fi
-
-	_distroType=$(sed '$!d' "$CONFIG_FILE")
-	if [[ "$_distroType" == "arch" ]]; then
-		_distroType=$(echo "$_distroType [systemd as init]")
-	else
-		_distroType=$(echo "$_distroType [openrc  as init]")
-	fi
-
-	out=$(
-		echo -e "====== Final Configuration ====== \n"
-		echo "filesystem : ${_filesystemType}"
-		echo "timezone : ${_timezone}"
-		echo "keyboard layout : ${_keyboardLayout}"
-		echo "disk type : ${_hardDiskType}"
-		echo "OS install disk : ${_OS_Install_Disk}"
-		echo "username : ${_username}"
-		echo "fullname : ${_fullname}"
-		echo "userPassword : ${_userPassword}"
-		echo "rootPassword : ${_rootPassword}"
-		echo "hostname : ${_hostname}"
-		echo "Disk Encryption : ${_diskencrypt}"
-		echo "Distro variant : ${_distroType}"
-	)
-
-	gum style \
-		--foreground 255 --border-foreground 39 --border double \
-		--align center --width 53 --margin "1 2" --padding "2 4" \
-		"$out"
-
-	echo "Are you sure want to go with above configuration ?"
-	confirm=$(gum choose "yes" "restart" "exit")
-
-	if [[ "$confirm" = "restart" ]]; then
-		rm -rf "$CONFIG_FILE"
-		configure
-	elif [[ "$confirm" = "yes" ]]; then
-		return
-	else
-		rm -rf "$CONFIG_FILE"
 		echo "Exited !"
+		rm -rf "$CONFIG_FILE"
 		exit 1
 	fi
+
 }
 
 # Take user input
