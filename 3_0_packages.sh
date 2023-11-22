@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source Helper
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
@@ -151,7 +151,7 @@ install "kdenlive" "pac"
 
 ### EXTRAS
 install "onlyoffice-bin" "yay"
-install "tectonic" "yay"
+install "tectonic" "pac"
 
 # ======================================================= END ======================================================================================
 
