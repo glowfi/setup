@@ -217,6 +217,11 @@ alias jl='journalctl -b -p3 --no-hostname --no-pager'
 alias nmst="systemctl start NetworkManager.service;systemctl start wpa_supplicant.service"
 alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.service"
 
+# Ollama
+alias olst="nohup ollama serve &;rm nohup.out"
+alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
+alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}'| xargs | fzf --prompt 'Choose Model:')"
+
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -673,7 +678,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "860s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "865s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
