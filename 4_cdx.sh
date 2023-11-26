@@ -304,14 +304,18 @@ chmod +x $HOME/.local/bin/edit.sh
 cp -r $HOME/setup/scripts/system/bfilter.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/bfilter.sh
 
-cp -r $HOME/setup/scripts/system/klp $HOME/.local/bin/
-chmod +x $HOME/.local/bin/klp
-
 cp -r $HOME/setup/scripts/system/kdeconnect $HOME/.local/bin/
 chmod +x $HOME/.local/bin/kdeconnect
 
 cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
+
+### Writing Tools
+
+install "lorien-bin" "yay"
+install "kolourpaint" "pac"
+cp -r $HOME/setup/scripts/system/klp $HOME/.local/bin/
+chmod +x $HOME/.local/bin/klp
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 

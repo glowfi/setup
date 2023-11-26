@@ -128,7 +128,6 @@ rm -rf test
 #### ADDITIONAL PACKAGES
 
 ### IMAGE
-install "kolourpaint" "pac"
 install "python2-bin" "yay"
 install "gimp" "pac"
 install "gimp-plugin-registry" "yay"
