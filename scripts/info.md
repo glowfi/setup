@@ -635,3 +635,15 @@ replace_line() {
 
 replace_line "$rep" "$getLineNumber" "/usr/lib/librewolf/distribution/policies.json"
 ```
+
+### OLLAMA
+
+```sh
+
+olst
+ollama pull mistral:latest
+ollama pull llama2-uncensored
+ollama pull zephyr
+olsp
+
+```
