@@ -53,7 +53,7 @@ esac
 
 ## PlasmaShell Replace
 #super+shift+q
-nohup plasmashell --replace
+nohup plasmashell --replace &
 
 ### Global bindings
 
