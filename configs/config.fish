@@ -220,7 +220,7 @@ alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.
 # Ollama
 alias olst="nohup ollama serve &;rm nohup.out"
 alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
-alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --prompt 'Choose Model:')"
+alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
 
 # ===================================================================
 #                           Custom Functions
