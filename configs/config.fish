@@ -474,6 +474,8 @@ function _mirru
     else
         sudo rm -rf /var/lib/pacman/db.lck
         sudo reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
+        echo -e "\nSyncing repos of artix. Please wait this may take some time ..."
+        set mirrors (rate-mirrors --protocol https --disable-comments-in-file artix) && test -z (echo "$mirrors") && echo "$mirrors" | sudo tee /etc/pacman.d/mirrorlist
         sudo pacman -Syyy
     end
 end
@@ -678,7 +680,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "865s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "867s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
