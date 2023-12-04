@@ -364,6 +364,14 @@ if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}"
 	cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
 	cd ..
 	sudo rm -rf auto-cpufreq
+
+	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+	cd auto-cpufreq/auto_cpufreq
+	sudo python3 power_helper.py --gnome_power_disable
+	cd ..
+	cd ..
+	sudo rm -rf auto-cpufreq
+
 	cp -r $HOME/setup/scripts/utils/powerplan.sh $HOME/.local/bin/
 	chmod +x $HOME/.local/bin/powerplan.sh
 
