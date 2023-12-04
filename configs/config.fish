@@ -481,9 +481,9 @@ function _mirru
 end
 
 
-### SystemD Utility Functions
+### SystemD/Openrc Utility Functions
 
-function sysd
+function sysop
     set varInit (cat /proc/1/comm)
 
     if [ "$varInit" = systemd ]
