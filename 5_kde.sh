@@ -288,7 +288,7 @@ done
 
 # Add command output widget
 
-mv "${SCRIPT_DIR}/storage/Hph4.plasmoid" ./command-output.plasmoid
+mv "${SCRIPT_DIR}/storage/command-output-statusbar.plasmoid" ./command-output.plasmoid
 plasmapkg2 -i command-output.plasmoid
 rm -rf command-output.plasmoid
 cp -r ~/setup/configs/plasma/kdestatus.sh ~/.local/bin/

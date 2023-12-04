@@ -46,7 +46,7 @@ git clone https://github.com/hcchu/volnoti
 cd volnoti
 cd res
 rm display-brightness-symbolic.svg
-mv "${SCRIPT_DIR}/storage/Ho5Y.svg" ./display-brightness-symbolic.svg
+mv "${SCRIPT_DIR}/storage/display-brightness-symbolic.svg" ./display-brightness-symbolic.svg
 cd ..
 ./prepare.sh
 ./configure --prefix=/usr
@@ -94,9 +94,9 @@ cd ..
 rm -rf gruvbox-material-gtk
 
 cd $HOME/Downloads/
-mv "${SCRIPT_DIR}/storage/HryC.tar.gz" .
-tar xzvf HryC.tar.gz
-rm HryC.tar.gz
+mv "${SCRIPT_DIR}/storage/Gruvbox-Dark-Blue.tar.gz" .
+tar xzvf Gruvbox-Dark-Blue.tar.gz
+rm Gruvbox-Dark-Blue.tar.gz
 sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
 cd
 
