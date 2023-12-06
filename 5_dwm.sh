@@ -207,9 +207,6 @@ dwmblocks &
 find "$HOME/.cache/" -name "lowbat*" -delete
 $HOME/.local/bin/lowbat.sh &
 
-# Keyboard Repeat Speed
-xset r rate 300 30
-
 # Infinte loop
 while true;do
     $HOME/.config/DWM/dwm >/dev/null 2>&1
