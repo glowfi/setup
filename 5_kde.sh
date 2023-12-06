@@ -145,6 +145,9 @@ xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 # Clipboard
 clipmenud &
 
+# Keyboard Repeat Speed
+xset r rate 300 30
+
 # Kill Useless Process at startup
 ~/.local/bin/uselesskill.sh &' >>$HOME/.xprofile
 

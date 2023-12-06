@@ -122,8 +122,10 @@ blacklist uvcvideo
 
 # Disable bluetooth
 blacklist btusb
-blacklist bluetooth
-" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+blacklist bluetooth" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+
+sudo rmmod pcspkr
+echo "blacklist pcspkr" | sudo tee -a /etc/modprobe.d/nobeep.conf >/dev/null
 
 # Better IO Scheduler
 
