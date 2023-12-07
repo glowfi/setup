@@ -644,6 +644,7 @@ olst
 ollama pull mistral:latest
 ollama pull llama2-uncensored
 ollama pull zephyr
+ollama pull codellama
 olsp
 
 ```
