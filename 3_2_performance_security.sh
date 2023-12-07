@@ -86,8 +86,10 @@ sudo echo "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/90-override.
 
 # NETWORKING SETTINGS
 
-sudo echo 'DNSOverTLS=yes
+if [[ "$initType" = "systemD" ]]; then
+	sudo echo 'DNSOverTLS=yes
 LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+fi
 
 # SETUP SSH
 
