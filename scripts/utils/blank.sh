@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 tmpfile="$HOME/.config/blank"
+initType=$(cat /proc/1/comm)
 
 generate() {
 	DE=$(echo $XDG_CURRENT_DESKTOP)
@@ -135,14 +136,21 @@ table inet dev {
 }" | sudo tee -a /etc/nftables.conf >/dev/null
 
 	sudo chmod 700 /etc/{iptables,nftables.conf}
-	sudo systemctl enable --now nftables
-	sudo systemctl restart --now nftables
+
+	if [[ "$initType" != "systemD" ]]; then
+		sudo rc-service nftables save
+		sudo rc-update add nftables
+	else
+		sudo systemctl enable --now nftables
+		sudo systemctl restart --now nftables
+	fi
 	echo "Firewall Enabled!"
 }
 
 disableFirewall() {
 	sudo rm -rf /etc/nftables.conf
 	sudo systemctl disable nftables
+	sudo systemctl stop nftables
 	echo "Firewall Disabled"
 }
 
@@ -152,18 +160,24 @@ blacklist uvcvideo
 
 # Disable bluetooth
 blacklist btusb
-blacklist bluetooth
-" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+blacklist bluetooth" | sudo tee -a /etc/modprobe.d/blacklist.conf >/dev/null
+
+	sudo rmmod pcspkr
+	echo "blacklist pcspkr" | sudo tee -a /etc/modprobe.d/nobeep.conf >/dev/null
 	echo "Modules blacklisted!"
 }
 
 removeBlacklistedModules() {
 	sudo rm -rf /etc/modprobe.d/blacklist.conf
+	sudo rm -rf /etc/modprobe.d/nobeep.conf
 	echo "Removed blacklisted modules!"
 }
 
 enableNetworkSecurity() {
-	sudo echo -e 'DNSOverTLS=yes\nLLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+	if [[ "$initType" = "systemD" ]]; then
+		sudo echo 'DNSOverTLS=yes
+LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
+	fi
 
 	sudo systemctl enable dnscrypt-proxy
 	sudo systemctl enable dnsmasq
@@ -180,7 +194,9 @@ options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 }
 
 disableNetworkSecurity() {
-	sudo sed -i '$d; $d; $d; $d; $d; $d' /etc/systemd/resolved.conf
+	if [[ "$initType" = "systemD" ]]; then
+		sudo sed -i '$d; $d; $d; $d; $d; $d' /etc/systemd/resolved.conf
+	fi
 
 	sudo systemctl disable dnscrypt-proxy
 	sudo systemctl disable dnsmasq
@@ -198,10 +214,6 @@ vm.swappiness=10
 # Lowering it from the default value of 100 makes the kernel less inclined to reclaim VFS cache (do not set it to 0, this may produce out-of-memory conditions)
 vm.vfs_cache_pressure=50
 
-# This action will speed up your boot and shutdown, because one less module is loaded. Additionally disabling watchdog timers increases performance and lowers power consumption
-# Disable NMI watchdog
-#kernel.nmi_watchdog = 0
-
 # Contains, as a percentage of total available memory that contains free pages and reclaimable
 # pages, the number of pages at which a process which is generating disk writes will itself start
 # writing out dirty data (Default is 20).
@@ -216,11 +228,15 @@ vm.dirty_background_ratio = 5
 # kernel flusher threads.  It is expressed in 100'ths of a second.  Data which has been dirty
 # in-memory for longer than this interval will be written out next time a flusher thread wakes up
 # (Default is 3000).
-#vm.dirty_expire_centisecs = 3000
+vm.dirty_expire_centisecs = 3000
 
 # The kernel flusher threads will periodically wake up and write old data out to disk.  This
 # tunable expresses the interval between those wakeups, in 100'ths of a second (Default is 500).
 vm.dirty_writeback_centisecs = 1500
+
+# This action will speed up your boot and shutdown, because one less module is loaded. Additionally disabling watchdog timers increases performance and lowers power consumption
+# Disable NMI watchdog
+kernel.nmi_watchdog = 0
 
 # Enable the sysctl setting kernel.unprivileged_userns_clone to allow normal users to run unprivileged containers.
 kernel.unprivileged_userns_clone=1
@@ -236,6 +252,12 @@ kernel.kptr_restrict = 2
 
 # Disable Kexec, which allows replacing the current running kernel.
 kernel.kexec_load_disabled = 1
+
+# Restricts the BPF JIT compiler to root only. This prevents a lot of possible attacks against the JIT compiler such as heap spraying.
+kernel.unprivileged_bpf_disabled=1
+
+# Hardens the JIT compiler against certain attacks such as heap spraying attacks.
+net.core.bpf_jit_harden=2
 
 # Increasing the size of the receive queue.
 # The received frames will be stored in this queue after taking them from the ring buffer on the network card.
