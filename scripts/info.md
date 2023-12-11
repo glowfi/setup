@@ -638,7 +638,20 @@ replace_line "$rep" "$getLineNumber" "/usr/lib/librewolf/distribution/policies.j
 
 ### OLLAMA
 
-```sh
+```fish
+
+echo ""
+echo "----------------------------------------------------------------------------"
+echo "--------------Installing Local LLM Models...--------------------------------"
+echo "----------------------------------------------------------------------------"
+echo ""
+
+# Ollama
+alias olst="nohup ollama serve &;rm nohup.out"
+alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
+alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
+
+curl https://ollama.ai/install.sh | sh
 
 olst
 ollama pull mistral:latest
