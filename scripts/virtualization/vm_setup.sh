@@ -314,7 +314,7 @@ takeInput() {
 		echo "Please be patient. This may take a couple seconds to detect GPU."
 		gpuList=$(getGPUlist | grep "VGA")
 		gpuList=$(echo -e "$gpuList\nUse basic Software rendering")
-		_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Bais Software rendering] :" | awk -F" " '{print $3}' | xargs)
+		_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Basic Software rendering] :" | awk -F" " '{print $3}' | xargs)
 	fi
 
 	if [[ "$_cores" != "" ]]; then
