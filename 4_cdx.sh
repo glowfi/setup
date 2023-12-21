@@ -39,7 +39,7 @@ end
 # JUPYTER SETUP
 
 for i in (seq 3)
-    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd
+    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd networkx graphviz
     pip install notebook==6.4.12
     pip install pygments tqdm lxml
     pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
@@ -204,6 +204,7 @@ wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOM
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
 wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
 echo "osc=no" >>$HOME/.config/mpv/mpv.conf
+echo 'save-position-on-quit' >>$HOME/.config/mpv/mpv.conf
 
 cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 
