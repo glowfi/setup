@@ -178,6 +178,12 @@ picom -b
 
 # Pipewire
 ${pipeStr}
+
+# Youtube Local
+fish -c 'cd "$HOME/.local/bin/youtube-local"
+source "$HOME/.local/bin/youtube-local/env/bin/activate.fish"
+nohup python ./server.py &
+rm nohup.out'
 "'
 # Hotkey daemon
 dxhd -b &

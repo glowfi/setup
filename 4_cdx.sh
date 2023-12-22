@@ -413,6 +413,16 @@ echo "--------------Configuring git...--------------------"
 echo "----------------------------------------------------"
 echo ""
 
+### Install Youtube-local
+
+cd ~/.local/bin
+git clone https://github.com/user234683/youtube-local
+cd youtube-local
+python -m venv env
+source "$HOME/.local/bin/youtube-local/env/bin/activate.fish"
+pip install -r requirements.txt
+cd
+
 ### Visualization
 
 install "gource" "pac"
