@@ -108,9 +108,9 @@ alias pst='sudo systemctl start postgresql'
 alias psp='sudo systemctl stop postgresql'
 alias psql='psql -d delta'
 
-# MongoDB
-alias mst='sudo systemctl start mongodb'
-alias msp='sudo systemctl stop mongodb'
+# youtube-local
+alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd'
+alias ysp='ps aux | grep "server.py" | grep "python" | awk \'{print $2}\' | xargs -ro kill -9'
 
 # Docker
 alias dst='sudo systemctl start docker.service'
