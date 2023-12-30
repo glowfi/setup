@@ -40,6 +40,7 @@ end
 
 for i in (seq 3)
     pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd networkx graphviz
+    pip install sortedcontainers
     pip install notebook==6.4.12
     pip install pygments tqdm lxml
     pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
