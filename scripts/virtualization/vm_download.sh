@@ -11,9 +11,9 @@ helpsection() {
 	echo "| Scripts Used : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)                 | "
 	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
 	echo ""
-	echo "+ How to use?"
-	echo "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading"
-	echo "+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading"
+	echo -e "====== How to use ====== \n"
+	echo -e "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading \n"
+	echo -e "+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading \n"
 }
 
 # the public ipxe mirror does not work
