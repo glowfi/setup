@@ -164,13 +164,6 @@ rebornurl() {
 	checkfile $1
 }
 
-archlabsurl() {
-	mirror="https://sourceforge.net/projects/archlabs-linux-minimo/files/latest/download"
-	new="$mirror"
-	output="archlabs.iso"
-	checkfile $1
-}
-
 namiburl() {
 	mirror="https://sourceforge.net/projects/namib-gnu-linux/files/latest/download"
 	new="$mirror"
@@ -1460,7 +1453,7 @@ win10ltscurl() {
 }
 
 # Categories
-arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos archlabs namib obarun archcraft peux bluestar xerolinux cachyos)
+arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
@@ -1489,7 +1482,6 @@ artix=("ArtixLinux" "amd64" "daily" "artixurl")
 arco=("ArcoLinux" "amd64" "release" "arcourl")
 garuda=("Garuda" "amd64" "release" "garudaurl")
 rebornos=("RebornOS" "amd64" "release" "rebornurl")
-archlabs=("ArchLabs" "amd64" "release" "archlabsurl")
 namib=("Namib" "amd64" "release" "namiburl")
 obarun=("Obarun" "amd64" "rolling" "obarunurl")
 archcraft=("ArchCraft" "amd64" "release" "archcrafturl")
