@@ -1714,6 +1714,8 @@ normalmode() {
 	fi
 }
 
-if [ "$silent" != "1" ]; then helpsection; fi
+if [ "$silent" != "1" ]; then
+	helpsection
+fi
 
 normalmode
