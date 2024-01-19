@@ -329,6 +329,7 @@ echo "--------------Setting up Database...------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
+install "dbeaver" "pac"
 install "postgresql" "pac"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
