@@ -321,7 +321,7 @@ chmod +x $HOME/.local/bin/klp
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
-### SETUP POSTGRES
+### SETUP DATABASE
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -330,6 +330,7 @@ echo "------------------------------------------------------------------------"
 echo ""
 
 install "dbeaver" "pac"
+install "redis" "pac"
 install "postgresql" "pac"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
