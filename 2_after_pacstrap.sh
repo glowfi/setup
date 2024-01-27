@@ -184,7 +184,7 @@ echo ""
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 
 install "os-prober grub efibootmgr ntfs-3g" "pac"
-install "networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools" "pac"
+install "networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools dnsutils" "pac"
 install "dialog mtools dosfstools gptfdisk" "pac"
 install "rsync reflector wget" "pac"
 install "lsof strace bc" "pac"
