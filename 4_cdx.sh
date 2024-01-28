@@ -55,6 +55,10 @@ pip install pyautogui pynput
 pip install pyfzf
 pip install rich pygments
 
+# OLLAMA MODEL
+
+curl https://ollama.ai/install.sh | sh
+
 # ======================================================= END ======================================================================================
 
 echo ""
