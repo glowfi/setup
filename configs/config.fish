@@ -222,6 +222,9 @@ alias olst="nohup ollama serve &;rm nohup.out"
 alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
 alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
 
+# Run with GPU
+alias gprun="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia $argv[1]"
+
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -680,7 +683,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "867s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "870s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
