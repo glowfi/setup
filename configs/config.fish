@@ -122,6 +122,9 @@ alias spac="pacman -Slq | sort | uniq | fzf --prompt 'Install from [official rep
 # Search AUR
 alias saur="yay -Slq | sort | uniq | fzf --prompt 'Install from [AUR]:' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
 
+# Search Arch Linux Packages Archive
+alias sarc="~/.local/bin/searchArchive.sh"
+
 # Uninstall Packages
 alias pacu="pacman -Q | cut -f 1 -d ' ' | sort | uniq | fzf --prompt 'Uninstall packages(s):' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
 
@@ -683,7 +686,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "870s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "873s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
