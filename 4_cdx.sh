@@ -283,6 +283,9 @@ chmod +x $HOME/.local/bin/killprocess.sh
 cp -r $HOME/setup/scripts/utils/timer $HOME/.local/bin/
 chmod +x $HOME/.local/bin/timer
 
+cp -r $HOME/setup/scripts/utils/searchArchive.sh $HOME/.local/bin/
+chmod +x $HOME/.local/bin/searchArchive.sh
+
 git clone https://github.com/thameera/vimv
 cd vimv
 cp -r vimv $HOME/.local/bin/
