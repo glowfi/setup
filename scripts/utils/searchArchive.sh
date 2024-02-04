@@ -16,14 +16,17 @@ if [[ "$selectCharacter" != "" ]]; then
 
 		for i in "${arr[@]}"; do
 			# Choose package version
-			getPackageVersion=$(curl "https://archive.archlinux.org/packages/${selectCharacter}/${i}"/ | awk -F" " '{print $2 "== Date : " $3 "== Time: " $4 "== Size : " $5}' | sed -E 's/<+[^>]*>+//g' | sed 's/.*>/>/' | sed 's/^.//' | column -t -s '==' | head -n -2 | sed '1,4d' | sort -Vk1)
+			getPackageVersion=$(curl "https://archive.archlinux.org/packages/${selectCharacter}/${i}"/ | awk -F" " '{print $2 "= Date : " $3 "= Time: " $4 "= Size : " $5}' | sed -E 's/<+[^>]*>+//g' | sed 's/.*>/>/' | sed 's/^.//' | column -t -s '=' | head -n -2 | sed '1,4d' | sort -Vk1)
 			selectPackageVersion=$(echo "$getPackageVersion" | fzf -m --cycle --prompt "Choose package version to install:" | awk '{print $1}')
 
-			# Create Download string
-			mapfile -t prr < <(echo "$selectPackageVersion")
-			for j in "${prr[@]}"; do
-				downloadLinks+="https://archive.archlinux.org/packages/${selectCharacter}/${i}/${j}\n"
-			done
+			if [[ "${selectPackageVersion}" != "" ]]; then
+				# Create Download string
+				mapfile -t prr < <(echo "$selectPackageVersion")
+				for j in "${prr[@]}"; do
+					downloadLinks+="https://archive.archlinux.org/packages/${selectCharacter}/${i}/${j}\n"
+				done
+			fi
+
 		done
 
 		# Download packages
