@@ -286,6 +286,9 @@ chmod +x $HOME/.local/bin/timer
 cp -r $HOME/setup/scripts/utils/searchArchive.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/searchArchive.sh
 
+cp -r $HOME/setup/scripts/utils/b64i $HOME/.local/bin/
+chmod +x $HOME/.local/bin/b64i
+
 git clone https://github.com/thameera/vimv
 cd vimv
 cp -r vimv $HOME/.local/bin/
@@ -321,7 +324,7 @@ chmod +x $HOME/.local/bin/lowbat.sh
 
 ### Writing Tools
 
-install "lorien-bin" "yay"
+install "lorien-bin gromit-mpx" "yay"
 install "kolourpaint" "pac"
 cp -r $HOME/setup/scripts/system/klp $HOME/.local/bin/
 chmod +x $HOME/.local/bin/klp
