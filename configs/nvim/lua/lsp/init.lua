@@ -172,6 +172,10 @@ lspconfig.html.setup({ capabilities = capabilities })
 
 lspconfig.cssls.setup({ capabilities = capabilities })
 
+lspconfig.tailwindcss.setup({
+	capabilities = capabilities,
+})
+
 -- Emmet
 local status_ok__, configs = pcall(require, "lspconfig.configs")
 if not status_ok__ then
