@@ -102,6 +102,30 @@ return require("lazy").setup({
 		end,
 	},
 
+	-- Colorizer
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup({
+				"Run",
+				"conf",
+				"vim",
+				"html",
+				"css",
+				"json",
+				"python",
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"cpp",
+				"rust",
+				"go",
+				"lua",
+			})
+		end,
+	},
+
 	-- Status line
 	{
 		"hoob3rt/lualine.nvim",
