@@ -224,6 +224,7 @@ alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.
 alias olst="nohup ollama serve &;rm nohup.out"
 alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
 alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
+alias olr="ollama rm (ollama list | sed '1d' | awk '{print \$1}' | fzf -m --cycle --prompt 'Choose Model(s) to Remove:')| tr '\n' ' '"
 
 # Run with GPU
 alias gprun="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia $argv[1]"
@@ -686,7 +687,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "873s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "874s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

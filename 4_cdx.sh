@@ -58,6 +58,9 @@ pip install rich pygments
 # OLLAMA MODEL
 
 curl https://ollama.ai/install.sh | sh
+olst
+ollama pull mistral:latest
+olsp
 
 # ======================================================= END ======================================================================================
 
@@ -288,6 +291,9 @@ chmod +x $HOME/.local/bin/searchArchive.sh
 
 cp -r $HOME/setup/scripts/utils/b64i $HOME/.local/bin/
 chmod +x $HOME/.local/bin/b64i
+
+cp -r $HOME/setup/scripts/utils/rlt $HOME/.local/bin/
+chmod +x $HOME/.local/bin/rlt
 
 git clone https://github.com/thameera/vimv
 cd vimv
