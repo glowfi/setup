@@ -108,6 +108,11 @@ alias pst='sudo systemctl start postgresql'
 alias psp='sudo systemctl stop postgresql'
 alias psql='psql -d delta'
 
+# Mongo alias
+alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
+alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
+alias msto='sudo /usr/bin/mongod --quiet --config /etc/mongodb.conf'
+
 # youtube-local
 alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd'
 alias ysp='ps aux | grep "server.py" | grep "python" | awk \'{print $2}\' | xargs -ro kill -9'
@@ -687,7 +692,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "874s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "879s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
