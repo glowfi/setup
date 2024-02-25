@@ -31,7 +31,7 @@ preview_img() {
 start_ueberzug
 
 vent() {
-	find "$path"/* | tac | sort | uniq | fzf --prompt "Choose Picture:" --cycle --color=16 --preview-window="left:50%:wrap" --preview "sh $0 preview_img {}" || stop_ueberzug
+	find "$path"/* | tac | sort -Vk1 | uniq | fzf --prompt "Choose Picture:" --cycle --color=16 --preview-window="left:50%:wrap" --preview "sh $0 preview_img {}" || stop_ueberzug
 	stop_ueberzug
 }
 
