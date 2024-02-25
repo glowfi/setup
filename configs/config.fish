@@ -122,16 +122,16 @@ alias dst='sudo systemctl start docker.service'
 alias dsp='sudo systemctl stop docker.service'
 
 # Search Packages in official repository
-alias spac="pacman -Slq | sort | uniq | fzf --prompt 'Install from [official repository]:' --cycle -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
+alias spac="pacman -Slq | sort -Vk1 | uniq | fzf --prompt 'Install from [official repository]:' --cycle -m --preview 'pacman -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -S"
 
 # Search AUR
-alias saur="yay -Slq | sort | uniq | fzf --prompt 'Install from [AUR]:' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
+alias saur="yay -Slq | sort -Vk1 | uniq | fzf --prompt 'Install from [AUR]:' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro yay -S"
 
 # Search Arch Linux Packages Archive
 alias sarc="~/.local/bin/searchArchive.sh"
 
 # Uninstall Packages
-alias pacu="pacman -Q | cut -f 1 -d ' ' | sort | uniq | fzf --prompt 'Uninstall packages(s):' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
+alias pacu="pacman -Q | cut -f 1 -d ' ' | sort -Vk1 | uniq | fzf --prompt 'Uninstall packages(s):' --cycle -m --preview 'yay -Si {}' --preview-window='up:70%' | xargs -ro sudo pacman -Rns"
 
 # Cleanup
 alias cleanup='yes | sudo pacman -Sc;
@@ -541,7 +541,7 @@ function sysop
             end
         end
     else
-        set services (rc-update -v show | awk '{print $1}' | sort | uniq | fzf --cycle --prompt "Choose Service:" | xargs)
+        set services (rc-update -v show | awk '{print $1}' | sort -Vk1 | uniq | fzf --cycle --prompt "Choose Service:" | xargs)
 
         if [ "$services" != "" ]
 

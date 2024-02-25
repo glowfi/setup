@@ -234,6 +234,6 @@ Plug 'morhetz/gruvbox'
 call plug#end()
 
 """ GRUVBOX SETTINGS """
-autocmd vimenter * colorscheme gruvbox
+autocmd vimenter * ++nested colorscheme gruvbox
 set background=dark
 let g:airline_theme='gruvbox'
