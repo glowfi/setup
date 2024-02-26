@@ -238,6 +238,10 @@ alias gprun="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia $argv[
 alias pef='sed -i "35s/.*/fading = true;/" .config/picom/picom.conf'
 alias pdf='sed -i "35s/.*/fading = false;/" .config/picom/picom.conf'
 
+# Get public/private ip
+alias getpip="curl -sS https://ipleak.net | pup 'table tr td text{}' | xargs"
+alias getprip="ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'|xargs|cut -f2  -d' '"
+
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -696,7 +700,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "883s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "887s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
