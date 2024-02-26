@@ -427,7 +427,7 @@ if [[ "$initType" != "systemD" ]]; then
 fi
 
 ## Setup dnscrypt-proxy
-rep="#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads']"
+rep="server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads','mullvad-base-doh']"
 getReq=$(cat /etc/dnscrypt-proxy/dnscrypt-proxy.toml | grep -n "server_names" | head -1 | xargs)
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
