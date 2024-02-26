@@ -234,6 +234,10 @@ alias olr="ollama rm (ollama list | sed '1d' | awk '{print \$1}' | fzf -m --cycl
 # Run with GPU
 alias gprun="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia $argv[1]"
 
+# Picom enable/disable picom
+alias pef='sed -i "35s/.*/fading = true;/" .config/picom/picom.conf'
+alias pdf='sed -i "35s/.*/fading = false;/" .config/picom/picom.conf'
+
 # ===================================================================
 #                           Custom Functions
 # ===================================================================
@@ -692,7 +696,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "879s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "883s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
