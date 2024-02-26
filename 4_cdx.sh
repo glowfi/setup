@@ -128,6 +128,7 @@ rm -rf go.tar.gz
 # GOLANG MODULES
 
 go install golang.org/x/tools/gopls@latest
+go install github.com/ericchiang/pup@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
