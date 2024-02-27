@@ -390,6 +390,15 @@ nitruxurl() {
 	checkfile $1
 }
 
+damn_small_linux_url() {
+	mirror="https://www.damnsmalllinux.org"
+	dllink=$(curl https://www.damnsmalllinux.org/2024-download.html | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -v "txt" | grep iso | head -1)
+	iso=$(echo "${mirror}${dllink}")
+	new="$iso"
+	output="damn_small_linux.iso"
+	checkfile $1
+}
+
 fedoraurl() {
 	mirror="https://getfedora.org/en/workstation/download/"
 	new=$(curl -s $mirror | html2text | grep -m2 iso | awk -F "(" 'NR%2{printf "%s",$0;next;}1' | awk -F"(" '{ print $2 }' | awk -F")" '{ print $1 }')
@@ -1454,7 +1463,7 @@ win10ltscurl() {
 
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux)
+deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
@@ -1516,6 +1525,7 @@ antix=("Antix" "amd64" "full" "antixurl")
 trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
 peppermintos=("Peppermintos" "amd64" "latest" "peppermintosurl")
 nitrux=("nitrux" "amd64" "latest" "nitruxurl")
+damn_small_linux=("damn_small_linux" "amd64" "latest" "damn_small_linux_url")
 
 # Add if wanted
 # https://distrowatch.com/table.php?distribution=rebeccablackos
