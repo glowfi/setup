@@ -314,7 +314,7 @@ pureurl() {
 elementurl() {
 	mirror="https://elementary.io"
 	one=$(curl -s $mirror 2>&1 | grep -m1 download-link | awk -F"//" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="$one"
+	new="https://$one"
 	output="elementaryos.iso"
 	checkfile $1
 }
@@ -396,6 +396,24 @@ damn_small_linux_url() {
 	iso=$(echo "${mirror}${dllink}")
 	new="$iso"
 	output="damn_small_linux.iso"
+	checkfile $1
+}
+
+vanillaos_url() {
+	ver=$(curl "https://github.com/Vanilla-OS/live-iso" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs)
+	dllink=$(curl https://github.com/Vanilla-OS/live-iso/releases | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep "${ver}" | grep -v "txt" | grep ".*\.iso\$")
+	iso=$(echo "${dllink}")
+	new="$iso"
+	output="vanilla_os_${ver}.iso"
+	checkfile $1
+}
+
+tailsurl() {
+	mirror="https://mirrors.edge.kernel.org/tails/stable/"
+	version=$(curl -s $mirror | grep -o 'tails-amd64-[0-9.]*' | head -n1)
+	x="https://mirrors.edge.kernel.org/tails/stable/${version}/${version}.img"
+	new="$x"
+	output="tailsos.img"
 	checkfile $1
 }
 
@@ -1463,7 +1481,7 @@ win10ltscurl() {
 
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux)
+deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux vanillaos tails_os)
 rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
 other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
 sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
@@ -1526,6 +1544,8 @@ trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
 peppermintos=("Peppermintos" "amd64" "latest" "peppermintosurl")
 nitrux=("nitrux" "amd64" "latest" "nitruxurl")
 damn_small_linux=("damn_small_linux" "amd64" "latest" "damn_small_linux_url")
+vanillaos=("vanillaos" "amd64" "latest" "vanillaos_url")
+tails_os=("tails_os" "amd64" "latest" "tailsurl")
 
 # Add if wanted
 # https://distrowatch.com/table.php?distribution=rebeccablackos
@@ -1648,7 +1668,7 @@ normalmode() {
 	echo -e "\n\n"
 	allDistros=$(echo "$allDistros" | sed '/^\s*$/d')
 	drawmenu
-	x=$(echo -e "$allDistros" | sed '/^$/d' | fzf -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
+	x=$(echo -e "$allDistros" | sed '/^$/d' | fzf --cycle -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
 
 	# Happens if the input is empty
 	if [ -z "$x" ]; then
