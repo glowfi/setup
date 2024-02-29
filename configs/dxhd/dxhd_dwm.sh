@@ -13,7 +13,7 @@ else
 	ctl="loginctl"
 fi
 case "$(printf "Lock\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
-'Lock') screenlocker ;;
+'Lock') slock ;;
 'Sleep') "$ctl" suspend ;;
 'Reboot') "$ctl" reboot ;;
 'Shutdown') "$ctl" poweroff ;;
