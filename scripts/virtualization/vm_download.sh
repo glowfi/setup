@@ -19,9 +19,6 @@ helpsection() {
 # the public ipxe mirror does not work
 #echo "* 'netbootipxe' option will boot from boot.ipxe.org"
 
-# NB: I wanted to add ElementaryOS but the developers made it way too hard to implement auto-downloading.
-# If you can find constant mirror or place for actual release of ElementaryOS, please do a pull-request or just leave a comment.
-
 #### Constant Variables
 allDistros="all\n"
 VMS_ISO="$HOME/Downloads/VMS_ISO"
