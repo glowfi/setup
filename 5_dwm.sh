@@ -246,8 +246,6 @@ cd
 echo "Done Installing DEMNU!"
 echo ""
 
-# ======================================================= Can Be Deleted for minimal install =======================================================
-
 # Install screenlocker
 
 echo ""
@@ -257,22 +255,17 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cd ~/setup/configs/slock
-output=$(getent passwd "$uname" | cut -d ':' -f 5 | awk -F" " '{print $1}')
+output=$(getent passwd "$USER" | cut -d ':' -f 5 | awk -F" " '{print $1}')
 output1=$(echo $output | awk '{ print toupper($0) }')
-sudo sed -i "2s/.*/static const char *user  = \""$uname"\";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "3s/.*/static const char *group = \""$uname"\";/" ~/setup/configs/slock/config.def.h
+sudo sed -i "2s/.*/static const char *user  = \""$USER"\";/" ~/setup/configs/slock/config.def.h
+sudo sed -i "3s/.*/static const char *group = \""$USER"\";/" ~/setup/configs/slock/config.def.h
 sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
 sudo sed -i "s/Replacehere/"$output1"/g" ~/setup/configs/slock/slock.c
-sudo mv ~/setup/configs/slock/slock@.service /etc/systemd/system/slock@.service
 sudo cp config.def.h config.h
 sudo make clean install
-sudo systemctl enable slock@$uname.service
 cd ..
 echo "Done Installing SLOCK!"
 echo ""
-
-
-# ======================================================= END ======================================================================================
 
 
 # Copy TOPBAR Settings
