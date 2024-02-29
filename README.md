@@ -8,6 +8,7 @@
 
 -   **Openrc** as init with **artix**
 -   **SystemD** as init with **arch**
+-   **Secure Boot**
 -   **Zen** kernel
 -   **Zstd** Compression
 -   **Btrfs**

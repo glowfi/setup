@@ -126,6 +126,7 @@ addScripts() {
 	### Start Script
 
 	touch start.sh
+	touch start_secboot.sh
 
 	### Check vga type
 
@@ -158,7 +159,7 @@ addScripts() {
 		-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &"
 	fi
 
-	### Startup script
+	### Startup script [UEFI+Secure Boot Disabled]
 
 	echo "#!/usr/bin/env bash
 
@@ -216,6 +217,64 @@ qemu-system-x86_64 \\
 
 	chmod +x start.sh
 
+	### Startup script [UEFI+Secure Boot Enabled]
+
+	echo "#!/usr/bin/env bash
+
+# Kill all sockets
+rm -rf "${name}-agent.sock"
+
+# Kill any running python script qemu with process name as the current os name
+ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
+
+# Startup script
+qemu-system-x86_64 \\
+    -name "${name}",process=${name} \\
+	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
+    -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
+    ${videoSettings}
+    -display none \\
+    -audiodev spice,id=audio0 \\
+    -device intel-hda \\
+    -device hda-duplex,audiodev=audio0 \\
+    -no-user-config \\
+    -rtc base=localtime,clock=host,driftfix=slew \\
+	-global kvm-pit.lost_tick_policy=delay \\
+	-boot strict=on \\
+	${spiceSettings}
+    -device virtio-serial-pci \\
+    -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
+	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
+	-chardev spicevmc,id=vdagent0,name=vdagent \\
+	-device virtserialport,chardev=vdagent0,name=com.redhat.spice.0 \\
+	-chardev spiceport,id=webdav0,name=org.spice-space.webdav.0 \\
+	-device virtserialport,chardev=webdav0,name=org.spice-space.webdav.0 \\
+	-device ich9-usb-ehci1,id=usb \\
+	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \\
+	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \\
+	-device ich9-usb-uhci3,masterbus=usb.0,firstport=4 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev1 \\
+	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev2 \\
+	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \\
+	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \\
+	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \\
+	-k en-us \\
+	-device usb-ehci,id=input \\
+	-device usb-kbd,bus=input.0 \\
+	-device usb-mouse,bus=input.0 \\
+    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd,readonly=on \\
+    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
+	-drive file=Image.img \\
+	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
+    ${_iso_sharedfolder_string}
+
+
+        # Open remote viewer
+        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start_secboot.sh
+
+	chmod +x start_secboot.sh
+
 	### Cleanup Script
 
 	touch clean.sh
@@ -230,7 +289,7 @@ ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xa
 
 	chmod +x clean.sh
 
-	#### Include a minimal start Script
+	#### Include a minimal start Script [Minimal UEFI+Secure Boot Disabled]
 
 	touch fallback-start.sh
 	echo "#!/usr/bin/env bash
@@ -252,7 +311,7 @@ qemu-system-x86_64 -enable-kvm \\
 	-cdrom ${name}.iso &" >>fallback-start.sh
 	chmod +x fallback-start.sh
 
-	#### Include a minimal start Script (BIOS)
+	#### Include a minimal start Script [Legacy BIOS]
 
 	touch fallback-start-BIOS.sh
 	echo "#!/usr/bin/env bash
