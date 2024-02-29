@@ -58,27 +58,6 @@ install "clipmenu" "pac"
 
 # ===================== END Dependent ====================================
 
-
-# ======================================================= Can Be Deleted for minimal install =======================================================
-
-# INSTALL SCREENLOCKER
-
-echo ""
-echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
-echo "---------------------------------------------------------------------------------------------------"
-echo ""
-
-pip install opencv-python tk pynput playsound pathlib pyautogui
-git clone https://github.com/glowfi/screenlocker
-cd screenlocker
-fish -c "cargo build --release"
-mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
-cd ..
-rm -rf screenlocker
-
-# ======================================================= END ======================================================================================
-
 echo ""
 echo "----------------------------------------------------------------------------------------"
 echo "--------------Creating wallpaper script...----------------------------------------------"
@@ -138,9 +117,6 @@ ${pipeStr}
 "'
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
-
-# Autolock
-xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Clipboard
 clipmenud &
