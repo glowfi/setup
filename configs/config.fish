@@ -76,7 +76,7 @@ alias upgv="upgradeNeovim $argv[1]"
 alias mirru='_mirru'
 
 # Upgrade
-alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done'"
+alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done';sudo sbctl sign /boot/vmlinuz-linux-zen;sudo sbctl sign /boot/grub/x86_64-efi/core.efi;sudo sbctl sign /boot/grub/x86_64-efi/grub.efi;sudo sbctl sign /boot/efi/EFI/GRUB/grubx64.efi"
 
 # Archive Unarchive
 alias comp='ouch compress'
