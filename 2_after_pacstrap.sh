@@ -232,17 +232,17 @@ sudo sed -i "${getLineNumber}s/.*/${rep}/" /etc/default/grub
 
 ### Install GRUB and configure Secure Boot
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck --modules="tpm" --disable-shim-lock
-grub-mkconfig -o /boot/grub/grub.cfg
+sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck --modules="tpm" --disable-shim-lock
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 install "sbctl" "pac"
-sbctl create-keys
-sbctl enroll-keys -m
+sudo sbctl create-keys
+sudo sbctl enroll-keys -m
 
-sbctl sign /boot/vmlinuz-linux-zen
-sbctl sign /boot/grub/x86_64-efi/core.efi
-sbctl sign /boot/grub/x86_64-efi/grub.efi
-sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+sudo sbctl sign /boot/vmlinuz-linux-zen
+sudo sbctl sign /boot/grub/x86_64-efi/core.efi
+sudo sbctl sign /boot/grub/x86_64-efi/grub.efi
+sudo sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
 
 ### Add Modules to load btrfs or gpu hooks
 
