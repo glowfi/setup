@@ -195,7 +195,7 @@ dunst &
 volnoti &
 
 # Autolock
-xautolock -time 10 -locker slock &
+xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Bluelight Filter
 $HOME/.local/bin/bfilter.sh &
@@ -250,23 +250,18 @@ echo ""
 
 echo ""
 echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing SLOCK ...-----------------------------------------------------------------"
+echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-cd ~/setup/configs/slock
-output=$(getent passwd "$USER" | cut -d ':' -f 5 | awk -F" " '{print $1}')
-output1=$(echo $output | awk '{ print toupper($0) }')
-sudo sed -i "2s/.*/static const char *user  = \""$USER"\";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "3s/.*/static const char *group = \""$USER"\";/" ~/setup/configs/slock/config.def.h
-sudo sed -i "s/replacehere/"$output"/g" ~/setup/configs/slock/slock.c
-sudo sed -i "s/Replacehere/"$output1"/g" ~/setup/configs/slock/slock.c
-sudo cp config.def.h config.h
-sudo make clean install
+pip install opencv-python tk pynput playsound pathlib pyautogui
+install "tk" "pac"
+git clone https://github.com/glowfi/screenlocker
+cd screenlocker
+fish -c "cargo build --release"
+mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
 cd ..
-echo "Done Installing SLOCK!"
-echo ""
-
+rm -rf screenlocker
 
 # Copy TOPBAR Settings
 
