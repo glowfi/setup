@@ -37,7 +37,7 @@ generate() {
 restore() {
 	echo "Restored!"
 	sh $HOME/.local/bin/wall.sh &
-	xautolock -time 10 -locker slock &
+	xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 	rm -rf "$tmpfile"
 
 	if [[ "$DE" != "KDE" ]]; then

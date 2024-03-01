@@ -594,25 +594,3 @@ sudo pacman -S --noconfirm spice-vdagent-openrc
 sudo rc-update add spice-vdagent
 sudo rc-service spice-vdagent start
 ```
-
-# Screenlocker
-
-```sh
-echo ""
-echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
-echo "---------------------------------------------------------------------------------------------------"
-echo ""
-
-pip install opencv-python tk pynput playsound pathlib pyautogui
-install "tk" "pac"
-git clone https://github.com/glowfi/screenlocker
-cd screenlocker
-fish -c "cargo build --release"
-mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
-cd ..
-rm -rf screenlocker
-
-# Autolock
-xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
-```
