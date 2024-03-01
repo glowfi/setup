@@ -52,21 +52,37 @@ gitCheckout() {
 	git checkout "$commit_hash"
 }
 
-if [ -d "$PWD/.git" ]; then
-	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit\n3.Checkout to a particular commit" | fzf --cycle --prompt "Choose :" | awk -F"." '{print $1}')
+gitAddRemote() {
+	read -p "Enter github username: " username
+	read -p "Enter github reponame: " reponame
 
-	if [ "$out" = "1" ]; then
+	if [[ "$username" != "" && "$reponame" != "" ]]; then
+		git init
+		git add README.md
+		git commit -m "first commit"
+		git branch -M main
+		git remote add origin git@github.com:glowfi/test.git
+		git push -u origin main
+	else
+		echo "Pleas enter a valid username and reponame!"
+	fi
+}
+
+if [ -d "$PWD/.git" ]; then
+	out=$(printf "1.Change all the name and email of the repository to a custom name and email \n2.Change Git Commit Message of a Particular Hash Commit\n3.Checkout to a particular commit\n4.Add Github remote" | fzf --cycle --prompt "Choose :" | awk -F"." '{print $1}')
+	if [[ "$out" = "1" ]]; then
 		gitMakeMine
-	elif
-		[ "$out" = "2" ]
-	then
+
+	elif [[ "$out" = "2" ]]; then
 		gitChangeCommitMessage
-	elif
-		[ "$out" = "3" ]
-	then
+
+	elif [[ "$out" = "3" ]]; then
 		gitCheckout
+
+	elif [[ "$out" = "4" ]]; then
+		gitAddRemote
 	fi
 else
-	echo "Not a Git Repository"
+	echo "Not a git repository!"
 	exit 1
 fi
