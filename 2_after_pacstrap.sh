@@ -244,6 +244,32 @@ sudo sbctl sign /boot/grub/x86_64-efi/core.efi
 sudo sbctl sign /boot/grub/x86_64-efi/grub.efi
 sudo sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
 
+### Autosign Kernel and Grub Hook
+
+mkdir /etc/pacman.d/hooks
+cat <<EOF >/etc/pacman.d/hooks/999-sign_kernel_for_secureboot.hook
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = linux
+Target = linux-lts
+Target = linux-hardened
+Target = linux-zen
+Target = linux-xanmod
+Target = linux-xanmod-cacule
+Target = linux-xanmod-git
+Target = linux-xanmod-lts
+Target = linux-xanmod-rt
+Target = linux-xanmod-anbox
+
+[Action]
+Description = Signing Kernel and GRUB for Secure Boot
+When = PostTransaction
+Exec = /usr/bin/sbctl sign /boot/vmlinuz-linux-zen && /usr/bin/sbctl sign /boot/grub/x86_64-efi/core.efi && /usr/bin/sbctl sign /boot/grub/x86_64-efi/grub.efi && /usr/bin/sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+Depends = sbctl
+EOF
+
 ### Add Modules to load btrfs or gpu hooks
 
 FS=$(sed -n '1p' <"$CONFIG_FILE")
