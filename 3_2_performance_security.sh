@@ -249,8 +249,24 @@ net.ipv6.conf.default.accept_redirects = 0
 net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
 
+# Controls whether packets with source addresses from the Martian or reserved IP address spaces are logged.
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.conf.default.log_martians = 1
+
 # To use the new FQ-PIE Queue Discipline (>= Linux 5.6) in systems with systemd (>= 217), will need to replace the default fq_codel.
-net.core.default_qdisc = fq_pie" | sudo tee -a /etc/sysctl.d/99-sysctl-performance-tweaks.conf >/dev/null
+net.core.default_qdisc = fq_pie
+
+# Controls the behavior of the Extended File Attributes (EFA) for regular files. EFAs are additional data structures stored with 
+# files that can provide extended information and metadata.
+fs.protected_regular = 2
+
+# Controls the Extended File Attributes (EFA) protection level for FIFOs (First-In, First-Out) or named 
+# pipes. FIFOs are a type of special file that acts as a communication channel between processes.
+fs.protected_fifos = 2
+
+# Means that the terminal line disciplines (LDIs), which are responsible for handling different types 
+# of terminal I/O, will not be automatically loaded in the initramfs environment.
+dev.tty.ldisc_autoload = 0" | sudo tee -a /etc/sysctl.d/99-sysctl-performance-tweaks.conf >/dev/null
 
 # FIREWALL
 

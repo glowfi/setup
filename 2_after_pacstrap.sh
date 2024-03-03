@@ -184,6 +184,7 @@ echo ""
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 
 install "os-prober grub efibootmgr ntfs-3g" "pac"
+install "cracklib" "pac"
 install "networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools dnsutils" "pac"
 install "dialog mtools dosfstools gptfdisk" "pac"
 install "rsync reflector wget" "pac"
@@ -419,6 +420,12 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
 echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
 
+# Install Logger
+
+if [[ "$_distroType" = "artix" ]]; then
+	install "metalog" "pac"
+fi
+
 # Enable Services
 
 echo ""
@@ -431,6 +438,7 @@ if [[ "$_distroType" = "artix" ]]; then
 	sudo rc-update add NetworkManager default
 	sudo rc-update add acpid default
 	sudo rc-update add backlight default
+	sudo rc-update add metalog default
 else
 	systemctl enable NetworkManager
 	systemctl enable reflector.timer
