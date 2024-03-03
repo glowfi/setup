@@ -423,7 +423,7 @@ echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
 # Install Logger
 
 if [[ "$_distroType" = "artix" ]]; then
-	install "metalog" "pac"
+	install "syslog-ng" "pac"
 fi
 
 # Enable Services
@@ -438,7 +438,7 @@ if [[ "$_distroType" = "artix" ]]; then
 	sudo rc-update add NetworkManager default
 	sudo rc-update add acpid default
 	sudo rc-update add backlight default
-	sudo rc-update add metalog default
+	sudo rc-update add syslog-ng default
 else
 	systemctl enable NetworkManager
 	systemctl enable reflector.timer
