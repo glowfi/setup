@@ -58,9 +58,10 @@ pip install rich pygments
 # OLLAMA MODEL
 
 curl https://ollama.ai/install.sh | sh
-nohup ollama serve &;rm nohup.out
+nohup ollama serve &
+rm nohup.out
 ollama pull mistral:latest
-ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9
+ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
 
 # ======================================================= END ======================================================================================
 
