@@ -3,6 +3,10 @@
 # Script Directory
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
+# Get Init Type
+DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
+initType=$(bash "${DETECT_INIT_SCRIPT}")
+
 # Source Logo
 source "${SCRIPT_DIR}/logo.sh"
 
@@ -253,24 +257,11 @@ diskEncryption() {
 
 distroType() {
 
-	echo ""
-	echo "---------------------------------------------------"
-	echo "------- Choose Distro Variant...-------------------"
-	echo "---------------------------------------------------"
-	echo ""
-
-	echo ""
-	echo "Note : For installing arch or artix , you must run this script using arch or artix iso's only!"
-	echo ""
-	echo "+ Want to install arch then boot into the arch iso and run this script!"
-	echo "+ Want to install artix then boot into the artix iso and run this script!"
-	echo ""
-	echo ""
-	echo -e "Which distro to install? \n"
-
-	options=("arch" "artix")
-	distro=$(gum choose "${options[@]}")
-	echo "$distro" >>"$CONFIG_FILE"
+	if [[ "$initType" != "systemD" ]]; then
+		echo "artix" >>"$CONFIG_FILE"
+	else
+		echo "arch" >>"$CONFIG_FILE"
+	fi
 }
 
 configure() {
