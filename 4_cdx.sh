@@ -57,7 +57,8 @@ pip install rich pygments
 
 # OLLAMA MODEL
 
-curl https://ollama.ai/install.sh | sh
+curl "https://ollama.ai/install.sh" | sh
+source $HOME/.config/fish/config.fish
 nohup ollama serve &
 rm nohup.out
 ollama pull mistral:latest
@@ -350,7 +351,7 @@ echo ""
 install "dbeaver" "pac"
 install "redis" "pac"
 install "postgresql" "pac"
-install "mongodb-bin mongodb-tools-bin mongodb-compass-isolated-beta-bin" "yay"
+install "mongodb-bin mongodb-tools-bin mongodb-compass" "yay"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
 sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
