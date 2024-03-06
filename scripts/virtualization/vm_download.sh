@@ -134,10 +134,21 @@ endeavoururl() {
 
 artixurl() {
 	mirror="https://mirrors.dotsrc.org/artix-linux/iso/"
-	x=$(curl -s $mirror | grep mate-openrc | head -1 | awk -F\" '{ print $2 }')
-	new="$mirror/$x"
-	output="artix.iso"
-	checkfile $1
+	de_wm="base plasma mate lxqt lxde cinnamon xfce gtk qt"
+	init="dinit openrc runit s6"
+
+	choose_de_wm=$(echo "${de_wm}" | tr " " "\n" | fzf --prompt "Choose Desktop Environment:")
+	choose_init=$(echo "${init}" | tr " " "\n" | fzf --prompt "Choose init:")
+
+	if [[ "${choose_de_wm}" != "" && "${choose_init}" != "" ]]; then
+		x=$(curl -s $mirror | grep "${choose_de_wm}-${choose_init}" | head -1 | awk -F\" '{ print $2 }')
+		new="$mirror/$x"
+		output="artix_${choose_de_wm}_${choose_init}.iso"
+		checkfile $1
+	else
+		echo "Please choose a valid option!"
+	fi
+
 }
 
 arcourl() {
