@@ -16,16 +16,16 @@ rm -rf krohnkite
 # Creating Breezerc to hide title bars
 
 touch $HOME/.config/breezerc
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key BorderSize 0
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Enabled false
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionPattern .\*
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key ExceptionType 0
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key HideTitleBar true
-sudo -u "${USER}" kwriteconfig5 --file breezerc --group "Windeco Exception 0" --key Mask 16
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key BorderSize 0
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Enabled false
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key ExceptionPattern .\*
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key ExceptionType 0
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key HideTitleBar true
+sudo -u "${USER}" kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Mask 16
 
 # Tiling Shortcuts
 
-sudo -u "${USER}" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Krohnkite: Cycle Layout" "Meta+ctrl+\.,none,Krohnkite: Cycle Layout"
+sudo -u "${USER}" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Krohnkite: Cycle Layout" "Meta+ctrl+\.,none,Krohnkite: Cycle Layout"
 
 ###### Post Setup Steps ######
 
