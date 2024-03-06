@@ -192,8 +192,8 @@ echo "--------------Register Kitty in Dolphin...--------------------------------
 echo "--------------------------------------------------------------------------------"
 echo ""
 
-mkdir -p $HOME/.local/share/kservices5
-cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices5
+mkdir -p $HOME/.local/share/kservices6
+cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices6
 
 # ===================== XORG Dependent ===================================
 
@@ -271,28 +271,31 @@ echo ""
 
 # Set Plasma theme
 
-sudo -u "$USER" kwriteconfig5 --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
+sudo -u "$USER" kwriteconfig6 --file kdeglobals --group KDE --key LookAndFeelPackage "org.kde.breezedark.desktop"
 
 # Disable splash screen
 
-sudo -u "$USER" kwriteconfig5 --file ksplashrc --group KSplash --key Engine "none"
-sudo -u "$USER" kwriteconfig5 --file ksplashrc --group KSplash --key Theme "none"
+sudo -u "$USER" kwriteconfig6 --file ksplashrc --group KSplash --key Engine "none"
+sudo -u "$USER" kwriteconfig6 --file ksplashrc --group KSplash --key Theme "none"
 
 # Enable 9 desktops
 
 for i in {1..9}
 do
-    sudo -u "$USER" kwriteconfig5 --file kwinrc --group Desktops --key "Name_${i}" "Desktop ${i}"
-    sudo -u "$USER" kwriteconfig5 --file kwinrc --group Desktops --key Number "${i}"
-    sudo -u "$USER" kwriteconfig5 --file kwinrc --group Desktops --key Rows "1"
+    sudo -u "$USER" kwriteconfig6 --file kwinrc --group Desktops --key "Name_${i}" "Desktop ${i}"
+    sudo -u "$USER" kwriteconfig6 --file kwinrc --group Desktops --key Number "${i}"
+    sudo -u "$USER" kwriteconfig6 --file kwinrc --group Desktops --key Rows "1"
 done
 
 # Add command output widget
 
-mv "${SCRIPT_DIR}/storage/command-output-statusbar.plasmoid" ./command-output.plasmoid
-plasmapkg2 -i command-output.plasmoid
-rm -rf command-output.plasmoid
-cp -r ~/setup/configs/plasma/kdestatus.sh ~/.local/bin/
+git clone https://github.com/aricaldeira/plasma-applet-commandoutput
+cd plasma-applet-commandoutput
+install "kpackage" "pac"
+./build6
+./install6
+cd ..
+rm -rf plasma-applet-commandoutput
 
 # Use KDE file picker in GTK applications
 
@@ -309,49 +312,49 @@ cp -r $HOME/setup/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc ~/.conf
 
 ### Shortcuts
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 1" "none,none,Activate Task Manager Entry 1"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 2" "none,none,Activate Task Manager Entry 2"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 3" "none,none,Activate Task Manager Entry 3"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 4" "none,none,Activate Task Manager Entry 4"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 5" "none,none,Activate Task Manager Entry 5"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 6" "none,none,Activate Task Manager Entry 6"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 7" "none,none,Activate Task Manager Entry 7"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 8" "none,none,Activate Task Manager Entry 8"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 9" "none,none,Activate Task Manager Entry 9"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 10" "none,none,Activate Task Manager Entry 10"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 1" "none,none,Activate Task Manager Entry 1"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 2" "none,none,Activate Task Manager Entry 2"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 3" "none,none,Activate Task Manager Entry 3"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 4" "none,none,Activate Task Manager Entry 4"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 5" "none,none,Activate Task Manager Entry 5"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 6" "none,none,Activate Task Manager Entry 6"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 7" "none,none,Activate Task Manager Entry 7"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 8" "none,none,Activate Task Manager Entry 8"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 9" "none,none,Activate Task Manager Entry 9"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 10" "none,none,Activate Task Manager Entry 10"
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 1" "Meta+1,none,Switch to Desktop 1"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 2" "Meta+2,none,Switch to Desktop 2"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 3" "Meta+3,none,Switch to Desktop 3"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 4" "Meta+4,none,Switch to Desktop 4"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 5" "Meta+5,none,Switch to Desktop 5"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 6" "Meta+6,none,Switch to Desktop 6"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 7" "Meta+7,none,Switch to Desktop 7"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 8" "Meta+8,none,Switch to Desktop 8"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 9" "Meta+9,none,Switch to Desktop 9"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 10" "Meta+0,none,Switch to Desktop 10"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 1" "Meta+1,none,Switch to Desktop 1"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 2" "Meta+2,none,Switch to Desktop 2"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 3" "Meta+3,none,Switch to Desktop 3"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 4" "Meta+4,none,Switch to Desktop 4"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 5" "Meta+5,none,Switch to Desktop 5"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 6" "Meta+6,none,Switch to Desktop 6"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 7" "Meta+7,none,Switch to Desktop 7"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 8" "Meta+8,none,Switch to Desktop 8"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 9" "Meta+9,none,Switch to Desktop 9"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Switch to Desktop 10" "Meta+0,none,Switch to Desktop 10"
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 1" "Meta+\!,none,Window to Desktop 1"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 2" "Meta+@,none,Window to Desktop 2"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 3" "Meta+#,none,Window to Desktop 3"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 4" "Meta+$,none,Window to Desktop 4"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 5" "Meta+%,none,Window to Desktop 5"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 6" "Meta+^,none,Window to Desktop 6"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 7" "Meta+&,none,Window to Desktop 7"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 8" "Meta+*,none,Window to Desktop 8"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 9" "Meta+(,none,Window to Desktop 9"
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 10" "Meta+),none,Window to Desktop 10"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 1" "Meta+\!,none,Window to Desktop 1"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 2" "Meta+@,none,Window to Desktop 2"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 3" "Meta+#,none,Window to Desktop 3"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 4" "Meta+$,none,Window to Desktop 4"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 5" "Meta+%,none,Window to Desktop 5"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 6" "Meta+^,none,Window to Desktop 6"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 7" "Meta+&,none,Window to Desktop 7"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 8" "Meta+*,none,Window to Desktop 8"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 9" "Meta+(,none,Window to Desktop 9"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window to Desktop 10" "Meta+),none,Window to Desktop 10"
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Window Close" "Ctrl+Shift+Q,none,Close Window"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Window Close" "Ctrl+Shift+Q,none,Close Window"
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group kwin --key "Toggle Tiles Editor" "none,none,Toggle Tiles Editor"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Toggle Tiles Editor" "none,none,Toggle Tiles Editor"
 
-sudo -u "$USER" kwriteconfig5 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group org.kde.dolphin.desktop --key "_launch" "none,none,Dolphin"
 
 # Disable app launch feedback
 
-sudo -u "$USER" kwriteconfig5 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
-sudo -u "$USER" kwriteconfig5 --file klaunchrc --group FeedbackStyle --key "BusyCursor" --type bool false
+sudo -u "$USER" kwriteconfig6 --file klaunchrc --group BusyCursorSettings --key "Bouncing" --type bool false
+sudo -u "$USER" kwriteconfig6 --file klaunchrc --group FeedbackStyle --key "BusyCursor" --type bool false
 
 # Disable baloo file indexer
 
@@ -361,6 +364,6 @@ sudo -u "$USER" balooctl purge
 
 # Remove kwallet
 
-sudo -u "$USER" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
-sudo -u "$USER" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
-sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
+sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
+sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
+sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd6.service

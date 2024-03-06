@@ -338,6 +338,6 @@ echo ""
 
 # Remove kwallet
 
-sudo -u "$USER" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
-sudo -u "$USER" kwriteconfig5 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
-sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd5.service
+sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
+sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
+sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd6.service
