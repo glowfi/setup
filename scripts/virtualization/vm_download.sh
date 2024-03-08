@@ -6,9 +6,9 @@ helpsection() {
 	echo "| It consist of the file with distro download functions (distrofunctions.sh) as well as this script (download.sh).                       | "
 	echo "| Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       | "
 	echo "| Change the download URL or something else, it might be required to do manual changes.                                                  | "
-	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf (some tools usually are preinstalled on linux)                 | "
+	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf, mkisofs (some tools usually are preinstalled on linux)        | "
 	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
-	echo "| Scripts Used : https://github.com/sxiii/linux-downloader , https://github.com/ElliotKillick/Mido , quickget (QUICKEMU)                 | "
+	echo "| Inspired By : https://github.com/sxiii/linux-downloader , quickget (QUICKEMU)                                                          | "
 	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
 	echo ""
 	echo -e "====== How to use ====== \n"
@@ -22,6 +22,9 @@ helpsection() {
 #### Constant Variables
 allDistros="all\n"
 VMS_ISO="$HOME/Downloads/VMS_ISO"
+
+#### Temp Variables
+windowsGlobalDownloadLink=""
 
 # Download functions and commands
 
@@ -1360,17 +1363,60 @@ unattended_windows() {
 EOF
 }
 
-callMido() {
+downloadMedia() {
+
+	if [[ "$1" = "win7x64-ultimate" ]]; then
+		url="https://massgrave.dev/windows_7_links.html"
+		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
+		if [[ "${link}" != "" ]]; then
+			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
+			windowsGlobalDownloadLink="${link}"
+		fi
+	elif [[ "$1" = "win81x64" ]]; then
+		url="https://massgrave.dev/windows_8.1_links.html"
+		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
+		if [[ "${link}" != "" ]]; then
+			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
+			windowsGlobalDownloadLink="${link}"
+		fi
+	elif [[ "$1" = "win10x64" ]]; then
+		url="https://massgrave.dev/windows_10_links.html"
+		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
+		if [[ "${link}" != "" ]]; then
+			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
+			windowsGlobalDownloadLink="${link}"
+		fi
+
+	elif [[ "$1" = "win11x64" ]]; then
+		url="https://massgrave.dev/windows_11_links.html"
+		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
+		if [[ "${link}" != "" ]]; then
+			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
+			windowsGlobalDownloadLink="${link}"
+		fi
+
+	elif [[ "$1" = "win10x64-enterprise-ltsc-eval" ]]; then
+		url="https://massgrave.dev/windows_ltsc_links.html"
+		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
+		if [[ "${link}" != "" ]]; then
+			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
+			windowsGlobalDownloadLink="${link}"
+		fi
+	fi
+}
+
+CallWindowsDownloader() {
 	clear
+
 	echo -e "Downloading $output"
-	wget "https://raw.githubusercontent.com/ElliotKillick/Mido/main/Mido.sh" -O mido
-	chmod +x mido
-	./mido "$1"
+	downloadMedia "$1"
+
 	iso=$(find -type f | grep "iso" | head -1 | xargs -I {} realpath "{}")
 	if [[ "$1" == "win10x64" || "$1" == "win11x64" ]]; then
-		mv "${iso}" "${VM_PATH}/unattended/${output}"
+		mv "${iso}" "${VMS_ISO}/unattended/${output}"
+	else
+		mv "${iso}" "${VMS_ISO}/${output}"
 	fi
-	rm -rf mido
 }
 
 downloadWindowsSpice() {
@@ -1392,7 +1438,7 @@ winget() {
 
 		# Download vanilla windows iso
 
-		callMido "$1"
+		CallWindowsDownloader "$1"
 
 		# Download spice setup files
 
@@ -1409,15 +1455,16 @@ winget() {
 
 		# Download vanilla windows iso
 
-		callMido "$1"
+		CallWindowsDownloader "$1"
 
 		# Create iso with unattended.xml
 
 		mkdir mnt
-		sudo mount -o loop "$1.iso" mnt
+		sudo mount -o rw,loop "${output}" mnt
 
 		epoch=$(date +%s)
 		mkdir "win-${epoch}"
+		echo "Doing magic please wait ..."
 		sudo cp -r mnt/* "win-${epoch}"
 
 		mkdir "modifications-${epoch}"
@@ -1455,10 +1502,42 @@ winget() {
 	sudo sed -i '72d' /etc/sudoers
 
 	# Download virtio drivers iso
-
 	if [[ "$1" != "win7x64-ultimate" ]]; then
 		echo "Downloading Virtio Drivers for setting higher resolution ..."
 		aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
+	fi
+
+	if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
+		query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
+		SHA1=$(curl "https://msdn.rg-adguard.net/public.php?seach=${query}&str=25" | grep "<b>SHA1:</b>" | awk -F" " '{print $2}' | sed 's/.\{4\}$//' | xargs)
+		SHA256=$(curl "https://msdn.rg-adguard.net/public.php?seach=${query}&str=25" | grep "<b>SHA256:</b>" | awk -F" " '{print $2}' | sed 's/.\{4\}$//' | xargs)
+
+		if [[ "${SHA1}" != "" ]]; then
+
+			iso_sha=$(sha1sum "${VMS_ISO}/${output}" | awk '{print $1}' | xargs)
+			matchStatus=$(if [ "${iso_sha}" == "${SHA1}" ]; then echo -e "\e[32mChecksum Matched!\e[0m"; else echo -e "\e[31mChecksum do not match!\e[0m"; fi)
+
+			echo -e "################################\n"
+			echo "Downloaded From : ${windowsGlobalDownloadLink}"
+			echo "Original  SHA1      : ${SHA1}"
+			echo "Downloaded ISO SHA1 : ${iso_sha}"
+			echo "Checksum Match: ${matchStatus}"
+			echo -e "################################\n"
+		fi
+
+		if [[ "${SHA256}" != "" ]]; then
+
+			iso_sha=$(sha256sum "${VMS_ISO}/unattended/${output}" | awk '{print $1}' | xargs)
+			matchStatus=$(if [ "${iso_sha}" == "${SHA256}" ]; then echo -e "\e[32mChecksum Matched!\e[0m"; else echo -e "\e[31mChecksum do not match!\e[0m"; fi)
+
+			echo -e "################################\n"
+			echo "Downloaded From : ${windowsGlobalDownloadLink}"
+			echo "Original  SHA256      : ${SHA256}"
+			echo "Downloaded ISO SHA256 : ${iso_sha}"
+			echo "Checksum Match: ${matchStatus}"
+			echo -e "################################\n"
+		fi
+
 	fi
 }
 
