@@ -1566,6 +1566,20 @@ win10ltscurl() {
 	winget "win10x64-enterprise-ltsc-eval"
 }
 
+# Bootable USB
+
+ventoyurl() {
+	mirror="https://github.com/ventoy/Ventoy"
+	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
+	wget "${mirror}/releases/download/v$ver/ventoy-$ver-linux.tar.gz" -O "$VMS_ISO/ventoy.tar.gz"
+}
+
+balena_etcher_url() {
+	mirror="https://github.com/balena-io/etcher/"
+	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
+	wget "${mirror}/releases/download/v$ver/balenaEtcher-${ver}-x64.AppImage" -O "$VMS_ISO/balena_etcher.AppImage"
+}
+
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux vanillaos tails_os)
@@ -1576,11 +1590,12 @@ containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
 notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
 windows=(windows7 windows8_1 windows10 windows11 win10ltsc)
+bootable_usb=(ventoy balena_etcher)
 
 # All distributions
-category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows")
-distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows")
-distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}")
+category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows" "Bootable_USB")
+distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows" "bootable_usb")
+distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}" "${bootable_usb[@]}")
 
 # Legend ## Distroname ## Arch  ## Type     ## Download URL function name
 
@@ -1734,6 +1749,10 @@ windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
 win10ltsc=("Windows10ltsc" "amd64" "longterm-support" "win10ltscurl")
+
+# Bootable USB
+ventoy=("ventoy" "amd64" "latest" "ventoyurl")
+balena_etcher=("balena_etcher" "amd64" "latest" "balena_etcher_url")
 
 drawmenu() {
 
