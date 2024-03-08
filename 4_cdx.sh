@@ -53,6 +53,7 @@ end
 
 pip install pyautogui pynput
 pip install pyfzf
+pip install poetry
 pip install rich pygments
 
 # OLLAMA MODEL
@@ -220,21 +221,6 @@ echo 'save-position-on-quit' >>$HOME/.config/mpv/mpv.conf
 cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
 
 # SCRIPTS 
-
-### Misc related scripts
-
-install "ani-cli-git" "yay"
-install "lobster-git" "yay"
-
-pip install poetry
-git clone https://github.com/mov-cli/mov-cli
-cd mov-cli
-cp -r $HOME/setup/scripts/misc/scraper.py ./mov_cli/utils/
-pip install -r requirements.txt
-poetry build
-pip install dist/*.tar.gz
-cd ..
-rm -rf mov-cli
 
 ### Utils related scripts
 
