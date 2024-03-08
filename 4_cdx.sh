@@ -351,7 +351,7 @@ echo ""
 install "dbeaver" "pac"
 install "redis" "pac"
 install "postgresql" "pac"
-install "mongodb-bin mongodb-tools-bin mongodb-compass" "yay"
+install "mongodb-bin mongodb-tools-bin" "yay"
 sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
 sudo systemctl start postgresql
 sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
