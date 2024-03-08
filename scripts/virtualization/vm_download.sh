@@ -1113,14 +1113,14 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>*</ComputerName>
       <OEMInformation>
-        <Manufacturer>qemuNkvm Project</Manufacturer>
-        <Model>qemuNkvm</Model>
+        <Manufacturer><USERNAME_HERE> Project</Manufacturer>
+        <Model><USERNAME_HERE></Model>
         <SupportHours>24/7</SupportHours>
         <SupportPhone></SupportPhone>
-        <SupportProvider>qemuNkvm Project</SupportProvider>
+        <SupportProvider><USERNAME_HERE> Project</SupportProvider>
         <SupportURL>https://www.qemu.org</SupportURL>
       </OEMInformation>
-      <OEMName>qemuNkvm Project</OEMName>
+      <OEMName><USERNAME_HERE> Project</OEMName>
       <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
     </component>
     <component name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1232,8 +1232,8 @@ unattended_windows() {
       </UpgradeData>
       <UserData>
         <AcceptEula>true</AcceptEula>
-        <FullName>qemuNkvm</FullName>
-        <Organization>qemuNkvm Project</Organization>
+        <FullName><USERNAME_HERE></FullName>
+        <Organization><USERNAME_HERE> Project</Organization>
         <!-- https://docs.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys -->
         <ProductKey>
           <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
@@ -1293,11 +1293,11 @@ unattended_windows() {
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <AutoLogon>
         <Password>
-          <Value>qemuNkvm</Value>
+          <Value><USERNAME_HERE></Value>
           <PlainText>true</PlainText>
         </Password>
         <Enabled>true</Enabled>
-        <Username>qemuNkvm</Username>
+        <Username><USERNAME_HERE></Username>
       </AutoLogon>
       <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
       <OOBE>
@@ -1318,18 +1318,18 @@ unattended_windows() {
         <LocalAccounts>
           <LocalAccount wcm:action="add">
             <Password>
-              <Value>qemuNkvm</Value>
+              <Value><USERNAME_HERE></Value>
               <PlainText>true</PlainText>
             </Password>
-            <Description>qemuNkvm</Description>
-            <DisplayName>qemuNkvm</DisplayName>
+            <Description><USERNAME_HERE></Description>
+            <DisplayName><USERNAME_HERE></DisplayName>
             <Group>Administrators</Group>
-            <Name>qemuNkvm</Name>
+            <Name><USERNAME_HERE></Name>
           </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
-      <RegisteredOrganization>qemuNkvm Project</RegisteredOrganization>
-      <RegisteredOwner>qemuNkvm</RegisteredOwner>
+      <RegisteredOrganization><USERNAME_HERE> Project</RegisteredOrganization>
+      <RegisteredOwner><USERNAME_HERE></RegisteredOwner>
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add">
           <CommandLine>msiexec /i E:\guest-agent\qemu-ga-x86_64.msi /quiet /passive /qn</CommandLine>
@@ -1449,6 +1449,8 @@ winget() {
 
 	else
 
+		read -p "Enter username for your account:" username
+
 		sudo rm -rf "${VMS_ISO}/unattended"
 		mkdir -p "${VMS_ISO}/unattended"
 		cd "${VMS_ISO}/unattended"
@@ -1472,6 +1474,9 @@ winget() {
 		clear
 		downloadWindowsSpice
 		unattended_windows "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
+		sed -i "s/<USERNAME_HERE>/${username}/g" "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
+		sed -i "s/ Project//g" "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
+
 		cd ..
 
 		sudo umount mnt
@@ -1567,7 +1572,6 @@ win10ltscurl() {
 }
 
 # Bootable USB
-
 ventoyurl() {
 	mirror="https://github.com/ventoy/Ventoy"
 	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
