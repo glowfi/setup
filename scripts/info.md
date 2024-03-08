@@ -594,3 +594,16 @@ sudo pacman -S --noconfirm spice-vdagent-openrc
 sudo rc-update add spice-vdagent
 sudo rc-service spice-vdagent start
 ```
+
+# After Install
+
+```sh
+curl "https://ollama.ai/install.sh" | sh
+source $HOME/.config/fish/config.fish
+nohup ollama serve &
+rm nohup.out
+ollama pull mistral:latest
+ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
+
+yay -S --noconfirm mongodb-compass
+```
