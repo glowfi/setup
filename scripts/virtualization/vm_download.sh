@@ -1413,7 +1413,7 @@ CallWindowsDownloader() {
 
 	iso=$(find -type f | grep "iso" | head -1 | xargs -I {} realpath "{}")
 	if [[ "$1" == "win10x64" || "$1" == "win11x64" ]]; then
-		mv "${iso}" "${VMS_ISO}/unattended/${output}"
+		mv "${iso}" "${VMS_ISO}/tmp_download-$1-$2/${output}"
 	else
 		mv "${iso}" "${VMS_ISO}/${output}"
 	fi
@@ -1450,14 +1450,16 @@ winget() {
 	else
 
 		read -p "Enter username for your account:" username
+		read -p "Do you want an unattendeded installer ? (y/n/yes/no):" want_unattended
 
-		sudo rm -rf "${VMS_ISO}/unattended"
-		mkdir -p "${VMS_ISO}/unattended"
-		cd "${VMS_ISO}/unattended"
+		epoch_date_created=$(date +%s)
+
+		mkdir -p "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
+		cd "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
 
 		# Download vanilla windows iso
 
-		CallWindowsDownloader "$1"
+		CallWindowsDownloader "$1" "$epoch_date_created"
 
 		# Create iso with unattended.xml
 
@@ -1471,18 +1473,24 @@ winget() {
 
 		mkdir "modifications-${epoch}"
 		cd "modifications-${epoch}"
-		clear
-		downloadWindowsSpice
-		unattended_windows "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
-		sed -i "s/<USERNAME_HERE>/${username}/g" "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
-		sed -i "s/ Project//g" "${VMS_ISO}/unattended/modifications-${epoch}/autounattend.xml"
+
+		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
+			clear
+			echo "Creating unattended installer ...."
+			downloadWindowsSpice
+			unattended_windows "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
+			sed -i "s/<USERNAME_HERE>/${username}/g" "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
+			sed -i "s/ Project//g" "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
+		else
+			echo "Creating non-unattended installer ...."
+		fi
 
 		cd ..
 
 		sudo umount mnt
 		sudo rm -rf mnt
 
-		cd "${VMS_ISO}/unattended"
+		cd "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
 
 		mkisofs \
 			-iso-level 4 \
@@ -1497,6 +1505,30 @@ winget() {
 			-b efi/microsoft/boot/efisys.bin \
 			-o "../${output}" \
 			"./win-${epoch}" "./modifications-${epoch}"
+
+		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
+			fileName=$(basename "${output}" ".iso")
+			suffix="unattended"
+
+			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
+				query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
+				mv "../${output}" "../${fileName}-${suffix}-${query}-${epoch}.iso"
+			else
+				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
+			fi
+
+		else
+			fileName=$(basename "${output}" ".iso")
+			suffix="non-unattended"
+
+			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
+				query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
+				mv "../${output}" "../${fileName}-${suffix}-${query}-${epoch}.iso"
+			else
+				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
+			fi
+
+		fi
 	fi
 
 	cd "${VMS_ISO}"
@@ -1532,7 +1564,7 @@ winget() {
 
 		if [[ "${SHA256}" != "" ]]; then
 
-			iso_sha=$(sha256sum "${VMS_ISO}/unattended/${output}" | awk '{print $1}' | xargs)
+			iso_sha=$(sha256sum "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/${output}" | awk '{print $1}' | xargs)
 			matchStatus=$(if [ "${iso_sha}" == "${SHA256}" ]; then echo -e "\e[32mChecksum Matched!\e[0m"; else echo -e "\e[31mChecksum do not match!\e[0m"; fi)
 
 			echo -e "################################\n"
@@ -1542,6 +1574,8 @@ winget() {
 			echo "Checksum Match: ${matchStatus}"
 			echo -e "################################\n"
 		fi
+
+		sudo rm -rf "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
 
 	fi
 }
