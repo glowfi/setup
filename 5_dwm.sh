@@ -75,7 +75,7 @@ cp -r $HOME/setup/configs/picom $HOME/.config/
 
 # Appearance
 
-install "lxappearance-gtk3 qt5ct kvantum" "pac"
+install "lxappearance-gtk3 qt6ct kvantum" "pac"
 
 install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
@@ -111,9 +111,9 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cp -r $HOME/setup/configs/.Xresources $HOME
-cd $HOME/.config;rm -rf qt5ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
+cd $HOME/.config;rm -rf qt6ct/ gtk-2.0/ gtk-3.0/ Kvantum/;cd ;rm $HOME/.gtkrc-2.0;rm -rf $HOME/.config/gtk-3.0/bookmarks
 
-cp -r $HOME/setup/configs/DWM/theming/qt5ct/ $HOME/setup/configs/DWM/theming/gtk-2.0 $HOME/setup/configs/DWM/theming/gtk-3.0 $HOME/setup/configs/DWM/theming/Kvantum $HOME/.config
+cp -r $HOME/setup/configs/DWM/theming/qt6ct/ $HOME/setup/configs/DWM/theming/gtk-2.0 $HOME/setup/configs/DWM/theming/gtk-3.0 $HOME/setup/configs/DWM/theming/Kvantum $HOME/.config
 cp -r $HOME/setup/configs/DWM/theming/.gtkrc-2.0 $HOME
 echo "file:///home/$USER/Documents Documents" >> $HOME/.config/gtk-3.0/bookmarks
 echo "file:///home/$USER/Downloads Downloads" >> $HOME/.config/gtk-3.0/bookmarks
