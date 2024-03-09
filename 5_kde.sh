@@ -16,7 +16,7 @@ echo "--------------Installing CORE PACKAGES FOR KDE...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
-install "plasma-desktop plasma-workspace plasma-nm plasma-pa qt5-tools" "pac"
+install "plasma-desktop plasma-workspace plasma-nm plasma-pa qt6-tools" "pac"
 
 install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
 
