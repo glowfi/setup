@@ -358,9 +358,9 @@ sudo -u "$USER" kwriteconfig6 --file klaunchrc --group FeedbackStyle --key "Busy
 
 # Disable baloo file indexer
 
-sudo -u "$USER" balooctl suspend
-sudo -u "$USER" balooctl disable
-sudo -u "$USER" balooctl purge
+sudo -u "$USER" balooctl6 suspend
+sudo -u "$USER" balooctl6 disable
+sudo -u "$USER" balooctl6 purge
 
 # Remove kwallet
 
