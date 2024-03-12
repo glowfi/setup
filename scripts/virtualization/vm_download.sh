@@ -1450,8 +1450,11 @@ winget() {
 
 	else
 
-		read -p "Enter username for your account:" username
 		read -p "Do you want an unattendeded installer ? (y/n/yes/no):" want_unattended
+		username=""
+		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
+			read -p "Enter username for your account:" username
+		fi
 
 		epoch_date_created=$(date +%s)
 
