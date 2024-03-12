@@ -1,26 +1,27 @@
 #!/bin/bash
 
 helpsection() {
-	echo "/----------------------------------------------------------------------------------------------------------------------------------------\ "
-	echo "| Script downloads recent (latest release) linux ISOs and spins a VM for a test. This is kinda distrohopper dream machine.               | "
-	echo "| It consist of the file with distro download functions (distrofunctions.sh) as well as this script (download.sh).                       | "
-	echo "| Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       | "
-	echo "| Change the download URL or something else, it might be required to do manual changes.                                                  | "
-	echo "| Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf, mkisofs (some tools usually are preinstalled on linux)        | "
-	echo "| Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. | "
-	echo "| Inspired By : https://github.com/sxiii/linux-downloader , quickget (QUICKEMU)                                                          | "
-	echo "\----------------------------------------------------------------------------------------------------------------------------------------/ "
-	echo ""
+	echo -e "/----------------------------------------------------------------------------------------------------------------------------------------\\"
+	echo -e "|\e[34m Script downloads recent (latest release) linux ISOs and spins a VM for a test. This is kinda distrohopper dream machine.               \e[0m|"
+	echo -e "|\e[34m Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       \e[0m|"
+	echo -e "|\e[34m change the download URL or something else, it might be required to do manual changes.                                                  \e[0m|"
+	echo -e "|\e[35m                                                                                                                                        \e[0m|"
+	echo -e "|\e[33m Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. \e[0m|"
+	echo -e "|\e[35m                                                                                                                                        \e[0m|"
+	echo -e "|\e[31m Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf, mkisofs                                                       \e[0m|"
+	echo -e "|\e[31m Inspired By : https://github.com/sxiii/linux-downloader , quickget (QUICKEMU Project)                                                  \e[0m|"
+	echo -e "/----------------------------------------------------------------------------------------------------------------------------------------\\"
+	echo -e ""
 	echo -e "====== How to use ====== \n"
-	echo -e "+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading \n"
-	echo -e "+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading \n"
+	echo -e "\e[32m+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading \n\e[0m"
+	echo -e "\e[32m+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading \n\e[0m"
 }
 
 # the public ipxe mirror does not work
 #echo "* 'netbootipxe' option will boot from boot.ipxe.org"
 
 #### Constant Variables
-allDistros="all\n"
+allDistros=""
 VMS_ISO="$HOME/Downloads/VMS_ISO"
 
 #### Temp Variables
@@ -1793,7 +1794,6 @@ ventoy=("ventoy" "amd64" "latest" "ventoyurl")
 balena_etcher=("balena_etcher" "amd64" "latest" "balena_etcher_url")
 
 drawmenu() {
-
 	q=0
 
 	for ((i = 0; i < ${#distro_all[@]}; i++)); do
@@ -1805,7 +1805,6 @@ drawmenu() {
 			((q++))
 		done
 	done
-
 }
 
 normalmode() {
@@ -1835,19 +1834,6 @@ normalmode() {
 			$"${arr[3]}"
 		done
 	else
-
-		# All handling: automatic download will happen if user picked "all" option, no questions asked.
-		if [ "$x" = "all" ]; then
-			for ((i = 0; i < ${#distro_arr[@]}; i++)); do xx+="$i "; done
-			x=$xx
-			#for ((i=0; i<${#distro_arr[@]}; i++)); do
-			for distr in $x; do
-				dist=${distro_arr[$distr]}
-				typeset -n arr=$dist
-				$"${arr[3]}"
-			done
-			#done
-		fi
 
 		if [ "$noconfirm" = "1" ]; then
 			for distr in $x; do
