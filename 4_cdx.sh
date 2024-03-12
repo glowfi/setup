@@ -103,8 +103,21 @@ echo ""
 
 # INSTALL RUST
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-git clone https://github.com/rust-analyzer/rust-analyzer.git
+function installRust
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+end
+
+for i in (seq 10)
+    if test -f ~/.cargo/bin/rustc
+        break
+    else
+        installRust
+    end
+end
+
+for i in (seq 10)
+    git clone https://github.com/rust-analyzer/rust-analyzer.git && break
+end
 cd rust-analyzer
 cargo xtask install --server
 cd ..
@@ -123,10 +136,20 @@ echo ""
 
 # INSTALL GOLANG
 
-cd
-curl https://go.dev/dl/ | grep -e linux | head -2 | grep -e href | awk -F href '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget https://go.dev{} -O go.tar.gz
-tar -xzf go.tar.gz
-rm -rf go.tar.gz
+function installGolang
+    curl https://go.dev/dl/ | grep -e linux | head -2 | grep -e href | awk -F href '{print $2}' | tr -d "=" | tr -d ">" | xargs -I {} wget https://go.dev{} -O go.tar.gz
+    tar -xzf go.tar.gz
+    rm -rf go.tar.gz
+end
+
+for i in (seq 10)
+    cd
+    if test -d ~/go   
+        break
+    else
+        installGolang
+    end
+end
 
 # GOLANG MODULES
 
