@@ -240,7 +240,7 @@ alias pdf='sed -i "35s/.*/fading = false;/" .config/picom/picom.conf'
 
 # Get public/private ip
 alias getpip="curl -sS https://ipleak.net | pup 'table tr td text{}' | xargs"
-alias getprip="ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'|xargs|cut -f2  -d' '"
+alias getprip="ip addr | grep 'state UP' -A3 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'|xargs|cut -f2  -d' '"
 
 # ===================================================================
 #                           Custom Functions

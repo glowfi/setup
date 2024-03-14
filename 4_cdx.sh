@@ -105,6 +105,7 @@ echo ""
 
 function installRust
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    rustup default stable
 end
 
 for i in (seq 10)
@@ -119,6 +120,7 @@ for i in (seq 10)
     git clone https://github.com/rust-analyzer/rust-analyzer.git && break
 end
 cd rust-analyzer
+rustup default stable
 cargo xtask install --server
 cd ..
 rm -rf rust-analyzer
