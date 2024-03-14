@@ -196,6 +196,12 @@ cp -r $HOME/setup/configs/.bashrc $HOME
 cp -r $HOME/setup/configs/.inputrc $HOME
 cp -r $HOME/setup/configs/.vimrc $HOME
 
+# Installing ble.sh for completion like fish in bash
+
+git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git
+make -C ble.sh install PREFIX=~/.local
+rm -rf ble.sh
+
 # COPY bash inputrc vimrc SETTINGS TO ROOT
 
 sudo cp $HOME/.bashrc /root/
