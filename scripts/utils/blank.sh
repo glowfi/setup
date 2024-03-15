@@ -137,7 +137,7 @@ table inet dev {
 
 	sudo chmod 700 /etc/{iptables,nftables.conf}
 
-	if [[ "$initType" != "systemD" ]]; then
+	if [[ "$initType" != "systemd" ]]; then
 		sudo rc-service nftables save
 		sudo rc-update add nftables
 	else
@@ -174,7 +174,7 @@ removeBlacklistedModules() {
 }
 
 enableNetworkSecurity() {
-	if [[ "$initType" = "systemD" ]]; then
+	if [[ "$initType" = "systemd" ]]; then
 		sudo echo 'DNSOverTLS=yes
 LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
 	fi
@@ -194,7 +194,7 @@ options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 }
 
 disableNetworkSecurity() {
-	if [[ "$initType" = "systemD" ]]; then
+	if [[ "$initType" = "systemd" ]]; then
 		sudo sed -i '$d; $d; $d; $d; $d; $d' /etc/systemd/resolved.conf
 	fi
 
