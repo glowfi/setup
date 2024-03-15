@@ -150,6 +150,10 @@ echo "--------------Installing display driver...------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
+## Install GPU process monitoring software
+
+install "nvtop" "pac"
+
 ## Auto detect GPU and install drivers
 
 if lspci | grep -E "NVIDIA|GeForce"; then
