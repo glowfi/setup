@@ -5,6 +5,14 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
 
+# Git clone helper
+klone() {
+	for ((i = 0; i < 10; i++)); do
+		git clone "$1" && break
+	done
+
+}
+
 # Get Init Type
 initType=$(bash "${DETECT_INIT_SCRIPT}")
 
@@ -42,7 +50,7 @@ cp -r $HOME/setup/configs/misc/* $HOME/.misc/
 # Volnoti
 
 install "dbus-glib" "pac"
-git clone https://github.com/hcchu/volnoti
+klone "https://github.com/hcchu/volnoti"
 cd volnoti
 cd res
 rm display-brightness-symbolic.svg
@@ -63,7 +71,7 @@ cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 # Install picom compositor
 
 install "libev libconfig meson ninja uthash" "pac"
-git clone https://github.com/FT-Labs/picom
+klone "https://github.com/FT-Labs/picom"
 cd picom
 git submodule update --init --recursive
 meson --buildtype=release . build
@@ -79,21 +87,19 @@ install "lxappearance-gtk3 qt6ct kvantum" "pac"
 
 install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
 
-for ((i = 0; i < 3; i++)); do
-    git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme
-    cd ./Gruvbox-GTK-Theme/
-    git checkout 44e81d8226579a24a791f3acf43b97de815bc4b1
-    cd themes
-    sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
-    cd ../../
-    rm -rf Gruvbox-GTK-Theme
+klone "https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
+cd ./Gruvbox-GTK-Theme/
+git checkout 44e81d8226579a24a791f3acf43b97de815bc4b1
+cd themes
+sudo cp -r ./Gruvbox-Dark-B /usr/share/themes/
+cd ../../
+rm -rf Gruvbox-GTK-Theme
 
-    git clone https://github.com/TheGreatMcPain/gruvbox-material-gtk
-    cd gruvbox-material-gtk
-    sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
-    cd ..
-    rm -rf gruvbox-material-gtk
-done
+klone "https://github.com/TheGreatMcPain/gruvbox-material-gtk"
+cd gruvbox-material-gtk
+sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
+cd ..
+rm -rf gruvbox-material-gtk
 
 cd $HOME/Downloads/
 mv "${SCRIPT_DIR}/storage/Gruvbox-Dark-Blue.tar.gz" .
@@ -258,7 +264,7 @@ echo ""
 
 pip install opencv-python tk pynput playsound pathlib pyautogui
 install "tk" "pac"
-git clone https://github.com/glowfi/screenlocker
+klone "https://github.com/glowfi/screenlocker"
 cd screenlocker
 fish -c "cargo build --release"
 mv ./target/release/screenlocker $HOME/.local/bin/screenlocker

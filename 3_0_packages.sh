@@ -5,6 +5,14 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
 
+# Git clone helper
+klone() {
+	for ((i = 0; i < 10; i++)); do
+		git clone "$1" && break
+	done
+
+}
+
 # Get Init Type
 initType=$(bash "${DETECT_INIT_SCRIPT}")
 
@@ -34,7 +42,7 @@ fi
 # Systemctl shim
 
 if [[ "$initType" != "systemD" ]]; then
-	git clone https://github.com/oz123/systemctl-shim
+	klone "https://github.com/oz123/systemctl-shim"
 	cd systemctl-shim
 	sudo make install
 	cd ..
@@ -49,7 +57,7 @@ echo "--------------Installing AUR helper...--------------------------"
 echo "----------------------------------------------------------------"
 echo ""
 
-git clone https://aur.archlinux.org/yay-bin.git
+klone "https://aur.archlinux.org/yay-bin.git"
 cd yay-bin/
 makepkg -si --noconfirm
 cd $HOME
@@ -134,7 +142,7 @@ install "gimp-plugin-registry" "yay"
 rm -rf $HOME/.config/GIMP/2.10
 mkdir -p $HOME/.config/GIMP/2.10
 cd $HOME/.config/GIMP/2.10
-git clone https://github.com/Diolinux/PhotoGIMP
+klone "https://github.com/Diolinux/PhotoGIMP"
 mv ./PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* .
 rm -rf PhotoGIMP filters plug-ins splashes
 cd
@@ -161,18 +169,18 @@ for i in {1..5}; do yes | sudo pacman -S sl && break || sleep 1; done
 
 install "figlet" "pac"
 install "toilet toilet-fonts" "yay"
-git clone https://github.com/xero/figlet-fonts
+klone "https://github.com/xero/figlet-fonts"
 sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
 rm -rf figlet-fonts
 
-git clone https://github.com/pipeseroni/pipes.sh
+klone "https://github.com/pipeseroni/pipes.sh"
 cd pipes.sh
 sudo make clean install
 cd ..
 rm -rf pipes.sh
 
 # ===================== XORG Dependent ===================================
-git clone https://github.com/xorg62/tty-clock
+klone "https://github.com/xorg62/tty-clock"
 cd tty-clock
 sudo make clean install
 cd ..
@@ -211,7 +219,7 @@ sudo cp $HOME/.vimrc /root/
 # INSTALL AND COPY NNN FM SETTINGS
 
 sudo pacman -S --noconfirm trash-cli tree
-git clone https://github.com/jarun/nnn
+klone "https://github.com/jarun/nnn"
 cd nnn
 sudo make O_NERD=1 install
 cd ..

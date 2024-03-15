@@ -5,6 +5,14 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
 
+# Git clone helper
+klone() {
+	for ((i = 0; i < 10; i++)); do
+		git clone "$1" && break
+	done
+
+}
+
 # Get Init Type
 initType=$(bash "${DETECT_INIT_SCRIPT}")
 
@@ -166,7 +174,7 @@ echo ""
 
 pip install opencv-python tk pynput playsound pathlib pyautogui
 install "tk" "pac"
-git clone https://github.com/glowfi/screenlocker
+klone "https://github.com/glowfi/screenlocker"
 cd screenlocker
 fish -c "cargo build --release"
 mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
@@ -289,7 +297,7 @@ done
 
 # Add command output widget
 
-git clone https://github.com/aricaldeira/plasma-applet-commandoutput
+klone "https://github.com/aricaldeira/plasma-applet-commandoutput"
 cd plasma-applet-commandoutput
 install "kpackage" "pac"
 ./build6

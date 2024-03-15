@@ -5,6 +5,14 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 DETECT_INIT_SCRIPT="$SCRIPT_DIR/detectInit.sh"
 source "$SCRIPT_DIR/helper.sh"
 
+# Git clone helper
+klone() {
+	for ((i = 0; i < 10; i++)); do
+		git clone "$1" && break
+	done
+
+}
+
 # Get Init Type
 initType=$(bash "${DETECT_INIT_SCRIPT}")
 
@@ -380,12 +388,12 @@ fi
 checkType=$(sudo dmidecode --string chassis-type)
 if [[ "${checkType}" = "Laptop" || "${checkType}" = "Notebook" || "${checkType}" = "Portable" || "${checkType}" = "Sub Notebook" ]]; then
 	# auto-cpufreq
-	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+	klone "https://github.com/AdnanHodzic/auto-cpufreq.git"
 	cd auto-cpufreq && echo "i" | sudo ./auto-cpufreq-installer
 	cd ..
 	sudo rm -rf auto-cpufreq
 
-	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+	klone "https://github.com/AdnanHodzic/auto-cpufreq.git"
 	cd auto-cpufreq/auto_cpufreq
 	sudo python3 power_helper.py --gnome_power_disable
 	cd ..
@@ -408,7 +416,7 @@ fi
 # Timeshift
 
 if [[ "$initType" != "systemD" ]]; then
-	git clone https://github.com/Antynea/grub-btrfs
+	klone "https://github.com/Antynea/grub-btrfs"
 	cd grub-btrfs
 	sed -i '6s/.*/OPENRC ?= true/' Makefile
 	sed -i '5d' Makefile
