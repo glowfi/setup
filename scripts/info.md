@@ -79,7 +79,6 @@ chmod 660 /dev/shm/looking-glass
 # GPU Passthrough
 -audiodev pa,server=unix:/run/user/1000/pulse/native,id=audio0
 
-
 # Delete everyting related to net netdev virtio-net devices to disable network Completely
 -nic none \
 -net none \
