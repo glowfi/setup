@@ -63,14 +63,6 @@ pip install pyfzf
 pip install poetry
 pip install rich pygments
 
-# OLLAMA MODEL
-
-curl "https://ollama.ai/install.sh" | sh
-source $HOME/.config/fish/config.fish
-sudo systemctl disable ollama.service
-sudo systemctl stop ollama.service
-
-
 # ======================================================= END ======================================================================================
 
 echo ""
