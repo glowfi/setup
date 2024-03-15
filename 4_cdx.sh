@@ -4,6 +4,13 @@
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
 source "$SCRIPT_DIR/helperf.fish"
 
+# Git clone helper
+function klone
+    for i in (seq 10)
+        git clone "$argv[1]" && break
+    end
+end
+
 # Create the user local bin
 mkdir -p $HOME/.local/bin/
 
@@ -115,9 +122,7 @@ for i in (seq 10)
     end
 end
 
-for i in (seq 10)
-    git clone https://github.com/rust-analyzer/rust-analyzer.git && break
-end
+klone "https://github.com/rust-analyzer/rust-analyzer.git"
 cd rust-analyzer
 rustup default stable
 cargo xtask install --server
@@ -222,7 +227,7 @@ pip install xhibit
 # INSTALL sYT
 
 pip install numerize
-git clone https://github.com/glowfi/sYT
+klone "https://github.com/glowfi/sYT"
 cp -r sYT/sYT.py $HOME/.local/bin/
 cp -r sYT/sYT.sh $HOME/.local/bin/
 rm -rf sYT
@@ -242,7 +247,9 @@ wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/
 echo "osc=no" >>$HOME/.config/mpv/mpv.conf
 echo 'save-position-on-quit' >>$HOME/.config/mpv/mpv.conf
 
-cd .config/mpv/scripts/;git clone https://github.com/4ndrs/PureMPV;cd
+cd .config/mpv/scripts/
+klone "https://github.com/4ndrs/PureMPV"
+cd
 
 # SCRIPTS 
 
@@ -308,7 +315,7 @@ chmod +x $HOME/.local/bin/b64i
 cp -r $HOME/setup/scripts/utils/rlt $HOME/.local/bin/
 chmod +x $HOME/.local/bin/rlt
 
-git clone https://github.com/thameera/vimv
+klone "https://github.com/thameera/vimv"
 cd vimv
 cp -r vimv $HOME/.local/bin/
 cd ..
@@ -318,7 +325,7 @@ yes | pip uninstall pathlib
 pip install pyinstaller
 pip install ffmpeg-python typing-extensions
 sudo pacman -S --noconfirm gifsicle
-git clone https://github.com/winstxnhdw/ezgif-essentials
+klone "https://github.com/winstxnhdw/ezgif-essentials"
 cd ezgif-essentials
 pyinstaller --onefile main.py
 cd dist
@@ -450,7 +457,7 @@ echo ""
 ### Install Youtube-local
 
 cd ~/.local/bin
-git clone https://github.com/user234683/youtube-local
+klone "https://github.com/user234683/youtube-local"
 cd youtube-local
 python -m venv env
 source "$HOME/.local/bin/youtube-local/env/bin/activate.fish"
@@ -469,7 +476,7 @@ install "tesseract tesseract-data-eng" "pac"
 
 pip uninstall -y cmake
 install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
-git clone https://github.com/jstkdng/ueberzugpp.git
+klone "https://github.com/jstkdng/ueberzugpp.git"
 cd ueberzugpp
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -480,7 +487,7 @@ cd ..;cd ..
 rm -rf ueberzugpp
 
 # ===================== XORG Dependent ===================================
-git clone https://github.com/ueber-devel/ueberzug
+klone "https://github.com/ueber-devel/ueberzug"
 cd ueberzug/
 pip install .
 cd ..
