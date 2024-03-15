@@ -365,7 +365,7 @@ cutefishosurl() {
 
 parroturl() {
 	mirror="https://deb.parrot.sh/direct/parrot/iso/testing/"
-	x=$(curl -s $mirror | grep "security" | grep -m1 amd64.iso | awk -F"\"" '{ print $4 }')
+	x=$(curl -s $mirror | grep security | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$")
 	new="$mirror$x"
 	output="parrot.iso"
 	checkfile $1
