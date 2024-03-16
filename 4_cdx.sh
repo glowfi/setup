@@ -307,6 +307,9 @@ chmod +x $HOME/.local/bin/b64i
 cp -r $HOME/setup/scripts/utils/rlt $HOME/.local/bin/
 chmod +x $HOME/.local/bin/rlt
 
+cp -r $HOME/setup/scripts/utils/cpx $HOME/.local/bin/
+chmod +x $HOME/.local/bin/cpx
+
 klone "https://github.com/thameera/vimv"
 cd vimv
 cp -r vimv $HOME/.local/bin/
