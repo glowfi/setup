@@ -215,7 +215,7 @@ rm -rf ble.sh
 sudo cp $HOME/.bashrc /root/
 sudo cp $HOME/.inputrc /root/
 sudo cp $HOME/.vimrc /root/
-sudo su -c "git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git;make -C ble.sh install PREFIX=~/.local"
+sudo su -c "git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git;make -C ble.sh install PREFIX=~/.local;rm -rf ble.sh"
 
 # INSTALL AND COPY NNN FM SETTINGS
 
