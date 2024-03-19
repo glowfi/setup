@@ -8,6 +8,8 @@ red_suffix="\033[00m"
 bold_green_prefix="\033[1;32m"
 bold_green_suffix="\033[00m"
 
+sudo echo ""
+
 if [[ -f "${tmpFile}" ]]; then
 	# If file exist means we have already passthroughed our GPU
 	echo -e "${red_prefix}Removing passthrough settings!${red_suffix}"

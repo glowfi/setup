@@ -68,15 +68,68 @@ delete devices, set opengl off,delete drinode,vga none
 -device vfio-pci,host=01:00.0,multifunction=on \
 -device vfio-pci,host=01:00.1 \
 
-# Add this if u want to use lookin glass
-touch /dev/shm/looking-glass
-chown root:kvm /dev/shm/looking-glass
-chmod 660 /dev/shm/looking-glass
+#  Looking Glass
+
+### Pre Looking glass
+
++ Get Windows and download
++ Run passthrough script
++ Debloat
++ Update System,
++ Install all spice tools inside iso.DO NOT INSTALL VIRTIO DRIVERS or spice-guest-agent tools or anything that deals with display
++ Instatll Drivers NVCleaninstall
++ Do not Install any drivers from virtio-win or spice-guest agent
++ Install looking-glass windwos host stable
+
+### Install Dependenices
+
+sudo pacman -S --noconfirm cmake gcc libgl libegl fontconfig spice-protocol make nettle pkgconf binutils libxi libxinerama libxss libxcursor libxpresent libxkbcommon wayland-protocols ttf-dejavu libsamplerate
+
+sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf << EOF
+# Type Path               Mode UID  GID Age Argument
+
+f /dev/shm/looking-glass 0660 $USER kvm -
+EOF
+
+git clone --recursive https://github.com/gnif/LookingGlass.git
+cd LookingGlass
+mkdir client/build
+cd client/build
+cmake ../
+make
+./looking-glass-client
+
+### Post Looking glass
+
++ Dummy HDMI PLugin plug it before booting into the pc with looking glass
++ Set resolution
++ Disbale basic micrsoft drivers
++ Update Windows
+
+### Args to add
+sudo -A echo ""
+
+### Add
+sudo qemu-system-x86_64 \
+	-overcommit mem-lock=off -smp cores=4,threads=4,sockets=1 -m 11G -device virtio-balloon \
+	-display none \
+	-device vfio-pci,host=01:00.0,multifunction=on \
+	-device vfio-pci,host=01:00.1 \
+	-spice port=5900,addr=127.0.0.1,disable-ticketing=on \
+	-device ivshmem-plain,memdev=ivshmem,bus=pcie.0 \
+	-object memory-backend-file,id=ivshmem,share=on,mem-path=/dev/shm/looking-glass,size=128M \
+	-usb -device usb-host,vendorid=0x,productid=0x \
+
+### Remove
+# remote-viewer spice+unix:///run/user/1000/spice.sock &
+# -spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-0000:05:00.0-render,seamless-migration=on \
+# 	-device virtio-vga-gl \
+# 		-device VGA,vgamem_mb=64 \
 
 
 ### Extras
 
-# GPU Passthrough
+# Audio Passthrough
 -audiodev pa,server=unix:/run/user/1000/pulse/native,id=audio0
 
 # Delete everyting related to net netdev virtio-net devices to disable network Completely
