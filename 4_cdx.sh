@@ -387,7 +387,7 @@ install "libvirt" "pac"
 install "cdrtools" "pac"
 sudo usermod -G libvirt -a "$USER"
 sudo systemctl start libvirtd
-cp -r $HOME/setup/scripts/virtualization/vm_download.sh $HOME/setup/scripts/virtualization/vm_setup.sh $HOME/setup/scripts/virtualization/vm_manager.sh $HOME/.local/bin
+cp -r $HOME/setup/scripts/virtualization/vm_download.sh $HOME/setup/scripts/virtualization/vm_setup.sh $HOME/setup/scripts/virtualization/vm_manager.sh $HOME/setup/scripts/virtualization/vm-gpu-passthrough $HOME/.local/bin
 chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.local/bin/vm_manager.sh
 
 # ======================================================= END ======================================================================================
