@@ -57,32 +57,43 @@ qemu-system-x86_64 -enable-kvm \
 # Arguments Help
 
 ```sh
+###### Extras ######
 
-### GPU Passthrough VFIO Devices
-
-# Note
+### Note
 login as sudo to qemu
 delete devices, set opengl off,delete drinode,vga none
 
-# Passthrough arguments
+### Passthrough arguments
 -device vfio-pci,host=01:00.0,multifunction=on \
 -device vfio-pci,host=01:00.1 \
 
-#  Looking Glass
+### Audio Passthrough pulseaudio
+-audiodev pa,server=unix:/run/user/1000/pulse/native,id=audio0
 
-### Pre Looking glass
+### Delete everyting related to net netdev virtio-net devices to disable network Completely
+-nic none \
+-net none \
+-nodefaults \
 
-+ Get Windows and download
-+ Run passthrough script
-+ Debloat
-+ Update System,
-+ Install all spice tools inside iso.DO NOT INSTALL VIRTIO DRIVERS or spice-guest-agent tools or anything that deals with display
-+ Instatll Drivers NVCleaninstall
-+ Do not Install any drivers from virtio-win or spice-guest agent
-+ Install looking-glass windwos host stable
+### Add Usb Devices
+-usb -device usb-host,vendorid=0x,productid=0x \
+-usb -device usb-tablet \
 
-### Install Dependenices
 
+###### Looking Glass Setup ######
+
+###  Pre Looking Glass
+
++ Install Windows
++ Run Debloat amd reboot
++ Install DotNet,set security updates and reboot
++ Fully Update and reboot
+
+### Mid Step
+
++ Install looking-glass in main computer
+
+### Install Dependencies
 sudo pacman -S --noconfirm cmake gcc libgl libegl fontconfig spice-protocol make nettle pkgconf binutils libxi libxinerama libxss libxcursor libxpresent libxkbcommon wayland-protocols ttf-dejavu libsamplerate
 
 sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf << EOF
@@ -100,14 +111,10 @@ cmake ../
 make
 ~/Downloads/LookingGlass/client/build/looking-glass-client
 
-### Post Looking glass
 
-+ Dummy HDMI PLugin plug it before booting into the pc with looking glass
-+ Set resolution
-+ Disbale basic micrsoft drivers
-+ Update Windows
++ Edit script.sh and put the below commands [VGA is the main thing].
 
-### Args to add
+### Args to add [Only add these after udating,debloating,passing GPU to other side]
 sudo -A echo ""
 
 ### Add
@@ -127,20 +134,17 @@ sudo qemu-system-x86_64 \
 # -spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-0000:05:00.0-render,seamless-migration=on \
 # 	-device virtio-vga-gl \
 
++ Run the GPU Passthrough script.
++ Reboot main computer.
++ Install Looking glass bleeding edge.
++ Install NVCleaninstall with USB Driver with basic settings.
++ Reboot.
++ Now Plug the Fake HDMI Cable as the system us rebooting.
 
-### Extras
+### Post Looking Glass
 
-# Audio Passthrough
--audiodev pa,server=unix:/run/user/1000/pulse/native,id=audio0
-
-# Delete everyting related to net netdev virtio-net devices to disable network Completely
--nic none \
--net none \
--nodefaults \
-
-# Add Usb Devices
--usb -device usb-host,vendorid=0x,productid=0x \
--usb -device usb-tablet \
++ Check if resolution detected using Fake HDMI
++ Disable micrsoft basic software and reboot.
 ```
 
 ### FIREFOX
