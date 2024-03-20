@@ -87,7 +87,7 @@ delete devices, set opengl off,delete drinode,vga none
 + Install Windows
 + Run Debloat amd reboot
 + Install DotNet,set security updates and reboot
-+ Fully Update and reboot
++ Fully Update,install SPICE AGENTS and reboot
 
 ### Mid Step
 
