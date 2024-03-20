@@ -91,13 +91,14 @@ sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf << EOF
 f /dev/shm/looking-glass 0660 $USER kvm -
 EOF
 
+cd ~/Downloads
 git clone --recursive https://github.com/gnif/LookingGlass.git
 cd LookingGlass
 mkdir client/build
 cd client/build
 cmake ../
 make
-./looking-glass-client
+~/Downloads/LookingGlass/client/build/looking-glass-client
 
 ### Post Looking glass
 
@@ -113,6 +114,7 @@ sudo -A echo ""
 sudo qemu-system-x86_64 \
 	-overcommit mem-lock=off -smp cores=4,threads=4,sockets=1 -m 11G -device virtio-balloon \
 	-display none \
+	-device VGA,vgamem_mb=64 \
 	-device vfio-pci,host=01:00.0,multifunction=on \
 	-device vfio-pci,host=01:00.1 \
 	-spice port=5900,addr=127.0.0.1,disable-ticketing=on \
@@ -124,7 +126,6 @@ sudo qemu-system-x86_64 \
 # remote-viewer spice+unix:///run/user/1000/spice.sock &
 # -spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-0000:05:00.0-render,seamless-migration=on \
 # 	-device virtio-vga-gl \
-# 		-device VGA,vgamem_mb=64 \
 
 
 ### Extras
