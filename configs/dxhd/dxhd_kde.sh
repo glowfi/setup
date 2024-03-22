@@ -12,7 +12,7 @@ systemsettings
 
 ## Toggle Panel
 #alt + p
-qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=35?-1:35;"
+qdbus6 org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=35?-1:35;"
 
 ## Toggle Tiling/Floating mode
 #alt + t
@@ -22,17 +22,17 @@ if [ $current = "true" ]; then
 	kwriteconfig6 --file kwinrc --group Plugins --key krohnkiteEnabled false
 	kwriteconfig6 --file kwinrc --group Plugins --key diminactiveEnabled false
 	kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Enabled false
-	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'bottom';p.height = 44;"
+	qdbus6 org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'bottom';p.height = 44;"
 	notify-send 'Normal Mode'
 
 elif [ $current = "false" ]; then
 	kwriteconfig6 --file kwinrc --group Plugins --key krohnkiteEnabled true
 	kwriteconfig6 --file kwinrc --group Plugins --key diminactiveEnabled true
 	kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Enabled true
-	qdbus org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 35;"
+	qdbus6 org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.location = 'top';p.height = 35;"
 	notify-send 'Tiling Mode'
 fi
-qdbus org.kde.KWin /KWin reconfigure
+qdbus6 org.kde.KWin /KWin reconfigure
 
 ## Logout/Restart/Shutdown
 #super+x

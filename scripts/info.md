@@ -659,6 +659,7 @@ sudo rc-service spice-vdagent start
 # After Install
 
 ```fish
+sudo echo ""
 curl "https://ollama.ai/install.sh" | sh
 source $HOME/.config/fish/config.fish
 nohup ollama serve &
