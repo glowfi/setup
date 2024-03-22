@@ -85,7 +85,7 @@ ins_left({
 -- Git diff
 ins_left({
 	"diff",
-	symbols = { added = " ", modified = "柳 ", removed = " " },
+	symbols = { added = " ", modified = " ", removed = " " },
 	color_added = colors.green,
 	color_modified = colors.blue,
 	color_removed = colors.red,
