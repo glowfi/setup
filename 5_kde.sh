@@ -320,6 +320,11 @@ cp -r $HOME/setup/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc ~/.conf
 
 ### Shortcuts
 
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "Switch Power Profile" "none,none,Switch Power Profile"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "Dolphin" "none,none,Dolphin"
+sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "Make Window Fullscreen" "none,none,Make Window Fullscreen"
+
+
 sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 1" "none,none,Activate Task Manager Entry 1"
 sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 2" "none,none,Activate Task Manager Entry 2"
 sudo -u "$USER" kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key "activate task manager entry 3" "none,none,Activate Task Manager Entry 3"

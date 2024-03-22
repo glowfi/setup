@@ -37,3 +37,7 @@ sudo -u "${USER}" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Kr
 # Enable Night Color
 # Disable Screenlocking and configure screenlocker
 # Set Mouse acc profile to adaptive
+# enable nightlight
+# make window fullscreen shortcut
+# make Meta+B
+# make Meta+E
