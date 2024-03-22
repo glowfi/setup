@@ -375,6 +375,10 @@ sudo -u "$USER" balooctl6 suspend
 sudo -u "$USER" balooctl6 disable
 sudo -u "$USER" balooctl6 purge
 
+# Add Tiling support
+
+cp -r $HOME/setup/configs/plasma/cortile $HOME/.config/
+
 # Remove kwallet
 
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
