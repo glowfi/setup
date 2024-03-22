@@ -187,6 +187,7 @@ qemu-system-x86_64 \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
     -display none \\
+	${spiceSettings}
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
     -device hda-duplex,audiodev=audio0 \\
@@ -194,7 +195,6 @@ qemu-system-x86_64 \\
     -rtc base=localtime,clock=host,driftfix=slew \\
 	-global kvm-pit.lost_tick_policy=delay \\
 	-boot strict=on \\
-	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
 	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
@@ -245,6 +245,7 @@ qemu-system-x86_64 \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
     -display none \\
+	${spiceSettings}
     -audiodev spice,id=audio0 \\
     -device intel-hda \\
     -device hda-duplex,audiodev=audio0 \\
@@ -252,7 +253,6 @@ qemu-system-x86_64 \\
     -rtc base=localtime,clock=host,driftfix=slew \\
 	-global kvm-pit.lost_tick_policy=delay \\
 	-boot strict=on \\
-	${spiceSettings}
     -device virtio-serial-pci \\
     -chardev socket,id=agent0,path="${name}-agent.sock",server=on,wait=off \\
 	-device virtserialport,chardev=agent0,name=org.qemu.guest_agent.0 \\
@@ -382,7 +382,7 @@ takeInput() {
 		_gpu="Software"
 	else
 		echo "Please be patient. This may take a couple seconds to detect GPU."
-		gpuList=$(getGPUlist | grep "VGA")
+		gpuList=$(getGPUlist | grep "VGA compatible controller")
 		gpuList=$(echo -e "$gpuList\nUse basic Software rendering")
 		_gpu=$(echo "$gpuList" | fzf --prompt "Select GPU to use : [Safe options: AMD/Intel/Basic Software rendering] :" | awk -F" " '{print $3}' | xargs)
 	fi
