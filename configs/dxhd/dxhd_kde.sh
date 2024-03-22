@@ -20,6 +20,7 @@ FILE="$HOME/.config/tiling"
 
 if [ -f "$FILE" ]; then
 	ps aux | grep -E "cortile" | head | awk '{print $2}' | head -1 | xargs -I {} kill -9 "{}"
+	killall -9 "cortile"
 	rm "$FILE"
 	kwriteconfig6 --file kwinrc --group Plugins --key diminactiveEnabled false
 	kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Enabled false
