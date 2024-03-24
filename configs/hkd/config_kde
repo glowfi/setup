@@ -1,0 +1,85 @@
+###### HOTKEY CONFIG ######
+
+## File Manager
+* LEFTMETA,F: dolphin
+
+## System Settings
+* LEFTMETA,U: systemsettings
+
+## Toggle Panel
+* ALT,P: qdbus6 org.kde.plasmashell /PlasmaShell evaluateScript "p = panelById(panelIds[0]); p.height = p.height>=35?-1:35;"
+
+## Toggle Tiling/Floating mode
+* ALT,T: ~/.config/hkd/scripts/tile.sh
+
+## PlasmaShell Replace
+* LEFTMETA,LEFTSHIFT,Q: nohup plasmashell --replace &
+
+## Logout/Restart/Shutdown
+* LEFTMETA,X: ~/.config/hkd/scripts/logout_restart_shutdown.sh
+
+## Terminal
+* LEFTMETA,T: kitty
+
+## Browser
+- LEFTMETA,B: ~/.config/hkd/scripts/browser.sh
+
+## Network
+* LEFTMETA,N: kitty -e "nmtui"
+
+## Audio
+* LEFTMETA,V: kitty -e "pulsemixer"
+
+## Screenshot
+* ALT,A: ~/.config/hkd/scripts/screenshot.sh
+
+## Dmenu
+* LEFTMETA,P: dmenu_run -p "Run:" -i
+
+## Scrap YT
+* LEFTMETA,Y: fish -c "sYT -p "dmenu""
+
+## Random Wallpaper
+* LEFTMETA,Z: ~/.config/hkd/scripts/random_wall.sh
+
+## Favourite Wallpaper
+* LEFTMETA,C: ~/.config/hkd/scripts/fav_wall.sh
+
+## Clipboard
+* LEFTMETA,E: clipmenu
+
+## Intelligent Tools
+* ALT,I: int.sh
+
+## Kill Process
+* ALT,K: $HOME/.local/bin/killprocess.sh "unattended"
+
+## Activate Deactivate Easyeffects
+* ALT,G: ~/.config/hkd/scripts/easyeffects.sh
+
+## Increase Volume
+* LEFTMETA,F8: ~/.config/hkd/scripts/increase_vol.sh
+
+## Decrease Volume
+* LEFTMETA,F7: ~/.config/hkd/scripts/decrease_vol.sh
+
+## Mute/Unmute Volume
+* LEFTMETA,F6: ~/.config/hkd/scripts/mute_vol.sh
+
+## Increase Brightness
+* LEFTMETA,F3: ~/.config/hkd/scripts/increase_brightness.sh
+
+## Decrease Brightness
+* LEFTMETA,F2: ~/.config/hkd/scripts/decrease_brighness.sh
+
+## Increase Mic Volume
+* LEFTMETA,F11: ~/.config/hkd/scripts/increase_mic_volume.sh
+#super + F11
+#
+## Decrease Mic Volume
+* LEFTMETA,F9: ~/.config/hkd/scripts/decrease_mic_volume.sh
+#super + F9
+
+## Mute/Unmute Mic Volume
+* LEFTMETA,F10: ~/.config/hkd/scripts/mute_mic_volume.sh
+#super + F10

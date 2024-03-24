@@ -1,0 +1,47 @@
+# This is a comment
+
+# Every new hotkey starts with one of these markers:
+# - -> normal matching
+# * -> fuzzy matching
+# Normal matching means that the keys need to be pressed in the same order as
+# they are declared, whereas fuzzy matching means that they can be pressed in 
+# any order.
+
+# Leading or trailing whitespaces are ignored, whitespaces between the marker
+# And the ':' are also ignored, the general syntax for a hotkey is:
+# <marker> <keys>: <command>
+#
+# Whitespaces after the ':' count as that counts as the executed command for
+# the hotkey.
+# Commads are expanded using wordexp(3) so "|&;<>(){}" as well as unescaped
+# newlines are forbidden and will result in error, read the manpage for
+# wordexp(3) for more info about the possible word expansion capabilities.
+
+# Possible keys are taken directly from linux's input.h header file, those
+# include normal keys, multimedia keys and special keys, for the full list
+# of available keys either refer to the header file or this project's hkd.c
+# source file. Keys as specified by the kernel are named "KEY_<name>", in this
+# configuration file only the <name> is required.
+# Key names are always capitalized and do not differenciate between upper or
+# lower case, as such hotkeys that require a capitalized letter need to include
+# RIGHTSHIFT or LEFTSHIFT in the keys section.
+# Keys are intended as a list of comma separated strings.
+
+# Examples:
+# - LEFALT,LEFTSHIFT,S: ~/screenshot.sh -c
+# * LEFTMETA,1,D: $SCRIPTDIR/wonkyscript
+# - LEFTMETA,LEFTALT,LEFTSHIFT,S: shutdown now
+
+# Aliases are a way to give a name to a possibly complex, long or recurring
+# command, to declaring aliases is similar to declaring an hotkey, you must
+# start the line with '@' to indicate an alias, give it a name (mind that this
+# is case sensitive), and a command after a ':', just like in hotkeys.
+# When parsing an hotkey or an alias commad, hkd automatically replaces every
+# instance of known aliases in it. for an alias to be known must be declared
+# before it's usage.
+
+# Examples:
+# @ term : alacritty
+# @ volumeup: amixer -q sset Master 3%+
+# - leftmeta, p : term
+# - VOLUMEUP : volumeup

@@ -1,0 +1,8 @@
+*.out
+*.swp
+*.o
+hkd
+hkd_debug
+tests/**
+!tests/*.c
+!tests/makefile

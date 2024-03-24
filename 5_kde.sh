@@ -118,7 +118,7 @@ fi
 touch $HOME/.xprofile
 
 echo "# Hotkey daemon
-dxhd -b &
+$HOME/.config/hkd/hkd &
 
 # Pipewire
 ${pipeStr}
@@ -203,9 +203,7 @@ echo ""
 mkdir -p $HOME/.local/share/kservices6
 cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices6
 
-# ===================== XORG Dependent ===================================
-
-# SETUP dxhd
+# SETUP hkd
 
 echo ""
 echo "-------------------------------------------------------------------------------"
@@ -213,12 +211,13 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-# ===================== END Dependent ====================================
-
-install "dxhd-bin" "yay"
-mkdir -p $HOME/.config/dxhd
-mv $HOME/setup/configs/dxhd/dxhd_kde.sh $HOME/.config/dxhd
-mv $HOME/.config/dxhd/dxhd_kde.sh $HOME/.config/dxhd/dxhd.sh
+cp -r ~/setup/configs/hkd/ ~/.config/
+cd ~/.config/hkd
+mv ~/.config/hkd/scripts_kde/ ~/.config/hkd/scripts
+mv ~/.config/hkd/config_kde ~/.config/hkd/config
+rm -rf scripts_dwm config_dwm
+make clean 
+make
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -377,7 +376,11 @@ sudo -u "$USER" balooctl6 purge
 
 # Add Tiling support
 
+# ===================== XORG Dependent ===================================
+
 cp -r $HOME/setup/configs/plasma/cortile $HOME/.config/
+
+# ===================== END Dependent ====================================
 
 # Remove kwallet
 

@@ -1,0 +1,70 @@
+###### HOTKEY CONFIG ######
+
+## File Manager
+* LEFTMETA,F: fish -c "pcmanfm"
+
+## Logout/Restart/Shutdown
+* LEFTMETA,X: ~/.config/hkd/scripts/logout_restart_shutdown.sh
+
+## Terminal
+* LEFTMETA,T: kitty
+
+## Browser
+- LEFTMETA,B: ~/.config/hkd/scripts/browser.sh
+
+## Network
+* LEFTMETA,N: kitty -e "nmtui"
+
+## Audio
+* LEFTMETA,V: kitty -e "pulsemixer"
+
+## Screenshot
+* ALT,A: ~/.config/hkd/scripts/screenshot.sh
+
+## Scrap YT
+* LEFTMETA,Y: fish -c "sYT -p "dmenu""
+
+## Random Wallpaper
+* LEFTMETA,Z: feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
+
+## Favourite Wallpaper
+* LEFTMETA,C: feh --bg-fill ~/wall/"$(printf "143.jpg\n40.png\n103.png" | shuf -n 1)"
+
+## Clipboard
+* LEFTMETA,E: clipmenu
+
+## Intelligent Tools
+* ALT,I: int.sh
+
+## Kill Process
+* ALT,K: $HOME/.local/bin/killprocess.sh "unattended"
+
+## Activate Deactivate Easyeffects
+* ALT,G: ~/.config/hkd/scripts/easyeffects.sh
+
+## Increase Volume
+* LEFTMETA,F8: ~/.config/hkd/scripts/increase_vol.sh
+
+## Decrease Volume
+* LEFTMETA,F7: ~/.config/hkd/scripts/decrease_vol.sh
+
+## Mute/Unmute Volume
+* LEFTMETA,F6: ~/.config/hkd/scripts/mute_vol.sh
+
+## Increase Brightness
+* LEFTMETA,F3: ~/.config/hkd/scripts/increase_brightness.sh
+
+## Decrease Brightness
+* LEFTMETA,F2: ~/.config/hkd/scripts/decrease_brighness.sh
+
+## Increase Mic Volume
+* LEFTMETA,F11: ~/.config/hkd/scripts/increase_mic_volume.sh
+#super + F11
+#
+## Decrease Mic Volume
+* LEFTMETA,F9: ~/.config/hkd/scripts/decrease_mic_volume.sh
+#super + F9
+
+## Mute/Unmute Mic Volume
+* LEFTMETA,F10: ~/.config/hkd/scripts/mute_mic_volume.sh
+#super + F10
