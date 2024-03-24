@@ -41,3 +41,4 @@ sudo -u "${USER}" kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "Kr
 # make Meta+B
 # make Meta+E
 # make Meta+P
+# make Meta+T
