@@ -1,0 +1,148 @@
+.TH HKD\-VERSION 1 "JULY 2020" "Alessandro Mauri"
+
+.SH NAME
+hkd \- simple HotKey Daemon
+
+.SH SYNOPSIS
+.SY hkd
+.OP \-v
+.OP \-d
+.OP \-h
+.OP \-c file
+.YS
+
+.SH DESCRIPTION
+.PP
+hkd is a simple hotkey daemon that executes commands after pressing certain
+key combinations specified in the config file.
+.PP
+hkd works without a graphical session loaded as it uses the linux evdev
+interface, as such it can be used in a TTY. hkd also supports live reloading
+of input devices in and out, so newly inserted (or removed) devices are detected
+correctly.
+
+.SH OPTIONS
+.IP \-v
+verbose, prints debug information and the internal pressed key buffer upon
+change acting as a crude keylogger :^)
+.IP \-d
+dump, used for debugging, it prints the whole hotkey list along with the
+information about the hotkeys (matching type, keys and associated command).
+.IP \-h
+prints help message and exits
+.IP "\-c file"
+override default configuration file location, instead using the specified
+.I file
+as the temporary config file
+
+.SH FILES
+The configuration files are selected in the following order:
+.I $XDG_CONFIG_HOME/hkd/config, $HOME/.config/hkd/config, /etc/hkd/config
+
+.SH USAGE
+For hkd to work properly the user starting it needs to be either in the
+.I root
+group or the
+.I input
+group, this is needed to acces the appropriate system files.
+.PP
+The config file is parsed as follows:
+.IP #
+lines staring with '#' are comments
+.PP
+Every new hotkey starts with one of these markers:
+.IP \-
+normal matching
+.IP *
+fuzzy matching
+.IP @
+alias declaration
+.PP
+Normal matching means that the keys need to be pressed in the same order as they
+are declared, whereas fuzzy matching means that they can be pressed in any order.
+Aliases are a name-command pair that can be used instead of commands in hotkey
+definitions.
+
+
+.SS "Hotkey definition"
+Leading or trailing whitespaces are ignored, whitespaces between the marker and
+the ':' are also ignored, whitespaces after the ':' ignored until the first
+non-whitespace character.
+The general syntax for an hotkey is:
+.EX
+<'*' or '\-'> <keys>: <command>
+.EE
+
+
+.SS "Alias definition"
+The general syntax for aliases is:
+.EX
+@ <name>: <command>
+.EE
+beware that alias names are case sensitive.
+
+.SS "Command field"
+The command string gets analyzed and every instance of known aliases gets
+replaced with the appropriate command, this also applies for the command field
+in alias definitions.
+
+Upon execution commads are expanded using 
+.BR wordexp(3)
+so "|&;<>(){}" as well as unescaped newlines are forbidden and will result in
+error, read the manpage for
+.BR wordexp(3)
+for more info about the possible word expansion capabilities.
+
+
+.SS "Keys field"
+Possible keys are taken directly from linux's input.h header file, those
+include normal keys, multimedia keys, special keys and button events, for the
+full list of available keys either refer to the linux header file input.h or
+keys.h in this project.
+Keys as specified by the kernel are named "KEY_<name>", in this
+configuration file only the <name> is required.
+Key names are case-insensitive and are parsed as a list of comma separated
+strings, such as: 'leftmeta,UP', 'VOLUMEUP' or 'leftctrl,LEFTALT,cancel'.
+Some aliases are in place to avoid overly verbose repetitive definitions, those
+are: CTRL \-> LEFTCTRL, META \-> LEFTMETA, ALT \-> LEFTALT, SHIFT \-> LEFTSHIFT,
+PRINTSCR \-> SYSRQ, MIC_MUTE \-> F20.
+.SS "Live reloading"
+hkd can live reload the configuration file by signaling it with 
+.I SIGUSR1
+for example with the command "$ pkill -USR1 -x hkd", for easier use one could add
+an hotkey to execute that command.
+
+.SH EXAMPLES
+This is a valid config file example
+.PP
+.EX
+# Contents of
+# $HOME/.config/hkd/config
+@ term: xterm
+\- LEFALT,leftshift,S: ~/screenshot.sh \-c
+* LEFTMETA,1, D: $SCRIPTDIR/wonkyscript
+\- LEFTMETA ,LEFTALT,LEFTSHIFT,S : shutdown now
+# term gets substituted with xterm
+\- leftmeta, enter : term
+.EE
+
+.SH BUGS
+.PP
+Known bugs are:
+.IP -
+Child processes
+are waited at program exit possibly causing the process tree to hang as there is
+no real child process control
+.IP -
+Upon removing or adding devices the program waits a couple of seconds for the
+devices to settle, during this time the program stops working.
+.PP
+To send bug reports open an issue or submint a merge request at
+https://git.alemauri.eu/alema/hkd
+
+.SH AUTHOR
+Alessandro Mauri <alemauri001@gmail.com>
+
+.SH "SEE ALSO"
+.BR sxhkd(1),
+.BR thd(1)

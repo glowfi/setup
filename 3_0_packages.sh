@@ -159,7 +159,6 @@ install "kdenlive" "pac"
 ### EXTRAS
 install "onlyoffice-bin" "yay"
 install "tectonic" "pac"
-install "stellarium-bin" "yay"
 
 # ======================================================= END ======================================================================================
 

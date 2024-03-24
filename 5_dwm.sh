@@ -132,7 +132,7 @@ sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
 sed "s/\$USER/$USER/" .gtkrc-2.0
 
 
-# SETUP dxhd
+# SETUP hkd
 
 echo ""
 echo "-------------------------------------------------------------------------------"
@@ -140,10 +140,13 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-install "dxhd-bin" "yay"
-mkdir -p $HOME/.config/dxhd
-mv $HOME/setup/configs/dxhd/dxhd_dwm.sh $HOME/.config/dxhd
-mv $HOME/.config/dxhd/dxhd_dwm.sh $HOME/.config/dxhd/dxhd.sh
+cp -r ~/setup/configs/hkd/ ~/.config/
+cd ~/.config/hkd
+mv ~/.config/hkd/scripts_dwm/ ~/.config/hkd/scripts
+mv ~/.config/hkd/config_dwm ~/.config/hkd/config
+rm -rf scripts_kde config_kde
+make clean 
+make
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
@@ -188,7 +191,7 @@ picom -b
 ${pipeStr}
 "'
 # Hotkey daemon
-dxhd -b &
+$HOME/.config/hkd/hkd &
 
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &

@@ -1,0 +1,17 @@
+Improvements
+============
+
+* Add option for autorepeat (useful for volume)
+	- User can configure autorepeat speed
+
+Future plans
+============
+
+Make another tool or modify this one to use libxkbcommon instead of the kernel's
+key names in order to support all keyboard layouts, it would not defeat the
+purpose of the tool and libxkbcommon is and can be ported to all unix systems.
+
+Possibly add an option to use a config.h file instead of runtime config files,
+this would eliminate the need for a parser but would increase the footprint
+of the program as most of the stuff would be stored on the stack (it is mostly
+negligible)
