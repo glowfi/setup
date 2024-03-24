@@ -59,12 +59,9 @@
 
 ## Increase Mic Volume
 * LEFTMETA,F11: ~/.config/hkd/scripts/increase_mic_volume.sh
-#super + F11
-#
+
 ## Decrease Mic Volume
 * LEFTMETA,F9: ~/.config/hkd/scripts/decrease_mic_volume.sh
-#super + F9
 
 ## Mute/Unmute Mic Volume
 * LEFTMETA,F10: ~/.config/hkd/scripts/mute_mic_volume.sh
-#super + F10
