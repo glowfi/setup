@@ -6,7 +6,7 @@ if [[ "$varInit" = "systemd" ]]; then
 else
 	ctl="loginctl"
 fi
-case "$(printf "Lock\nSleep\nReboot\nShutdown" | dmenu -p "Choose:" -i)" in
+case "$(printf "Lock\nSleep\nReboot\nShutdown" | bemenu -p "Choose:" -i)" in
 'Lock') screenlocker ;;
 'Sleep') "$ctl" suspend ;;
 'Reboot') "$ctl" reboot ;;

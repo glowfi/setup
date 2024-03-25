@@ -946,5 +946,8 @@ export NNN_FCOLORS='c1e20406006033f7c6d6abc4'
 export NNN_FIFO='/tmp/nnn.fifo'
 export NNN_TRASH=1
 
+# Clipmenu
+export CM_LAUNCHER=bemenu
+
 # QT Platform
 export QT_QPA_PLATFORMTHEME=qt6ct

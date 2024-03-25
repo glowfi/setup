@@ -76,7 +76,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-p","Run:","-i","-fn", dmenufont , NULL };
+static const char *dmenucmd[] = { "bemenu-run", "-m", dmenumon, "-p","Run:","-i","-fn", dmenufont , NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include "movestack.c"

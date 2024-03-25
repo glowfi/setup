@@ -1,6 +1,6 @@
 #!/bin/sh
 
-choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Default Profile[Librewolf]" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
+choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Default Profile[Librewolf]" | bemenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" != "" ]]; then
 	if [[ "$choice" = "1" ]]; then
 		brave --profile-directory=Default

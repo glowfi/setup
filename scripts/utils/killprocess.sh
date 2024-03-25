@@ -2,12 +2,12 @@
 
 if [[ "$1" = "unattended" ]]; then
 	# Get Processes
-	getProcesses=$(ps aux | sed "1d" | dmenu -i -l 20 -p "Kill:")
+	getProcesses=$(ps aux | sed "1d" | bemenu -i -l 20 -p "Kill:")
 
 	# Multi Processes
 	if [[ "$(echo "$getProcesses" | wc -l)" -gt 1 ]]; then
 
-		# Delete the last process [dmenu fix]
+		# Delete the last process [bemenu fix]
 		getProcesses=$(echo "$getProcesses" | sed '$d')
 
 		# Kill based on process id

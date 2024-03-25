@@ -338,8 +338,8 @@ firefox -CreateProfile fourth
 
 ## Alternate Browser
 #ctrl + alt + b
-choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|dmenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
-choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf\n4.default-release[Firefox] : (ArkenFoxP) \n5.second[Firefox] : (ArkenFoxT)\n6.third[Firefox] : (BetterFOX)\n7.fourth[Firefox] : (Normal)" | dmenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
+choice=$(printf "1.default-release : (ArkenFoxP) \n2.second : (ArkenFoxT)\n3.third : (BetterFOX)\n4.fourth : (Normal)"|bemenu -i -p "Choose Profile :" | awk -F":" '{print $1}'|awk -F"." '{print $2}'|xargs)
+choice=$(echo -e "1.Default Profile[Brave]\n2.Temp Profile[Brave]\n3.Librewolf\n4.default-release[Firefox] : (ArkenFoxP) \n5.second[Firefox] : (ArkenFoxT)\n6.third[Firefox] : (BetterFOX)\n7.fourth[Firefox] : (Normal)" | bemenu -p "Choose Profile :" -i | awk -F"." '{print $1}')
 if [[ "$choice" = "4" ]]; then
     libw "firefox:$(date +%s)" "default-release" "firefox"
 fi

@@ -210,8 +210,8 @@ device_menu() {
 	trusted=$(device_trusted "$mac")
 	options="$connected\n$paired\n$trusted\n$divider\n$goback\nExit"
 
-	# Open dmenu menu, read chosen option
-	chosen="$(echo -e "$options" | run_dmenu "$device_name")"
+	# Open bemenu menu, read chosen option
+	chosen="$(echo -e "$options" | run_bemenu "$device_name")"
 
 	# Match chosen option to command
 	case $chosen in
@@ -233,7 +233,7 @@ device_menu() {
 	esac
 }
 
-# Opens a dmenu menu with current bluetooth status and options to connect
+# Opens a bemenu menu with current bluetooth status and options to connect
 show_menu() {
 	# Get menu options
 	if power_on; then
@@ -262,15 +262,15 @@ show_menu() {
 		pairable=$(pairable_on)
 		discoverable=$(discoverable_on)
 
-		# Options passed to dmenu
+		# Options passed to bemenu
 		options="$devices\n$divider\n$power\n$scan\n$pairable\n$discoverable\nExit"
 	else
 		power="Power: off"
 		options="$power\nExit"
 	fi
 
-	# Open dmenu menu, read chosen option
-	chosen="$(echo -e "$options" | run_dmenu "Bluetooth")"
+	# Open bemenu menu, read chosen option
+	chosen="$(echo -e "$options" | run_bemenu "Bluetooth")"
 
 	# Match chosen option to command
 	case $chosen in
@@ -302,16 +302,16 @@ show_menu() {
 
 original_args=("$@")
 
-# dmenu command to pipe into. Extra arguments to dmenu-bluetooth are passed through to dmenu. This
+# bemenu command to pipe into. Extra arguments to bemenu-bluetooth are passed through to bemenu. This
 # allows the user to set fonts, sizes, colours, etc.
-run_dmenu() {
-	dmenu "${original_args[@]}" -i -p "$1"
+run_bemenu() {
+	bemenu "${original_args[@]}" -i -p "$1"
 }
 
 print_help() {
 	echo "usage: $0 [--help] [--status] [--connected-icon [ICON]]"
 	echo ""
-	echo "A script that generates a dmenu menu that uses bluetoothctl to connect to bluetooth devices and display status info."
+	echo "A script that generates a bemenu menu that uses bluetoothctl to connect to bluetooth devices and display status info."
 	echo ""
 	echo "options:"
 	echo "--help                   show this help message and exit"

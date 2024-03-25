@@ -54,10 +54,12 @@ install "nsxiv-git" "yay"
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 
-# Install DEMNU
+# Install Launcher-menu
 
-cd $HOME/setup/configs/DWM/dmenu
-sudo make clean install
+cd $HOME/setup/configs/
+sudo mv ./bemenu-app/ /usr/local/bin/
+sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
+sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
 cd
 
 # Install clipmenu
