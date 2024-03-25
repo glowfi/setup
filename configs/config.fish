@@ -60,7 +60,7 @@ alias disp='kitty +kitten icat'
 alias diff='kitty +kitten diff'
 
 # NNN
-alias n='nnn -d -e'
+alias n='nnn -d -e -U'
 
 # Reload dxhd
 alias dxrel='dxhd -r'
