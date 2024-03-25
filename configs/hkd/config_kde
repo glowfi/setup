@@ -36,9 +36,6 @@
 ## Dmenu
 * LEFTMETA,P: dmenu_run -p "Run:" -i
 
-## Scrap YT
-* LEFTMETA,Y: fish -c "sYT -p "dmenu""
-
 ## Random Wallpaper
 * LEFTMETA,Z: ~/.config/hkd/scripts/random_wall.sh
 

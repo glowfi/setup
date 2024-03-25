@@ -8,7 +8,7 @@ mkdir -p "$cache"
 start_ueberzug() {
 	rm -f "$FIFO"
 	mkfifo "$FIFO"
-	ueberzug layer --parser json <"$FIFO" &
+	ueberzugpp layer --parser json <"$FIFO" &
 	exec 3>"$FIFO"
 }
 stop_ueberzug() {
