@@ -21,9 +21,6 @@
 ## Screenshot
 * ALT,A: ~/.config/hkd/scripts/screenshot.sh
 
-## Scrap YT
-* LEFTMETA,Y: fish -c "sYT -p "dmenu""
-
 ## Random Wallpaper
 * LEFTMETA,Z: feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
 
