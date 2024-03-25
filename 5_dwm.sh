@@ -244,19 +244,19 @@ cd
 echo "Done Installing DWM!"
 echo ""
 
-# Install DEMNU
+# Install Launcher-menu
 
 echo ""
-echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing DMENU ...-----------------------------------------------------------------"
-echo "---------------------------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------------------------------------------"
+echo "--------------Installing Launcher MENU ...-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------------------------------------------------"
 echo ""
 
-cd $HOME/setup/configs/DWM/dmenu/
-sudo make clean install
+cd $HOME/setup/configs/
+sudo mv ./bemenu-app/ /usr/local/bin/
+sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
+sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
 cd
-echo "Done Installing DEMNU!"
-echo ""
 
 # Install screenlocker
 

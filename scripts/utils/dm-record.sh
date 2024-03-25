@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Usage:
-# `$0`: Ask for recording type via dmenu
+# `$0`: Ask for recording type via bemenu
 # `$0 screencast`: Record both audio and screen
 # `$0 video`: Record only screen
 # `$0 audio`: Record only audio
@@ -82,7 +82,7 @@ audio() {
 }
 
 askrecording() {
-	choice=$(printf "screencast\\nvideo\\nvideo selected\\naudio\\nwebcam\\nwebcam (hi-def)" | dmenu -i -p "Select recording style:")
+	choice=$(printf "screencast\\nvideo\\nvideo selected\\naudio\\nwebcam\\nwebcam (hi-def)" | bemenu -i -p "Select recording style:")
 	case "$choice" in
 	screencast) screencast ;;
 	audio) audio ;;
@@ -94,7 +94,7 @@ askrecording() {
 }
 
 asktoend() {
-	response=$(printf "No\\nYes" | dmenu -i -p "Recording still active. End recording?") &&
+	response=$(printf "No\\nYes" | bemenu -i -p "Recording still active. End recording?") &&
 		[ "$response" = "Yes" ] && killrecording
 }
 

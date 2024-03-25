@@ -1,6 +1,6 @@
 #!/bin/bash
 
-getChoice=$(echo -e "1.Install Powerplan\n2.Remove Powerplan\n3.Force Powersave\n4.Force Performance" | dmenu -i -p "Choose:" | awk -F"." '{print $1}')
+getChoice=$(echo -e "1.Install Powerplan\n2.Remove Powerplan\n3.Force Powersave\n4.Force Performance" | bemenu -i -p "Choose:" | awk -F"." '{print $1}')
 
 if [[ "$getChoice" = "1" ]]; then
 	sudo -A auto-cpufreq --install

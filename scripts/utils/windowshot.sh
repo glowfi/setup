@@ -37,7 +37,7 @@ root() {
 
 # Default Prompt For Selection
 prompter() {
-	case "$(printf 'a selected area\ncurrent window\nfull screen' | dmenu -l 6 -i -p 'Screenshot which area?')" in
+	case "$(printf 'a selected area\ncurrent window\nfull screen' | bemenu -l 6 -i -p 'Screenshot which area?')" in
 	"a selected area") region ;;
 	"current window") window ;;
 	"full screen") root ;;
