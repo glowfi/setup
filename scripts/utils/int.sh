@@ -11,7 +11,9 @@ takeScreenshot() {
 	SCREENSHOTNAME="${SCREENSHOTDIR}/$(print_date).png"
 
 	killall unclutter
+	sed -i "35s/.*/fading = false;/" ~/.config/picom/picom.conf
 	import "${SCREENSHOTNAME}"
+	sed -i "35s/.*/fading = true;/" ~/.config/picom/picom.conf
 	setsid unclutter &
 }
 
