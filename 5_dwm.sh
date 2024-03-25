@@ -147,6 +147,7 @@ mv ~/.config/hkd/config_dwm ~/.config/hkd/config
 rm -rf scripts_kde config_kde
 make clean 
 make
+sudo usermod -a -G input "$USER"
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
