@@ -16,6 +16,7 @@ if [ -f "$FILE" ]; then
 	qdbus6 org.kde.KWin /KWin reconfigure
 else
 	nohup $HOME/.config/cortile/cortile &
+	rm nohup.out
 	touch "$FILE"
 	kwriteconfig6 --file kwinrc --group Plugins --key diminactiveEnabled true
 	kwriteconfig6 --file breezerc --group "Windeco Exception 0" --key Enabled true
