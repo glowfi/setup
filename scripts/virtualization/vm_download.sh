@@ -1609,6 +1609,10 @@ win10ltscurl() {
 	winget "win10x64-enterprise-ltsc-eval"
 }
 
+hirens_bootcd_pe_url() {
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso" -o "$VMS_ISO/hirens_bootcd_pe.iso"
+}
+
 # Bootable USB
 ventoyurl() {
 	mirror="https://github.com/ventoy/Ventoy"
@@ -1631,7 +1635,7 @@ sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
 notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
-windows=(windows7 windows8_1 windows10 windows11 win10ltsc)
+windows=(windows7 windows8_1 windows10 windows11 win10ltsc hirens_bootcd_pe)
 bootable_usb=(ventoy balena_etcher)
 
 # All distributions
@@ -1791,6 +1795,7 @@ windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
 win10ltsc=("Windows10ltsc" "amd64" "longterm-support" "win10ltscurl")
+hirens_bootcd_pe=("hirens_bootcd_pe" "amd64" "latest" "hirens_bootcd_pe_url")
 
 # Bootable USB
 ventoy=("ventoy" "amd64" "latest" "ventoyurl")
