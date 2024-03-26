@@ -313,6 +313,9 @@ sudo tee -a /etc/environment << EOF
 
 # KDE file picker
 GTK_USE_PORTAL=1
+
+# Clipmenu
+CM_LAUNCHER=bemenu
 EOF
 
 # Restore Settings
