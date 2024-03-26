@@ -56,7 +56,9 @@ cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 
 # Install Launcher-menu
 
-cd $HOME/setup/configs/
+cd $HOME/setup/configs/bemenu-app/
+./help.sh x11
+cd ..
 sudo mv ./bemenu-app/ /usr/local/bin/
 sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
 sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
