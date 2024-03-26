@@ -252,6 +252,7 @@ echo "--------------Installing Launcher MENU ...--------------------------------
 echo "-----------------------------------------------------------------------------------------------------------"
 echo ""
 
+sudo rm -rf /usr/local/bin/bemenu /usr/local/bin/bemenu-app/ /usr/local/bin/bemenu-run 
 cd $HOME/setup/configs/bemenu-app/
 ./help.sh x11
 cd ..
