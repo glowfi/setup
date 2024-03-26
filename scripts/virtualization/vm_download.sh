@@ -1610,7 +1610,8 @@ win10ltscurl() {
 }
 
 hirens_bootcd_pe_url() {
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso" -o "$VMS_ISO/hirens_bootcd_pe.iso"
+	cd "${VMS_ISO}"
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso"
 }
 
 # Bootable USB
