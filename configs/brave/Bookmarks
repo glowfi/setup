@@ -29,6 +29,15 @@
                     "name": "h2oGPT",
                     "type": "url",
                     "url": "https://gpt.h2o.ai/"
+                },
+                {
+                    "date_added": "",
+                    "date_last_used": "0",
+                    "guid": "",
+                    "id": "17",
+                    "name": "perplexity",
+                    "type": "url",
+                    "url": "https://www.perplexity.ai/"
                 }
             ],
             "date_added": "",
