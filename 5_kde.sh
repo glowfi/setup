@@ -317,8 +317,13 @@ sudo tee -a /etc/environment << EOF
 # KDE file picker
 GTK_USE_PORTAL=1
 
+# ===================== XORG Dependent ===================================
+
 # Clipmenu
 CM_LAUNCHER=bemenu
+
+# ===================== END Dependent ====================================
+
 EOF
 
 # Restore Settings
