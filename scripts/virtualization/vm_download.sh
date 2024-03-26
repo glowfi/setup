@@ -6,6 +6,9 @@ helpsection() {
 	echo -e "|\e[34m Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       \e[0m|"
 	echo -e "|\e[34m change the download URL or something else, it might be required to do manual changes.                                                  \e[0m|"
 	echo -e "|\e[35m                                                                                                                                        \e[0m|"
+	echo -e "|\e[33m  Supported : Arch-based-distros , DEB-based-distros , RPM-based-distros                                                                \e[0m|"
+	echo -e "|\e[33m              Source-based-linux-distros , 'Containers and data-center-based-os' , 'BSD, NAS, Firewall'                                 \e[0m|"
+	echo -e "|\e[33m              Not-linux[openindiana minix haiku menuetos kolibri reactos freedos] , Windows , Bootable_USB , Recovery Environment       \e[0m|"
 	echo -e "|\e[33m Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. \e[0m|"
 	echo -e "|\e[35m                                                                                                                                        \e[0m|"
 	echo -e "|\e[31m Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf, mkisofs                                                       \e[0m|"
@@ -1609,12 +1612,8 @@ win10ltscurl() {
 	winget "win10x64-enterprise-ltsc-eval"
 }
 
-hirens_bootcd_pe_url() {
-	cd "${VMS_ISO}"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso"
-}
+## Bootable USB
 
-# Bootable USB
 ventoyurl() {
 	mirror="https://github.com/ventoy/Ventoy"
 	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
@@ -1627,6 +1626,22 @@ balena_etcher_url() {
 	wget "${mirror}/releases/download/v$ver/balenaEtcher-${ver}-x64.AppImage" -O "$VMS_ISO/balena_etcher.AppImage"
 }
 
+## Recovery Environment
+
+hirens_bootcd_pe_url() {
+	cd "${VMS_ISO}"
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso"
+	cd
+}
+
+medicat_url() {
+	mirror="https://medicatusb.com/"
+	cd "${VMS_ISO}"
+	link=$(curl -s "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep dog | awk -F"=" '{print $2}' | cut -d" " -f1 | xargs)
+	aria2c -j 16 -x 16 -s 16 -k 1M "${link}"
+	cd
+}
+
 # Categories
 arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
 deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux vanillaos tails_os)
@@ -1636,13 +1651,14 @@ sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
 notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
-windows=(windows7 windows8_1 windows10 windows11 win10ltsc hirens_bootcd_pe)
+windows=(windows7 windows8_1 windows10 windows11 win10ltsc)
 bootable_usb=(ventoy balena_etcher)
+recovery_environment=(hirens_bootcd_pe medicat)
 
 # All distributions
-category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows" "Bootable_USB")
-distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows" "bootable_usb")
-distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}" "${bootable_usb[@]}")
+category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows" "Bootable_USB" "Recovery Environment")
+distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows" "bootable_usb" "recovery_environment")
+distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}" "${bootable_usb[@]}" "${recovery_environment[@]}")
 
 # Legend ## Distroname ## Arch  ## Type     ## Download URL function name
 
@@ -1796,11 +1812,14 @@ windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
 win10ltsc=("Windows10ltsc" "amd64" "longterm-support" "win10ltscurl")
-hirens_bootcd_pe=("hirens_bootcd_pe" "amd64" "latest" "hirens_bootcd_pe_url")
 
 # Bootable USB
 ventoy=("ventoy" "amd64" "latest" "ventoyurl")
 balena_etcher=("balena_etcher" "amd64" "latest" "balena_etcher_url")
+
+# Recovery Environment
+hirens_bootcd_pe=("hirens_bootcd_pe" "amd64" "latest" "hirens_bootcd_pe_url")
+medicat=("medicat" "amd64" "latest" "medicat_url")
 
 drawmenu() {
 	q=0
@@ -1817,6 +1836,7 @@ drawmenu() {
 }
 
 normalmode() {
+	mkdir -p "${VMS_ISO}"
 	echo -e "\n\n"
 	allDistros=$(echo "$allDistros" | sed '/^\s*$/d')
 	drawmenu
