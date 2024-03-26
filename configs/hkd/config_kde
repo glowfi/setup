@@ -13,7 +13,7 @@
 * ALT,T: ~/.config/hkd/scripts/tile.sh
 
 ## PlasmaShell Replace
-* LEFTMETA,LEFTSHIFT,Q: nohup plasmashell --replace &
+* LEFTMETA,LEFTSHIFT,Q: nohup plasmashell --replace &;rm nohup.out
 
 ## Logout/Restart/Shutdown
 * LEFTMETA,X: ~/.config/hkd/scripts/logout_restart_shutdown.sh
