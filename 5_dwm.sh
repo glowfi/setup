@@ -348,6 +348,14 @@ xdg-settings set default-web-browser brave-browser.desktop
 echo "Done seting default application!"
 echo ""
 
+# Add Env
+
+sudo tee -a /etc/environment << EOF
+
+# Clipmenu
+CM_LAUNCHER=bemenu
+EOF
+
 # Remove kwallet
 
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
