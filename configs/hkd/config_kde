@@ -63,6 +63,9 @@
 ## Mute/Unmute Volume
 * LEFTMETA,F6: ~/.config/hkd/scripts/mute_vol.sh
 
+## Nightcolor
+* LEFTMETA,R: ~/.config/hkd/scripts/nightcolor.sh
+
 ## Increase Brightness
 * LEFTMETA,F3: ~/.config/hkd/scripts/increase_brightness.sh
 

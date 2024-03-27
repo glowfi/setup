@@ -32,6 +32,8 @@ install "powerdevil xdg-desktop-portal-kde" "pac"
 
 install "kwrited kwin kgamma kinfocenter kscreen systemsettings sddm sddm-kcm libnotify konqueror" "pac"
 
+install "redshift" "pac"
+
 # CORE PACKAGES
 
 # ===================== XORG Dependent ===================================
@@ -130,6 +132,9 @@ ${pipeStr}
 "'
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
+
+# Bluelight Filter
+redshift -P -O 4500K &
 
 # Clipboard
 clipmenud &
