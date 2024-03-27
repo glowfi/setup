@@ -16,7 +16,7 @@ base64_html() {
 	# Create an IMG template
 	img="<img src='data:image/"$fmt";base64, $(base64 -w 0 "$1")' />"
 
-	echo "${img}"
+	echo "base64 img: ${img}"
 	echo "$img" | xclip -sel c
 	echo "Copied to clipboard!"
 	notify-send "Copied to clipboard!"
@@ -31,8 +31,8 @@ base64_encode() {
 	encoded=$(echo -n "$input" | base64)
 
 	# Print the encoded string
-	echo "${encoded}"
-	echo "Encoded string: $encoded" | xclip -sel c
+	echo "Encoded string: $encoded"
+	echo "$encoded" | xclip -sel c
 	echo "Copied to clipboard!"
 	notify-send "Copied to clipboard!"
 }
@@ -45,8 +45,8 @@ base64_decode() {
 	decoded=$(echo -n "$input" | base64 -d)
 
 	# Print the decoded string
-	echo "${decoded}"
-	echo "Decoded string: $decoded" | xclip -sel c
+	echo "Decoded string: $decoded"
+	echo "$decoded" | xclip -sel c
 	echo "Copied to clipboard!"
 	notify-send "Copied to clipboard!"
 }
