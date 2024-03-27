@@ -1,67 +1,67 @@
 ###### HOTKEY CONFIG ######
 
 ## File Manager
-* LEFTMETA,F: fish -c "pcmanfm"
+- LEFTMETA,F: fish -c "pcmanfm"
 
 ## Logout/Restart/Shutdown
-* LEFTMETA,X: ~/.config/hkd/scripts/logout_restart_shutdown.sh
+- LEFTMETA,X: ~/.config/hkd/scripts/logout_restart_shutdown.sh
 
 ## Terminal
-* LEFTMETA,T: kitty
+- LEFTMETA,T: kitty
 
 ## Browser
 - LEFTMETA,B: ~/.config/hkd/scripts/browser.sh
 
 ## Network
-* LEFTMETA,N: kitty -e "nmtui"
+- LEFTMETA,N: kitty -e "nmtui"
 
 ## Audio
-* LEFTMETA,V: kitty -e "pulsemixer"
+- LEFTMETA,V: kitty -e "pulsemixer"
 
 ## Screenshot
-* ALT,A: ~/.config/hkd/scripts/screenshot.sh
+- ALT,A: ~/.config/hkd/scripts/screenshot.sh
 
 ## Random Wallpaper
-* LEFTMETA,Z: feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
+- LEFTMETA,Z: feh --bg-fill "$(fd . ~/wall/ --type file | shuf -n 1)"
 
 ## Favourite Wallpaper
-* LEFTMETA,C: feh --bg-fill ~/wall/"$(printf "143.jpg\n40.png\n103.png" | shuf -n 1)"
+- LEFTMETA,C: feh --bg-fill ~/wall/"$(printf "143.jpg\n40.png\n103.png" | shuf -n 1)"
 
 ## Clipboard
-* LEFTMETA,E: clipmenu
+- LEFTMETA,E: clipmenu
 
 ## Intelligent Tools
-* ALT,I: int.sh
+- ALT,I: int.sh
 
 ## Kill Process
-* ALT,K: $HOME/.local/bin/killprocess.sh "unattended"
+- ALT,K: $HOME/.local/bin/killprocess.sh "unattended"
 
 ## Activate Deactivate Easyeffects
-* ALT,G: ~/.config/hkd/scripts/easyeffects.sh
+- ALT,G: ~/.config/hkd/scripts/easyeffects.sh
 
 ## Increase Volume
-* LEFTMETA,F8: ~/.config/hkd/scripts/increase_vol.sh
+- LEFTMETA,F8: ~/.config/hkd/scripts/increase_vol.sh
 
 ## Decrease Volume
-* LEFTMETA,F7: ~/.config/hkd/scripts/decrease_vol.sh
+- LEFTMETA,F7: ~/.config/hkd/scripts/decrease_vol.sh
 
 ## Mute/Unmute Volume
-* LEFTMETA,F6: ~/.config/hkd/scripts/mute_vol.sh
+- LEFTMETA,F6: ~/.config/hkd/scripts/mute_vol.sh
 
 ## Nightcolor
-* LEFTMETA,R: ~/.config/hkd/scripts/nightcolor.sh
+- LEFTMETA,R: ~/.config/hkd/scripts/nightcolor.sh
 
 ## Increase Brightness
-* LEFTMETA,F3: ~/.config/hkd/scripts/increase_brightness.sh
+- LEFTMETA,F3: ~/.config/hkd/scripts/increase_brightness.sh
 
 ## Decrease Brightness
-* LEFTMETA,F2: ~/.config/hkd/scripts/decrease_brighness.sh
+- LEFTMETA,F2: ~/.config/hkd/scripts/decrease_brighness.sh
 
 ## Increase Mic Volume
-* LEFTMETA,F11: ~/.config/hkd/scripts/increase_mic_volume.sh
+- LEFTMETA,F11: ~/.config/hkd/scripts/increase_mic_volume.sh
 
 ## Decrease Mic Volume
-* LEFTMETA,F9: ~/.config/hkd/scripts/decrease_mic_volume.sh
+- LEFTMETA,F9: ~/.config/hkd/scripts/decrease_mic_volume.sh
 
 ## Mute/Unmute Mic Volume
-* LEFTMETA,F10: ~/.config/hkd/scripts/mute_mic_volume.sh
+- LEFTMETA,F10: ~/.config/hkd/scripts/mute_mic_volume.sh
