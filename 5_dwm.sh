@@ -210,7 +210,7 @@ volnoti &
 xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Bluelight Filter
-$HOME/.local/bin/bfilter.sh &
+redshift -P -O 4500K &
 
 # dwmblocks
 dwmblocks &
