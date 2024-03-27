@@ -215,6 +215,9 @@ $HOME/.local/bin/bfilter.sh &
 # dwmblocks
 dwmblocks &
 
+# Window switcher
+alttab &
+
 # Low Battery
 find "$HOME/.cache/" -name "lowbat*" -delete
 $HOME/.local/bin/lowbat.sh &
@@ -226,6 +229,14 @@ done
 
 # DWM Execute
 exec $HOME/.config/DWM/dwm' >>$HOME/.xinitrc
+
+# Window Switcher
+
+git clone https://github.com/sagb/alttab.git
+cd alttab
+./configure && sudo make install
+cd ..
+sudo rm -rf alttab
 
 # Install DWM
 
