@@ -216,7 +216,7 @@ $HOME/.local/bin/bfilter.sh &
 dwmblocks &
 
 # Window switcher
-alttab -w 1 &
+alttab -fg "#d58681" -bg "#4a4a4a" -frame "#eb564d" -t 128x150 -i 127x64 -w 1 &
 
 # Low Battery
 find "$HOME/.cache/" -name "lowbat*" -delete
