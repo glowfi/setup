@@ -125,7 +125,7 @@ fi
 touch $HOME/.xprofile
 
 echo "# Hotkey daemon
-$HOME/.config/hkd/hkd &
+~/.config/hkd/hkd &
 
 # Pipewire
 ${pipeStr}
