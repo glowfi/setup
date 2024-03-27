@@ -57,6 +57,8 @@
 
 -   fullscreen
 -   always center
+-   ewmhtags
+-   focusonnetactive
 
 ## How to Install
 
