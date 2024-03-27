@@ -192,7 +192,7 @@ picom -b
 ${pipeStr}
 "'
 # Hotkey daemon
-$HOME/.config/hkd/hkd &
+~/.config/hkd/hkd &
 
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
