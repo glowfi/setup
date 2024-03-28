@@ -1,0 +1,16 @@
+### Add Below shortcut
++ Add Fullscreen shortcut
++ make window fullscreen shortcut
+
+### Remove Below Shortcuts
++ make Meta+B
++ make Meta+E
++ make Meta+P
++ make Meta+T
+
+### Enable/Disable below features
++ Set Screen-edge to none top left corner
++ Set Default Terminal
++ Set Mouse acc profile to adaptive
++ Enable Night Color
++ Disable Screenlocking and configure screenlocker

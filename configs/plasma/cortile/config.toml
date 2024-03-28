@@ -177,7 +177,7 @@ master_decrease = "Control-Shift-KP_Subtract"
 window_next = "Mod4-j"
 
 # Moves focus to the previous window (KP_8 = Num_8).
-# window_previous = "Control-Shift-KP_8"
+window_previous = "Mod4-h"
 
 # The commands above will affect all screens if this key is pressed in addition (Mod1 = Alt_L).
 # mod_screens = "Mod1"
