@@ -34,7 +34,7 @@
 - ALT,A: ~/.config/hkd/scripts/screenshot.sh
 
 ## bemenu
-- LEFTMETA,P: bemenu_run
+- LEFTMETA,P: bemenu-run
 
 ## Random Wallpaper
 - LEFTMETA,Z: ~/.config/hkd/scripts/random_wall.sh
