@@ -661,10 +661,10 @@ sudo rc-service spice-vdagent start
 ```fish
 sudo echo ""
 curl "https://ollama.ai/install.sh" | sh
-source $HOME/.config/fish/config.fish
 nohup ollama serve &
 rm nohup.out
-ollama pull mistral:latest
+ollama pull zephyr:7b-beta
+ollama pull gemma:7b
 ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
 
 cleanup
