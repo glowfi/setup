@@ -59,7 +59,17 @@ fish -c "sYT -p "bemenu""
 
 ## NighColor
 #super + r
-fish -c "sYT -p "bemenu""
+FILE="$HOME/.config/nightcolor"
+
+if [ -f "$FILE" ]; then
+	notify-send "NighColor Disabled!"
+	rm ""${FILE}
+	redshift -x
+else
+	notify-send "NighColor Enabled!"
+	touch "${FILE}"
+	redshift -P -O 4500K
+fi
 
 ## Random Wallpaper
 #super + z
