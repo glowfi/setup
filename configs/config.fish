@@ -63,7 +63,7 @@ alias diff='kitty +kitten diff'
 alias n='nnn -d -e -U'
 
 # Reload dxhd
-alias dxrel='pkill -USR1 -x hkd'
+alias dxrel='dxhd -r'
 
 # Git
 alias gt='gitui'
