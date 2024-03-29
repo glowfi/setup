@@ -38,7 +38,17 @@
                     "name": "perplexity",
                     "type": "url",
                     "url": "https://www.perplexity.ai/"
+                },
+                {
+                    "date_added": "",
+                    "date_last_used": "0",
+                    "guid": "",
+                    "id": "18",
+                    "name": "ollama-webui",
+                    "type": "url",
+                    "url": "localhost:8080"
                 }
+
             ],
             "date_added": "",
             "date_last_used": "0",
