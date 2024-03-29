@@ -140,7 +140,11 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-install "dxhd-bin" "yay"
+git clone https://github.com/dakyskye/dxhd.git
+cd dxhd
+sudo make install
+cd ..
+rm -rf dxhd
 mkdir -p $HOME/.config/dxhd
 mv $HOME/setup/configs/dxhd/dxhd_dwm.sh $HOME/.config/dxhd
 mv $HOME/.config/dxhd/dxhd_dwm.sh $HOME/.config/dxhd/dxhd.sh
