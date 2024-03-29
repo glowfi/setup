@@ -206,13 +206,10 @@ volnoti &
 xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
 
 # Bluelight Filter
-redshift -P -O 4500K &
+$HOME/.local/bin/bfilter.sh &
 
 # dwmblocks
 dwmblocks &
-
-# Window switcher
-alttab -fg "#d58681" -bg "#4a4a4a" -frame "#eb564d" -t 128x150 -i 127x64 -w 1 &
 
 # Low Battery
 find "$HOME/.cache/" -name "lowbat*" -delete
@@ -225,14 +222,6 @@ done
 
 # DWM Execute
 exec $HOME/.config/DWM/dwm' >>$HOME/.xinitrc
-
-# Window Switcher
-
-git clone https://github.com/sagb/alttab.git
-cd alttab
-./configure && sudo make install
-cd ..
-sudo rm -rf alttab
 
 # Install DWM
 
@@ -251,22 +240,19 @@ cd
 echo "Done Installing DWM!"
 echo ""
 
-# Install Launcher-menu
+# Install DEMNU
 
 echo ""
-echo "-----------------------------------------------------------------------------------------------------------"
-echo "--------------Installing Launcher MENU ...-----------------------------------------------------------------"
-echo "-----------------------------------------------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
+echo "--------------Installing DMENU ...-----------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------"
 echo ""
 
-sudo rm -rf /usr/local/bin/bemenu /usr/local/bin/bemenu-app/ /usr/local/bin/bemenu-run 
-cd $HOME/setup/configs/bemenu-app/
-./help.sh x11
-cd ..
-sudo mv ./bemenu-app/ /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
+cd $HOME/setup/configs/DWM/dmenu/
+sudo make clean install
 cd
+echo "Done Installing DEMNU!"
+echo ""
 
 # Install screenlocker
 
@@ -357,14 +343,6 @@ xdg-settings set default-web-browser brave-browser.desktop
 
 echo "Done seting default application!"
 echo ""
-
-# Add Env
-
-sudo tee -a /etc/environment << EOF
-
-# Clipmenu
-CM_LAUNCHER=bemenu
-EOF
 
 # Remove kwallet
 

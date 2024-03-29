@@ -32,8 +32,6 @@ install "powerdevil xdg-desktop-portal-kde" "pac"
 
 install "kwrited kwin kgamma kinfocenter kscreen systemsettings sddm sddm-kcm libnotify konqueror" "pac"
 
-install "redshift" "pac"
-
 # CORE PACKAGES
 
 # ===================== XORG Dependent ===================================
@@ -56,15 +54,10 @@ install "nsxiv-git" "yay"
 mkdir -p $HOME/.config/nsxiv/exec
 cp -r $HOME/setup/configs/nsxiv/key-handler $HOME/.config/nsxiv/exec
 
-# Install Launcher-menu
+# Install DEMNU
 
-sudo rm -rf /usr/local/bin/bemenu /usr/local/bin/bemenu-app/ /usr/local/bin/bemenu-run 
-cd $HOME/setup/configs/bemenu-app/
-./help.sh x11
-cd ..
-sudo mv ./bemenu-app/ /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
+cd $HOME/setup/configs/DWM/dmenu
+sudo make clean install
 cd
 
 # Install clipmenu
@@ -132,9 +125,6 @@ ${pipeStr}
 "'
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &
-
-# Bluelight Filter
-redshift -P -O 4500K &
 
 # Clipboard
 clipmenud &
@@ -223,13 +213,12 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
+# ===================== END Dependent ====================================
 
 install "dxhd-bin" "yay"
 mkdir -p $HOME/.config/dxhd
 mv $HOME/setup/configs/dxhd/dxhd_kde.sh $HOME/.config/dxhd
 mv $HOME/.config/dxhd/dxhd_kde.sh $HOME/.config/dxhd/dxhd.sh
-
-# ===================== END Dependent ====================================
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
@@ -322,14 +311,6 @@ sudo tee -a /etc/environment << EOF
 
 # KDE file picker
 GTK_USE_PORTAL=1
-
-# ===================== XORG Dependent ===================================
-
-# Clipmenu
-CM_LAUNCHER=bemenu
-
-# ===================== END Dependent ====================================
-
 EOF
 
 # Restore Settings
@@ -396,11 +377,7 @@ sudo -u "$USER" balooctl6 purge
 
 # Add Tiling support
 
-# ===================== XORG Dependent ===================================
-
 cp -r $HOME/setup/configs/plasma/cortile $HOME/.config/
-
-# ===================== END Dependent ====================================
 
 # Remove kwallet
 
