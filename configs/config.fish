@@ -114,7 +114,7 @@ alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 alias msto='sudo -A su -c "nohup /usr/bin/mongod --quiet --config /etc/mongodb.conf&;rm nohup.out"'
 
 # youtube-local
-alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd'
+alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd;echo "localhost:3006"|xclip -sel c'
 alias ysp='ps aux | grep "server.py" | grep "python" | awk \'{print $2}\' | xargs -ro kill -9'
 
 # Docker
@@ -228,6 +228,8 @@ alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.
 # Ollama
 alias olst="nohup ollama serve &;rm nohup.out"
 alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
+alias olwst="olst;dst;echo 'localhost:8080' | xclip -sel c"
+alias olwsp="olsp;dsp"
 alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
 alias olr="ollama rm (ollama list | sed '1d' | awk '{print \$1}' | fzf -m --cycle --prompt 'Choose Model(s) to Remove:')| tr '\n' ' '"
 
@@ -686,7 +688,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "873s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "875s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
