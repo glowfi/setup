@@ -872,7 +872,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    simple
+    classic
 end
 
 # Command execution time
