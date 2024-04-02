@@ -659,25 +659,6 @@ sudo rc-service spice-vdagent start
 # After Install
 
 ```fish
-# Install Ollama
-sudo echo ""
-curl "https://ollama.ai/install.sh" | sh
-nohup ollama serve &
-rm nohup.out
-nohup ollama serve &
-rm nohup.out
-ollama pull mistral:latest
-#ollama pull zephyr:7b-beta
-#ollama pull gemma:7b
-
-# Install Ollama web-ui
-#sudo systemctl start docker.service
-#docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
-
-# Kill ollama and docker
-ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
-#sudo systemctl stop docker.service
-
 # Install mongodb-compass
 cleanup
 yay -S --noconfirm mongodb-compass
