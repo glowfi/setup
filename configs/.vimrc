@@ -227,13 +227,14 @@ if !filereadable(vimplug_exists)
 endif
 
 
-""" PLUGINS LIST
+""" PLUGINS LIST """
 
 call plug#begin()
 Plug 'morhetz/gruvbox'
 call plug#end()
 
 """ GRUVBOX SETTINGS """
+
 autocmd vimenter * ++nested colorscheme gruvbox
 set background=dark
 let g:airline_theme='gruvbox'

@@ -43,10 +43,6 @@ sleep 3
 touch "$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
 cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
 
-### Copy Bookmarks
-cp -r $HOME/setup/configs/brave/Bookmarks "$HOME/.config/BraveSoftware/$typeFolder/Default/"
-cp -r $HOME/setup/configs/brave/Bookmarks "$HOME/.config/BraveSoftware/$typeFolder/$secProfileName"
-
 ######## Librewolf ########
 
 sudo rm -rf /usr/lib/librewolf/
