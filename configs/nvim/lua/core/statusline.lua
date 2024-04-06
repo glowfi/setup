@@ -128,7 +128,7 @@ local PythonVer = function()
 		local var = handle:read("*a")
 		handle:close()
 		local s = var:sub(1, -2)
-		return " " .. s
+		return "󰌠 " .. s
 	end
 	return ""
 end
@@ -145,7 +145,7 @@ local NodeVer = function()
 		local var = handle:read("*a")
 		handle:close()
 		local s = var:sub(1, -2)
-		return " NodeJS " .. s
+		return "󰎙 NodeJS " .. s
 	end
 	return ""
 end

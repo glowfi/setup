@@ -1,8 +1,8 @@
 -- Settings
 -- Lsp Diagnostic signs
-vim.fn.sign_define("DiagnosticSignError", { texthl = "DiagnosticSignError", text = "", numhl = "" })
+vim.fn.sign_define("DiagnosticSignError", { texthl = "DiagnosticSignError", text = "󰅚", numhl = "" })
 vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "", numhl = "" })
-vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "", numhl = "" })
+vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "󰌶", numhl = "" })
 vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "", numhl = "" })
 
 -- Keymappings
@@ -66,30 +66,30 @@ end
 -- Symbols for autocomplete
 vim.lsp.protocol.CompletionItemKind = {
 	"   (Text) ",
-	"   (Method)",
-	"   (Function)",
+	" 󰆧  (Method)",
+	" 󰊕  (Function)",
 	"   (Constructor)",
 	"   (Field)",
 	"[] (Variable)",
-	"   (Class)",
+	" 󰌗  (Class)",
 	" I (Interface)",
-	"   (Module)",
-	"   (Property)",
+	" 󰅩  (Module)",
+	" 󰆅  (Property)",
 	"   (Unit)",
-	"   (Value)",
+	" 󰎠  (Value)",
 	" E (Enum)",
-	"   (Keyword)",
+	" 󰌋  (Keyword)",
 	"   (Snippet)",
-	"   (Color)",
-	"   (File)",
-	"   (Reference)",
-	"   (Folder)",
+	" 󰏘  (Color)",
+	" 󰈔  (File)",
+	" 󰈝  (Reference)",
+	" 󰉋  (Folder)",
 	"   (EnumMember)",
-	"   (Constant)",
+	" 󰇽  (Constant)",
 	"   (Struct)",
 	"   (Event)",
-	"   (Operator)",
-	"   (TypeParameter)",
+	" 󰃬  (Operator)",
+	" 󰊄  (TypeParameter)",
 }
 
 local function documentHighlight(client, bufnr)
