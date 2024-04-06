@@ -120,17 +120,6 @@ install "kdeconnect kcolorchooser" "pac"
 install "mediainfo perl-image-exiftool" "pac"
 install "inotify-tools libnotify" "pac"
 
-### CORE (Use old package version)
-mkdir test
-cd test
-wget "https://archive.archlinux.org/packages/t/ttf-fantasque-nerd/ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst"
-sudo pacman -U --noconfirm ./ttf-fantasque-nerd-2.3.3-3-any.pkg.tar.zst
-wget "https://archive.archlinux.org/packages/i/iptables-nft/iptables-nft-1%3A1.8.8-3-x86_64.pkg.tar.zst"
-yes | sudo pacman -U ./iptables-nft-1:1.8.8-3-x86_64.pkg.tar.zst
-sudo sed -i "25s/.*/IgnorePkg = ttf-fantasque-nerd iptables-nft/" /etc/pacman.conf
-cd ..
-rm -rf test
-
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
 #### ADDITIONAL PACKAGES

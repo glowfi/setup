@@ -20,13 +20,13 @@ gitsigns.setup({
 		},
 		delete = {
 			hl = "GitSignsDelete",
-			text = "_",
+			text = "┃ ",
 			numhl = "GitSignsDeleteNr",
 			linehl = "GitSignsDeleteLn",
 		},
 		topdelete = {
 			hl = "GitSignsDelete",
-			text = "_",
+			text = "┃ ",
 			numhl = "GitSignsDeleteNr",
 			linehl = "GitSignsDeleteLn",
 		},

@@ -126,6 +126,7 @@ rm -rf rust-analyzer
 
 cargo install ripdrag
 cargo install csvlens
+cargo install --git https://github.com/loichyan/nerdfix.git
 
 echo ""
 echo "------------------------------------------------------------------------"
