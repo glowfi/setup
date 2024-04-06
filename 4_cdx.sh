@@ -35,18 +35,6 @@ for i in (seq 2)
     pip install setuptools
 end
 
-# Install Ollama
-sudo echo ""
-curl "https://ollama.ai/install.sh" | sh
-nohup ollama serve &
-rm nohup.out
-nohup ollama serve &
-rm nohup.out
-ollama pull mistral:latest
-
-# Kill ollama
-ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
-
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
 # PYTHON MODULES

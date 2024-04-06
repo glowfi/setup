@@ -659,6 +659,20 @@ sudo rc-service spice-vdagent start
 # After Install
 
 ```fish
+# Install Ollama
+sudo echo ""
+curl "https://ollama.ai/install.sh" | sh
+nohup ollama serve &
+rm nohup.out
+nohup ollama serve &
+rm nohup.out
+ollama pull mistral:latest
+ollama pull deepseek-coder:6.7b-instruct-q6_K
+ollama pull deepseek-llm:7b-chat
+
+# Kill ollama
+ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
+
 # Install mongodb-compass
 cleanup
 yay -S --noconfirm mongodb-compass
