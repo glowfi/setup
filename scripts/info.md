@@ -666,9 +666,8 @@ nohup ollama serve &
 rm nohup.out
 nohup ollama serve &
 rm nohup.out
-ollama pull mistral:latest
+ollama pull mistral:7b-instruct
 ollama pull deepseek-coder:6.7b-instruct-q6_K
-ollama pull deepseek-llm:7b-chat
 
 # Kill ollama
 ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9

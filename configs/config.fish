@@ -232,6 +232,7 @@ alias olwst="olst;dst;echo 'localhost:8080' | xclip -sel c"
 alias olwsp="olsp;dsp"
 alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
 alias olr="ollama rm (ollama list | sed '1d' | awk '{print \$1}' | fzf -m --cycle --prompt 'Choose Model(s) to Remove:')| tr '\n' ' '"
+alias mds="modelSwitch"
 
 # Run with GPU
 alias gprun="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia $argv[1]"
@@ -596,6 +597,10 @@ function sysop
 
 end
 
+function modelSwitch
+    set model (ollama list | sed "1d" | awk -F" " '{print $1}' | fzf --prompt "Select Model to activate:" --cycle)
+    test "$model" && rlt "model = \"$model\"," 8 ~/.config/nvim/lua/core/gen.lua && echo "Switched to $model" || echo "No model selected!"
+end
 
 # ===================================================================
 #                    Git Functions [Used in prompt]
@@ -688,7 +693,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "875s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "880s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
