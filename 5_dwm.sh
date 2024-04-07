@@ -140,9 +140,9 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-git clone https://github.com/dakyskye/dxhd.git
+klone "https://github.com/dakyskye/dxhd.git"
 cd dxhd
-sudo make install
+fish -c 'sudo make install'
 cd ..
 rm -rf dxhd
 mkdir -p $HOME/.config/dxhd
