@@ -666,6 +666,7 @@ nohup ollama serve &
 rm nohup.out
 nohup ollama serve &
 rm nohup.out
+ollama pull mistral
 ollama pull mistral:7b-instruct
 ollama pull deepseek-coder:6.7b-instruct-q6_K
 

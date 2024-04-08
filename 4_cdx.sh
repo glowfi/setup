@@ -41,6 +41,7 @@ end
 
 for i in (seq 2)
     pip install virtualenv twine wheel
+    pip install pygobject
 end
 
 # JUPYTER SETUP
