@@ -228,8 +228,6 @@ alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.
 # Ollama
 alias olst="nohup ollama serve &;rm nohup.out"
 alias olsp="ps aux | grep -i 'ollama' | awk '{print \$2}' | xargs -ro kill -9"
-alias olwst="olst;dst;echo 'localhost:8080' | xclip -sel c"
-alias olwsp="olsp;dsp"
 alias ol="ollama run (ollama list | sed '1d' | awk '{print \$1}' | fzf --cycle --prompt 'Choose Model:')"
 alias olr="ollama rm (ollama list | sed '1d' | awk '{print \$1}' | fzf -m --cycle --prompt 'Choose Model(s) to Remove:')| tr '\n' ' '"
 alias mds="modelSwitch"
@@ -243,7 +241,7 @@ alias pdf='sed -i "35s/.*/fading = false;/" .config/picom/picom.conf'
 
 # Get public/private ip
 alias getpip="curl -sS https://ipleak.net | pup 'table tr td text{}' | xargs"
-alias getprip="ip addr | grep 'state UP' -A3 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'|xargs|cut -f2  -d' '"
+alias getprip="ip addr | grep 'state UP' -A3 | tail -n2 | head -1 | awk '{print $2}' | cut -f1  -d'/' | tr -d 'inet ' |xargs"
 
 # ===================================================================
 #                           Custom Functions
@@ -693,7 +691,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "880s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "878s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

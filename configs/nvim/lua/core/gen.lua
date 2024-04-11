@@ -5,6 +5,6 @@ vim.keymap.set("n", "<leader>]", ":Gen<CR>")
 -- Setup
 require("gen").setup({
 	opts = {
-		model = "mistral",
+		model = "mistral:7b-instruct",
 	},
 })
