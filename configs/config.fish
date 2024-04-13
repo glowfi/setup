@@ -222,8 +222,8 @@ alias afx='systemctl --user restart pipewire.service pipewire.socket wireplumber
 alias jl='journalctl -b -p3 --no-hostname --no-pager'
 
 # Network start/restart
-alias nmst="systemctl start NetworkManager.service;systemctl start wpa_supplicant.service"
-alias nmsp="systemctl stop NetworkManager.service;systemctl stop wpa_supplicant.service"
+alias nmst="sudo systemctl start NetworkManager.service;sudo systemctl start wpa_supplicant.service"
+alias nmsp="sudo systemctl stop NetworkManager.service;sudo systemctl stop wpa_supplicant.service"
 
 # Ollama
 alias olst="nohup ollama serve &;rm nohup.out"
