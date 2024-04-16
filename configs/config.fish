@@ -14,7 +14,8 @@
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 set PATH ~/.local/bin/nodeJS/bin/ $PATH # Sets NodeJS paths
 set PATH ~/.local/bin/luaLSP/bin/ $PATH # Sets lua path
-set PATH ~/go/bin $PATH # Sets golang path
+set -x GOPATH $HOME/.local/bin/golang/ # Set golang main path
+set -x PATH $PATH $GOPATH/bin # Set golang binary path
 set PATH ~/.local/bin/clangd/bin $PATH # Sets clangd path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 
@@ -691,7 +692,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "878s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "879s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -875,7 +876,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    classic
+    minimal
 end
 
 # Command execution time
