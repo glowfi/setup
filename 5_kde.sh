@@ -402,7 +402,12 @@ sudo -u "$USER" balooctl6 purge
 
 # ===================== XORG Dependent ===================================
 
+set CoritleVer (curl "https://github.com/leukipp/cortile/releases" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | head -1|cut -d"/" -f6|tr -d "v"|xargs)
+cd $HOME/setup/configs/plasma/
+wget "https://github.com/leukipp/cortile/releases/download/v${CoritleVer}/cortile_${CoritleVer}_linux_amd64.tar.gz" -O "cortile.tar.gz"
+tar -xzvf ./cortile.tar.gz;rm cortile.tar.gz;rm README.md;rm LICENSE
 cp -r $HOME/setup/configs/plasma/cortile $HOME/.config/
+cd
 
 # ===================== END Dependent ====================================
 
