@@ -655,29 +655,3 @@ sudo pacman -S --noconfirm spice-vdagent-openrc
 sudo rc-update add spice-vdagent
 sudo rc-service spice-vdagent start
 ```
-
-# After Install
-
-```fish
-# Install Ollama
-sudo echo ""
-curl "https://ollama.ai/install.sh" | sh
-nohup ollama serve &
-rm nohup.out
-nohup ollama serve &
-rm nohup.out
-ollama pull mistral
-ollama pull zephyr:7b-beta
-
-# Kill ollama
-ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
-
-# Install mongodb-compass
-cleanup
-yay -S --noconfirm mongodb-compass
-
-# Enable Firewall
-sudo rc-service nftables save
-sudo rc-update add nftables
-sudo rc-service nftables restart
-```
