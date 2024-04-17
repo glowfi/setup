@@ -34,13 +34,13 @@ EOF
 	sudo pacman-key --populate archlinux
 	sudo pacman -Syy
 	install "reflector" "pac"
-	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
+	reflector --verbose -c DE --latest 5 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
 	sudo pacman -Syy
 else
 	timedatectl set-ntp true
 	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
 	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/' /etc/pacman.conf
-	reflector --verbose -c DE --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	reflector --verbose -c DE --latest 5 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 	install "archlinux-keyring" "pac"
 	pacman -Syyy
 fi
