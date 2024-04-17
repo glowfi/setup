@@ -33,6 +33,7 @@ for i in (seq 2)
     python -m ensurepip --upgrade
     pip install --upgrade pip
     pip install setuptools
+    pip install sortedcontainers
 end
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
@@ -48,7 +49,6 @@ end
 
 for i in (seq 3)
     pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd networkx graphviz
-    pip install sortedcontainers
     pip install notebook==6.4.12
     pip install pygments tqdm
     pip install lxml html5lib
@@ -56,6 +56,8 @@ for i in (seq 3)
     jupyter contrib nbextension install --user
     jupyter nbextensions_configurator enable --user
     pyppeteer-install
+    yes | pip uninstall notebook traitlets
+    pip install notebook traitlets
 end
 
 # PYTHON MISC
