@@ -65,6 +65,18 @@ pip install pyfzf
 pip install poetry
 pip install rich pygments
 
+# Install Ollama
+
+sudo echo ""
+curl "https://ollama.ai/install.sh" | sh
+nohup ollama serve &
+rm nohup.out
+nohup ollama serve &
+rm nohup.out
+ollama pull mistral
+ollama pull zephyr:7b-beta
+ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
+
 # ======================================================= END ======================================================================================
 
 echo ""
@@ -528,3 +540,15 @@ echo "[core]
     hunk-header-file-style = red
     hunk-header-line-number-style = \"#067a00\"
     hunk-header-style = file line-number syntax" >>$HOME/.gitconfig
+
+### Add mongodb-compass
+
+if test "$argv[1]" = "KDE"
+    if test "$argv[2]" = "Yes"
+        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_kde.sh"
+    end
+else
+    if test "$argv[2]" = "Yes"
+        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_dwm.sh"
+    end
+end

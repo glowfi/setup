@@ -54,7 +54,7 @@ if [[ "${keyPressed}" = "p" ]]; then
 	~/setup/3_1_browser.sh
 
 	chmod +x ~/setup/4_cdx.sh
-	~/setup/4_cdx.sh
+	~/setup/4_cdx.sh "$choice" "$isMinimal"
 
 	if [[ $choice == "KDE" ]]; then
 		clear
