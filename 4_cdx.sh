@@ -354,9 +354,6 @@ chmod +x $HOME/.local/bin/edit.sh
 
 ### System related scripts
 
-cp -r $HOME/setup/scripts/system/bfilter.sh $HOME/.local/bin/
-chmod +x $HOME/.local/bin/bfilter.sh
-
 cp -r $HOME/setup/scripts/system/kdeconnect $HOME/.local/bin/
 chmod +x $HOME/.local/bin/kdeconnect
 
