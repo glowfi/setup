@@ -876,7 +876,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    minimal
+    simple
 end
 
 # Command execution time
