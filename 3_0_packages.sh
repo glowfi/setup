@@ -116,7 +116,8 @@ install "imagemagick ffmpegthumbnailer" "pac"
 
 ### CORE (EXTRAS)
 install "android-tools scrcpy" "pac"
-install "kdeconnect kcolorchooser" "pac"
+install "localsend-bin" "yay"
+install "gpick" "pac"
 install "mediainfo perl-image-exiftool" "pac"
 install "inotify-tools libnotify" "pac"
 

@@ -122,7 +122,7 @@
     "DeviceDebugPacketCaptureAllowed": false,
     "DevicePowerwashAllowed": true,
     "DeviceSystemWideTracingEnabled": false,
-    "Disable3DAPIs": true,
+    "Disable3DAPIs": false,
     "DownloadRestrictions": 0,
     "EasyUnlockAllowed": false,
     "EnableSyncConsent": true,

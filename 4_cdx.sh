@@ -362,10 +362,7 @@ chmod +x $HOME/.local/bin/lowbat.sh
 
 ### Writing Tools
 
-install "lorien-bin gromit-mpx" "yay"
-install "kolourpaint" "pac"
-cp -r $HOME/setup/scripts/system/klp $HOME/.local/bin/
-chmod +x $HOME/.local/bin/klp
+install "rnotes" "pac"
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
