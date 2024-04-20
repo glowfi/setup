@@ -67,18 +67,6 @@ pip install pyfzf
 pip install poetry
 pip install rich pygments
 
-# Install Ollama
-
-sudo echo ""
-curl "https://ollama.ai/install.sh" | sh
-nohup ollama serve &
-rm nohup.out
-nohup ollama serve &
-rm nohup.out
-ollama pull mistral || ollama pull mistral || ollama pull mistral
-ollama pull zephyr:7b-beta || ollama pull zephyr:7b-beta || ollama pull zephyr:7b-beta
-ps aux | grep -i 'ollama' | awk '{print $2}' | xargs -ro kill -9
-
 # ======================================================= END ======================================================================================
 
 echo ""
@@ -359,10 +347,6 @@ chmod +x $HOME/.local/bin/kdeconnect
 
 cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
-
-### Writing Tools
-
-install "rnotes" "pac"
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
