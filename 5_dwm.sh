@@ -31,7 +31,7 @@ install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "xdg-user-dirs xdg-desktop-portal xdg-utils" "pac"
 install "wmctrl" "pac"
 
-install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac"
+install "pcmanfm ark zathura zathura-pdf-mupdf dunst clipmenu" "pac";sudo pacman -Rdd dmenu
 install "feh" "pac"
 install "nsxiv-git" "yay"
 

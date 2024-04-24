@@ -69,7 +69,7 @@ cd
 
 # Install clipmenu
 
-install "clipmenu" "pac"
+install "clipmenu" "pac";sudo pacman -Rdd dmenu
 
 # ===================== END Dependent ====================================
 
