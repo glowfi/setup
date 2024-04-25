@@ -261,9 +261,6 @@ cp -r $HOME/setup/scripts/utils/dm-record.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/dm-record.sh
 # ===================== END Dependent ====================================
 
-cp -r $HOME/setup/scripts/utils/dm-bluetooth $HOME/.local/bin/
-chmod +x $HOME/.local/bin/dm-bluetooth
-
 cp -r $HOME/setup/scripts/utils/sgrec.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/sgrec.sh
 

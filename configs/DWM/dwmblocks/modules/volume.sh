@@ -4,7 +4,13 @@ dwm_pulse() {
 	VOL=$(pamixer --get-volume)
 	STATE=$(pamixer --get-mute)
 
-	MVOL=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }' | xargs)
+	MVOL1=$(amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }' | xargs)
+	MVOL2=$(amixer -D pulse sget Capture | grep 'Mono:' | awk -F'[][]' '{ print $2 }' | xargs)
+	if [[ "$MVOL1" != "" ]]; then
+		MVOL="${MVOL1}"
+	elif [[ "$MVOL2" != "" ]]; then
+		MVOL="${MVOL2}"
+	fi
 	MSTATE=$(amixer -D pulse get Capture | sed 5q | tail -1 | awk -F " " '{print $NF}' | xargs)
 
 	printf "%s" "$SEP1"

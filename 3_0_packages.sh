@@ -97,7 +97,7 @@ else
 	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi
-install "bluez bluez-utils" "pac"
+install "bluez bluez-utils blueman" "pac"
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
 mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
