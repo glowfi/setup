@@ -473,10 +473,6 @@ source "$HOME/.local/bin/youtube-local/env/bin/activate.fish"
 pip install -r requirements.txt
 cd
 
-### Visualization
-
-install "gource" "pac"
-
 ### OCR 
 
 install "tesseract tesseract-data-eng" "pac"
