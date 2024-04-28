@@ -60,6 +60,13 @@ for i in (seq 3)
     pip install notebook traitlets
 end
 
+# CONDA
+
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+
 # PYTHON MISC
 
 pip install pyautogui pynput
@@ -366,6 +373,18 @@ for i in (seq 2)
     pip install pgcli
 end
 
+### Add mongodb-compass
+
+if test "$argv[1]" = "KDE"
+    if test "$argv[2]" = "No"
+        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_kde.sh"
+    end
+else
+    if test "$argv[2]" = "No"
+        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_dwm.sh"
+    end
+end
+
 ### SETUP VIRTUALIZATION
 
 echo ""
@@ -517,15 +536,3 @@ echo "[core]
     hunk-header-file-style = red
     hunk-header-line-number-style = \"#067a00\"
     hunk-header-style = file line-number syntax" >>$HOME/.gitconfig
-
-### Add mongodb-compass
-
-if test "$argv[1]" = "KDE"
-    if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_kde.sh"
-    end
-else
-    if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_dwm.sh"
-    end
-end
