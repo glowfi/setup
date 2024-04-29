@@ -25,6 +25,10 @@ echo ""
 set pyloc (sudo fd . /usr/lib/ --type f --max-depth 2 | grep "EXTERNALLY-MANAGED" | head -1)
 sudo rm -rf "$pyloc"
 
+# PREVENT PYTHON FROM UPGRADING
+
+sudo sed -i "25s/.*/IgnorePkg = python/" /etc/pacman.conf
+
 # UPGRADE PIP TO LATEST VERSION
 
 install "python-pip" "pac"
