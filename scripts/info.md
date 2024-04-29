@@ -636,6 +636,9 @@ if test -d "$pyenvLocation"
     fish_add_path $PYENV_ROOT/bin
     pyenv init - | source
 end
+
+# Disable CUDA
+export CUDA_VISIBLE_DEVICES=""
 ```
 
 # PYTHON STUBS
