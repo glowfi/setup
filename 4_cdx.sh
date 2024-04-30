@@ -250,17 +250,21 @@ echo "script-opts-append=ytdl_hook-ytdl_path=yt-dlp" >>$HOME/.config/mpv/mpv.con
 
 # MPV Scripts
 
+### WebM maker for mpv
 mkdir -p $HOME/.config/mpv/scripts
 wget https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua -P $HOME/.config/mpv/scripts
 
-wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_client_osc.lua -P $HOME/.config/mpv/scripts
-wget https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.2/mpv_thumbnail_script_server.lua -P $HOME/.config/mpv/scripts
-echo "osc=no" >>$HOME/.config/mpv/mpv.conf
-echo 'save-position-on-quit' >>$HOME/.config/mpv/mpv.conf
+### Thumbnail maker
+wget "https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.lua" -P $HOME/.config/mpv/scripts
+wget "https://raw.githubusercontent.com/po5/thumbfast/vanilla-osc/player/lua/osc.lua" -P $HOME/.config/mpv/scripts
 
+### Get the file path, timestamps, and cropping coordinates, for ffmpeg, all from within mpv
 cd .config/mpv/scripts/
 klone "https://github.com/4ndrs/PureMPV"
 cd
+
+### MPV configuration
+echo 'save-position-on-quit' >>$HOME/.config/mpv/mpv.conf
 
 # SCRIPTS 
 

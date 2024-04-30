@@ -77,7 +77,10 @@ alias upgv="upgradeNeovim $argv[1]"
 alias mirru='_mirru'
 
 # Upgrade
-alias upgrade="mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done';sudo sbctl sign /boot/vmlinuz-linux-zen;sudo sbctl sign /boot/grub/x86_64-efi/core.efi;sudo sbctl sign /boot/grub/x86_64-efi/grub.efi;sudo sbctl sign /boot/efi/EFI/GRUB/grubx64.efi"
+function takeSnapshot
+    sudo timeshift --create --comments "Before Update $(date +'%B %e, %A %I:%M:%S %p %Z')"
+end
+alias upgrade="takeSnapshot;mirru;bash -c 'for i in {1..5}; do sudo pacman -Syyyu --noconfirm;yay -Syyyu --noconfirm && break || sleep 1; done';sudo sbctl sign /boot/vmlinuz-linux-zen;sudo sbctl sign /boot/grub/x86_64-efi/core.efi;sudo sbctl sign /boot/grub/x86_64-efi/grub.efi;sudo sbctl sign /boot/efi/EFI/GRUB/grubx64.efi;rgi"
 
 # Archive Unarchive
 alias comp='ouch compress'
@@ -708,7 +711,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "895s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "898s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
