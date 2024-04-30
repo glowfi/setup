@@ -479,6 +479,7 @@ cd youtube-local
 python -m venv env
 source "$HOME/.local/bin/youtube-local/env/bin/activate.fish"
 pip install -r requirements.txt
+deactivate
 cd
 
 ### OCR 
