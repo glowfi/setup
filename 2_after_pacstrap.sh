@@ -424,7 +424,7 @@ echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
 # Install Logger
 
 if [[ "$_distroType" = "artix" ]]; then
-	install "syslog-ng" "pac"
+	install "syslog-ng logrotate libdbi librabbitmq-c mongo-c-driver libesmtp hiredis libmaxminddb net-snmp librdkafka python-ply" "pac"
 fi
 
 # Enable Services

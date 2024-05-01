@@ -248,13 +248,17 @@ alias getpip="curl -sS https://ipleak.net | pup 'table tr td text{}' | xargs"
 alias getprip="ip addr | grep 'state UP' -A3 | tail -n2 | head -1 | awk '{print $2}' | cut -f1  -d'/' | tr -d 'inet ' |xargs"
 
 # Miniconda activate/deactivate
-alias cac="~/miniconda3/bin/conda init fish;source ~/.config/fish/config.fish"
+alias cac="test -e ~/.config/conda-deactivated && rm ~/.config/conda-deactivated && ~/miniconda3/bin/conda init fish && source ~/.config/fish/config.fish && touch ~/.config/conda-activated"
 alias cdr='conda env list| sed "1,2d"|sed -r \'/^\s*$/d\' | fzf -m | awk -F" " \'{print $1}\' | xargs -I "{}" conda remove --name "{}" --all -y'
 function cde
-    set start (math (cat ~/.config/fish/config.fish | grep -n "# <<< conda initialize <<<"|tail -1|cut -d":" -f1)-12)
-    set end (cat ~/.config/fish/config.fish | grep -n "# <<< conda initialize <<<"|tail -1|cut -d":" -f1)
-    sed -i "$start,$end d" ~/.config/fish/config.fish
-    source ~/.config/fish/config.fish
+    if test -e ~/.config/conda-activated
+        rm ~/.config/conda-activated
+        set start (math (cat ~/.config/fish/config.fish | grep -n "# <<< conda initialize <<<"|tail -1|cut -d":" -f1)-12)
+        set end (cat ~/.config/fish/config.fish | grep -n "# <<< conda initialize <<<"|tail -1|cut -d":" -f1)
+        sed -i "$start,$end d" ~/.config/fish/config.fish
+        source ~/.config/fish/config.fish
+        touch ~/.config/conda-deactivated
+    end
 end
 function ccr
     set a (echo $argv[1..-1])
@@ -711,7 +715,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "898s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "902s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
