@@ -724,6 +724,9 @@ static char urgfloatcolor[]              = "#ff0000";
 #define MODKEY Mod4Mask
 #define ALTKEY Mod1Mask
 
+### killclient
+
+	{ MODKEY|ShiftMask,             XK_q,          killclient,             {0} },
 
 ### demenu
 
