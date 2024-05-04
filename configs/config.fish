@@ -116,6 +116,13 @@ alias psql='psql -d delta'
 alias mst='sudo systemctl enable mongodb;sudo systemctl start mongodb'
 alias msp='sudo systemctl disable mongodb;sudo systemctl stop mongodb'
 alias msto='sudo -A su -c "nohup /usr/bin/mongod --quiet --config /etc/mongodb.conf&"'
+function mimp
+    echo "$argv[1]"
+    set db (string split ' ' "$argv[1]" -f1)
+    set collection (string split ' ' "$argv[1]" -f2)
+    set json (string split ' ' "$argv[1]" -f3)
+    mongoimport -d "$db" -c "$collection" --file "$json" --jsonArray
+end
 
 # youtube-local
 alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd;echo "localhost:3006"|xclip -sel c'
@@ -715,7 +722,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "902s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "909s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
