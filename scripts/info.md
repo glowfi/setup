@@ -658,3 +658,101 @@ sudo pacman -S --noconfirm spice-vdagent-openrc
 sudo rc-update add spice-vdagent
 sudo rc-service spice-vdagent start
 ```
+
+# DWM flexi-patch
+
+```sh
+
+### Border
+
+#else
+static const unsigned int borderpx       = 3;   /* border pixel of windows */
+
+### Fonts
+
+static const char *fonts[]               = {"Fantasque Sans Mono Bold:size=13","JoyPixels:pixelsize=10:antialias=true:autohint=true"};
+
+
+### Colors
+
+static char c000000[]                    = "#000000"; // placeholder value
+
+static char normfgcolor[]                = "#bbbbbb";
+static char normbgcolor[]                = "#222222";
+static char normbordercolor[]            = "#444444";
+static char normfloatcolor[]             = "#ff0000";
+
+static char selfgcolor[]                 = "#eeeeee";
+static char selbgcolor[]                 = "#433c3b";
+static char selbordercolor[]             = "#ff0000";
+static char selfloatcolor[]              = "#433c3b";
+
+static char titlenormfgcolor[]           = "#bbbbbb";
+static char titlenormbgcolor[]           = "#222222";
+static char titlenormbordercolor[]       = "#444444";
+static char titlenormfloatcolor[]        = "#ff0000";
+
+static char titleselfgcolor[]            = "#eeeeee";
+static char titleselbgcolor[]            = "#433c3b";
+static char titleselbordercolor[]        = "#433c3b";
+static char titleselfloatcolor[]         = "#433c3b";
+
+static char tagsnormfgcolor[]            = "#bbbbbb";
+static char tagsnormbgcolor[]            = "#222222";
+static char tagsnormbordercolor[]        = "#444444";
+static char tagsnormfloatcolor[]         = "#ff0000";
+
+static char tagsselfgcolor[]             = "#eeeeee";
+static char tagsselbgcolor[]             = "#433c3b";
+static char tagsselbordercolor[]         = "#433c3b";
+static char tagsselfloatcolor[]          = "#433c3b";
+
+static char hidnormfgcolor[]             = "#433c3b";
+static char hidselfgcolor[]              = "#227799";
+static char hidnormbgcolor[]             = "#222222";
+static char hidselbgcolor[]              = "#222222";
+
+static char urgfgcolor[]                 = "#bbbbbb";
+static char urgbgcolor[]                 = "#222222";
+static char urgbordercolor[]             = "#ff0000";
+static char urgfloatcolor[]              = "#ff0000";
+
+#if RENAMED_SCRATCHPADS_PATCH
+
+### Key-defination
+
+#define MODKEY Mod4Mask
+#define ALTKEY Mod1Mask
+
+
+### demenu
+
+    "bemenu-run",
+	"-i",
+	"-p","Run:",
+
+### patches
+
+sed -i 's/<search regex>/<replacement>/g' <input file>
+
+#define ALWAYSCENTER_PATCH 0
+#define CYCLELAYOUTS_PATCH 0
+#define FOCUSONNETACTIVE_PATCH 0
+#define FULLSCREEN_PATCH 0
+#define MOVESTACK_PATCH 0
+#define NOBORDER_PATCH 0
+#define VANITYGAPS_PATCH 0
+#define FIBONACCI_DWINDLE_LAYOUT 0
+#define FIBONACCI_SPIRAL_LAYOUT 0
+
+file=$(echo "~/.config/DWM/patches.def.h")
+sed -i 's/#define ALWAYSCENTER_PATCH 0/#define ALWAYSCENTER_PATCH 1/g' "$file"
+sed -i 's/#define CYCLELAYOUTS_PATCH 0/#define CYCLELAYOUTS_PATCH 1/g' "$file"
+sed -i 's/#define FOCUSONNETACTIVE_PATCH 0/#define FOCUSONNETACTIVE_PATCH 1/g' "$file"
+sed -i 's/#define FULLSCREEN_PATCH 0/#define FULLSCREEN_PATCH 1/g' "$file"
+sed -i 's/#define MOVESTACK_PATCH 0/#define MOVESTACK_PATCH 1/g' "$file"
+sed -i 's/#define NOBORDER_PATCH 0/#define NOBORDER_PATCH 1/g' "$file"
+sed -i 's/#define VANITYGAPS_PATCH 0/#define VANITYGAPS_PATCH 1/g' "$file"
+sed -i 's/#define FIBONACCI_DWINDLE_LAYOUT 0/#define FIBONACCI_DWINDLE_LAYOUT 1/g' "$file"
+sed -i 's/#define FIBONACCI_SPIRAL_LAYOUT 0/#define FIBONACCI_SPIRAL_LAYOUT 1/g' "$file"
+```
