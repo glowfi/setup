@@ -738,6 +738,11 @@ static char urgfloatcolor[]              = "#ff0000";
 
 sed -i 's/<search regex>/<replacement>/g' <input file>
 
+### gimp firefox exempt
+
+RULE(.class = "Gimp", .tags = 1 << 4)
+RULE(.class = "Firefox", .tags = 1 << 7)
+
 #define ALWAYSCENTER_PATCH 0
 #define CYCLELAYOUTS_PATCH 0
 #define FOCUSONNETACTIVE_PATCH 0
