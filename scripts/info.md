@@ -728,6 +728,11 @@ static char urgfloatcolor[]              = "#ff0000";
 
 	{ MODKEY|ShiftMask,             XK_q,          killclient,             {0} },
 
+### disable dmenu binding
+
+	/* { MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } }, */
+
+
 ### demenu
 
     "bemenu-run",
