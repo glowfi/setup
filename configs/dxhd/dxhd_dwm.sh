@@ -53,6 +53,10 @@ sed -i "35s/.*/fading = false;/" .config/picom/picom.conf
 windowshot.sh
 sed -i "35s/.*/fading = true;/" .config/picom/picom.conf
 
+## bemenu
+#super + p
+bemenu-run -p "Run:" -i
+
 ## Scrap YT
 #super + y
 fish -c "sYT -p "bemenu""
