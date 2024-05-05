@@ -67,3 +67,6 @@ telescope.setup({
 
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
+
+-- It sets vim.ui.select to telescope
+telescope.load_extension("ui-select")
