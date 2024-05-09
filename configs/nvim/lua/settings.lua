@@ -123,3 +123,21 @@ vim.cmd("set termguicolors")
 
 -- Disables a sql error
 vim.cmd("let g:omni_sql_no_default_maps = 1")
+
+-- Make conf,env file detected as conf,env
+vim.filetype.add({
+	extension = {
+		conf = "conf",
+		env = "dotenv",
+		tiltfile = "tiltfile",
+		Tiltfile = "tiltfile",
+	},
+	filename = {
+		[".env"] = "dotenv",
+		["tsconfig.json"] = "jsonc",
+		[".yamlfmt"] = "yaml",
+	},
+	pattern = {
+		["%.env%.[%w_.-]+"] = "dotenv",
+	},
+})
