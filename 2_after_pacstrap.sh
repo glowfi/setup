@@ -188,7 +188,7 @@ echo ""
 driveType=$(sed -n '4p' <"$CONFIG_FILE")
 
 install "os-prober grub efibootmgr ntfs-3g" "pac"
-install "cracklib" "pac"
+install "cracklib pacman-contrib" "pac"
 install "networkmanager network-manager-applet wireless_tools wpa_supplicant net-tools dnsutils usbutils gperftools" "pac"
 install "dialog mtools dosfstools gptfdisk" "pac"
 install "rsync reflector wget" "pac"

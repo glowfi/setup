@@ -28,6 +28,7 @@ echo "--------------------------------------------------------------"
 echo ""
 
 if [[ "$initType" != "systemD" ]]; then
+	install "reflector" "pac"
 	sudo hwclock --systohc
 	sudo reflector --verbose -c DE --latest 5 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
 	sudo pacman -Syy
