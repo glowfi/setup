@@ -127,9 +127,9 @@ install "inotify-tools libnotify" "pac"
 #### ADDITIONAL PACKAGES
 
 ### IMAGE
-install "python2-bin" "yay"
+# install "python2-bin" "yay"
+# install "gimp-plugin-registry" "yay"
 install "gimp" "pac"
-install "gimp-plugin-registry" "yay"
 rm -rf $HOME/.config/GIMP/2.10
 mkdir -p $HOME/.config/GIMP/2.10
 cd $HOME/.config/GIMP/2.10
