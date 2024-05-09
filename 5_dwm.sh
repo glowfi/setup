@@ -368,6 +368,9 @@ sudo tee -a /etc/environment << EOF
 
 # Clipmenu
 CM_LAUNCHER=bemenu
+
+# QT Envirnoment variable
+QT_QPA_PLATFORMTHEME=qt6ct
 EOF
 
 # Remove kwallet
