@@ -22,7 +22,7 @@ if [[ "${keyPressed}" = "p" ]]; then
 	echo ""
 
 	echo ""
-	sudo pacman -Syyy --noconfirm gum
+	sudo pacman -U --noconfirm "${SCRIPT_DIR}/storage/gum-0.11.0-1-x86_64.pkg.tar.zst"
 	clear
 
 	echo ""

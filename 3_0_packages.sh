@@ -121,6 +121,7 @@ install "localsend-bin" "yay"
 install "gpick" "pac"
 install "mediainfo perl-image-exiftool" "pac"
 install "inotify-tools libnotify" "pac"
+install "gum" "pac"
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 
