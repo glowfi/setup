@@ -104,7 +104,7 @@ chmod +x $HOME/.local/bin/wall.sh
 ### MISC
 
 mkdir -p $HOME/.misc
-cp -r $HOME/setup/configs/misc/* $HOME/.misc/
+cp -r $HOME/setup/storage/misc/* $HOME/.misc/
 
 # ===================== XORG Dependent ===================================
 

@@ -45,7 +45,7 @@ install "jmtpfs" "yay"
 ### MISC
 
 mkdir -p $HOME/.misc
-cp -r $HOME/setup/configs/misc/* $HOME/.misc/
+cp -r $HOME/setup/storage/misc/* $HOME/.misc/
 
 # Volnoti
 
