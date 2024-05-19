@@ -748,6 +748,13 @@ sed -i 's/<search regex>/<replacement>/g' <input file>
 RULE(.class = "Gimp", .tags = 1 << 4)
 RULE(.class = "Firefox", .tags = 1 << 7)
 
+### Remove keybindings
+
+{ MODKEY,                       XK_t,          setlayout,              {.v = &layouts[0]} },
+{ MODKEY,                       XK_f,          setlayout,              {.v = &layouts[1]} },
+{ MODKEY,                       XK_m,          setlayout,              {.v = &layouts[2]} },
+
+
 #define ALWAYSCENTER_PATCH 0
 #define CYCLELAYOUTS_PATCH 0
 #define FOCUSONNETACTIVE_PATCH 0
