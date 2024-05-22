@@ -1370,21 +1370,21 @@ EOF
 downloadMedia() {
 
 	if [[ "$1" = "win7x64-ultimate" ]]; then
-		url="https://massgrave.dev/windows_7_links.html"
+		url="https://massgrave.dev/windows_7_links"
 		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
 		if [[ "${link}" != "" ]]; then
 			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
 			windowsGlobalDownloadLink="${link}"
 		fi
 	elif [[ "$1" = "win81x64" ]]; then
-		url="https://massgrave.dev/windows_8.1_links.html"
+		url="https://massgrave.dev/windows_8.1_links"
 		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
 		if [[ "${link}" != "" ]]; then
 			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
 			windowsGlobalDownloadLink="${link}"
 		fi
 	elif [[ "$1" = "win10x64" ]]; then
-		url="https://massgrave.dev/windows_10_links.html"
+		url="https://massgrave.dev/windows_10_links"
 		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
 		if [[ "${link}" != "" ]]; then
 			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
@@ -1392,7 +1392,7 @@ downloadMedia() {
 		fi
 
 	elif [[ "$1" = "win11x64" ]]; then
-		url="https://massgrave.dev/windows_11_links.html"
+		url="https://massgrave.dev/windows_11_links"
 		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
 		if [[ "${link}" != "" ]]; then
 			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
@@ -1400,7 +1400,7 @@ downloadMedia() {
 		fi
 
 	elif [[ "$1" = "win10x64-enterprise-ltsc-eval" ]]; then
-		url="https://massgrave.dev/windows_ltsc_links.html"
+		url="https://massgrave.dev/windows_ltsc_links"
 		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
 		if [[ "${link}" != "" ]]; then
 			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
