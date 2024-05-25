@@ -101,11 +101,16 @@ source $HOME/.config/fish/config.fish
 for i in (seq 3)
     npm update -g npm
     npm install npm@latest -g
-    npm i -g yarn
     npm i -g md-to-pdf
     sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
 end
+
+# PNPM
+
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+head -n -6 ~/.config/fish/config.fish > tmp.txt && cp tmp.txt ~/.config/fish/config.fish;source ~/.config/fish/config.fish
+
 
 # ======================================================= Can Be Deleted for minimal install =======================================================
 

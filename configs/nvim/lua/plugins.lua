@@ -313,12 +313,11 @@ return require("lazy").setup({
 	--   Markdown
 	{
 		"iamcco/markdown-preview.nvim",
-		build = "cd app && yarn install",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
 		ft = { "markdown" },
-		config = function()
-			require("core.mkdp")
+		build = function()
+			vim.fn["mkdp#util#install"]()
 		end,
-		cmd = "MarkdownPreview",
 	},
 
 	{

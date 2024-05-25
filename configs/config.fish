@@ -13,6 +13,10 @@
 ## Path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 set PATH ~/.local/bin/nodeJS/bin/ $PATH # Sets NodeJS paths
+set -gx PNPM_HOME "/home/ayush/.local/share/pnpm" # Sets pnpm path
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
 set PATH ~/.local/bin/luaLSP/bin/ $PATH # Sets lua path
 set -x GOPATH $HOME/.local/bin/golang/ # Set golang main path
 set -x PATH $PATH $GOPATH/bin # Set golang binary path
