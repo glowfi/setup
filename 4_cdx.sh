@@ -445,7 +445,7 @@ echo ""
 
 for i in (seq 2)
     pip install neovim black flake8
-    npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server @tailwindcss/language-server browser-sync
+    npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server @tailwindcss/language-server browser-sync graphql-language-service-cli
     pip uninstall -y cmake
 end
 

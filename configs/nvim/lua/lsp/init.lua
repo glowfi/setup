@@ -211,6 +211,9 @@ lspconfig.jsonls.setup({
 	end,
 })
 
+-- GraphQL
+lspconfig.graphql.setup({ capabilities = capabilities })
+
 -- TS TSX JS JSX
 require("typescript-tools").setup({
 	settings = {

@@ -179,7 +179,7 @@ rm -rf tty-clock
 
 ### Writing Tools
 
-install "rnotes" "pac"
+install "rnote" "pac"
 
 echo ""
 echo "------------------------------------------------------------------------"
