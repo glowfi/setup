@@ -101,6 +101,7 @@ source $HOME/.config/fish/config.fish
 for i in (seq 3)
     npm update -g npm
     npm install npm@latest -g
+    npm i -g console-log-cleaner
     npm i -g md-to-pdf
     sudo mv $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/* $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
@@ -445,7 +446,7 @@ echo ""
 
 for i in (seq 2)
     pip install neovim black flake8
-    npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server @tailwindcss/language-server browser-sync graphql-language-service-cli console-log-cleaner
+    npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server @tailwindcss/language-server browser-sync graphql-language-service-cli 
     pip uninstall -y cmake
 end
 
