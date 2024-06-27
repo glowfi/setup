@@ -107,10 +107,8 @@ for i in (seq 3)
     sudo rm -rf $HOME/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/
 end
 
-# PNPM
-
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-head -n -6 ~/.config/fish/config.fish > tmp.txt && cp tmp.txt ~/.config/fish/config.fish;source ~/.config/fish/config.fish
+# Bun
+curl -fsSL https://bun.sh/install | bash
 
 
 # ======================================================= Can Be Deleted for minimal install =======================================================

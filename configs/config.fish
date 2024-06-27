@@ -13,15 +13,16 @@
 ## Path
 set PATH ~/.local/bin/ $PATH # Sets Universal path
 set PATH ~/.local/bin/nodeJS/bin/ $PATH # Sets NodeJS paths
-set -gx PNPM_HOME "/home/ayush/.local/share/pnpm" # Sets pnpm path
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
+
+set --export BUN_INSTALL "$HOME/.bun" # Sets bun path
+set --export PATH $BUN_INSTALL/bin $PATH
+
 set PATH ~/.local/bin/luaLSP/bin/ $PATH # Sets lua path
 set -x GOPATH $HOME/.local/bin/golang/ # Set golang main path
 set -x PATH $PATH $GOPATH/bin # Set golang binary path
 set PATH ~/.local/bin/clangd/bin $PATH # Sets clangd path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
+
 
 ## Enhancements
 set fish_greeting # Supresses fish's greeting message
@@ -726,7 +727,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "909s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "914s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 

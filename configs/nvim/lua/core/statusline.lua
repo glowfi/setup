@@ -180,7 +180,7 @@ ins_right({ treesitter, color = { fg = colors.green, gui = "bold" } })
 local get_attached_provider_name = function()
 	local msg = "inactive"
 	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-	local clients = vim.lsp.get_active_clients()
+	local clients = vim.lsp.get_clients()
 	local a = ""
 	if next(clients) == nil then
 		return msg
