@@ -128,8 +128,9 @@ install "gum" "pac"
 #### ADDITIONAL PACKAGES
 
 ### IMAGE
-# install "python2-bin" "yay"
-# install "gimp-plugin-registry" "yay"
+install "glib2-devel" "pac"
+install "python2-bin" "yay"
+install "gimp-plugin-registry" "yay"
 install "gimp" "pac"
 rm -rf $HOME/.config/GIMP/2.10
 mkdir -p $HOME/.config/GIMP/2.10
