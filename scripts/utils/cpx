@@ -12,8 +12,9 @@ fi
 dst=${@: -1}
 
 if [ -d "$dst" ]; then
+	path=$(echo "$(realpath "$dst")")
 
-	read -p "Are you Sure this will be the destination $(realpath $dst) ? [y/yes] Default yes :" confirm
+	read -p "Are you Sure this will be the destination $path ? [y/yes] Default yes :" confirm
 
 	if [[ "$confirm" = "y" || "$confirm" = "yes" || "$confirm" = "" ]]; then
 		# Declare array
