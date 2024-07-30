@@ -5,6 +5,6 @@ vim.keymap.set("n", "<leader>]", ":Gen<CR>")
 -- Setup
 require("gen").setup({
 	opts = {
-		model = "zephyr:7b-beta",
+		model = "llama3.1:8b",
 	},
 })
