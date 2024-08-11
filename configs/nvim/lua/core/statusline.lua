@@ -231,12 +231,16 @@ local function available_LS_Formatter_Linter()
 	elseif filetype == "c" or filetype == "cpp" then
 		a = a .. "F:clang_format"
 	else
+		local providers = {}
 		for _, provider in pairs(null_ls.builtins.formatting) do
 			if vim.tbl_contains(provider.filetypes or {}, filetype) then
 				if vim.fn.executable(provider.name) == 1 then
-					a = a .. "F:" .. provider.name
+					table.insert(providers, provider.name)
 				end
 			end
+		end
+		if #providers > 0 then
+			a = a .. "F:" .. table.concat(providers, " ")
 		end
 	end
 
