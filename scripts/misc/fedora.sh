@@ -5,8 +5,14 @@ sudo dnf makecache
 sudo dnf copr enable atim/bottom -y
 sudo dnf install gitui -y
 sudo dnf install exa bat ripgrep fd-find bottom sad git-delta tldr duf arai2c -y
-sudo dnf install fzf python3-pip kitty neovim fish fortune-mod -y
+sudo dnf install python3-pip kitty neovim fish fortune-mod -y
 sudo dnf install cmake ninja-build tree-sitter-cli xclip shfmt meson -y
+sudo dnf -y groupinstall "Development Tools"
+sudo dnf -y groupinstall "X Software Development"
+
+# FZF
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+yes | ~/.fzf/install
 
 # Git repo
 git clone --depth=1 https://github.com/glowfi/setup
@@ -39,6 +45,13 @@ tar -xzf go.tar.gz
 rm -rf go.tar.gz
 mv ./go ./golang
 cd
+go install golang.org/x/tools/gopls@latest
+go install github.com/segmentio/golines@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install mvdan.cc/gofumpt@latest
+
+# Python
+pip install xhibit
 
 # Bun
 curl -fsSL https://bun.sh/install | bash
@@ -56,29 +69,6 @@ cp -r $HOME/setup/configs/nvim/.vsnip/ $HOME
 # tgpt
 curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin
 
-# # Dxhd
-# git clone https://github.com/dakyskye/dxhd.git
-# cd dxhd
-# make fast
-# mv ./dxhd ~/.local/bin/
-# mkdir -p ~/.config/dxhd/
-# touch ~/.config/dxhd/dxhd.sh
-# cd ..
-# rm -rf dxhd
-
-# # Tiling
-# cp -r $HOME/setup/configs/plasma/cortile $HOME/.config/
-# cd $HOME/.config/cortile/
-# cortile_ver=$(curl "https://github.com/leukipp/cortile/releases" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | head -1 | cut -d"/" -f6 | tr -d "v" | xargs)
-# var1=$(echo "https://github.com/leukipp/cortile/releases/download/v$cortile_ver/cortile_$cortile_ver")
-# var2=$(echo "_linux_amd64.tar.gz")
-# link=$(echo "$var1$var2")
-# wget "$link" -O "cortile.tar.gz"
-# tar -xzvf ./cortile.tar.gz
-# rm cortile.tar.gz
-# rm README.md
-# rm LICENSE
-
 # nnn
 sudo dnf install trash-cli tree -y
 aria2c "https://buzzheavier.com/f/GUKeKB1pAAA" -o nnn
@@ -95,14 +85,10 @@ cp -r $HOME/setup/scripts/misc/preview-tui $HOME/.config/nnn/plugins
 sudo dnf install gnome-shell-extension-pop-shell xprop
 
 # Add to fish config
-echo 'alias spac="dnf list --available|cut -f 1 -d \' \' | sort -Vk1 | uniq | fzf -m --cycle | xargs -ro sudo dnf install"' >>~/.config/fish/config.fish
-echo 'alias pacu="dnf list installed | cut -f 1 -d \' \' | sort -Vk1 | uniq | fzf -m --cycle | xargs -ro sudo dnf remove"' >>~/.config/fish/config.fish
+echo 'alias spac="dnf list --available | cut -f 1 -d '\'' '\'' | sort -Vk1 | uniq | fzf -m --cycle | xargs -ro sudo dnf install"' >>~/.config/fish/config.fish
+echo 'alias pacu="dnf list installed | cut -f 1 -d '\'' '\'' | sort -Vk1 | uniq | fzf -m --cycle | xargs -ro sudo dnf remove"' >>~/.config/fish/config.fish
 
-# Shortcut
-fixed no fo workspace
-set clsoe window,toggle fullscreen,switch to wotrkpace to right/left,move window one place to left workpsace
-filemanger terminal browser
-
+# Set default browser and text editor
 xdg-mime default nvim.desktop text/plain
 xdg-settings set default-web-browser brave-browser.desktop
 
@@ -209,3 +195,7 @@ sleep 3
 touch "$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
 cat $HOME/setup/configs/brave/settings.json >"$HOME/.config/BraveSoftware/$typeFolder/$secProfileName/Preferences"
 
+# AFTER SETUP
+# fixed no fo workspace
+# set clsoe window,toggle fullscreen,switch to wotrkpace to right/left,move window one place to left workpsace
+# filemanger terminal browser
