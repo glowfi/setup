@@ -56,6 +56,14 @@ return require("lazy").setup({
 		event = "BufRead",
 	},
 
+	{
+		"akinsho/git-conflict.nvim",
+		config = function()
+			require("git-conflict").setup()
+		end,
+		event = "BufRead",
+	},
+
 	-- Code Runner
 	{
 		"sbdchd/vim-run",
