@@ -292,6 +292,20 @@ return require("lazy").setup({
 		end,
 	},
 
+	-- DAP
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"leoluz/nvim-dap-go",
+			"rcarriga/nvim-dap-ui",
+		},
+		config = function()
+			require("core.debugging")
+		end,
+		ft = { "go" },
+	},
+
 	--   Null-ls
 	{ "jose-elias-alvarez/null-ls.nvim" },
 
