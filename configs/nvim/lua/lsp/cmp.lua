@@ -14,6 +14,11 @@ if not cmp_status_ok then
 end
 
 cmp.setup({
+	performance = {
+		debounce = 300,
+		throttle = 60,
+		fetching_timeout = 200,
+	},
 	window = {
 		documentation = {
 			border = "single",
