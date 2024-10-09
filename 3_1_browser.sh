@@ -104,5 +104,7 @@ echo 'user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant",     25
 echo 'user_pref("general.smoothScroll.currentVelocityWeighting",              1.0);' >>user.js
 echo 'user_pref("general.smoothScroll.stopDecelerationWeighting",             1.0);' >>user.js
 echo 'user_pref("mousewheel.default.delta_multiplier_y",                      300);' >>user.js
+echo 'user_pref("privacy.resistFingerprinting", true); // [FF41+]' >>user.js
+echo "user_pref('privacy.resistFingerprinting.letterboxing', true); // [HIDDEN PREF]" >>user.js
 
 cd
