@@ -56,7 +56,7 @@ alias ls='exa --icons -l --color=always --group-directories-first -F'
 alias cat='bat --theme=gruvbox-dark'
 
 # Changing top to bottom
-alias top='btm --mem_as_value --color gruvbox'
+alias top='btm --theme gruvbox'
 
 # Fast copy for rsync
 alias cpx="cpx"
