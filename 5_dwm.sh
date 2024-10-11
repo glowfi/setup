@@ -232,11 +232,7 @@ exec $HOME/.config/DWM/dwm' >>$HOME/.xinitrc
 
 # Window Switcher
 
-git clone https://github.com/sagb/alttab.git
-cd alttab
-./configure && sudo make install
-cd ..
-sudo rm -rf alttab
+install "alttab" "yay"
 
 # Install DWM
 
