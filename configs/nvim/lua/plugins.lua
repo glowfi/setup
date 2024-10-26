@@ -236,6 +236,7 @@ return require("lazy").setup({
 			"javascript.jsx",
 			"typescript.tsx",
 			"python",
+			"go",
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
