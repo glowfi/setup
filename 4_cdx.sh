@@ -180,6 +180,9 @@ go install golang.org/x/tools/gopls@latest
 go install github.com/segmentio/golines@latest
 go install golang.org/x/tools/cmd/goimports@latest
 go install mvdan.cc/gofumpt@latest
+go install github.com/fatih/gomodifytags@latest
+go install github.com/josharian/impl@latest
+go install github.com/koron/iferr@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
