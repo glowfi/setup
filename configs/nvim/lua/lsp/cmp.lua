@@ -13,6 +13,8 @@ if not cmp_status_ok then
 	return
 end
 
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
 cmp.setup({
 	performance = {
 		debounce = 300,
@@ -21,7 +23,7 @@ cmp.setup({
 	},
 	window = {
 		documentation = {
-			border = "single",
+			border = "rounded",
 			winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
 			max_width = 120,
 			min_width = 60,
@@ -45,7 +47,7 @@ cmp.setup({
 		}),
 		["<Tab>"] = cmp.mapping(function()
 			if cmp.visible() then
-				cmp.select_next_item()
+				cmp.select_next_item(cmp_select)
 			elseif vim.fn["vsnip#jumpable(1)"] then
 				vim.fn.feedkeys(T("<Plug>(vsnip-jump-next)"), "")
 			elseif check_backspace() then
@@ -56,7 +58,7 @@ cmp.setup({
 		end, { "i", "s" }),
 		["<S-Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
-				cmp.select_prev_item()
+				cmp.select_prev_item(cmp_select)
 			elseif vim.fn["vsnip#jumpable(-1)"] then
 				vim.fn.feedkeys(T("<Plug>(vsnip-jump-prev)"), "")
 			else
