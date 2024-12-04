@@ -20,18 +20,18 @@ local conditions = {
 }
 
 -- Define colors
-local colors = {
-	bg = "#282828",
-	fg = "#ebdbb2",
-	red = "#fb4934",
-	green = "#b8bb26",
-	yellow = "#fabd2f",
-	blue = "#83a598",
-	purple = "#d3869b",
-	aqua = "#8ec07c",
-	orange = "#fe8019",
-	gray = "#928374",
-}
+-- local colors = {
+-- 	bg = "#282828",
+-- 	fg = "#ebdbb2",
+-- 	red = "#fb4934",
+-- 	green = "#b8bb26",
+-- 	yellow = "#fabd2f",
+-- 	blue = "#83a598",
+-- 	purple = "#d3869b",
+-- 	aqua = "#8ec07c",
+-- 	orange = "#fe8019",
+-- 	gray = "#928374",
+-- }
 
 -- Config
 local config = {
@@ -86,9 +86,9 @@ ins_left({
 ins_left({
 	"diff",
 	symbols = { added = " ", modified = " ", removed = " " },
-	color_added = colors.green,
-	color_modified = colors.blue,
-	color_removed = colors.red,
+	-- color_added = colors.green,
+	-- color_modified = colors.blue,
+	-- color_removed = colors.red,
 	condition = conditions.hide_in_width,
 })
 
@@ -119,7 +119,13 @@ local PythonEnv = function()
 	return ""
 end
 
-ins_left({ PythonEnv, color = { fg = colors.orange, gui = "bold" } })
+ins_left({
+	PythonEnv,
+	color = {
+		-- fg = colors.orange,
+		gui = "bold",
+	},
+})
 
 -- Python Version
 local PythonVer = function()
@@ -159,9 +165,9 @@ ins_left({
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
 	symbols = { error = " ", warn = " ", info = " " },
-	color_error = colors.red,
-	color_warn = colors.yellow,
-	color_info = colors.blue,
+	-- color_error = colors.red,
+	-- color_warn = colors.yellow,
+	-- color_info = colors.blue,
 })
 
 -- Right Section
@@ -174,7 +180,13 @@ local treesitter = function()
 	return ""
 end
 
-ins_right({ treesitter, color = { fg = colors.green, gui = "bold" } })
+ins_right({
+	treesitter,
+	color = {
+		-- fg = colors.green,
+		gui = "bold",
+	},
+})
 
 -- GET ATTACHED LANGUAGE SERVER,FORMATTERS,LINTERS
 local get_attached_provider_name = function()
