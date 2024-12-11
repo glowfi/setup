@@ -72,8 +72,7 @@ cmp.setup({
 		{ name = "buffer" },
 		{ name = "vsnip" },
 	},
-	completion = { completeopt = "menu,menuone,noinsert", keyword_length = 1 },
-	experimental = { ghost_text = true, native_menu = false },
+	completion = { completeopt = "menu,menuone,noinsert", keyword_length = 2 },
 	formatting = {
 		format = function(entry, vim_item)
 			local comp_kind = {

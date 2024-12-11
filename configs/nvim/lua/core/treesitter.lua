@@ -6,7 +6,26 @@ end
 
 configs.setup({
 	-- Treesitter
-	ensure_installed = "all",
+	ensure_installed = {
+		"python",
+		"go",
+		"rust",
+		"javascript",
+		"typescript",
+		"tsx",
+		"html",
+		"css",
+		"c",
+		"cpp",
+		"json",
+		"lua",
+		"bash",
+		"fish",
+		"sql",
+		"yaml",
+		"toml",
+		"markdown",
+	},
 	highlight = { enable = true, additional_vim_regex_highlighting = true },
 	incremental_selection = {
 		enable = true,

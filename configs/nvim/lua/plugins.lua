@@ -64,15 +64,6 @@ return require("lazy").setup({
 		event = "BufRead",
 	},
 
-	-- Code Runner
-	{
-		"sbdchd/vim-run",
-		config = function()
-			require("core.coderunner")
-		end,
-		ft = { "javascript", "typescript", "python" },
-	},
-
 	-- Multi Cursor
 	{
 		"mg979/vim-visual-multi",
@@ -115,7 +106,6 @@ return require("lazy").setup({
 	{
 		"norcalli/nvim-colorizer.lua",
 		ft = {
-			"Run",
 			"conf",
 			"vim",
 			"html",
@@ -133,7 +123,6 @@ return require("lazy").setup({
 		},
 		config = function()
 			require("colorizer").setup({
-				"Run",
 				"conf",
 				"vim",
 				"html",
@@ -220,28 +209,6 @@ return require("lazy").setup({
 			"javascript.jsx",
 			"typescript.tsx",
 		},
-	},
-
-	-- Refactor
-	{
-		"ThePrimeagen/refactoring.nvim",
-		ft = {
-			"javascript",
-			"typescript",
-			"javascriptreact",
-			"typescriptreact",
-			"javascript.jsx",
-			"typescript.tsx",
-			"python",
-			"go",
-		},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		config = function()
-			require("core.refactor")
-		end,
 	},
 
 	-- LSP
