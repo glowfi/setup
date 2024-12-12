@@ -38,8 +38,8 @@ trvi() {
 # Merge two audio files
 mado() {
 
-	file1="$HOME/$(gum file -a $HOME)"
-	file2="$HOME/$(gum file -a $HOME)"
+	file1="$HOME/$(gum file -a --height 10 $HOME)"
+	file2="$HOME/$(gum file -a --height 10 $HOME)"
 
 	curr=("$PWD")
 	cd $(dirname "$file1")
@@ -163,7 +163,7 @@ convertFormat() {
 
 # Location of file
 filelocation() {
-	filename="$(gum file -a $HOME)"
+	filename="$(gum file -a --height 10 $HOME)"
 	filename_without_extension="$(echo "$filename" | sed 's/\.[^.]*$//')"
 }
 
