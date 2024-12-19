@@ -229,7 +229,7 @@ fifo_pager() {
 		if [ "$cmd" = "pager" ]; then
 			if exists bat; then
 				bat --terminal-width="$(tput cols <"$TTY")" --decorations=always --color=always \
-					--theme=gruvbox-dark --paging=never --style="$BAT_STYLE" "$@" &
+					--theme=ansi --paging=never --style="$BAT_STYLE" "$@" &
 			else
 				$PAGER "$@" &
 			fi

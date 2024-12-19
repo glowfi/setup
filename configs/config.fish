@@ -23,6 +23,65 @@ set -x PATH $PATH $GOPATH/bin # Set golang binary path
 set PATH ~/.local/bin/clangd/bin $PATH # Sets clangd path
 set PATH ~/.cargo/bin/ $PATH # Sets rust path
 
+## THEME
+
+set FISH_THEME (echo "gruvbox") # gruvbox or lackluster
+set BAT_THEME (echo "ansi") # gruvbox-dark or ansi
+set TOP_THEME (echo "default") # gruvbox or default
+
+# ===================================================================
+#                   Syntax Highlighting Colors
+# ===================================================================
+
+if [ "$FISH_THEME" = gruvbox ]
+    set -U fish_color_normal normal
+    set -U fish_color_command 99cc99
+    set -U fish_color_quote ffcc66
+    set -U fish_color_redirection d3d0c8
+    set -U fish_color_end cc99cc
+    set -U fish_color_error f2777a
+    set -U fish_color_param d3d0c8
+    set -U fish_color_comment ffcc66
+    set -U fish_color_match 6699cc
+    set -U fish_color_selection white --bold --background=brblack
+    set -U fish_color_search_match bryellow --background=brblack
+    set -U fish_color_history_current --bold
+    set -U fish_color_operator 6699cc
+    set -U fish_color_escape 66cccc
+    set -U fish_color_cwd_root red
+    set -U fish_color_cwd green
+    set -U fish_color_autosuggestion 747369
+    set -U fish_color_valid_path --underline
+    set -U fish_color_user brgreen
+    set -U fish_color_host normal
+    set -U fish_color_cancel -r
+    set -U fish_pager_color_completion normal
+    set -U fish_pager_color_description B3A06D yellow
+    set -U fish_pager_color_prefix normal --bold --underline
+    set -U fish_pager_color_progress brwhite --background=cyan
+else if [ "$FISH_THEME" = lackluster ]
+    set -gx fish_color_end 7a7a7a
+    set -gx fish_color_error ffaa88
+    set -gx fish_color_quote 708090
+    set -gx fish_color_param aaaaaa
+    set -gx fish_color_option aaaaaa
+    set -gx fish_color_normal CCCCCC
+    set -gx fish_color_escape 789978
+    set -gx fish_color_comment 555555
+    set -gx fish_color_command CCCCCC
+    set -gx fish_color_keyword 7a7a7a
+    set -gx fish_color_operator 7788aa
+    set -gx fish_color_redirection ffaa88
+    set -gx fish_color_autosuggestion 2a2a2a
+    set -gx fish_color_selection --background=555555
+    set -gx fish_color_search_match --background=555555
+    set -gx fish_pager_color_prefix 999999
+    set -gx fish_pager_color_progress 555555
+    set -gx fish_pager_color_completion cccccc
+    set -gx fish_pager_color_description 7a7a7a
+    set -gx fish_pager_color_selected_background --background=555555
+end
+
 
 ## Enhancements
 set fish_greeting # Supresses fish's greeting message
@@ -53,10 +112,10 @@ end
 alias ls='exa --icons -l --color=always --group-directories-first -F'
 
 # Changing cat to bat
-alias cat='bat --theme=gruvbox-dark'
+alias cat="bat --theme=$BAT_THEME"
 
 # Changing top to bottom
-alias top='btm --theme gruvbox'
+alias top="btm --theme $TOP_THEME"
 
 # Fast copy for rsync
 alias cpx="cpx"
@@ -92,7 +151,7 @@ alias comp='ouch compress'
 alias dcomp='ouch decompress'
 
 # xhibit
-alias xbt="xhibit -cs gruvbox -rcn t"
+alias xbt="xhibit -rcs t -rcn t"
 alias xi="randomImagexhibit"
 
 # sYT
@@ -292,9 +351,9 @@ set go_loc_var (echo "go")
 function searchFilesCurrent
 
     if test -z "$argv[1]"
-        fd --exclude "$go_loc_var" --type f . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | read -t args
+        fd --exclude "$go_loc_var" --type f . | fzf --prompt "Open File:" --reverse --preview "bat --theme $BAT_THEME --style numbers,changes --color=always {}" | read -t args
     else
-        fd --exclude "$go_loc_var" --type f --hidden . | fzf --prompt "Open File:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | read -t args
+        fd --exclude "$go_loc_var" --type f --hidden . | fzf --prompt "Open File:" --reverse --preview "bat --theme $BAT_THEME --style numbers,changes --color=always {}" | read -t args
     end
 
     if test -z "$args"
@@ -349,12 +408,12 @@ function searchContents
         rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
-bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
+bat --theme ansi --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
     else
         rg --line-number -g "!$go_loc_var" -g "!./.*" -g "!node_modules" . --hidden | awk '{ print $0 }' | fzf --prompt "Find By Words:" --color 'hl:-1:underline,hl+:-1:underline:reverse' --preview 'set loc {}
 set loc1 (string split ":" {} -f2)
 set loc (string split ":" {} -f1)
-bat --theme gruvbox-dark --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
+bat --theme ansi --style numbers,changes --color=always --highlight-line $loc1 --line-range $loc1: $loc' | awk -F':' '{ print $1 "``@``" $2}' | read -t args
     end
 
     set fl (string split "``@``" $args -f1)
@@ -727,16 +786,16 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "914s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "973s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
 function simple
     set -l last_command_status $status
 
-    set_color C7F377 --bold
+    set_color green --bold
     printf " ● "
-    set_color 83a598
+    set_color blue
     printf "%s" "$USER "
     set_color normal
     printf (pwd | sed "s|^$HOME|~|")
@@ -798,11 +857,11 @@ function classic
     printf "@"
     set_color yellow
     printf "%s" "$hostname "
-    set_color C7ECEC
+    set_color cyan
     printf (pwd | sed "s|^$HOME|~|")
     set_color red --bold
     printf "] "
-    set_color ffc04d
+    set_color normal
     printf '%s' '-> '
 
     set -l normal_color (set_color normal)
@@ -866,15 +925,15 @@ function minimal
 
 
     # Display current path and left pointing arrow symbol
-    set_color black -b 458588
+    set_color black -b blue
     echo -n " $cwd "
     set_color normal
-    set_color ffc04d
+    set_color normal
     printf '%s' ' -> '
 
     # Show git branch and dirty state
     if git_is_repo
-        echo -n -s (set_color 000000 -b d65d0e) (string join '' '  ' (git_branch_name) ' ') $normal_color
+        echo -n -s (set_color 000000 -b green) (string join '' '  ' (git_branch_name) ' ') $normal_color
         set -l git_meta ""
         if test (command git ls-files --others --exclude-standard | wc -w 2> /dev/null) -gt 0
             set git_meta "$symbol_color?"
@@ -911,7 +970,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    simple
+    minimal
 end
 
 # Command execution time
@@ -936,38 +995,6 @@ function fish_title
     echo fish
 end
 
-
-# ===================================================================
-#                   Syntax Highlighting Colors
-# ===================================================================
-
-set -U fish_color_normal normal
-set -U fish_color_command 99cc99
-set -U fish_color_quote ffcc66
-set -U fish_color_redirection d3d0c8
-set -U fish_color_end cc99cc
-set -U fish_color_error f2777a
-set -U fish_color_param d3d0c8
-set -U fish_color_comment ffcc66
-set -U fish_color_match 6699cc
-set -U fish_color_selection white --bold --background=brblack
-set -U fish_color_search_match bryellow --background=brblack
-set -U fish_color_history_current --bold
-set -U fish_color_operator 6699cc
-set -U fish_color_escape 66cccc
-set -U fish_color_cwd_root red
-set -U fish_color_cwd green
-set -U fish_color_autosuggestion 747369
-set -U fish_color_valid_path --underline
-set -U fish_color_user brgreen
-set -U fish_color_host normal
-set -U fish_color_cancel -r
-set -U fish_pager_color_completion normal
-set -U fish_pager_color_description B3A06D yellow
-set -U fish_pager_color_prefix normal --bold --underline
-set -U fish_pager_color_progress brwhite --background=cyan
-
-
 # ===================================================================
 #                     Environment variables
 # ===================================================================
@@ -979,7 +1006,7 @@ export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdb
 
 # Bat as Manpager
 export MANROFFOPT="-c"
-set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-dark -l man -p'"
+set -x MANPAGER "sh -c 'col -bx | bat --theme=$BAT_THEME -l man -p'"
 
 # NNN File Manager
 export NNN_PLUG='f:fzcd;o:fzopen;p:preview-tui;d:dragdrop'

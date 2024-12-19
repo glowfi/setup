@@ -776,3 +776,9 @@ sed -i 's/#define VANITYGAPS_PATCH 0/#define VANITYGAPS_PATCH 1/g' "$file"
 sed -i 's/#define FIBONACCI_DWINDLE_LAYOUT 0/#define FIBONACCI_DWINDLE_LAYOUT 1/g' "$file"
 sed -i 's/#define FIBONACCI_SPIRAL_LAYOUT 0/#define FIBONACCI_SPIRAL_LAYOUT 1/g' "$file"
 ```
+
+-   Some Fish configs sg sf
+-   DWM [#433c3b #2a2a2a]
+-   preview-tui
+-   git -delta
+-   vm-setup

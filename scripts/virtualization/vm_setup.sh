@@ -427,7 +427,8 @@ takeCliArguments() {
 	fi
 
 	# Get ISO Location
-	isoLocation=$(fd --type f . $HOME | fzf --prompt "Choose ISO Location:" --reverse --preview "bat --theme gruvbox-dark --style numbers,changes --color=always {}" | xargs -I {} realpath "{}")
+	THEME=$(echo "ansi") # gruvbox-dark
+	isoLocation=$(fd --type f . $HOME | fzf --prompt "Choose ISO Location:" --reverse --preview "bat --theme $THEME --style numbers,changes --color=always {}" | xargs -I {} realpath "{}")
 
 	# Get Confirmation
 	echo -e "Are you sure to go with this ==> \e[31m${isoLocation}\e[0m \e[33m[y,yes/n,no]\e[0m"
