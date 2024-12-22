@@ -1,29 +1,11 @@
 -- Settings
--- vim.o.background = "dark"
--- vim.cmd.colorscheme("lackluster")
--- vim.cmd([[colorscheme gruvbox]])
-
-local ok_lackluster, lackluster = pcall(require, "lackluster")
-if not ok_lackluster then
-	return
-end
-
-local ok_web_devicons, web_devicons = pcall(require, "nvim-web-devicons")
-web_devicons.setup({
-	color_icons = false,
-	override = {
-		["default_icon"] = {
-			color = lackluster.color.gray4,
-			name = "Default",
-		},
-	},
-})
-vim.cmd.colorscheme("lackluster")
+vim.o.background = "dark"
+vim.cmd([[colorscheme gruvbox]])
 
 -- Line Number Highlight
 vim.cmd("set cursorline")
 vim.cmd("highlight clear CursorLine")
--- vim.cmd("highlight CursorLineNR guifg=#fabd2f guibg=none ctermbg=none ctermfg=none")
+vim.cmd("highlight CursorLineNR guifg=#fabd2f guibg=none ctermbg=none ctermfg=none")
 
 -- Transparency
 vim.cmd("hi! Normal ctermbg=NONE guibg=NONE")

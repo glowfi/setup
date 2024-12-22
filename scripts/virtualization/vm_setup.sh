@@ -427,7 +427,7 @@ takeCliArguments() {
 	fi
 
 	# Get ISO Location
-	THEME=$(echo "ansi") # gruvbox-dark
+	THEME=$(echo "gruvbox-dark") # gruvbox-dark
 	isoLocation=$(fd --type f . $HOME | fzf --prompt "Choose ISO Location:" --reverse --preview "bat --theme $THEME --style numbers,changes --color=always {}" | xargs -I {} realpath "{}")
 
 	# Get Confirmation

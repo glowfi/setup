@@ -95,9 +95,8 @@ return require("lazy").setup({
 
 	-- Gruvbox theme
 	{
-		-- "ellisonleao/gruvbox.nvim",
-		-- dependencies = { "rktjmp/lush.nvim" },
-		"slugbyte/lackluster.nvim",
+		"ellisonleao/gruvbox.nvim",
+		dependencies = { "rktjmp/lush.nvim" },
 		lazy = false,
 		priority = 1000,
 		config = function()

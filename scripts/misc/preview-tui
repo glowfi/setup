@@ -88,7 +88,7 @@ ICONLOOKUP="${ICONLOOKUP:-0}"
 PAGER="${PAGER:-less -P?n -R}"
 TMPDIR="${TMPDIR:-/tmp}"
 BAT_STYLE="${BAT_STYLE:-numbers}"
-BAT_THEME="${BAT_THEME:-ansi}"
+BAT_THEME="${BAT_THEME:-gruvbox-dark}"
 # Consider setting NNN_PREVIEWDIR to $XDG_CACHE_HOME/nnn/previews if you want to keep previews on disk between reboots
 NNN_PREVIEWDIR="${NNN_PREVIEWDIR:-$TMPDIR/nnn/previews}"
 NNN_PREVIEWWIDTH="${NNN_PREVIEWWIDTH:-1920}"
@@ -229,7 +229,7 @@ fifo_pager() {
 		if [ "$cmd" = "pager" ]; then
 			if exists bat; then
 				bat --terminal-width="$(tput cols <"$TTY")" --decorations=always --color=always \
-					--theme=ansi --paging=never --style="$BAT_STYLE" "$@" &
+					--theme=ans"$BAT_THEME" --paging=never --style="$BAT_STYLE" "$@" &
 			else
 				$PAGER "$@" &
 			fi

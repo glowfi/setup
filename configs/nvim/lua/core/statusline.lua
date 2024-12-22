@@ -20,24 +20,24 @@ local conditions = {
 }
 
 -- Define colors
--- local colors = {
--- 	bg = "#282828",
--- 	fg = "#ebdbb2",
--- 	red = "#fb4934",
--- 	green = "#b8bb26",
--- 	yellow = "#fabd2f",
--- 	blue = "#83a598",
--- 	purple = "#d3869b",
--- 	aqua = "#8ec07c",
--- 	orange = "#fe8019",
--- 	gray = "#928374",
--- }
+local colors = {
+	bg = "#282828",
+	fg = "#ebdbb2",
+	red = "#fb4934",
+	green = "#b8bb26",
+	yellow = "#fabd2f",
+	blue = "#83a598",
+	purple = "#d3869b",
+	aqua = "#8ec07c",
+	orange = "#fe8019",
+	gray = "#928374",
+}
 
 -- Config
 local config = {
 	options = {
 		icons_enabled = true,
-		theme = "lackluster",
+		theme = "gruvbox-material",
 		section_separators = { "", "" },
 		component_separators = { "", "" },
 		disabled_filetypes = {},

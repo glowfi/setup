@@ -25,9 +25,9 @@ set PATH ~/.cargo/bin/ $PATH # Sets rust path
 
 ## THEME
 
-set FISH_THEME (echo "gruvbox") # gruvbox or lackluster
-set BAT_THEME (echo "ansi") # gruvbox-dark or ansi
-set TOP_THEME (echo "default") # gruvbox or default
+set FISH_THEME (echo "gruvbox") # gruvbox
+set BAT_THEME (echo "gruvbox-dark") # gruvbox-dark or ansi
+set TOP_THEME (echo "gruvbox") # gruvbox or default
 
 # ===================================================================
 #                   Syntax Highlighting Colors
@@ -60,28 +60,6 @@ if [ "$FISH_THEME" = gruvbox ]
     set -U fish_pager_color_prefix normal --bold --underline
     set -U fish_pager_color_progress brwhite --background=cyan
     export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
-
-else if [ "$FISH_THEME" = lackluster ]
-    set -gx fish_color_end 7a7a7a
-    set -gx fish_color_error ffaa88
-    set -gx fish_color_quote 708090
-    set -gx fish_color_param aaaaaa
-    set -gx fish_color_option aaaaaa
-    set -gx fish_color_normal CCCCCC
-    set -gx fish_color_escape 789978
-    set -gx fish_color_comment 555555
-    set -gx fish_color_command CCCCCC
-    set -gx fish_color_keyword 7a7a7a
-    set -gx fish_color_operator 7788aa
-    set -gx fish_color_redirection ffaa88
-    set -gx fish_color_autosuggestion 2a2a2a
-    set -gx fish_color_selection --background=555555
-    set -gx fish_color_search_match --background=555555
-    set -gx fish_pager_color_prefix 999999
-    set -gx fish_pager_color_progress 555555
-    set -gx fish_pager_color_completion cccccc
-    set -gx fish_pager_color_description 7a7a7a
-    set -gx fish_pager_color_selected_background --background=555555
 end
 
 
@@ -972,7 +950,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    simple
+    minimal
 end
 
 # Command execution time

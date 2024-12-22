@@ -64,5 +64,5 @@ db.setup({
 })
 
 -- HIGHLIGHT COLORS
--- vim.cmd("hi! DashboardHeader guifg=#fabd2f")
--- vim.cmd("hi! DashboardFooter guifg=#d3869b")
+vim.cmd("hi! DashboardHeader guifg=#fabd2f")
+vim.cmd("hi! DashboardFooter guifg=#d3869b")

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DELTA_THEME="ansi" # gruvbox-dark
+DELTA_THEME="gruvbox-dark" # gruvbox-dark
 
 gitMakeMine() {
 
