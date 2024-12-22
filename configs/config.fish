@@ -766,7 +766,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "975s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "953s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -950,7 +950,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    minimal
+    classic
 end
 
 # Command execution time
