@@ -59,6 +59,8 @@ if [ "$FISH_THEME" = gruvbox ]
     set -U fish_pager_color_description B3A06D yellow
     set -U fish_pager_color_prefix normal --bold --underline
     set -U fish_pager_color_progress brwhite --background=cyan
+    export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
+
 else if [ "$FISH_THEME" = lackluster ]
     set -gx fish_color_end 7a7a7a
     set -gx fish_color_error ffaa88
@@ -786,7 +788,7 @@ end
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
     if test "$checkOS" = Linux
-        sed -i "973s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+        sed -i "975s/.*/ $choosen/" ~/.config/fish/config.fish && source ~/.config/fish/config.fish
     end
 end
 
@@ -970,7 +972,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    minimal
+    simple
 end
 
 # Command execution time
@@ -1002,7 +1004,6 @@ end
 # ENV Export
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass
-export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 # Bat as Manpager
 export MANROFFOPT="-c"

@@ -782,3 +782,8 @@ sed -i 's/#define FIBONACCI_SPIRAL_LAYOUT 0/#define FIBONACCI_SPIRAL_LAYOUT 1/g'
 -   preview-tui
 -   git -delta
 -   vm-setup
+-   bemenu
+-   eza
+-   kitty
+-   envs
+-   fzf
