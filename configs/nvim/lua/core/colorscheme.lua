@@ -16,10 +16,10 @@ vim.cmd("hi! MsgArea ctermbg=none guibg=none")
 vim.cmd("hi! TelescopeBorder ctermbg=none guibg=none")
 
 -- LspDiagnostics
--- vim.cmd("hi! DiagnosticSignError  ctermbg=none guibg=none guifg=#fb4934")
--- vim.cmd("hi! DiagnosticSignWarn  ctermbg=none guibg=none guifg=#fabd2f")
--- vim.cmd("hi! DiagnosticSignHint  ctermbg=none guibg=none guifg=#8ec07c")
--- vim.cmd("hi! DiagnosticSignInfo  ctermbg=none guibg=none guifg=#83a598")
+vim.cmd("hi! DiagnosticSignError  ctermbg=none guibg=none guifg=#fb4934")
+vim.cmd("hi! DiagnosticSignWarn  ctermbg=none guibg=none guifg=#fabd2f")
+vim.cmd("hi! DiagnosticSignHint  ctermbg=none guibg=none guifg=#8ec07c")
+vim.cmd("hi! DiagnosticSignInfo  ctermbg=none guibg=none guifg=#83a598")
 
 -- Gitsigns
 -- vim.cmd("hi! GitSignsAdd     ctermbg=none guibg=none guifg=#b8bb26")
