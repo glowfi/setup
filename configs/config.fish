@@ -773,9 +773,9 @@ end
 function simple
     set -l last_command_status $status
 
-    set_color green --bold
+    set_color C7F377 --bold
     printf " ● "
-    set_color blue
+    set_color 83a598
     printf "%s" "$USER "
     set_color normal
     printf (pwd | sed "s|^$HOME|~|")
@@ -837,11 +837,11 @@ function classic
     printf "@"
     set_color yellow
     printf "%s" "$hostname "
-    set_color cyan
+    set_color C7ECEC
     printf (pwd | sed "s|^$HOME|~|")
     set_color red --bold
     printf "] "
-    set_color normal
+    set_color ffc04d
     printf '%s' '-> '
 
     set -l normal_color (set_color normal)
@@ -905,15 +905,15 @@ function minimal
 
 
     # Display current path and left pointing arrow symbol
-    set_color black -b blue
+    set_color black -b 458588
     echo -n " $cwd "
     set_color normal
-    set_color normal
+    set_color ffc04d
     printf '%s' ' -> '
 
     # Show git branch and dirty state
     if git_is_repo
-        echo -n -s (set_color 000000 -b green) (string join '' '  ' (git_branch_name) ' ') $normal_color
+        echo -n -s (set_color 000000 -b d65d0e) (string join '' '  ' (git_branch_name) ' ') $normal_color
         set -l git_meta ""
         if test (command git ls-files --others --exclude-standard | wc -w 2> /dev/null) -gt 0
             set git_meta "$symbol_color?"
@@ -950,7 +950,7 @@ end
 
 # Current prompt theme
 function fish_prompt
-    classic
+    simple
 end
 
 # Command execution time
