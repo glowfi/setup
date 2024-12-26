@@ -121,7 +121,7 @@ getGPUlist() {
 addScripts() {
 
 	### Copy OVMF_VARS
-	cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
+	cp -r /usr/share/edk2-ovmf/x64/OVMF_VARS.4m.fd .
 
 	### Start Script
 
@@ -216,8 +216,8 @@ qemu-system-x86_64 \\
 	-device usb-ehci,id=input \\
 	-device usb-kbd,bus=input.0 \\
 	-device usb-mouse,bus=input.0 \\
-    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
-    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
+    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.4m.fd,readonly=on \\
+    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \\
 	-drive file=Image.img \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     ${_iso_sharedfolder_string}
@@ -274,8 +274,8 @@ qemu-system-x86_64 \\
 	-device usb-ehci,id=input \\
 	-device usb-kbd,bus=input.0 \\
 	-device usb-mouse,bus=input.0 \\
-    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd,readonly=on \\
-    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
+    -global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.4m.fd,readonly=on \\
+    -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \\
 	-drive file=Image.img \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     ${_iso_sharedfolder_string}
@@ -305,15 +305,15 @@ ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xa
 	touch fallback-start.sh
 	echo "#!/usr/bin/env bash
 qemu-system-x86_64 -enable-kvm \\
-	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd \\
+	-bios /usr/share/edk2-ovmf/x64/OVMF_CODE.4m.fd \\
 	-machine q35,accel=kvm,smm=on \\
 	-cpu host \\
 	-device ich9-intel-hda,id=sound0,bus=pcie.0,addr=0x1b -device hda-duplex,id=sound0-codec0,bus=sound0.0,cad=0 \\
     -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 \\
 	-boot menu=on \\
 	-global driver=cfi.pflash01,property=secure,value=on \\
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,readonly=on \\
-	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.4m.fd,readonly=on \\
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \\
 	-drive file=Image.img \\
 	-m ${ram} \\
 	-smp ${cores} \\
