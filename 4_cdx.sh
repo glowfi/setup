@@ -27,7 +27,7 @@ sudo rm -rf "$pyloc"
 
 # PREVENT PYTHON FROM UPGRADING
 
-sudo sed -i "25s/.*/IgnorePkg = python kitty kitty-terminfo kitty-shell-integration/" /etc/pacman.conf
+sudo sed -i "25s/.*/IgnorePkg = python/" /etc/pacman.conf
 
 # UPGRADE PIP TO LATEST VERSION
 
