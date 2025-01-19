@@ -10,6 +10,7 @@ configs.setup({
 		"python",
 		"go",
 		"rust",
+		"zig",
 		"javascript",
 		"typescript",
 		"tsx",

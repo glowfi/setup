@@ -154,6 +154,14 @@ require("lspconfig").gopls.setup({
 	end,
 })
 
+-- Zig LSP
+require("lspconfig").zls.setup({
+	capabilities = capabilities,
+	on_attach = function(client, bufnr)
+		client.server_capabilities.document_formatting = false
+	end,
+})
+
 -- Clangd LSP
 require("lspconfig").clangd.setup({})
 
