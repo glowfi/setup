@@ -183,6 +183,7 @@ go install mvdan.cc/gofumpt@latest
 go install github.com/fatih/gomodifytags@latest
 go install github.com/josharian/impl@latest
 go install github.com/koron/iferr@latest
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -392,7 +393,10 @@ echo "--------------Setting up Database...------------------------------------"
 echo "------------------------------------------------------------------------"
 echo ""
 
-install "dbeaver" "pac"
+set beekeeper_ver (curl "https://github.com/beekeeper-studio/beekeeper-studio" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
+wget "https://github.com/beekeeper-studio/beekeeper-studio/releases/download/v$beekeeper_ver/Beekeeper-Studio-$beekeeper_ver.AppImage" -O ~/.local/bin/beekeeper
+chmod +x ~/.local/bin/beekeeper
+
 install "redis" "pac"
 install "postgresql" "pac"
 install "mongodb-bin mongodb-tools-bin" "yay"
