@@ -183,7 +183,7 @@ go install mvdan.cc/gofumpt@latest
 go install github.com/fatih/gomodifytags@latest
 go install github.com/josharian/impl@latest
 go install github.com/koron/iferr@latest
-go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+go install github.com/pressly/goose/v3/cmd/goose@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
