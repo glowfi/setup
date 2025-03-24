@@ -151,6 +151,7 @@ install "kdenlive" "pac"
 
 ### EXTRAS
 install "onlyoffice-bin" "yay"
+install "tectonic" "pac"
 
 # ======================================================= END ======================================================================================
 
@@ -230,6 +231,11 @@ cp -r $HOME/setup/scripts/misc/preview-tui $HOME/.config/nnn/plugins
 # COPY KITTY SETTINGS
 
 cp -r $HOME/setup/configs/kitty $HOME/.config/
+
+# Download pacman static
+
+curl 'https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static' --output "$HOME/.local/bin/pacman-static"
+chmod +x "$HOME/.local/bin/pacman-static"
 
 # CHANGE DEFAULT SHELL
 

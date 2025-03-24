@@ -185,6 +185,8 @@ go install github.com/josharian/impl@latest
 go install github.com/koron/iferr@latest
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 go install github.com/pressly/goose/v3/cmd/goose@latest
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+ go install github.com/golangci/misspell/cmd/misspell@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
