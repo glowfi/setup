@@ -51,18 +51,18 @@ end
 
 # JUPYTER SETUP
 
-for i in (seq 3)
-    pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd networkx graphviz
-    pip install notebook==6.4.12
-    pip install pygments tqdm
-    pip install lxml html5lib
-    pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
-    jupyter contrib nbextension install --user
-    jupyter nbextensions_configurator enable --user
-    pyppeteer-install
-    yes | pip uninstall notebook traitlets
-    pip install notebook traitlets
-end
+# for i in (seq 3)
+#     pip install jupyter pandas matplotlib numpy scikit-learn openpyxl xlrd networkx graphviz
+#     pip install notebook==6.4.12
+#     pip install pygments tqdm
+#     pip install lxml html5lib
+#     pip install notebook-as-pdf jupyter_contrib_nbextensions jupyter_nbextensions_configurator nbconvert
+#     jupyter contrib nbextension install --user
+#     jupyter nbextensions_configurator enable --user
+#     pyppeteer-install
+#     yes | pip uninstall notebook traitlets
+#     pip install notebook traitlets
+# end
 
 # CONDA
 
@@ -186,7 +186,7 @@ go install github.com/koron/iferr@latest
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 go install github.com/pressly/goose/v3/cmd/goose@latest
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
- go install github.com/golangci/misspell/cmd/misspell@latest
+go install github.com/golangci/misspell/cmd/misspell@latest
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -380,9 +380,6 @@ chmod +x $HOME/.local/bin/edit.sh
 
 ### System related scripts
 
-cp -r $HOME/setup/scripts/system/kdeconnect $HOME/.local/bin/
-chmod +x $HOME/.local/bin/kdeconnect
-
 cp -r $HOME/setup/scripts/system/lowbat.sh $HOME/.local/bin/
 chmod +x $HOME/.local/bin/lowbat.sh
 
@@ -443,9 +440,12 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 # ======================================================= END ======================================================================================
 
-### Restfox
+### Bruno
 
-install "restfox-bin" "yay"
+set brunover (curl "https://github.com/usebruno/bruno" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
+set url (string join "" "https://github.com/usebruno/bruno/releases/download/v$brunover/bruno_" "$brunover" "_x86_64_linux.AppImage") 
+wget "$url" -O ~/.local/bin/bruno
+chmod +x ~/.local/bin/bruno
 
 ### SETUP DOCKER
 
