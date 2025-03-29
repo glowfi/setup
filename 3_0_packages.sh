@@ -128,15 +128,15 @@ install "gum" "pac"
 #### ADDITIONAL PACKAGES
 
 ### IMAGE
-install "glib2-devel" "pac"
-install "python2-bin" "yay"
-install "gimp-plugin-registry" "yay"
+# install "glib2-devel" "pac"
+# install "python2-bin" "yay"
+# install "gimp-plugin-registry" "yay"
 install "gimp" "pac"
-rm -rf $HOME/.config/GIMP/2.10
-mkdir -p $HOME/.config/GIMP/2.10
-cd $HOME/.config/GIMP/2.10
+rm -rf $HOME/.config/GIMP/3.0
+mkdir -p $HOME/.config/GIMP/3.0
+cd $HOME/.config/GIMP/3.0
 klone "https://github.com/Diolinux/PhotoGIMP"
-mv ./PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* .
+mv ./PhotoGIMP/.config/GIMP/3.0/* .
 rm -rf PhotoGIMP filters plug-ins splashes
 cd
 
