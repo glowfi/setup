@@ -55,6 +55,7 @@ if [[ "$initType" != "systemD" ]]; then
 	sudo sed -i '1s/.*/zram_size="32G"/' /etc/conf.d/zram
 	sudo rc-update add zram
 else
+	install "zram-generator" "pac"
 	sudo touch /etc/systemd/zram-generator.conf
 	sudo tee -a /etc/systemd/zram-generator.conf <<EOF
 [zram0]

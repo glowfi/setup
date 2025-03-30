@@ -175,7 +175,7 @@ echo ""
 # XINITRC SETUP
 
 cp /etc/X11/xinit/xinitrc $HOME/.xinitrc
-sed -i '51,55d' $HOME/.xinitrc
+sed -i '52,56d' $HOME/.xinitrc
 
 if [[ "$initType" != "systemD" ]]; then
     pipeStr="artix-pipewire-loader &"

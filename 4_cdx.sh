@@ -538,6 +538,7 @@ install "ueberzugpp" "pac"
 # rm -rf ueberzugpp
 
 # ===================== XORG Dependent ===================================
+install "libxres" "pac"
 klone "https://github.com/ueber-devel/ueberzug"
 cd ueberzug/
 pip install .
