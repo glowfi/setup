@@ -234,6 +234,7 @@ cp -r $HOME/setup/configs/kitty $HOME/.config/
 
 # Download pacman static
 
+mkdir -p "$HOME/.local/bin"
 curl 'https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static' --output "$HOME/.local/bin/pacman-static"
 chmod +x "$HOME/.local/bin/pacman-static"
 

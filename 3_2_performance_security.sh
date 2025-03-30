@@ -55,10 +55,14 @@ if [[ "$initType" != "systemD" ]]; then
 	sudo sed -i '1s/.*/zram_size="32G"/' /etc/conf.d/zram
 	sudo rc-update add zram
 else
-	install "zramd" "yay"
-	sudo sed -i '2s/.*/ALGORITHM=zstd/' /etc/default/zramd
-	sudo sed -i '8s/.*/MAX_SIZE=32768/' /etc/default/zramd
-	sudo systemctl enable --now zramd
+	sudo touch /etc/systemd/zram-generator.conf
+	sudo tee -a /etc/systemd/zram-generator.conf <<EOF
+[zram0]
+zram-size = 32768
+compression-algorithm = zstd
+EOF
+	sudo systemctl enable systemd-zram-setup@zram0.service
+	sudo systemctl start systemd-zram-setup@zram0.service
 fi
 
 # Install APPARMOR
