@@ -1,9 +1,21 @@
 -- Settings
 -- Lsp Diagnostic signs
-vim.fn.sign_define("DiagnosticSignError", { texthl = "DiagnosticSignError", text = "󰅚", numhl = "" })
-vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "", numhl = "" })
-vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "󰌶", numhl = "" })
-vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "", numhl = "" })
+local default_diagnostic_config = {
+	signs = {
+		active = true,
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.HINT] = "",
+			[vim.diagnostic.severity.INFO] = " ",
+		},
+	},
+	virtual_text = true,
+	update_in_insert = false,
+	severity_sort = true,
+	underline = false,
+}
+vim.diagnostic.config(default_diagnostic_config)
 
 -- Keymappings
 local nmap = function(keys, func, desc)
@@ -142,7 +154,7 @@ lspconfig.pyright.setup({ capabilities = capabilities })
 lspconfig.rust_analyzer.setup({
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
-		client.server_capabilities.document_formatting = false
+		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
 	end,
 })
 
