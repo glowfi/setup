@@ -27,6 +27,7 @@ echo "--------------Installing CORE PACKAGES FOR DWM...-------------------------
 echo "---------------------------------------------------------------------------------"
 echo ""
 
+install "xterm" "pac"
 install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
 install "xdg-user-dirs xdg-desktop-portal xdg-utils" "pac"
 install "wmctrl" "pac"
@@ -142,7 +143,8 @@ echo ""
 
 klone "https://github.com/dakyskye/dxhd.git"
 cd dxhd
-fish -c 'sudo make install'
+fish -c 'make fast'
+mv ./dxhd ~/.local/bin/
 cd ..
 rm -rf dxhd
 mkdir -p $HOME/.config/dxhd

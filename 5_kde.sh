@@ -226,7 +226,8 @@ echo ""
 
 klone "https://github.com/dakyskye/dxhd.git"
 cd dxhd
-fish -c 'sudo make install'
+fish -c 'make fast'
+mv ./dxhd ~/.local/bin/
 cd ..
 rm -rf dxhd
 mkdir -p $HOME/.config/dxhd
