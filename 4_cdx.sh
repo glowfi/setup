@@ -440,9 +440,7 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 # ======================================================= END ======================================================================================
 
-### Restfox
-install "electron29-bin" "yay"
-install "restfox-bin" "yay"
+### Bruno
 
 set brunover (curl "https://github.com/usebruno/bruno" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
 set url (string join "" "https://github.com/usebruno/bruno/releases/download/v$brunover/bruno_" "$brunover" "_x86_64_linux.AppImage") 
@@ -469,7 +467,8 @@ echo "------------------------------------------------------------------------"
 echo ""
 
 for i in (seq 2)
-    pip install neovim black flake8
+    # pip install neovim black flake8
+    pip install neovim black pylint
     npm i -g neovim typescript pyright vscode-langservers-extracted ls_emmet @fsouza/prettierd eslint_d diagnostic-languageserver bash-language-server @tailwindcss/language-server browser-sync graphql-language-service-cli 
     pip uninstall -y cmake
 end
@@ -478,24 +477,21 @@ install "cmake ninja tree-sitter tree-sitter-cli xclip shfmt meson" "pac"
 install "neovim" "pac"
 install "zls" "pac"
 
-# ======================================================= Can Be Deleted for minimal install =======================================================
+# COPY NEOVIM SETTINGS
 
-for i in (seq 6)
-    nvim --headless "+Lazy! sync" +qa
-end
-
-# ======================================================= END ======================================================================================
-
+cp -r $HOME/setup/configs/nvim $HOME/.config
+cp -r $HOME/setup/configs/nvim/.vsnip/ $HOME
 
 # MAKE NEOVIM HANDLE FILES IN PLAIN TEXT
 
 xdg-mime default nvim.desktop text/plain
 
+# Install neovim plugins headless
 
-# COPY NEOVIM SETTINGS
+for i in (seq 6)
+    nvim --headless "+Lazy! sync" +qa
+end
 
-cp -r $HOME/setup/configs/nvim $HOME/.config
-cp -r $HOME/setup/configs/nvim/.vsnip/ $HOME
 
 echo ""
 echo "----------------------------------------------------"
@@ -527,17 +523,19 @@ rm ngrok-v3-stable-linux-amd64.tgz
 
 ### Ueberzug and Ueberzugpp
 
-pip uninstall -y cmake
-install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
-klone "https://github.com/jstkdng/ueberzugpp.git"
-cd ueberzugpp
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build .
-mv ./ueberzug ./ueberzugpp
-mv ./ueberzugpp ~/.local/bin/
-cd ..;cd ..
-rm -rf ueberzugpp
+install "ueberzugpp" "pac"
+
+# pip uninstall -y cmake
+# install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
+# klone "https://github.com/jstkdng/ueberzugpp.git"
+# cd ueberzugpp
+# mkdir build && cd build
+# cmake -DCMAKE_BUILD_TYPE=Release ..
+# cmake --build .
+# mv ./ueberzug ./ueberzugpp
+# mv ./ueberzugpp ~/.local/bin/
+# cd ..;cd ..
+# rm -rf ueberzugpp
 
 # ===================== XORG Dependent ===================================
 klone "https://github.com/ueber-devel/ueberzug"
