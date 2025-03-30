@@ -102,8 +102,7 @@ sudo cp -r ./icons/Gruvbox-Material-Dark/ /usr/share/icons/
 cd ..
 rm -rf gruvbox-material-gtk
 
-cd $HOME/Downloads/
-mv "${SCRIPT_DIR}/storage/Gruvbox-Dark-Blue.tar.gz" .
+mv "$HOME/setup/storage/Gruvbox-Dark-Blue.tar.gz" .
 tar xzvf Gruvbox-Dark-Blue.tar.gz
 rm Gruvbox-Dark-Blue.tar.gz
 sudo mv ./Gruvbox-Dark-Blue/ /usr/share/Kvantum/
