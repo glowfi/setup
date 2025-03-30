@@ -27,9 +27,6 @@ if [[ "$_distroType" = "artix" ]]; then
 
 [extra]
 Include = /etc/pacman.d/mirrorlist-arch
-
-[community]
-Include = /etc/pacman.d/mirrorlist-arch
 EOF
 	sudo pacman-key --populate archlinux
 	sudo pacman -Syy
