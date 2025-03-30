@@ -33,6 +33,7 @@ EOF
 	install "reflector" "pac"
 	reflector --verbose -c DE --latest 5 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist-arch
 	sudo pacman -Syy
+	install "gptfdisk" "pac"
 else
 	timedatectl set-ntp true
 	sed -i 's/#Color/Color\nILoveCandy/' /etc/pacman.conf
