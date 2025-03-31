@@ -524,6 +524,7 @@ rm ngrok-v3-stable-linux-amd64.tgz
 ### Ueberzug and Ueberzugpp
 
 install "ueberzugpp" "pac"
+install "openslide" "pac"
 
 # pip uninstall -y cmake
 # install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
