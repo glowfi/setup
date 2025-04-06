@@ -62,7 +62,6 @@ if [ "$FISH_THEME" = gruvbox ]
     export FZF_DEFAULT_OPTS='--color=bg+:#4f4b49,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 end
 
-
 ## Enhancements
 set fish_greeting # Supresses fish's greeting message
 set TERM xterm-256color # Sets the terminal type
@@ -308,7 +307,7 @@ function cde
         set end (cat ~/.config/fish/config.fish | grep -n "# <<< conda initialize <<<"|tail -1|cut -d":" -f1)
         sed -i "$start,$end d" ~/.config/fish/config.fish
         source ~/.config/fish/config.fish
-        touch ~/.config/conda-deactivated
+        touch ~/.config/conda-activated
     end
 end
 function ccr
@@ -363,7 +362,6 @@ function searchFilesCurrent
         end
     end
 end
-
 
 # Search Directories in current working directory
 function searchDirCurrent
@@ -576,7 +574,6 @@ function _mirru
     end
 end
 
-
 ### SystemD/Openrc Utility Functions
 
 function sysop
@@ -679,7 +676,6 @@ end
 #                    Git Functions [Used in prompt]
 # ===================================================================
 
-
 function git_is_repo -d "Check if directory is a repository"
     test -d .git
     or begin
@@ -687,7 +683,6 @@ function git_is_repo -d "Check if directory is a repository"
         and test $info[2] = false
     end
 end
-
 
 function git_ahead -a ahead behind diverged none
     not git_is_repo; and return
@@ -708,7 +703,6 @@ function git_ahead -a ahead behind diverged none
     end
 end
 
-
 function git_branch_name -d "Get current branch name"
     git_is_repo; and begin
         command git symbolic-ref --short HEAD 2>/dev/null
@@ -716,11 +710,9 @@ function git_branch_name -d "Get current branch name"
     end
 end
 
-
 function git_is_dirty -d "Check if there are changes to tracked files"
     git_is_worktree; and not command git diff --no-ext-diff --quiet --exit-code
 end
-
 
 function git_is_staged -d "Check if repo has staged changes"
     git_is_repo; and begin
@@ -728,13 +720,11 @@ function git_is_staged -d "Check if repo has staged changes"
     end
 end
 
-
 function git_is_stashed -d "Check if repo has stashed contents"
     git_is_repo; and begin
         command git rev-parse --verify --quiet refs/stash >/dev/null
     end
 end
-
 
 function git_is_touched -d "Check if repo has any changes"
     git_is_worktree; and begin
@@ -745,12 +735,10 @@ function git_is_touched -d "Check if repo has any changes"
     end
 end
 
-
 function git_is_worktree -d "Check if directory is inside the worktree of a repository"
     git_is_repo
     and test (command git rev-parse --is-inside-git-dir) = false
 end
-
 
 function git_untracked -d "Print list of untracked files"
     git_is_worktree; and begin
@@ -761,7 +749,6 @@ end
 # ===================================================================
 #                         Prompt Theme
 # ===================================================================
-
 
 function chooseTheme
     set choosen (printf "simple\nclassic\nminimal" | fzf)
@@ -903,7 +890,6 @@ function minimal
     set -l error_color (set_color red -o)
     set -l purple (set_color -o purple)
 
-
     # Display current path and left pointing arrow symbol
     set_color black -b 458588
     echo -n " $cwd "
@@ -992,3 +978,7 @@ export NNN_PLUG='f:fzcd;o:fzopen;p:preview-tui;d:dragdrop'
 export NNN_FCOLORS='c1e20406006033f7c6d6abc4'
 export NNN_FIFO='/tmp/nnn.fifo'
 export NNN_TRASH=1
+
+# CUDA
+set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
+set PATH /opt/cuda/bin/ $PATH
