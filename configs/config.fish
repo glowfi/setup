@@ -298,7 +298,7 @@ alias getpip="curl -sS https://ipleak.net | pup 'table tr td text{}' | xargs"
 alias getprip="ip addr | grep 'state UP' -A3 | tail -n2 | head -1 | awk '{print $2}' | cut -f1  -d'/' | tr -d 'inet ' |xargs"
 
 # Miniconda activate/deactivate
-alias cac="test -e ~/.config/conda-deactivated && rm ~/.config/conda-deactivated && ~/miniconda3/bin/conda init fish && source ~/.config/fish/config.fish && touch ~/.config/conda-activated"
+alias cac="test -e ~/.config/conda-activated && rm ~/.config/conda-activated && touch ~/.config/conda-activated && ~/miniconda3/bin/conda init fish && source ~/.config/fish/config.fish"
 alias cdr='conda env list| sed "1,2d"|sed -r \'/^\s*$/d\' | fzf -m | awk -F" " \'{print $1}\' | xargs -I "{}" conda remove --name "{}" --all -y'
 function cde
     if test -e ~/.config/conda-activated
