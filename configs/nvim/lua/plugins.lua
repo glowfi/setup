@@ -213,6 +213,19 @@ return require("lazy").setup({
 		},
 	},
 
+	-- refactor
+	{
+		"ThePrimeagen/refactoring.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		lazy = false,
+		config = function()
+			require("core.refactor")
+		end,
+	},
+
 	-- LSP
 
 	--   nvim native LSP
