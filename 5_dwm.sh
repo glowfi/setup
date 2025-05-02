@@ -278,6 +278,7 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 cd ~/setup/configs/slock
+uname=$(echo "$USER")
 output=$(getent passwd "$uname" | cut -d ':' -f 5 | awk -F" " '{print $1}')
 output1=$(echo $output | awk '{ print toupper($0) }')
 sudo sed -i "2s/.*/static const char *user  = \""$uname"\";/" ~/setup/configs/slock/config.def.h
