@@ -139,9 +139,6 @@ redshift -P -O 4500K &
 # Clipboard
 clipmenud &
 
-# Autolock
-xautolock -time 10 -locker $HOME/.local/bin/screenlocker &
-
 # Kill Useless Process at startup
 ~/.local/bin/uselesskill.sh &' >>$HOME/.xprofile
 
@@ -171,28 +168,6 @@ getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head 
 getLineNumber=$(echo "$getReq" | cut -d":" -f1)
 rep="Current=breeze"
 sudo sed -i "${getLineNumber}s/.*/${rep}/" /usr/lib/sddm/sddm.conf.d/default.conf
-
-# ======================================================= Can Be Deleted for minimal install =======================================================
-
-# Install screenlocker
-
-echo ""
-echo "---------------------------------------------------------------------------------------------------"
-echo "--------------Installing SCREENLOCKER ...----------------------------------------------------------"
-echo "---------------------------------------------------------------------------------------------------"
-echo ""
-
-pip install opencv-python tk pynput playsound pathlib pyautogui
-install "tk" "pac"
-klone "https://github.com/glowfi/screenlocker"
-cd screenlocker
-fish -c "cargo build --release"
-mv ./target/release/screenlocker $HOME/.local/bin/screenlocker
-cd ..
-rm -rf screenlocker
-
-# ======================================================= END ======================================================================================
-
 
 # ===================== XORG Dependent ===================================
 
