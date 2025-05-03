@@ -50,7 +50,7 @@ else
 	ctl="loginctl"
 fi
 case "$(printf "Lock\nSleep\nReboot\nShutdown" | bemenu -p "Choose:" -i)" in
-'Lock') screenlocker ;;
+'Lock') qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock ;;
 'Sleep') "$ctl" suspend ;;
 'Reboot') "$ctl" reboot ;;
 'Shutdown') "$ctl" poweroff ;;
