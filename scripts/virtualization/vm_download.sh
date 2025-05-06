@@ -81,10 +81,10 @@ checkfile() {
 # Update latest distro URL functions
 
 archurl() {
-	mirror="https://archlinux.org/download/"
-	x=$(curl -s $mirror | grep -m1 geo | awk -F"\"" '{ print $2 }')
-	y=$(curl -s $x | grep -m1 archlinux | awk -F".iso" '{ print $1 }' | awk -F"\"" '{ print $2 }')
-	new="$x/$y.iso"
+	mirror="https://archlinux.org/download"
+	arch_mirror=$(curl -sSLf https://archlinux.org/download | grep iso | grep https | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -v -e "txt" -e "sig" -e "archiso" | fzf --cycle)
+	date=$(echo "$arch_mirror" | awk -F "/" '{print $6}')
+	new=$(echo "${arch_mirror}archlinux-${date}-x86_64.iso")
 	output="archlinux.iso"
 	checkfile $1
 }
@@ -270,13 +270,8 @@ zorinurl() {
 }
 
 popurl() {
-	#mirror="https://fosstorrents.com/files/pop-os_22.04_amd64_intel_20.iso-hybrid.torrent"
-	mirrorone="https://fosstorrents.com/distributions/pop-os/"
-	x=$(curl -s $mirrorone | html2text | grep -m1 ".torrent)" | awk -F"(" '{ print $2 }' | awk -F")" '{ print $1 }')
-	mirror="https://fosstorrents.com"
-	new="$mirror$x"
-	echo "Warning! This torrent is from fosstorrents, so unofficial. And to download (aria2c) you need to install aria2."
-	ariacmd
+	new="https://iso.pop-os.org/22.04/amd64/nvidia/52/pop-os_22.04_amd64_nvidia_52.iso"
+	output="popos.iso"
 	checkfile $1
 }
 
@@ -433,12 +428,8 @@ tailsurl() {
 }
 
 fedoraurl() {
-	mirror="https://getfedora.org/en/workstation/download/"
-	new=$(curl -s $mirror | html2text | grep -m2 iso | awk -F "(" 'NR%2{printf "%s",$0;next;}1' | awk -F"(" '{ print $2 }' | awk -F")" '{ print $1 }')
-	# Legacy
-	#mirror="https://www.happyassassin.net/nightlies.html"
-	#x=$(curl -s $mirror | grep -m1 Fedora-Workstation-Live-x86_64-Rawhide | awk -F\" '{ print $4 }')
-	#new="$x"
+	mirror="https://fedoraproject.org/workstation/download"
+	new=$(curl -sSL "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep x86_64)
 	output="fedora.iso"
 	checkfile $1
 }
@@ -510,7 +501,7 @@ almaurl() {
 
 rockyurl() {
 	mirror="https://rockylinux.org/download"
-	new=$(curl -s $mirror | html2text | grep -m1 DVD | awk -F'(' '{ print $2 }' | awk -F')' '{ print $1 }')
+	new=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep -v -e "CHECKSUM")
 	output="rocky.iso"
 	checkfile $1
 }
@@ -1367,53 +1358,60 @@ unattended_windows() {
 EOF
 }
 
-downloadMedia() {
+downloadWindowsISO() {
+	# Define product IDs and names
+	declare -A products=(
+		["48"]="Windows 8.1 Single Language (9600.17415)"
+		["2618"]="❤️ Windows 10 22H2 v1 (19045.2965)"
+		["3113"]="❤️ Windows 11 24H2 (26100.1742)"
+	)
 
-	if [[ "$1" = "win7x64-ultimate" ]]; then
-		url="https://massgrave.dev/windows_7_links"
-		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
-		if [[ "${link}" != "" ]]; then
-			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
-			windowsGlobalDownloadLink="${link}"
-		fi
-	elif [[ "$1" = "win81x64" ]]; then
-		url="https://massgrave.dev/windows_8.1_links"
-		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
-		if [[ "${link}" != "" ]]; then
-			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
-			windowsGlobalDownloadLink="${link}"
-		fi
+	if [[ "$1" = "win81x64" ]]; then
+		selected_product_id="48"
 	elif [[ "$1" = "win10x64" ]]; then
-		url="https://massgrave.dev/windows_10_links"
-		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
-		if [[ "${link}" != "" ]]; then
-			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
-			windowsGlobalDownloadLink="${link}"
-		fi
-
+		selected_product_id="2618"
 	elif [[ "$1" = "win11x64" ]]; then
-		url="https://massgrave.dev/windows_11_links"
-		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
-		if [[ "${link}" != "" ]]; then
-			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
-			windowsGlobalDownloadLink="${link}"
-		fi
-
-	elif [[ "$1" = "win10x64-enterprise-ltsc-eval" ]]; then
-		url="https://massgrave.dev/windows_ltsc_links"
-		link=$(curl -s "${url}" | tr '"' '\n' | tr "'" '\n' | grep -e '^https://' -e '^http://' -e'^//' | grep ".iso" | sort | uniq | fzf --reverse --prompt "Choose iso:")
-		if [[ "${link}" != "" ]]; then
-			aria2c -j 16 -x 16 -s 16 -k 1M "${link}" -o "${1}.iso"
-			windowsGlobalDownloadLink="${link}"
-		fi
+		selected_product_id="3113"
 	fi
+
+	# Fetch SKU information for the selected product ID
+	sku_response=$(curl -s "https://api.gravesoft.dev/msdl/skuinfo?product_id=$selected_product_id")
+
+	# Use jq to extract and format the SKU information
+	selected_sku=$(echo "$sku_response" | jq -r '.Skus[] | "\(.Id) \(.Description)"' | sort | fzf --header="Select a SKU")
+
+	# Check if a SKU was selected
+	if [ -z "$selected_sku" ]; then
+		echo "No SKU selected."
+		exit 1
+	fi
+
+	# Extract the SKU ID from the selected SKU
+	sku_id=$(echo "$selected_sku" | awk '{print $1}')
+
+	# Fetch download options for the selected SKU
+	download_response=$(curl -s "https://api.gravesoft.dev/msdl/proxy?product_id=$selected_product_id&sku_id=$sku_id")
+
+	# Use jq to extract and format the download options
+	selected_download=$(echo "$download_response" | jq -r '.ProductDownloadOptions[] | "\(.Name) \(.Uri)"' | fzf --header="Select a download option")
+
+	# Check if a download option was selected
+	if [ -z "$selected_download" ]; then
+		echo "No download option selected."
+		exit 1
+	fi
+
+	# Extract the download URL from the selected download option
+	windowsGlobalDownloadLink=$(echo "$selected_download" | awk '{print $NF}')
+
+	aria2c -j 16 -x 16 -s 16 -k 1M "${windowsGlobalDownloadLink}"
 }
 
 CallWindowsDownloader() {
 	clear
 
 	echo -e "Downloading $output"
-	downloadMedia "$1"
+	downloadWindowsISO "$1"
 
 	iso=$(find -type f | grep "iso" | head -1 | xargs -I {} realpath "{}")
 	if [[ "$1" == "win10x64" || "$1" == "win11x64" ]]; then
@@ -1436,7 +1434,7 @@ winget() {
 
 	mkdir -p "$VMS_ISO"
 
-	if [[ "$1" == "win7x64-ultimate" || "$1" == "win81x64" || "$1" == "win10x64-enterprise-ltsc-eval" ]]; then
+	if [[ "$1" == "win81x64" ]]; then
 
 		cd "${VMS_ISO}"
 
@@ -1518,8 +1516,7 @@ winget() {
 			suffix="unattended"
 
 			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-				query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
-				mv "../${output}" "../${fileName}-${suffix}-${query}-${epoch}.iso"
+				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
 			else
 				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
 			fi
@@ -1529,8 +1526,7 @@ winget() {
 			suffix="non-unattended"
 
 			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-				query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
-				mv "../${output}" "../${fileName}-${suffix}-${query}-${epoch}.iso"
+				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
 			else
 				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
 			fi
@@ -1546,50 +1542,12 @@ winget() {
 	sudo sed -i '72d' /etc/sudoers
 
 	# Download virtio drivers iso
-	if [[ "$1" != "win7x64-ultimate" ]]; then
-		echo "Downloading Virtio Drivers for setting higher resolution ..."
-		aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
-	fi
+	echo "Downloading Virtio Drivers for setting higher resolution ..."
+	aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
 
 	if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-		query=$(echo "${windowsGlobalDownloadLink}" | awk -F"/" '{print $4}' | xargs)
-		SHA1=$(curl "https://msdn.rg-adguard.net/public.php?seach=${query}&str=25" | grep "<b>SHA1:</b>" | awk -F" " '{print $2}' | sed 's/.\{4\}$//' | xargs)
-		SHA256=$(curl "https://msdn.rg-adguard.net/public.php?seach=${query}&str=25" | grep "<b>SHA256:</b>" | awk -F" " '{print $2}' | sed 's/.\{4\}$//' | xargs)
-
-		if [[ "${SHA1}" != "" ]]; then
-
-			iso_sha=$(sha1sum "${VMS_ISO}/${output}" | awk '{print $1}' | xargs)
-			matchStatus=$(if [ "${iso_sha}" == "${SHA1}" ]; then echo -e "\e[32mChecksum Matched!\e[0m"; else echo -e "\e[31mChecksum do not match!\e[0m"; fi)
-
-			echo -e "################################\n"
-			echo "Downloaded From : ${windowsGlobalDownloadLink}"
-			echo "Original  SHA1      : ${SHA1}"
-			echo "Downloaded ISO SHA1 : ${iso_sha}"
-			echo "Checksum Match: ${matchStatus}"
-			echo -e "################################\n"
-		fi
-
-		if [[ "${SHA256}" != "" ]]; then
-
-			iso_sha=$(sha256sum "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/${output}" | awk '{print $1}' | xargs)
-			matchStatus=$(if [ "${iso_sha}" == "${SHA256}" ]; then echo -e "\e[32mChecksum Matched!\e[0m"; else echo -e "\e[31mChecksum do not match!\e[0m"; fi)
-
-			echo -e "################################\n"
-			echo "Downloaded From : ${windowsGlobalDownloadLink}"
-			echo "Original  SHA256      : ${SHA256}"
-			echo "Downloaded ISO SHA256 : ${iso_sha}"
-			echo "Checksum Match: ${matchStatus}"
-			echo -e "################################\n"
-		fi
-
 		sudo rm -rf "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
-
 	fi
-}
-
-win7url() {
-	output="Windows7_Ultimate.iso"
-	winget "win7x64-ultimate"
 }
 
 win8_1url() {
@@ -1605,11 +1563,6 @@ win10url() {
 win11url() {
 	output="Windows11.iso"
 	winget "win11x64"
-}
-
-win10ltscurl() {
-	output="Windows10-LTSC.iso"
-	winget "win10x64-enterprise-ltsc-eval"
 }
 
 ## Bootable USB
@@ -1651,7 +1604,7 @@ sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
 containers=(rancheros k3os flatcar silverblue photon coreos dcos)
 bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
 notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
-windows=(windows7 windows8_1 windows10 windows11 win10ltsc)
+windows=(windows8_1 windows10 windows11)
 bootable_usb=(ventoy balena_etcher)
 recovery_environment=(hirens_bootcd_pe medicat)
 
@@ -1807,11 +1760,9 @@ reactos=("ReactOS" "amd64" "release" "reactosurl")
 freedos=("FreeDOS" "amd64" "release" "freedosurl")
 
 # Windows
-windows7=("Windows7_Ultimate" "amd64" "latest" "win7url")
 windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
 windows10=("Windows10" "amd64" "latest" "win10url")
 windows11=("Windows11" "amd64" "latest" "win11url")
-win10ltsc=("Windows10ltsc" "amd64" "longterm-support" "win10ltscurl")
 
 # Bootable USB
 ventoy=("ventoy" "amd64" "latest" "ventoyurl")
