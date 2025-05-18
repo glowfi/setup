@@ -295,7 +295,12 @@ return require("lazy").setup({
 	},
 
 	--   Null-ls
-	{ "nvimtools/none-ls.nvim" },
+	{
+		"nvimtools/none-ls.nvim",
+		dependencies = {
+			"nvimtools/none-ls-extras.nvim",
+		},
+	},
 
 	-- Languages Plugins
 

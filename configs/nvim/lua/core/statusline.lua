@@ -265,6 +265,12 @@ local function available_LS_Formatter_Linter()
 			end
 		end
 	end
+
+	if vim.tbl_contains(require("none-ls.diagnostics.ruff").filetypes or {}, filetype) then
+		if vim.fn.executable("ruff") == 1 then
+			a = a .. " " .. "L:" .. "ruff"
+		end
+	end
 	return a
 end
 

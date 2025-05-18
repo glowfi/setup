@@ -35,7 +35,7 @@ M.setup = function()
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
 			b.formatting.shfmt.with({ filetypes = { "sh" } }),
 			-- b.diagnostics.flake8.with({ filetypes = { "python" } }),
-			b.diagnostics.pylint.with({ filetypes = { "python" } }),
+			require("none-ls.diagnostics.ruff"),
 			-- b.diagnostics.eslint_d.with({
 			-- 	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 			-- }),
