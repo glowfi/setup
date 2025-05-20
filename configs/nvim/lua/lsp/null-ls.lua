@@ -13,6 +13,7 @@ M.setup = function()
 	null_ls.setup({
 		debounce = 150,
 		sources = {
+			require("none-ls.diagnostics.ruff"),
 			b.formatting.prettierd.with({
 				filetypes = {
 					"typescriptreact",
@@ -27,18 +28,10 @@ M.setup = function()
 			}),
 			b.formatting.fish_indent.with({ filetypes = { "fish" } }),
 			b.formatting.black.with({ filetypes = { "python" } }),
-			-- b.formatting.clang_format.with({ filetypes = { "c", "cpp" } }),
-			-- b.formatting.rustfmt.with({ filetypes = { "rust" } }),
 			b.formatting.goimports.with({ filetypes = { "go" } }),
 			b.formatting.gofumpt.with({ filetypes = { "go" } }),
-			-- b.formatting.golines.with({ filetypes = { "go" } }),
 			b.formatting.stylua.with({ filetypes = { "lua" } }),
 			b.formatting.shfmt.with({ filetypes = { "sh" } }),
-			-- b.diagnostics.flake8.with({ filetypes = { "python" } }),
-			require("none-ls.diagnostics.ruff"),
-			-- b.diagnostics.eslint_d.with({
-			-- 	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-			-- }),
 		},
 		on_attach = function(client)
 			vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
