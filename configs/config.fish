@@ -168,7 +168,7 @@ function mimp
 end
 
 # youtube-local
-alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd;echo "localhost:3006"|xclip -sel c'
+alias yst='cd "$HOME/.local/bin/youtube-local";source "$HOME/.local/bin/youtube-local/env/bin/activate.fish";nohup python ./server.py &;rm nohup.out;deactivate;cd;echo "http://localhost:3060/https://youtube.com"|xclip -sel c'
 alias ysp='ps aux | grep "server.py" | grep "python" | awk \'{print $2}\' | xargs -ro kill -9'
 
 # Docker
