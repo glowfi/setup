@@ -411,11 +411,11 @@ end
 
 if test "$argv[1]" = "KDE"
     if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_kde.sh"
+        echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_kde.sh"
     end
 else
     if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass" >> "$SCRIPT_DIR/5_dwm.sh"
+        echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_dwm.sh"
     end
 end
 
