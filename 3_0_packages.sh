@@ -183,6 +183,12 @@ rm -rf tty-clock
 
 install "rnote" "pac"
 
+mkdir - p ~/.local/bin/
+drawio_ver=$(curl "https://github.com/jgraph/drawio-desktop" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs)
+drawio_ver_unversioned=$(echo "${drawio_ver}" | tr -d "v")
+wget "https://github.com/jgraph/drawio-desktop/releases/download/${drawio_ver}/drawio-x86_64-${drawio_ver_unversioned}.AppImage" -O $HOME/.local/bin/drawio
+chmod +x $HOME/.local/bin/drawio
+
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------COPYING SETTINGS...---------------------------------------"
