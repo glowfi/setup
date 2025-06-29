@@ -98,7 +98,12 @@ else
 	install "alsa-utils alsa-plugins pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber" "pac"
 	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi
-install "bluez bluez-utils blueman" "pac"
+
+install "bluez bluez-utils" "pac"
+mkdir - p $HOME/.local/bin
+cp -r $HOME/setup/scripts/utils/bt $HOME/.local/bin/
+chmod +x $HOME/.local/bin/bt
+
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
 mkdir -p $HOME/.config/easyeffects/ $HOME/.config/easyeffects/output
@@ -183,7 +188,7 @@ rm -rf tty-clock
 
 install "rnote" "pac"
 
-mkdir - p ~/.local/bin/
+mkdir - p $HOME/.local/bin/
 drawio_ver=$(curl "https://github.com/jgraph/drawio-desktop" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs)
 drawio_ver_unversioned=$(echo "${drawio_ver}" | tr -d "v")
 wget "https://github.com/jgraph/drawio-desktop/releases/download/${drawio_ver}/drawio-x86_64-${drawio_ver_unversioned}.AppImage" -O $HOME/.local/bin/drawio
