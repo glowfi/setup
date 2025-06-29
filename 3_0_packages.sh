@@ -99,10 +99,7 @@ else
 	systemctl --user enable pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket pipewire-session-manager.service
 fi
 
-install "bluez bluez-utils" "pac"
-mkdir - p $HOME/.local/bin
-cp -r $HOME/setup/scripts/utils/bt $HOME/.local/bin/
-chmod +x $HOME/.local/bin/bt
+install "bluez bluez-utils blueman" "pac"
 
 install "songrec" "pac"
 install "easyeffects lsp-plugins" "pac"
