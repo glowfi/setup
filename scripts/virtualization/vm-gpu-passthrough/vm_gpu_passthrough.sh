@@ -14,19 +14,35 @@ cp /etc/mkinitcpio.conf Backup
 ########## Detecting CPU and making IOMMU string ##########
 
 # Detect CPU
+blue() {
+	echo -e "\033[94m $1 \033[0m"
+}
+
+red() {
+	echo -e "\033[91m $1 \033[0m"
+}
+
+yellow() {
+	echo -e "\033[93m $1 \033[0m"
+}
+
 proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
+
 if [[ ${proc_type} =~ "GenuineIntel" ]]; then
 	IOMMU="intel_iommu=on rd.driver.pre=vfio-pci kvm.ignore_msrs=1"
-	echo "Set Intel IOMMU On"
+	blue "Set Intel IOMMU On"
 elif [[ ${proc_type} =~ "AuthenticAMD" ]]; then
 	IOMMU="amd_iommu=on rd.driver.pre=vfio-pci kvm.ignore_msrs=1"
-	echo "Set AMD IOMMU On"
+	red "Set AMD IOMMU On"
+else
+	yellow "Unsupported processor type: $proc_type. Exiting..."
+	exit 1
 fi
 
 # Combining IOMMU string with current GRUB_CMDLINE_LINUX_DEFAULT
 getGrubDefaultArgs=$(cat /etc/default/grub | grep -n "GRUB_CMDLINE_LINUX_DEFAULT")
 getLineNumber=$(echo "$getGrubDefaultArgs" | cut -d ":" -f1 | xargs)
-getOldArgs=$(echo "$getGrubDefaultArgs" | cut -d ":" -f2 | sed 's/.$//')
+getOldArgs=$(echo "$getGrubDefaultArgs" | grep -oP 'GRUB_CMDLINE_LINUX_DEFAULT="[^"]*')
 combinedArgsWithIOMMU="${getOldArgs} ${IOMMU}\""
 
 ########## Grub ##########
