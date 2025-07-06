@@ -49,7 +49,8 @@ combinedArgsWithIOMMU="${getOldArgs} ${IOMMU}\""
 
 # Copy a the current grub setting
 cp /etc/default/grub new_grub
-sed -i "${getLineNumber}s/.*/${combinedArgsWithIOMMU}/" new_grub
+awk -v text="$combinedArgsWithIOMMU" -v N=$getLineNumber '{if (NR==N) $0=text} 1' new_grub >temp.txt
+mv temp.txt new_grub
 
 # Copy Updated GRUB
 cp new_grub /etc/default/grub
