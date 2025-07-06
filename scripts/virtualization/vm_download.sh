@@ -1077,7 +1077,7 @@ unattended_windows() {
 	cat <<'EOF' >"${1}"
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-001&Keyboard=00000409&GeoLocation=244&ProcessorArchitecture=amd64&BypassRequirementsCheck=true&BypassNetworkCheck=true&ComputerNameMode=Custom&ComputerName=<USERNAME_HERE>&CompactOsMode=Default&TimeZoneMode=Implicit&PartitionMode=Unattended&PartitionLayout=GPT&EspSize=300&RecoveryMode=None&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=Unattended&AccountName0=Admin&AccountDisplayName0=&AccountPassword0=&AccountGroup0=Administrators&AccountName1=User&AccountDisplayName1=&AccountPassword1=&AccountGroup1=Users&AutoLogonMode=Own&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=Hidden&TaskbarSearch=Hide&TaskbarIconsMode=Default&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&MakeEdgeUninstallable=true&EffectsMode=Default&DesktopIconsMode=Default&WifiMode=Interactive&ExpressSettings=DisableAll&KeysMode=Skip&StickyKeysMode=Default&ColorMode=Custom&SystemColorTheme=Dark&AppsColorTheme=Dark&AccentColor=%230078d4&WallpaperMode=Default&RemoveBingSearch=true&WdacMode=Skip-->
+	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-001&Keyboard=00000409&GeoLocation=244&ProcessorArchitecture=amd64&BypassRequirementsCheck=true&BypassNetworkCheck=true&ComputerNameMode=Random&CompactOsMode=Default&TimeZoneMode=Implicit&PartitionMode=Unattended&PartitionLayout=GPT&EspSize=300&RecoveryMode=None&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=Unattended&AccountName0=Admin&AccountDisplayName0=&AccountPassword0=&AccountGroup0=Administrators&AccountName1=<USERNAME_HERE>&AccountDisplayName1=<USERNAME_HERE>&AccountPassword1=&AccountGroup1=Users&AutoLogonMode=None&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=Hidden&ShowFileExtensions=true&ClassicContextMenu=true&LaunchToThisPC=true&TaskbarSearch=Hide&TaskbarIconsMode=Default&DisableWidgets=true&LeftTaskbar=true&DisableBingResults=true&StartTilesMode=Empty&StartPinsMode=Empty&EnableLongPaths=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&MakeEdgeUninstallable=true&EffectsMode=Default&DesktopIconsMode=Default&WifiMode=Interactive&ExpressSettings=DisableAll&KeysMode=Skip&StickyKeysMode=Default&ColorMode=Custom&SystemColorTheme=Dark&AppsColorTheme=Dark&AccentColor=%230078d4&WallpaperMode=Default&RemoveBingSearch=true&WdacMode=Skip-->
 	<settings pass="offlineServicing"></settings>
 	<settings pass="windowsPE">
 		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
@@ -1136,9 +1136,6 @@ unattended_windows() {
 	</settings>
 	<settings pass="generalize"></settings>
 	<settings pass="specialize">
-		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-			<ComputerName><USERNAME_HERE></ComputerName>
-		</component>
 		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<RunSynchronous>
 				<RunSynchronousCommand wcm:action="add">
@@ -1186,8 +1183,8 @@ unattended_windows() {
 						</Password>
 					</LocalAccount>
 					<LocalAccount wcm:action="add">
-						<Name>User</Name>
-						<DisplayName></DisplayName>
+						<Name><USERNAME_HERE></Name>
+						<DisplayName><USERNAME_HERE></DisplayName>
 						<Group>Users</Group>
 						<Password>
 							<Value></Value>
@@ -1196,27 +1193,12 @@ unattended_windows() {
 					</LocalAccount>
 				</LocalAccounts>
 			</UserAccounts>
-			<AutoLogon>
-				<Username>Admin</Username>
-				<Enabled>true</Enabled>
-				<LogonCount>1</LogonCount>
-				<Password>
-					<Value></Value>
-					<PlainText>true</PlainText>
-				</Password>
-			</AutoLogon>
 			<OOBE>
 				<ProtectYourPC>3</ProtectYourPC>
 				<HideEULAPage>true</HideEULAPage>
 				<HideWirelessSetupInOOBE>false</HideWirelessSetupInOOBE>
 				<HideOnlineAccountScreens>false</HideOnlineAccountScreens>
 			</OOBE>
-			<FirstLogonCommands>
-				<SynchronousCommand wcm:action="add">
-					<Order>1</Order>
-					<CommandLine>powershell.exe -WindowStyle Normal -NoProfile -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Raw | Invoke-Expression;"</CommandLine>
-				</SynchronousCommand>
-			</FirstLogonCommands>
 		</component>
 	</settings>
 	<Extensions xmlns="https://schneegans.de/windows/unattend-generator/">
@@ -1310,6 +1292,16 @@ $key = 'Registry::HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start';
 New-Item -Path $key -ItemType 'Directory' -ErrorAction 'SilentlyContinue';
 Set-ItemProperty -LiteralPath $key -Name 'ConfigureStartPins' -Value $json -Type 'String';
 		</File>
+		<File path="C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\LayoutModification.xml">
+&lt;LayoutModificationTemplate Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification"&gt;
+	&lt;LayoutOptions StartTileGroupCellWidth="6" /&gt;
+	&lt;DefaultLayoutOverride&gt;
+		&lt;StartLayoutCollection&gt;
+			&lt;StartLayout GroupCellWidth="6" xmlns="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" /&gt;
+		&lt;/StartLayoutCollection&gt;
+	&lt;/DefaultLayoutOverride&gt;
+&lt;/LayoutModificationTemplate&gt;
+		</File>
 		<File path="C:\Windows\Setup\Scripts\SetColorTheme.ps1">
 $lightThemeSystem = 0;
 $lightThemeApps = 0;
@@ -1382,6 +1374,19 @@ $scripts = @(
 		net.exe accounts /maxpwage:UNLIMITED;
 	};
 	{
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+	};
+	{
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v StartupBoostEnabled /t REG_DWORD /d 0 /f;
+	};
+	{
 		Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\MakeEdgeUninstallable.ps1' -Raw | Invoke-Expression;
 	};
 	{
@@ -1415,6 +1420,18 @@ $scripts = @(
 $scripts = @(
 	{
 		Set-WinHomeLocation -GeoId 244;
+	};
+	{
+		$params = @{
+			Path = 'Registry::HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32';
+			ErrorAction = 'SilentlyContinue';
+			Force = $true;
+		};
+		New-Item @params;
+		Set-ItemProperty @params -Name '(Default)' -Value '' -Type 'String';
+	};
+	{
+		Set-ItemProperty -LiteralPath 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'LaunchTo' -Type 'DWord' -Value 1;
 	};
 	{
 		Set-ItemProperty -LiteralPath 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search' -Name 'SearchboxTaskbarMode' -Type 'DWord' -Value 0;
@@ -1454,6 +1471,12 @@ $scripts = @(
 		<File path="C:\Windows\Setup\Scripts\DefaultUser.ps1">
 $scripts = @(
 	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarAl /t REG_DWORD /d 0 /f;
+	};
+	{
 		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f;
 	};
 	{
@@ -1485,35 +1508,6 @@ $scripts = @(
     $complete += $increment;
   }
 } *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\DefaultUser.log";
-		</File>
-		<File path="C:\Windows\Setup\Scripts\FirstLogon.ps1">
-$scripts = @(
-	{
-		Set-ItemProperty -LiteralPath 'Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name 'AutoLogonCount' -Type 'DWord' -Force -Value 0;
-	};
-);
-
-&amp; {
-  [float] $complete = 0;
-  [float] $increment = 100 / $scripts.Count;
-  foreach( $script in $scripts ) {
-    Write-Progress -Activity 'Running scripts to finalize your Windows installation. Do not close this window.' -PercentComplete $complete;
-    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
-      $str = $script.ToString().Trim() -replace '\s+', ' ';
-      $max = 100;
-      if( $str.Length -le $max ) {
-        $str;
-      } else {
-        $str.Substring( 0, $max - 1 ) + '&#x2026;';
-      }
-    );
-    $start = [datetime]::Now;
-    &amp; $script;
-    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
-    "`r`n" * 3;
-    $complete += $increment;
-  }
-} *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\FirstLogon.log";
 		</File>
 	</Extensions>
 </unattend>
