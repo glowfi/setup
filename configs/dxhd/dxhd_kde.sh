@@ -217,7 +217,7 @@ fi
 
 ## Increase Brightness
 #super + F3
-brightnessctl s 30+
+brightnessctl s 1000+
 currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%" | xargs)
 cap=100
 if [ "$currBrightness" -gt "$cap" ]; then
@@ -232,7 +232,7 @@ fi
 
 ## Decrease Brightness
 #super + F2
-brightnessctl s 30-
+brightnessctl s 1000-
 currBrightness=$(brightnessctl | head -2 | tail -1 | xargs | cut -d '(' -f2 | cut -d ')' -f1 | tr -d "%")
 cap=100
 if [ "$currBrightness" -gt "$cap" ]; then
