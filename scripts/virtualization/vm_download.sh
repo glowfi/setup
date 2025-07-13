@@ -1606,13 +1606,13 @@ download() {
 
 	if command -v curl >/dev/null 2>&1; then
 		echo "⬇️  Trying curl: $output"
-		curl -L --fail "$url" -o "$output"
+		curl -L --fail --speed-time 30 --speed-limit 1000 "$url" -o "$output"
 		if [[ $? -eq 0 ]]; then return 0; else echo "❌ curl failed, falling back to wget..."; fi
 	fi
 
 	if command -v wget >/dev/null 2>&1; then
 		echo "⬇️  Trying wget: $output"
-		wget "$url" -O "$output"
+		wget --read-timeout=30 --timeout=30 -c "$url" -O "$output"
 		if [[ $? -eq 0 ]]; then return 0; else echo "❌ wget also failed."; fi
 	fi
 
