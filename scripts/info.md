@@ -147,6 +147,18 @@ sudo qemu-system-x86_64 \
 + Disable micrsoft basic software and reboot.
 ```
 
+### Fedora Based BIOS tweak
+
+```bash
+### Copy OVMF_VARS
+cp -r /usr/share/edk2/ovmf/OVMF_VARS.fd .
+cp -r /usr/share/edk2/ovmf/OVMF_CODE.fd .
+
+
+-global driver=cfi.pflash01,property=secure,value=on -drive if=pflash,format=raw,unit=0,file=OVMF_CODE.fd,readonly=on \\
+-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \\
+```
+
 ### FIREFOX
 
 ```bash
@@ -475,12 +487,12 @@ sudo pacman -S --noconfirm tesseract-data-afr tesseract-data-amh tesseract-data-
 
 ##### ENABLE
 
--   RTX
--   DLSS
--   Use Discrete GPU ONLY (NVIDIA)
--   Vulkan Configured
--   Mangohud
--   Feral Gamemode
+- RTX
+- DLSS
+- Use Discrete GPU ONLY (NVIDIA)
+- Vulkan Configured
+- Mangohud
+- Feral Gamemode
 
 ###### NORMAL PROTON
 
@@ -777,13 +789,13 @@ sed -i 's/#define FIBONACCI_DWINDLE_LAYOUT 0/#define FIBONACCI_DWINDLE_LAYOUT 1/
 sed -i 's/#define FIBONACCI_SPIRAL_LAYOUT 0/#define FIBONACCI_SPIRAL_LAYOUT 1/g' "$file"
 ```
 
--   Some Fish configs sg sf
--   DWM [#433c3b #2a2a2a]
--   preview-tui
--   git -delta
--   vm-setup
--   bemenu
--   eza
--   kitty
--   envs
--   fzf
+- Some Fish configs sg sf
+- DWM [#433c3b #2a2a2a]
+- preview-tui
+- git -delta
+- vm-setup
+- bemenu
+- eza
+- kitty
+- envs
+- fzf
