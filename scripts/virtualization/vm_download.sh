@@ -37,7 +37,6 @@ declare -A distro_family=(
 	[antix]="deb"
 	[trisquel]="deb"
 	[peppermintos]="deb"
-	[nitrux]="deb"
 	[damn_small_linux]="deb"
 	[vanillaos]="deb"
 	[tails_os]="deb"
@@ -92,7 +91,6 @@ declare -A distro_family=(
 
 	# Recovery Environments
 	[hirens_bootcd_pe]="recovery_environment"
-	[medicat]="recovery_environment"
 
 	# Firewalls
 	[pfsense]="firewall"
@@ -130,7 +128,6 @@ declare -A distro_download=(
 	[antix]="download_antix"
 	[trisquel]="download_trisquel"
 	[peppermintos]="download_peppermintos"
-	[nitrux]="download_nitrux"
 	[damn_small_linux]="download_damn_small_linux"
 	[vanillaos]="download_vanillaos"
 	[tails_os]="download_tails_os"
@@ -185,7 +182,6 @@ declare -A distro_download=(
 
 	# Recovery Environments
 	[hirens_bootcd_pe]="download_hirens_bootcd_pe"
-	[medicat]="download_medicat"
 
 	# Firewalls
 	[pfsense]="download_pfsense"
@@ -393,13 +389,6 @@ download_peppermintos() {
 	local html=$(curl -sSLf "$mirror")
 	local download_link=$(extract_links_from_html "$html" | grep -Eo ".+iso\$" | fzf --cycle --prompt "Choose iso to download:")
 	local output_file="peppermintos-XFCE-Debian-base.iso"
-	download "$download_link" "$output_file"
-}
-
-download_nitrux() {
-	local mirror="https://sourceforge.net/projects/nitruxos/files/latest/download"
-	local download_link="$mirror"
-	local output_file="nitrux.iso"
 	download "$download_link" "$output_file"
 }
 
@@ -1555,31 +1544,6 @@ download_hirens_bootcd_pe() {
 	download "$download_link" "$output_file"
 }
 
-download_medicat() {
-	local url_page="https://medicatusb.com/"
-	local html
-	html=$(curl -fsSL "$url_page")
-
-	# Extract and filter the download link
-	local download_link
-	download_link=$(extract_links_from_html "$html" |
-		grep dog |
-		awk -F"=" '{print $2}' |
-		cut -d" " -f1 |
-		xargs)
-
-	# Check if a link was found
-	if [[ -z "$download_link" ]]; then
-		echo "❌ No valid download link found on $url_page"
-		return 1
-	fi
-
-	local output_file="medicat.7z"
-
-	# Download the file
-	download "$download_link" "$output_file"
-}
-
 # Firewalls
 
 download_pfsense() {
@@ -1659,10 +1623,7 @@ download() {
 # Extract links html from html
 extract_links_from_html() {
 	local html="$1"
-	echo "$html" | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' |
-		while IFS= read -r url; do
-			printf '%b\n' "${url//%/\\x}"
-		done
+	echo "$html" | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d'
 }
 
 # Dispatcher function
