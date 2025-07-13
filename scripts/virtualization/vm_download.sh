@@ -1,1079 +1,709 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-helpsection() {
-	echo -e "/----------------------------------------------------------------------------------------------------------------------------------------\\"
-	echo -e "|\e[34m Script downloads recent (latest release) linux ISOs and spins a VM for a test. This is kinda distrohopper dream machine.               \e[0m|"
-	echo -e "|\e[34m Theoretically, the script should always download recent linux ISOs without any updates. But, if the developer(s)                       \e[0m|"
-	echo -e "|\e[34m change the download URL or something else, it might be required to do manual changes.                                                  \e[0m|"
-	echo -e "|\e[35m                                                                                                                                        \e[0m|"
-	echo -e "|\e[33m  Supported : Arch-based-distros , DEB-based-distros , RPM-based-distros                                                                \e[0m|"
-	echo -e "|\e[33m              Source-based-linux-distros , 'Containers and data-center-based-os' , 'BSD, NAS, Firewall'                                 \e[0m|"
-	echo -e "|\e[33m              Not-linux[openindiana minix haiku menuetos kolibri reactos freedos] , Windows , Bootable_USB , Recovery Environment       \e[0m|"
-	echo -e "|\e[33m Some distros are shared as archive. So you'll need xz for guix, bzip2 for minix, zip for haiku & reactos, and, finally 7z for kolibri. \e[0m|"
-	echo -e "|\e[35m                                                                                                                                        \e[0m|"
-	echo -e "|\e[31m Requirements: linux, bash, curl, wget, awk, grep, xargs, pr, aria2, fzf, mkisofs                                                       \e[0m|"
-	echo -e "|\e[31m Inspired By : https://github.com/sxiii/linux-downloader , quickget (QUICKEMU Project)                                                  \e[0m|"
-	echo -e "/----------------------------------------------------------------------------------------------------------------------------------------\\"
-	echo -e ""
-	echo -e "====== How to use ====== \n"
-	echo -e "\e[32m+ To Download Just One ISO press enter by selecting the iso in the fuzzy menu and it will automatically start downloading \n\e[0m"
-	echo -e "\e[32m+ To Download Multiple ISOs press tab to select multiple OS and the enter to start downloading \n\e[0m"
-}
+# Set your constant download location
+DOWNLOAD_DIR="$HOME/Downloads/VMS_ISO"
 
-# the public ipxe mirror does not work
-#echo "* 'netbootipxe' option will boot from boot.ipxe.org"
+# Create it if it doesn't exist
+mkdir -p "$DOWNLOAD_DIR"
 
-#### Constant Variables
-allDistros=""
-VMS_ISO="$HOME/Downloads/VMS_ISO"
+# Base family mapping
+declare -A distro_family=(
+	# Arch-based
+	[archlinux]="arch"
+	[archlinuxgui]="arch"
+	[manjaro]="arch"
+	[archbang]="arch"
+	[parabola]="arch"
+	[endeavour]="arch"
+	[artix]="arch"
+	[garuda]="arch"
+	[archcraft]="arch"
+	[cachyos]="arch"
 
-#### Temp Variables
-windowsGlobalDownloadLink=""
+	# Debian-based
+	[debian]="deb"
+	[ubuntu]="deb"
+	[linuxmint]="deb"
+	[zorinos]="deb"
+	[popos]="deb"
+	[deepin]="deb"
+	[mxlinux]="deb"
+	[kali]="deb"
+	[puppy]="deb"
+	[elementary]="deb"
+	[devuan]="deb"
+	[cutefishos]="deb"
+	[parrot]="deb"
+	[antix]="deb"
+	[trisquel]="deb"
+	[peppermintos]="deb"
+	[nitrux]="deb"
+	[damn_small_linux]="deb"
+	[vanillaos]="deb"
+	[tails_os]="deb"
 
-# Download functions and commands
+	# RPM-based
+	[fedora]="rpm"
+	[opensuse]="rpm"
+	[mandriva]="rpm"
+	[rocky]="rpm"
+	[qubes]="rpm"
+	[nobara]="rpm"
+	[ultramarine]="rpm"
 
-download() {
-	mkdir -p "${VMS_ISO}"
-	cd "${VMS_ISO}"
-	echo "Downloading $new to $output"
-	aria2c -j 16 -x 16 -s 16 -k 1M "${new}" -o "${output}"
-}
+	# Other
+	[alpine]="other"
+	[tinycore]="other"
+	[void]="other"
+	[kaos]="other"
+	[clearlinux]="other"
+	[slackware]="other"
+	[solus]="other"
 
-# Function to only get filesize
-getsize() {
-	abc=$(wget --spider $new 2>&1)
-	y=$(echo $abc | awk -F"Length:" '{ print $2 }' | awk -F"[" '{ print $1 }')
-	ss=$(ls -l -B $output | awk -F" " '{ print $5 }')
-	sh=$(ls -lh $output | awk -F" " '{ print $5 }')
-	printf "File: $new has size: $y while on disk it is $output - $ss ($sh) \n"
-}
+	# Source-based
+	[gentoo]="sourcebased"
+	[calculate]="sourcebased"
+	[nixos]="sourcebased"
+	[guix]="sourcebased"
 
-# This can be adopted for using torrents instead of direct HTTP/FTP files
-ariacmd() { aria2c --seed-time=0 -c $new; }
-# Set seeding time after downloading to zero ( this is sad :-( remove --seed-time=0 if you like to seed :-) )
+	# BSD-based
+	[freebsd]="bsd"
+	[netbsd]="bsd"
+	[openbsd]="bsd"
+	[ghostbsd]="bsd"
+	[dragonflybsd]="bsd"
+	[midnightbsd]="bsd"
+	[nomadbsd]="bsd"
 
-# Other functions
+	# Not Linux
+	[openindiana]="notlinux"
+	[minix]="notlinux"
+	[haiku]="notlinux"
+	[reactos]="notlinux"
+	[freedos]="notlinux"
 
-notlive() {
-	echo " / / ---------------------------------------------------------------------- \ \ "
-	echo " | | Note: this is not a live disk (it'll require further installation).    | | "
-	echo " \ \ -----------------------------------------------------------------------/ / "
-}
+	# Windows
+	[windows10]="windows"
+	[windows11]="windows"
 
-notlinux() {
-	echo " / / ------------------------------------------------------------------------------------- \ \ "
-	echo " | | Note: this isn't actually linux. It was included as it's important opensource project | | "
-	echo " \ \ --------------------------------------------------------------------------------------/ / "
-}
+	# Bootable USB Tools
+	[ventoy]="bootable_usb"
+	[balena_etcher]="bootable_usb"
 
-empty() {
-	echo "The file $output is empty. Please download it first." # This function does nothing
-}
+	# Recovery Environments
+	[hirens_bootcd_pe]="recovery_environment"
+	[medicat]="recovery_environment"
 
-checkfile() {
-	if [ "$1" == "filesize" ]; then
-		[ -s $output ] && getsize || empty
-	else
-		download
+	# Firewalls
+	[pfsense]="firewall"
+	[opnsense]="firewall"
+)
+
+# Download function mapping
+declare -A distro_download=(
+	# Arch-based
+	[archlinux]="download_archlinux"
+	[archlinuxgui]="download_archlinuxgui"
+	[manjaro]="download_manjaro"
+	[archbang]="download_archbang"
+	[parabola]="download_parabola"
+	[endeavour]="download_endeavour"
+	[artix]="download_artix"
+	[garuda]="download_garuda"
+	[archcraft]="download_archcraft"
+	[cachyos]="download_cachyos"
+
+	# Debian-based
+	[debian]="download_debian"
+	[ubuntu]="download_ubuntu"
+	[linuxmint]="download_linuxmint"
+	[zorinos]="download_zorinos"
+	[popos]="download_popos"
+	[deepin]="download_deepin"
+	[mxlinux]="download_mxlinux"
+	[kali]="download_kali"
+	[puppy]="download_puppy"
+	[elementary]="download_elementary"
+	[devuan]="download_devuan"
+	[cutefishos]="download_cutefishos"
+	[parrot]="download_parrot"
+	[antix]="download_antix"
+	[trisquel]="download_trisquel"
+	[peppermintos]="download_peppermintos"
+	[nitrux]="download_nitrux"
+	[damn_small_linux]="download_damn_small_linux"
+	[vanillaos]="download_vanillaos"
+	[tails_os]="download_tails_os"
+
+	# RPM-based
+	[fedora]="download_fedora"
+	[opensuse]="download_opensuse"
+	[mandriva]="download_mandriva"
+	[rocky]="download_rocky"
+	[qubes]="download_qubes"
+	[nobara]="download_nobara"
+	[ultramarine]="download_ultramarine"
+
+	# Other
+	[alpine]="download_alpine"
+	[tinycore]="download_tinycore"
+	[void]="download_void"
+	[kaos]="download_kaos"
+	[clearlinux]="download_clearlinux"
+	[slackware]="download_slackware"
+	[solus]="download_solus"
+
+	# Source-based
+	[gentoo]="download_gentoo"
+	[calculate]="download_calculate"
+	[nixos]="download_nixos"
+	[guix]="download_guix"
+
+	# BSD-based
+	[freebsd]="download_freebsd"
+	[netbsd]="download_netbsd"
+	[openbsd]="download_openbsd"
+	[ghostbsd]="download_ghostbsd"
+	[dragonflybsd]="download_dragonflybsd"
+	[midnightbsd]="download_midnightbsd"
+	[nomadbsd]="download_nomadbsd"
+
+	# Not Linux
+	[openindiana]="download_openindiana"
+	[minix]="download_minix"
+	[haiku]="download_haiku"
+	[reactos]="download_reactos"
+	[freedos]="download_freedos"
+
+	# Windows
+	[windows10]="download_windows10"
+	[windows11]="download_windows11"
+
+	# Bootable USB Tools
+	[ventoy]="download_ventoy"
+	[balena_etcher]="download_balena_etcher"
+
+	# Recovery Environments
+	[hirens_bootcd_pe]="download_hirens_bootcd_pe"
+	[medicat]="download_medicat"
+
+	# Firewalls
+	[pfsense]="download_pfsense"
+	[opnsense]="download_opnsense"
+)
+
+# Arch-based
+download_archlinux() {
+	local url_page="https://archlinux.org/download"
+	local html=$(curl -sSLf "$url_page" | grep iso | grep https)
+
+	local mirror=$(
+		extract_links_from_html "$html" |
+			grep -v -e "txt" -e "sig" -e "archiso" |
+			fzf --cycle
+	)
+
+	if [[ -z "$mirror" ]]; then
+		echo "❌ No ISO selected."
+		return 1
 	fi
+
+	local date=$(echo "$mirror" | awk -F "/" '{print $6}')
+	local download_link=$(echo "${mirror}archlinux-${date}x86_64.iso")
+	local output_file="archlinux.iso"
+	download "$download_link" "$output_file"
 }
 
-# Update latest distro URL functions
+download_archlinuxgui() {
+	local mirror="https://sourceforge.net/projects/arch-linux-gui/files/"
+	local html=$(curl -sSLf "$mirror")
 
-archurl() {
-	mirror="https://archlinux.org/download"
-	arch_mirror=$(curl -sSLf https://archlinux.org/download | grep iso | grep https | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -v -e "txt" -e "sig" -e "archiso" | fzf --cycle)
-	date=$(echo "$arch_mirror" | awk -F "/" '{print $6}')
-	new=$(echo "${arch_mirror}archlinux-${date}-x86_64.iso")
-	output="archlinux.iso"
-	checkfile $1
+	local link=$(extract_links_from_html "$html" |
+		grep -i "iso" | grep "download" | fzf --cycle --prompt "Choose iso to download:" | head -1 | xargs)
+	download "$link" "archlinux-gui.iso"
 }
 
-archguiurl() {
-	de_wm=$(echo -e "cutefish\ngnome\nplasma\nmate\nxfce\ncinnamon\nlxqt\nxp\nwayland\nbudgie\ni3\nbspwm" | fzf -m --prompt "Choose DE/WM for Arch:" --cycle | tr "\n" ",")
-	IFS=',' read -ra my_array < <(echo "$de_wm")
-	mirror="https://sourceforge.net/projects/arch-linux-gui/files/"
-
-	for element in "${my_array[@]}"; do
-		link=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "iso" | grep "download" | grep "$element" | head -1 | xargs)
-		new="$link"
-		output="archlinux-gui-${element}.iso"
-		checkfile $1
-	done
+download_manjaro() {
+	local url_page=$(curl -sSLf "https://manjaro.org/products/download/x86")
+	local iso=$(extract_links_from_html "$url_page" | grep -Ei '.+\.iso$' | fzf --cycle --prompt "Choose iso to download:" | head -1)
+	download "$iso" "manjaro.iso"
 }
 
-manjarourl() {
-	mirror="https://manjaro.org/download/"
-	x=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep minimal | grep kde | grep -E ".+.iso$")
-	new="$x"
-	output="manjaro.iso"
-	checkfile $1
+download_archbang() {
+	download "https://sourceforge.net/projects/archbang/files/latest/download" "archbang.iso"
 }
 
-arcourl() {
-	mirror="https://bike.seedhost.eu/arcolinux/iso/"
-	x=$(curl -s $mirror | grep -m1 arcolinux- | awk -F">" '{ print $3 }' | awk -F"<" '{ print $1 }')
-	new="$mirror/$x"
-	output="arcolinux.iso"
-	checkfile $1
+download_parabola() {
+	local url_page="https://wiki.parabola.nu/Get_Parabola"
+	local html=$(curl -sSLf "$url_page")
+	local iso=$(echo "$html" | grep -oE 'https://[^"]+\.iso' | head -1)
+	[[ -z "$iso" ]] && echo "❌ No ISO found" && return 1
+	download "$iso" "parabola.iso"
 }
 
-archbangurl() {
-	mirror="https://sourceforge.net/projects/archbang/files/latest/download"
-	new="$mirror"
-	output="archbang.iso"
-	checkfile $1
+download_endeavour() {
+	download "https://sourceforge.net/projects/endeavouros-repository/files/latest/download" "endeavour.iso"
 }
 
-parabolaurl() {
-	mirror="https://wiki.parabola.nu/Get_Parabola"
-	new=$(curl -s $mirror | grep iso | grep Web | awk -F"\"" '{ print $18 }' | grep iso -m1)
-	output="parabola.iso"
-	checkfile $1
-}
+download_artix() {
+	local mirror="https://mirror.math.princeton.edu/pub/artixlinux/"
+	local de=$(echo "base plasma mate lxqt lxde cinnamon xfce gtk qt" | tr " " "\n" | fzf --prompt "Choose DE:")
+	local init=$(echo "dinit openrc runit s6" | tr " " "\n" | fzf --prompt "Choose init:")
 
-endeavoururl() {
-	mirror="https://sourceforge.net/projects/endeavouros-repository/files/latest/download"
-	new="$mirror"
-	output="endeavour.iso"
-	checkfile $1
-}
-
-artixurl() {
-	mirror="https://mirrors.dotsrc.org/artix-linux/iso/"
-	de_wm="base plasma mate lxqt lxde cinnamon xfce gtk qt"
-	init="dinit openrc runit s6"
-
-	choose_de_wm=$(echo "${de_wm}" | tr " " "\n" | fzf --prompt "Choose Desktop Environment:")
-	choose_init=$(echo "${init}" | tr " " "\n" | fzf --prompt "Choose init:")
-
-	if [[ "${choose_de_wm}" != "" && "${choose_init}" != "" ]]; then
-		x=$(curl -s $mirror | grep "${choose_de_wm}-${choose_init}" | head -1 | awk -F\" '{ print $2 }')
-		new="$mirror/$x"
-		output="artix_${choose_de_wm}_${choose_init}.iso"
-		checkfile $1
-	else
-		echo "Please choose a valid option!"
+	if [[ -z "$de" || -z "$init" ]]; then
+		echo "❌ DE/init not selected"
+		return 1
 	fi
 
+	local html=$(curl -sSLf "$mirror")
+	local file=$(echo "$html" | grep -o "${de}-${init}[^\" ]*\.iso" | head -1)
+	local suffix="artix"
+	local link="${mirror}${suffix}-${file}"
+	download "$link" "artix_${de}_${init}.iso"
 }
 
-arcourl() {
-	mirror="https://sourceforge.net/projects/arcolinux/files/latest/download"
-	new="$mirror"
-	output="arco.iso"
-	checkfile $1
+download_garuda() {
+	download "https://sourceforge.net/projects/garuda-linux/files/latest/download" "garuda.iso"
 }
 
-garudaurl() {
-	mirror="https://sourceforge.net/projects/garuda-linux/files/latest/download"
-	new="$mirror"
-	output="garuda.iso"
-	checkfile $1
+download_archcraft() {
+	download "https://sourceforge.net/projects/archcraft/files/latest/download" "archcraft.iso"
 }
 
-rebornurl() {
-	mirror="https://sourceforge.net/projects/rebornos/files/latest/download"
-	new="$mirror"
-	output="rebornos.iso"
-	checkfile $1
+download_cachyos() {
+	download "https://sourceforge.net/projects/cachyos-arch/files/latest/download" "cachyos.iso"
 }
 
-namiburl() {
-	mirror="https://sourceforge.net/projects/namib-gnu-linux/files/latest/download"
-	new="$mirror"
-	output="namib.iso"
-	checkfile $1
+# Debian-based
+download_debian() {
+	local mirror="https://ftp.uni-stuttgart.de/debian-cd/current-live/amd64/iso-hybrid/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep "iso" | grep -v -E "contents" | grep -v -E "log" | grep -v -E "packages" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="debian.iso"
+	download "$mirror$download_link" "$output_file"
 }
 
-obarunurl() {
-	mirror="https://repo.obarun.org/iso/"
-	x=$(curl -s $mirror | grep "<tr><td" | tail -1 | awk -F"href=\"" '{ print $2 }' | awk -F"/" '{ print $1 }')
-	y=$(curl -s $mirror/$x/ | grep obarun | head -1 | awk -F"href=\"" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="$mirror/$x/$y"
-	output="obarun.iso"
-	checkfile $1
+download_ubuntu() {
+	local mirror="http://cdimage.ubuntu.com/daily-live/current/"
+	local x=$(curl -s "$mirror" | grep -m1 desktop-amd64.iso | awk -F\" '{ print $2 }' | awk -F\" '{ print $1 }')
+	local download_link="$mirror/$x"
+	local output_file="ubuntu.iso"
+	download "$download_link" "$output_file"
 }
 
-archcrafturl() {
-	mirror="https://sourceforge.net/projects/archcraft/files/latest/download"
-	new="$mirror"
-	output="archcraft.iso"
-	checkfile $1
+download_linuxmint() {
+	local mirror="https://linuxmint.com/edition.php?id=302"
+	local download_link=$(curl -s "$mirror" | grep -m2 iso | grep -m1 -vwE "Torrent" | awk -F"\"" '{ print $2 }')
+	local output_file="linuxmint.iso"
+	download "$download_link" "$output_file"
 }
 
-peuxurl() {
-	mirror="https://sourceforge.net/projects/peux-os/files/latest/download"
-	new="$mirror"
-	output="peuxos.iso"
-	checkfile $1
+download_zorinos() {
+	local mirror="https://sourceforge.net/projects/zorin-os/files/latest/download"
+	local download_link="$mirror"
+	local output_file="zorinos.iso"
+	download "$download_link" "$output_file"
 }
 
-bluestarurl() {
-	mirror="https://sourceforge.net/projects/bluestarlinux/files/latest/download"
-	new="$mirror"
-	output="bluestar.iso"
-	checkfile $1
+download_popos() {
+	local download_link="https://iso.pop-os.org/22.04/amd64/nvidia/52/pop-os_22.04_amd64_nvidia_52.iso"
+	local output_file="popos.iso"
+	download "$download_link" "$output_file"
 }
 
-xerourl() {
-	mirror="https://sourceforge.net/projects/xerolinux/files/latest/download"
-	new="$mirror"
-	output="xerolinux.iso"
-	checkfile $1
+download_deepin() {
+	local mirror="https://sourceforge.net/projects/deepin/files/latest/download"
+	local download_link="$mirror"
+	local output_file="deepin.iso"
+	download "$download_link" "$output_file"
 }
 
-cachyosurl() {
-	mirror="https://mirror.cachyos.org/ISO/kde/"
-	latest=$(curl "$mirror" | grep date | grep -oE '[0-9]{6,10}' | uniq | sort | tail -1)
-	iso=$(curl "$mirror$latest/" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$")
-	new="$mirror$latest/$iso"
-	output="cachyos.iso"
-	checkfile $1
+download_mxlinux() {
+	local mirror="https://sourceforge.net/projects/mx-linux/files/latest/download"
+	local download_link="$mirror"
+	local output_file="mxlinux.iso"
+	download "$download_link" "$output_file"
 }
 
-debianurl() {
-	x="https://cdimage.debian.org/cdimage/weekly-builds/amd64/iso-dvd/debian-testing-amd64-DVD-1.iso"
-	new="$x"
-	output="debian.iso"
-	notlive
-	checkfile $1
+download_kali() {
+	local mirror="http://cdimage.kali.org/kali-weekly/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep "iso" | grep -v -E "contents" | grep -v -E "log" | grep -v -E "packages" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="kali.iso"
+	download "$mirror$download_link" "$output_file"
 }
 
-ubuntuurl() {
-	mirror="http://cdimage.ubuntu.com/daily-live/current/"
-	x=$(curl -s $mirror | grep -m1 desktop-amd64.iso | awk -F\" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="$mirror/$x"
-	output="ubuntu.iso"
-	checkfile $1
+download_puppy() {
+	local mirror="http://distro.ibiblio.org/puppylinux/puppy-bionic/bionicpup64/"
+	local x=$(curl -s "$mirror" | grep -m1 uefi.iso | awk -F">" '{ print $4 }' | awk -F"<" '{ print $1 }')
+	local download_link="$mirror/$x"
+	local output_file="puppy.iso"
+	download "$download_link" "$output_file"
 }
 
-minturl() {
-	mirror="https://linuxmint.com/edition.php?id=302"
-	new=$(curl -s $mirror | grep -m2 iso | grep -m1 -vwE "Torrent" | awk -F"\"" '{ print $2 }')
-	output="linuxmint.iso"
-	checkfile $1
+download_elementary() {
+	local mirror="https://elementary.io"
+	local one=$(curl -s "$mirror" 2>&1 | grep -m1 download-link | awk -F"//" '{ print $2 }' | awk -F\" '{ print $1 }')
+	local download_link="https://$one"
+	local output_file="elementaryos.iso"
+	download "$download_link" "$output_file"
 }
 
-alturl() {
-	x="http://mirror.yandex.ru/altlinux-nightly/current/regular-cinnamon-latest-x86_64.iso"
-	new="$x"
-	output="altlinux.iso"
-	checkfile $1
+download_devuan() {
+	local mirror="https://devuan-cd.sedf.de/devuan_excalibur/desktop-live/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep "iso" | grep -v -E "sha256" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="devuan.iso"
+	download "$mirror$download_link" "$output_file"
 }
 
-zorinurl() {
-	mirror="https://sourceforge.net/projects/zorin-os/files/latest/download"
-	new="$mirror"
-	output="zorinos.iso"
-	checkfile $1
+download_cutefishos() {
+	local mirror="https://sourceforge.net/projects/cutefish-ubuntu/files/latest/download"
+	local download_link="$mirror"
+	local output_file="cutefishos.iso"
+	download "$download_link" "$output_file"
 }
 
-popurl() {
-	new="https://iso.pop-os.org/22.04/amd64/nvidia/52/pop-os_22.04_amd64_nvidia_52.iso"
-	output="popos.iso"
-	checkfile $1
+download_parrot() {
+	local mirror="https://deb.parrot.sh/parrot/iso/6.4/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep "iso" | grep -v -E "torrent" | grep -v -E "hashes" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="parrot.iso"
+	download "$mirror$download_link" "$output_file"
 }
 
-deepinurl() {
-	mirror="https://sourceforge.net/projects/deepin/files/latest/download"
-	new="$mirror"
-	output="deepin.iso"
-	notlive
-	checkfile $1
+download_antix() {
+	local mirror="https://antixlinux.com/download/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep -E "sourceforge" | grep -E "runit" | grep -E "64" | grep -E "full")
+	local output_file="antix.iso"
+	download "$download_link" "$output_file"
 }
 
-mxurl() {
-	mirror="https://sourceforge.net/projects/mx-linux/files/latest/download"
-	new="$mirror"
-	output="mxlinux.iso"
-	checkfile $1
+download_trisquel() {
+	local mirror="https://mirrors.ocf.berkeley.edu/trisquel-images/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep -Eo ".+iso\$" | grep trisquel | tail -1rep -Eo ".+iso\$" | grep trisquel | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="trisquel.iso"
+	download "$mirror$download_link" "$output_file"
 }
-
-knoppixurl() {
-	mirror="http://mirror.yandex.ru/knoppix/DVD/"
-	x=$(curl -s $mirror | grep -m1 "EN.iso\"" | awk -F"\"" '{ print $2 }')
-	new="$mirror/$x"
-	output="knoppix.iso"
-	checkfile $1
-}
-
-kaliurl() {
-	mirror="http://cdimage.kali.org/kali-weekly/"
-	x=$(curl -s $mirror | grep -m1 live-amd64.iso | awk -F">" '{ print $7 }' | awk -F"<" '{ print $1 }')
-	new="$mirror/$x"
-	output="kali.iso"
-	checkfile $1
-}
-
-puppyurl() {
-	mirror="http://distro.ibiblio.org/puppylinux/puppy-bionic/bionicpup64/"
-	x=$(curl -s $mirror | grep -m1 uefi.iso | awk -F">" '{ print $4 }' | awk -F"<" '{ print $1 }')
-	new="$mirror/$x"
-	output="puppy.iso"
-	checkfile $1
-}
-
-pureurl() {
-	mirror="https://pureos.net/download/"
-	new=$(curl -s $mirror | grep -m1 iso | awk -F"\"" '{ print $2 }')
-	output="pureos.iso"
-	checkfile $1
-}
 
-elementurl() {
-	mirror="https://elementary.io"
-	one=$(curl -s $mirror 2>&1 | grep -m1 download-link | awk -F"//" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="https://$one"
-	output="elementaryos.iso"
-	checkfile $1
+download_peppermintos() {
+	local mirror="https://peppermintos.com/guide/downloading/"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep -Eo ".+iso\$" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="peppermintos-XFCE-Debian-base.iso"
+	download "$download_link" "$output_file"
 }
 
-backboxurl() {
-	mirror="https://bit.ly/2yNWmF3"
-	new="$mirror"
-	output="backbox.iso"
-	checkfile $1
+download_nitrux() {
+	local mirror="https://sourceforge.net/projects/nitruxos/files/latest/download"
+	local download_link="$mirror"
+	local output_file="nitrux.iso"
+	download "$download_link" "$output_file"
 }
 
-devuanurl() {
-	mirror="https://www.devuan.org/get-devuan"
-	x=$(curl -s $mirror | grep -A5 HTTPS | grep href | awk -F"\"" '{ print $2 }')
-	one=$(curl -s $x | grep daed | awk -F"\"" '{ print $4 }')
-	two=$(curl -s $x/$one | grep desktop-live | awk -F"\"" '{ print $4 }')
-	three=$(curl -s $x/$one/$two | grep -m1 amd64 | awk -F"\"" '{ print $4 }')
-	new="$x/$one/$two/$three"
-	output="devuan.iso"
-	checkfile $1
-}
-
-jingosurl() {
-	mirror="https://download.jingos.com/os/JingOS-V0.9-a25ea3.iso"
-	new="$mirror"
-	output="jingos.iso"
-	checkfile $1
+download_damn_small_linux() {
+	local mirror="https://www.damnsmalllinux.org"
+	local url_page="https://www.damnsmalllinux.org/2024-download.html"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "$html" | grep -Eo ".+iso\$" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="damn_small_linux.iso"
+	download "$mirror$download_link" "$output_file"
 }
-
-cutefishosurl() {
-	mirror="https://sourceforge.net/projects/cutefish-ubuntu/files/latest/download"
-	new="$mirror"
-	output="cutefishos.iso"
-	checkfile $1
+
+download_vanillaos() {
+	local download_link="https://download.vanillaos.org/latest.zip"
+	local output_file="vanilla_os_${ver}.iso"
+	download "$download_link" "$output_file"
 }
 
-parroturl() {
-	mirror="https://deb.parrot.sh/direct/parrot/iso/testing/"
-	x=$(curl -s $mirror | grep security | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$")
-	new="$mirror$x"
-	output="parrot.iso"
-	checkfile $1
+download_tails_os() {
+	local mirror="https://mirrors.edge.kernel.org/tails/stable/"
+	local version=$(curl -s "$mirror" | grep -o 'tails-amd64-[0-9.]*' | head -n1)
+	local x="https://mirrors.edge.kernel.org/tails/stable/${version}/${version}.img"
+	local download_link="$x"
+	local output_file="tailsos.img"
+	download "$download_link" "$output_file"
 }
 
-antixurl() {
-	mirror="https://antixlinux.com/download/"
-	x=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "sourceforge" | grep -E "runit" | grep -E "64" | grep -E "full")
-	new="$x"
-	output="antix.iso"
-	checkfile $1
+# RPM-based
+download_fedora() {
+	local url_page="https://fedoraproject.org/workstation/download"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "${html}" | grep iso | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="fedora.iso"
+	download "$download_link" "$output_file"
 }
 
-trisquelurl() {
-	mirror="https://mirrors.ocf.berkeley.edu/trisquel-images/"
-	iso=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -Eo ".+iso\$" | grep trisquel | tail -1)
-	new="$mirror$iso"
-	output="trisquel.iso"
-	checkfile $1
-}
-peppermintosurl() {
-	mirror="https://peppermintos.com/guide/downloading/"
-	iso=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep -i xfce | grep -i debian | head -1 | xargs)
-	new="$iso"
-	output="peppermintos-XFCE-Debian-base.iso"
-	checkfile $1
-}
-
-nitruxurl() {
-	mirror="https://sourceforge.net/projects/nitruxos/files/latest/download"
-	iso=$(echo "$mirror")
-	new="$iso"
-	output="nitrux.iso"
-	checkfile $1
-}
-
-damn_small_linux_url() {
-	mirror="https://www.damnsmalllinux.org"
-	dllink=$(curl https://www.damnsmalllinux.org/2024-download.html | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -v "txt" | grep iso | head -1)
-	iso=$(echo "${mirror}${dllink}")
-	new="$iso"
-	output="damn_small_linux.iso"
-	checkfile $1
-}
-
-vanillaos_url() {
-	ver=$(curl "https://github.com/Vanilla-OS/live-iso" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs)
-	dllink=$(curl https://github.com/Vanilla-OS/live-iso/releases | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep "${ver}" | grep -v "txt" | grep ".*\.iso\$")
-	iso=$(echo "${dllink}")
-	new="$iso"
-	output="vanilla_os_${ver}.iso"
-	checkfile $1
-}
-
-tailsurl() {
-	mirror="https://mirrors.edge.kernel.org/tails/stable/"
-	version=$(curl -s $mirror | grep -o 'tails-amd64-[0-9.]*' | head -n1)
-	x="https://mirrors.edge.kernel.org/tails/stable/${version}/${version}.img"
-	new="$x"
-	output="tailsos.img"
-	checkfile $1
-}
-
-fedoraurl() {
-	mirror="https://fedoraproject.org/workstation/download"
-	new=$(curl -sSL "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep x86_64)
-	output="fedora.iso"
-	checkfile $1
-}
-
-centosurl() {
-	mirror="https://www.centos.org/centos-stream/"
-	x=$(curl -s $mirror | grep -m1 x86_64 | awk -F"\"" '{ print $2 }' | awk -F"&amp" '{ print $1 }')
-	new=$(curl $x | grep https -m1)
-	output="centos.iso"
-	notlive
-	checkfile $1
-}
-
-suseurl() {
-	mirror="https://get.opensuse.org/tumbleweed/#download"
-	new=$(curl -s $mirror | grep -m1 Current.iso | awk -F"\"" '{ print $2 }' | awk -F"\"" '{ print $1 }')
-	output="opensuse.iso"
-	checkfile $1
+download_opensuse() {
+	local mirror="https://get.opensuse.org/tumbleweed/#download"
+	local download_link=$(curl -s "$mirror" | grep -m1 Current.iso | awk -F"\"" '{ print $2 }' | awk -F"\"" '{ print $1 }')
+	local output_file="opensuse.iso"
+	download "$download_link" "$output_file"
 }
-
-rosaurl() {
-	mirror="https://www.rosalinux.ru/rosa-linux-download-links/"
-	new=$(curl -s $mirror | html2text | grep -m1 "64-bit ISO" | awk -F"(" '{ print $2 }' | awk -F" " '{ print $1 }')
-	output="rosa.iso"
-	checkfile $1
-}
 
-mandrivaurl() {
-	mirror="https://sourceforge.net/projects/openmandriva/files/latest/download"
-	new="$mirror"
-	output="mandriva.iso"
-	checkfile $1
-}
-
-mageiaurl() {
-	mirror="https://mirror.yandex.ru/mageia/iso/cauldron/"
-	one=$(curl -s $mirror | grep Live-Xfce-x86_64 | awk -F"\"" '{ print $2 }')
-	two=$(curl -s $mirror/$one | grep -m1 "x86_64.iso" | awk -F"\"" '{ print $2 }')
-	new="$mirror/$one/$two"
-	output="mageia.iso"
-	checkfile $1
-}
-
-clearosurl() {
-	mirror="https://www.clearos.com/products/purchase/clearos-downloads"
-	one=$(curl -s $mirror | grep -m1 ".iso\"")
-	two=${one%.iso*}
-	two=${two#*http://}.iso
-	link="https://$two"
-	new=$(curl -s "$link" | grep window.open | awk -F\' '{ print $2 }')
-	#new="$(cat ClearOS*iso | grep -m1 .iso | awk -F\' '{ print $2 }')"
-	output="clearos.iso"
-	#rm ${two#*http://}.iso
-	notlive
-	checkfile $1
-}
-
-almaurl() {
-	mirror="https://mirrors.almalinux.org"
-	x=$(curl -s "$mirror/isos.html" | grep x86_64 | tail -1 | awk -F"\"" '{ print $2 }')
-	one=$(curl -s "$mirror/$x" | grep iso | wc -l)
-	two=$(($RANDOM % $one + 1))
-	three=$(curl -s "$mirror/$x" | grep iso | head -n$two | tail -1 | awk -F"\"" '{ print $2 }')
-	four=$(curl -s "$three/" | grep -m1 dvd.iso | html2text | grep -m1 iso | awk -F"AlmaLinux" '{ print $2 }' | awk -F".iso" '{ print $1 }')
-	new="$three/AlmaLinux$four.iso"
-	output="alma.iso"
-	checkfile $1
-}
-
-rockyurl() {
-	mirror="https://rockylinux.org/download"
-	new=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep iso | grep -v -e "CHECKSUM" | fzf)
-	output="rocky.iso"
-	checkfile $1
-}
-
-qubesurl() {
-	mirror="https://www.qubes-os.org/downloads/"
-	new=$(curl -s $mirror | grep -m1 x86_64.iso | awk -F"\"" '{ print $4 }')
-	output="qubes.iso"
-	checkfile $1
-}
-
-nobaraurl() {
-	mirror="https://nobaraproject.org/download-nobara/"
-	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "KDE" | grep -E "iso" | head -1 | xargs)
-	output="nobara.iso"
-	checkfile $1
-}
-
-ultraurl() {
-	mirror="https://ultramarine-linux.org/download/"
-	new=$(curl -s $mirror | grep -m1 "Download Flagship" | awk -F"\"" '{ print $14 }')
-	output="ultramarine.iso"
-	checkfile $1
-}
-
-springurl() {
-	mirror="https://springdale.math.ias.edu/#Mirrors"
-	new=$(curl -s $mirror | grep -m1 "/boot.iso" | awk -F"\"" '{ print $4 }')
-	output="springdale.iso"
-	checkfile $1
-}
-
-berryurl() {
-	mirror="https://berry-lab.net/edownload.html"
-	new=$(curl -s $mirror | grep -m1 .iso | awk -F"\"" '{ print $2 }')
-	output="berry.iso"
-	checkfile $1
-}
-
-risiurl() {
-	mirror="https://risi.io/#download"
-	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "mirror" | tail -1)
-	output="risios.iso"
-	checkfile $1
-}
-
-eurourl() {
-	mirror="https://fbi.cdn.euro-linux.com/isos/"
-	x=$(curl -s $mirror | grep latest.iso | awk -F"\"" '{ print $2 }')
-	new="$mirror$x"
-	output="eurolinux.iso"
-	checkfile $1
-}
-
-alpineurl() {
-	mirrorone="https://alpinelinux.org/downloads/"
-	one=$(curl -s $mirrorone | grep Current | awk -F">" '{ print $3 }' | awk -F"<" '{ print $1 }')
-	shortv=$(echo $one | awk -F"." '{ print $1"."$2}')
-	x="http://dl-cdn.alpinelinux.org/alpine/v$shortv/releases/x86_64/alpine-extended-$one-x86_64.iso"
-	new="$x"
-	output="alpine.iso"
-	checkfile $1
-}
-
-tinycoreurl() {
-	mirrorone="http://tinycorelinux.net/downloads.html"
-	one=$(curl -s $mirrorone | grep TinyCore-current.iso | awk -F\" '{ print $2 }')
-	mirror="http://tinycorelinux.net/"
-	new="$mirror/$one"
-	output="tinycore.iso"
-	checkfile $1
-}
-
-porteusurl() {
-	mirrorone="https://porteus-kiosk.org/download.html"
-	one=$(curl -s $mirrorone | grep "Porteus-Kiosk.*x86_64.iso" | grep -m1 public | awk -F\" '{ print $2 }')
-	mirror="https://porteus-kiosk.org/"
-	new="$mirror/$one"
-	output="porteus.iso"
-	checkfile $1
-}
-
-slitazurl() {
-	x="http://mirror.slitaz.org/iso/rolling/slitaz-rolling-core64.iso"
-	new="$x"
-	output="slitaz.iso"
-	checkfile $1
-}
-
-pclinuxosurl() {
-	mirror="http://ftp.nluug.nl/pub/os/Linux/distr/pclinuxos/pclinuxos/live-cd/64bit/"
-	x="pclinuxos$(curl -s $mirror | grep -m1 .iso | awk -F"pclinuxos" '{ print $2 }' | awk -F\" '{ print $1 }')"
-	new="$mirror$x"
-	output="pclinuxos.iso"
-	checkfile $1
-}
-
-voidurl() {
-	mirror="https://alpha.de.repo.voidlinux.org/live/current/"
-	x=$(curl -s $mirror | grep "xfce" | grep -m1 "musl" | awk -F">" '{ print $2 }' | awk -F"<" '{ print $1 }')
-	new="$mirror/$x"
-	output="void.iso"
-	checkfile $1
-}
-
-fourmurl() {
-	mirror="https://sourceforge.net/projects/linux4m/files/latest/download"
-	new="$mirror"
-	output="4mlinux.iso"
-	checkfile $1
-}
-
-kaosurl() {
-	mirror="https://sourceforge.net/projects/kaosx/files/latest/download"
-	new="$mirror"
-	output="kaos.iso"
-	checkfile $1
-}
-
-clearurl() {
-	mirror="https://www.clearlinux.org/downloads.html"
-	ver=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep live | grep iso | cut -d"/" -f5 | sort | uniq | xargs)
-	new="https://cdn.download.clearlinux.org/releases/$ver/clear/clear-$ver-live-desktop.iso"
-	output="clearlinux.iso"
-	checkfile $1
-}
-
-dragoraurl() {
-	getVer=$(curl https://mirror.fsf.org/dragora/current/iso/ | grep -E "beta" | tail -1 | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | tr -d "/")
-	mirror="https://mirror.fsf.org/dragora/current/iso/${getVer}/"
-	x=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | tail -3 | head -1)
-	new="$mirror$x"
-	output="dragora.iso"
-	checkfile $1
-}
-
-slackwareurl() {
-	mirror="https://mirrors.slackware.com/slackware/slackware-iso/"
-	x=$(curl -s $mirror | grep slackware64 | tail -1 | awk -F"slack" '{ print $2 }' | awk -F"/" '{ print $1 }')
-	other="slack$x"
-	y=$(curl -s "$mirror/$other/" | grep dvd.iso | head -1 | awk -F"slack" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="$mirror"
-	new+="$other"
-	new+="/slack"
-	new+="$y"
-	echo "new=$new"
-	output="slackware.iso"
-	checkfile $1
-}
-
-adelieurl() {
-	mirror="https://www.adelielinux.org/download/"
-	x=$(curl -s $mirror | html2text | grep "Listing]" | awk -F"(" '{ print $2 }' | awk -F")" '{ print $1 }')
-	y=$(curl -s $x | grep live-mate | grep -m1 "x86_64" | awk -F"\"" '{ print $2 }')
-	new="$x$y"
-	output="adelie.iso"
-	checkfile $1
-}
-
-plopurl() {
-	mirror="https://www.plop.at/en/ploplinux/downloads/full.html"
-	x="$(curl -s $mirror | grep x86_64.iso | head -1 | awk -F"https://" '{ print $2 }' | awk -F".iso" '{ print $1 }')"
-	new="https://$x.iso"
-	output="plop.iso"
-	checkfile $1
-}
-
-solusurl() {
-	mirror="https://getsol.us/download/"
-	x=$(curl -s "$mirror" | grep -E "download" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "Budgie" | head -1 | grep -Eo "https.+iso")
-	new="$x"
-	output="solus.iso"
-	checkfile $1
-}
-
-peropesisurl() {
-	mirror="https://peropesis.org"
-	mirror2="$mirror/get-peropesis/"
-	x=$(curl -s $mirror2 | grep -m1 "live.iso" | awk -F"\"" '{ print $8 }')
-	new="$mirror$x"
-	output="peropesis.iso"
-	checkfile $1
-}
-
-openmambaurl() {
-	mirror="https://openmamba.org/en/downloads/"
-	new=$(curl -s $mirror | grep "rolling livedvd" | awk -F"href" '{ print $2 }' | awk -F"\"" '{ print $2 }')
-	output="openmamba.iso"
-	checkfile $1
-}
-
-pisiurl() {
-	new="https://sourceforge.net/projects/pisilinux/files/latest/download"
-	output="pisi.iso"
-	checkfile $1
-}
-
-###################################
-
-gentoourl() {
-	mirror="https://gentoo.c3sl.ufpr.br//releases/amd64/autobuilds"
-	one=$(curl -s "$mirror/latest-iso.txt" | grep "admin" | awk '{ print $1 }')
-	new="$mirror/$one"
-	output="gentoo.iso"
-	notlive
-	checkfile $1
-}
-
-calcurl() {
-	mirror="http://mirror.yandex.ru/calculate/nightly/"
-	x=$(curl -s $mirror | grep "<a" | tail -1 | awk -F">" '{ print $2 }' | awk -F"<" '{ print $1 }')
-	mirror+=$x
-	x=$(curl -s $mirror | grep -m1 cldc | awk -F\" '{ print $2 }')
-	new="$mirror$x"
-	output="calculate.iso"
-	checkfile $1
-}
-
-nixurl() {
-	mirror="https://channels.nixos.org/nixos-unstable"
-	saved=$(curl -sL $mirror)
-	dir=$(echo $saved | awk -F"nixos" '{ print $26 }')
-	file=$(echo $saved | awk -F"nixos" '{ print $28 }' | awk -F".iso" '{ print $1 }')
-	result="nixos"
-	result+=$dir
-	result+="nixos"
-	result+=$file
-	x="https://releases.nixos.org/nixos/unstable/$result.iso"
-	new="$x"
-	output="nixos.iso"
-	notlive
-	checkfile $1
-}
-
-guixurl() {
-	mirror="https://guix.gnu.org/en/download/"
-	x=$(curl -s $mirror | grep ".iso" | awk -F"https://" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="https://$x"
-	output="guix.iso.xz"
-	notlive
-	checkfile $1
-	[ -f "guix.iso" ] && echo "Please wait, unpacking guix..." && xz -k -d -v ./guix*xz && mv guix*iso guix.iso
-}
-
-cruxurl() {
-	mirror="http://ftp.morpheus.net/pub/linux/crux/latest/iso/"
-	x=$(curl -s $mirror | grep iso | grep href | awk -F"\"" '{ print $6 }' | awk -F"\"" '{ print $1 }')
-	new="$mirror$x"
-	output="crux.iso"
-	checkfile $1
-}
-
-gobourl() {
-	mirror="https://api.github.com/repos/gobolinux/LiveCD/releases/latest"
-	new=$(curl -s $mirror | grep browser_download_url | grep x86_64.iso | awk -F"\"" '{ print $4 }')
-	output="gobolinux.iso"
-	checkfile $1
-}
-
-easyurl() {
-	mirror="https://distro.ibiblio.org/easyos/amd64/releases/dunfell/2023/"
-	x=$(curl -s $mirror | grep "Directory<" | tail -1 | awk -F "\"" '{ print $6 }')
-	y=$(curl -s $mirror$x | grep img | awk -F"\"" '{ print $4 }')
-	new="$mirror$x$y"
-	output="easyos.img"
-	checkfile $1
-}
-
-####################################
-
-rancherurl() {
-	mirror="https://api.github.com/repos/rancher/os/releases/latest"
-	new=$(curl -s $mirror | grep browser_download_url | grep rancheros.iso | awk -F"\"" '{ print $4 }')
-	output="rancheros.iso"
-	checkfile $1
-}
-
-k3osurl() {
-	mirror="https://api.github.com/repos/rancher/k3os/releases/latest"
-	new=$(curl -s $mirror | grep browser_download_url | grep k3os-amd64.iso | awk -F"\"" '{ print $4 }')
-	output="k3os.iso"
-	checkfile $1
-}
-
-flatcarurl() {
-	mirror="https://alpha.release.flatcar-linux.net/amd64-usr/current/flatcar_production_iso_image.iso"
-	new="$mirror"
-	output="flatcar.iso"
-	checkfile $1
-}
-
-silverblueurl() {
-	mirror="https://silverblue.fedoraproject.org/download"
-	x=$(curl -s $mirror | grep -m1 x86_64 | awk -F\' '{ print $2 }')
-	new="$x"
-	output="silverblue.iso"
-	checkfile $1
-}
-
-photonurl() {
-	mirror="https://github.com/vmware/photon/wiki/Downloading-Photon-OS"
-	x=$(curl -s $mirror | grep -m1 "Full ISO" | awk -F\" '{ print $2 }')
-	new="$x"
-	output="photonos.iso"
-	notlive
-	checkfile $1
-}
-
-coreosurl() {
-	mirror="https://builds.coreos.fedoraproject.org/streams/next.json"
-	x=$(curl -s $mirror | grep iso | grep -m1 location | awk -F\" '{ print $4 }')
-	new="$x"
-	output="coreos.iso"
-	checkfile $1
-}
-
-dcosurl() {
-	new="https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh"
-	output="dcos_generate_config.sh"
-	echo "Warning! This is not an ISO or disk image, but rather a OS generator tool. After downloading, run chmod +x ./dc*sh"
-	checkfile $1
-}
-
-freebsdurl() {
-	mirror="https://www.freebsd.org/where/"
-	x=$(curl -s $mirror | grep -m1 "amd64/amd64" | awk -F\" '{ print $2 }')
-	one=$(curl -s $x | grep -m1 dvd1 | awk -F"FreeBSD" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new=$x
-	new+="FreeBSD"
-	new+=$one
-	output="freebsd.iso"
-	notlinux
-	checkfile $1
-}
-
-netbsdurl() {
-	mirror="https://www.netbsd.org/"
-	#mirror="https://wiki.netbsd.org/ports/amd64/"
-	new=$(curl -s $mirror | grep -m1 "CD" | awk -F\" '{ print $4 }')
-	output="netbsd.iso"
-	notlinux
-	checkfile $1
-}
-
-openbsdurl() {
-	mirror="https://www.openbsd.org/faq/faq4.html#Download"
-	new=$(curl -s $mirror | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep "amd64" | grep "iso" | head -1)
-	output="openbsd.iso"
-	notlinux
-	checkfile $1
-}
-
-ghostbsdurl() {
-	mirror="http://download.fr.ghostbsd.org/development/amd64/latest/"
-	x=$(curl -s -L $mirror | grep ".iso<" | head -1 | awk -F\" '{ print $2 }')
-	new="$mirror$x"
-	output="ghostbsd.iso"
-	notlinux
-	checkfile $1
-}
-
-hellosystemurl() {
-	#mirror="https://github.com/helloSystem/ISO/releases/download/r0.5.0/hello-0.5.0_0E223-FreeBSD-12.2-amd64.iso"
-	#mirror="https://github.com/helloSystem/ISO/releases/latest"
-	#x=$(curl -s -L $mirror | grep FreeBSD | grep -m1 iso | awk -F\" '{ print $2 }')
-	#new="https://github.com$x"
-	mirror="https://api.github.com/repos/helloSystem/ISO/releases/latest"
-	new=$(curl -s $mirror | grep browser_download_url | grep -m1 amd64.iso | awk -F"\"" '{ print $4 }')
-	output="hellosystem.iso"
-	notlinux
-	checkfile $1
-}
-
-dragonurl() {
-	mirror="https://www.dragonflybsd.org/download/"
-	new=$(curl -s $mirror | grep "Uncompressed ISO:" | awk -F"\"" '{ print $2 }')
-	output="dragonflybsd.iso"
-	notlinux
-	checkfile $1
-}
-
-pfsenseurl() {
-	mirror="https://atxfiles.netgate.com/mirror/downloads/"
-	x=$(curl -s $mirror | grep "amd64.iso.gz</a>" | tail -1 | awk -F"\"" '{ print $2 }')
-	new="$mirror$x"
-	output="pfsense.iso.gz"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[ ! -f $output ] && download && echo "Please wait, unpacking pfSense..." && gzip -d $output || echo "pfSense already downloaded."
-	fi
-}
-
-opnsenseurl() {
-	mirror="https://mirror.terrahost.no/opnsense/releases/"
-	x=$(curl -s $mirror | grep -B1 mirror | head -1 | awk -F"\"" '{ print $2 }')
-	y=$(curl -s $mirror$x | grep -m1 dvd | awk -F"\"" '{ print $2 }')
-	new="$mirror$x$y"
-	output="opnsense.iso.bz2"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[ ! -f $output ] && download && echo "Please wait, unpacking opnsense..." && bzip2 -k -d $output && rm $output || echo "OpnSense already downloaded."
-	fi
-}
-
-midnightbsdurl() {
-	mirror="https://discovery.midnightbsd.org/releases/amd64/ISO-IMAGES/"
-	x=$(curl -s $mirror | grep href | tail -1 | awk -F"\"" '{ print $2 }')
-	y=$(curl -s $mirror$x | grep disc1.iso | awk -F"\"" '{ print $2 }')
-	new="$mirror$x$y"
-	output="midnightbsd.iso"
-	notlinux
-	checkfile $1
-}
-
-truenasurl() {
-	mirror="https://www.truenas.com/download-truenas-core/"
-	new=$(curl -s $mirror | grep -m1 iso | awk -F"\"" '{ print $6 }')
-	output="truenas.iso"
-	notlinux
-	checkfile $1
-}
-
-nomadbsdurl() {
-	mirror="https://nomadbsd.org/download.html"
-	new=$(curl -s $mirror | grep -A2 "Main site" | grep -m1 img.lzma | awk -F"\"" '{ print $2 }')
-	output="nomadbsd.img.lzma"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[[ ! -f $output && ! -f "nomadbsd.img" ]] && download && echo "Please wait, unpacking NomadBSD..." && lzma -d $output || echo "NomadBSD already downloaded."
-	fi
-}
-
-hardenedbsdurl() {
-	new="https://installers.hardenedbsd.org/pub/current/amd64/amd64/installer/LATEST/disc1.iso"
-	output="hardenedbsd.iso"
-	notlinux
-	checkfile $1
-}
-
-xigmanasurl() {
-	new="https://sourceforge.net/projects/xigmanas/files/latest/download"
-	output="xigmanas.iso"
-	notlinux
-	checkfile $1
-}
-
-clonosurl() {
-	mirror="https://clonos.convectix.com/download.html"
-	new=$(curl -s $mirror | grep .iso | awk -F"\"" '{ print $2 }')
-	output="clonos.iso"
-	notlinux
-	checkfile $1
-}
-
-## Not Linux
-
-indianaurl() {
-	mirror="https://www.openindiana.org/download/"
-	x=$(curl -s $mirror | grep "Live DVD" | awk -F"http://" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="http://$x"
-	output="openindiana.iso"
-	notlinux
-	checkfile $1
-}
-
-minixurl() {
-	mirror="https://wiki.minix3.org/doku.php?id=www:download:start"
-	x=$(curl -s $mirror | grep -m1 iso.bz2 | awk -F"http://" '{ print $2 }' | awk -F\" '{ print $1 }')
-	new="http://$x"
-	output="minix.iso.bz2"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		notlive
-		getsize
-	else
-		[ ! -f $output ] && download && echo "Please wait, unpacking minix..." && bzip2 -k -d $output || echo "Minix already downloaded."
-	fi
-}
-
-haikuurl() {
-	mirror="https://download.haiku-os.org/nightly-images/x86_64/"
-	x=$(curl -s $mirror | grep -m1 zip | awk -F\" '{ print $2 }')
-	new="$x"
-	output="haiku.zip"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[ ! -f $output ] && download && echo "Please wait, unzipping haiku..." && unzip $output && rm ReadMe.md && mv haiku*iso haiku.iso || echo "Haiku already downloaded."
-	fi
-}
-
-menueturl() {
-	mirror="http://www.menuetos.be/download.php?CurrentMenuetOS"
-	new="$mirror"
-	output="menuetos.zip"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[ ! -f $output ] && download && echo "Wait, unzipping menuetos..." && unzip $output && mv M64*.IMG menuetos.img || echo "Menuet already downloaded."
-	fi
-}
-
-kolibriurl() {
-	new="https://builds.kolibrios.org/eng/latest-iso.7z"
-	output="kolibrios.7z"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[[ ! -f $output && ! -f "kolibri.iso" ]] && download && echo "Un7zipping kolibri..." && 7z x $output && sleep 7 && rm $output && rm "INSTALL.TXT" || echo "Kolibri already downloaded."
-	fi
-}
-
-reactosurl() {
-	new="https://sourceforge.net/projects/reactos/files/latest/download"
-	output="reactos.zip"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[[ ! -f $output && ! -f "reactos.iso" ]] && download && echo "Please wait, unzipping reactos..." && unzip $output && mv React*iso reactos.iso || echo "ReactOS already downloaded."
-	fi
-}
-
-freedosurl() {
-	#mirror="https://sourceforge.net/projects/freedos/files/latest/download"
-	#mirror="https://www.freedos.org/download/download/FD12CD.iso"
-	mirror="https://www.freedos.org/download/"
-	new=$(curl -s $mirror | grep FD13-LiveCD.zip | awk -F"\"" '{ print $2 }')
-	output="freedos.zip"
-	if [ "$1" == "filesize" ]; then
-		notlinux
-		getsize
-	else
-		[[ ! -f $output && ! -f "freedos.img" ]] && download && echo "Please wait, unzipping FreeDOS..." && unzip $output && sleep 10 && rm $output && rm readme.txt && mv FD13BOOT.img freedos.img && mv FD13LIVE.iso freedos.iso || echo "FreeDOS already downloaded."
-	fi
-}
-
-netbootxyz() {
-	mirror="https://boot.netboot.xyz/ipxe/netboot.xyz.iso"
-	new="$mirror"
-	output="netboot.xyz.iso"
-	checkfile $1
-}
-
-netbootsal() {
-	mirror="http://boot.salstar.sk/ipxe/ipxe.iso"
-	new="$mirror"
-	output="ipxe.iso"
-	checkfile $1
-}
-
-# this one is currently broken
-netbootipxe() {
-	#mirror="http://cloudboot.nchc.org.tw/cloudboot/cloudboot_img/cloudboot_1.0.iso"
-	mirror="http://boot.ipxe.org/ipxe.iso"
-	new="$mirror"
-	output="bootipxe.iso"
-	checkfile $1
-}
-
-## Windows
-
-unattended_windows() {
+download_mandriva() {
+	local mirror="https://sourceforge.net/projects/openmandriva/files/latest/download"
+	local download_link="$mirror"
+	local output_file="mandriva.iso"
+	download "$download_link" "$output_file"
+}
+
+download_rocky() {
+	local url_page="https://rockylinux.org/download"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "${html}" | grep iso | grep -v -e "CHECKSUM" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="rocky.iso"
+	download "$download_link" "$output_file"
+}
+
+download_qubes() {
+	local mirror="https://www.qubes-os.org/downloads/"
+	local download_link=$(curl -s "$mirror" | grep -m1 x86_64.iso | awk -F"\"" '{ print $4 }')
+	local output_file="qubes.iso"
+	download "$download_link" "$output_file"
+}
+
+download_nobara() {
+	local url_page="https://nobaraproject.org/download-nobara/"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "${html}" | grep -E "iso" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="nobara.iso"
+	download "$download_link" "$output_file"
+}
+
+download_ultramarine() {
+	local url_page="https://ultramarine-linux.org/download/"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "${html}" | grep "iso" | grep -v -e "sha256" | fzf --cycle --prompt "Choose iso to download:")
+	local output_file="ultramarine.iso"
+	download "$download_link" "$output_file"
+}
+
+# Other
+download_alpine() {
+	local url_page="https://alpinelinux.org/downloads/"
+	local one=$(curl -s "$url_page" | grep Current | awk -F">" '{ print $3 }' | awk -F"<" '{ print $1 }')
+	local shortv=$(echo "$one" | awk -F"." '{ print $1"."$2 }')
+	local download_link="http://dl-cdn.alpinelinux.org/alpine/v$shortv/releases/x86_64/alpine-extended-$one-x86_64.iso"
+	local output_file="alpine.iso"
+	download "$download_link" "$output_file"
+}
+
+download_tinycore() {
+	local url_page="http://tinycorelinux.net/downloads.html"
+	local one=$(curl -s "$url_page" | grep TinyCore-current.iso | awk -F\" '{ print $2 }')
+	local mirror="http://tinycorelinux.net/"
+	local download_link="$mirror/$one"
+	local output_file="tinycore.iso"
+	download "$download_link" "$output_file"
+}
+
+download_void() {
+	local url_page="https://voidlinux.org/download/"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "$html" | grep "iso" | fzf --cycle --prompt "Choose iso to download : ")
+	local output_file="void.iso"
+	download "$download_link" "$output_file"
+}
+
+download_kaos() {
+	local mirror="https://sourceforge.net/projects/kaosx/files/latest/download"
+	local download_link="$mirror"
+	local output_file="kaos.iso"
+	download "$download_link" "$output_file"
+}
+
+download_clearlinux() {
+	local mirror="https://www.clearlinux.org/downloads.html"
+	local ver=$(curl "$mirror" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep live | grep iso | cut -d"/" -f5 | sort | uniq | xargs)
+	local download_link="https://cdn.download.clearlinux.org/releases/$ver/clear/clear-$ver-live-desktop.iso"
+	local output_file="clearlinux.iso"
+	download "$download_link" "$output_file"
+}
+
+download_slackware() {
+	local mirror="https://mirrors.slackware.com/slackware/slackware-iso/"
+	local x=$(curl -s "$mirror" | grep slackware64 | tail -1 | awk -F"slack" '{ print $2 }' | awk -F"/" '{ print $1 }')
+	local other="slack$x"
+	local y=$(curl -s "$mirror/$other/" | grep dvd.iso | head -1 | awk -F"slack" '{ print $2 }' | awk -F\" '{ print $1 }')
+	local download_link="$mirror/$other/slack$y"
+	local output_file="slackware.iso"
+	download "$download_link" "$output_file"
+}
+
+download_solus() {
+	local url_page="https://getsol.us/download/"
+	local x=$(curl -s "$url_page" | grep -E "download" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -E "Budgie" | head -1 | grep -Eo "https.+iso")
+	local download_link="$x"
+	local output_file="solus.iso"
+	download "$download_link" "$output_file"
+}
+
+# Source-based
+download_gentoo() {
+	local mirror="https://gentoo.c3sl.ufpr.br//releases/amd64/autobuilds"
+	local download_link=$(
+		curl -s "$mirror/latest-iso.txt" |
+			grep "admin" |
+			awk '{ print $1 }'
+	)
+	local output_file="gentoo.iso"
+	download "$mirror/$download_link" "$output_file"
+}
+
+download_calculate() {
+	local url_page="https://wiki.calculate-linux.org/desktop"
+	local html=$(curl -sSLf "${url_page}")
+	local download_link=$(extract_links_from_html "${html}" | grep "iso" | fzf --cycle --prompt "Choose iso to download :")
+	local output_file="calculate.iso"
+	download "$download_link" "$output_file"
+}
+
+download_nixos() {
+	local url_page="https://nixos.org/download/"
+	local html=$(curl -sSLf "${url_page}")
+	local url=$(extract_links_from_html "${html}" | grep "sha256" | fzf --cycle --prompt "Choose iso to download :")
+	local download_link=${url%.sha256}
+	local output_file="nixos.iso"
+	download "$download_link" "$output_file"
+}
+
+download_guix() {
+	local mirror="https://guix.gnu.org/en/download/"
+	local download_link=$(
+		curl -s "$mirror" |
+			grep ".iso" |
+			awk -F"https://" '{ print $2 }' |
+			awk -F\" '{ print $1 }'
+	)
+	local output_file="guix.iso.xz"
+	download "https://$download_link" "$output_file"
+}
+
+# BSD-based
+download_freebsd() {
+	local mirror="https://www.freebsd.org/where/"
+	local url=$(
+		curl -s "$mirror" |
+			grep -m1 "amd64/amd64" |
+			awk -F\" '{ print $2 }'
+	)
+	local download_link="${url}FreeBSD$(curl -s "$url" | grep -m1 dvd1 | awk -F"FreeBSD" '{ print $2 }' | awk -F\" '{ print $1 }')"
+	local output_file="freebsd.iso"
+	download "$download_link" "$output_file"
+}
+
+download_netbsd() {
+	local mirror="https://www.netbsd.org/"
+	local download_link=$(curl -s "$mirror" | grep -m1 "CD" | awk -F\" '{ print $4 }')
+	local output_file="netbsd.iso"
+	download "$download_link" "$output_file"
+}
+
+download_openbsd() {
+	local url_page="https://www.openbsd.org/faq/faq4.html#Download"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(
+		extract_links_from_html "$html" |
+			grep "amd64" |
+			grep "iso" |
+			head -1
+	)
+	local output_file="openbsd.iso"
+	download "$download_link" "$output_file"
+}
+
+download_ghostbsd() {
+	local mirror="http://download.fr.ghostbsd.org/development/amd64/latest/"
+	local download_link=$(
+		curl -s -L "$mirror" |
+			grep ".iso<" |
+			head -1 |
+			awk -F\" '{ print $2 }'
+	)
+	local output_file="ghostbsd.iso"
+	download "${mirror}${download_link}" "$output_file"
+}
+
+download_dragonflybsd() {
+	local mirror="https://www.dragonflybsd.org/download/"
+	local download_link=$(curl -s "$mirror" | grep "Uncompressed ISO:" | awk -F"\"" '{ print $2 }')
+	local output_file="dragonflybsd.iso"
+	download "$download_link" "$output_file"
+}
+
+download_midnightbsd() {
+	local url_page="https://www.midnightbsd.org/download"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(
+		extract_links_from_html "$html" |
+			grep "amd64" |
+			grep "memstick" |
+			head -1
+	)
+	local output_file="midnightbsd.iso"
+	download "$download_link" "$output_file"
+}
+
+download_nomadbsd() {
+	local mirror="https://nomadbsd.org/download.html"
+	local download_link=$(curl -s "$mirror" | grep -A2 "Main site" | grep -m1 img.lzma | awk -F"\"" '{ print $2 }')
+	local output_file="nomadbsd.img.lzma"
+	download "$download_link" "$output_file"
+}
+
+# Not Linux
+download_openindiana() {
+	local url_page="https://www.openindiana.org/downloads/"
+	local html=$(curl -sSLf "$url_page" | grep "Live DVD")
+	local download_link=$(
+		extract_links_from_html "$html" | fzf --cycle --prompt "Choose iso to download: "
+	)
+	local output_file="openindiana.iso"
+	download "https:$download_link" "$output_file"
+}
+
+download_minix() {
+	local mirror="https://wiki.minix3.org/doku.php?id=www:download:start"
+	local download_link=$(
+		curl -s "$mirror" |
+			grep -m1 iso.bz2 |
+			awk -F"http://" '{ print $2 }' |
+			awk -F\" '{ print $1 }'
+	)
+	local output_file="minix.iso.bz2"
+	download "http://$download_link" "$output_file"
+}
+
+download_haiku() {
+	local mirror="https://download.haiku-os.org/nightly-images/x86_64/"
+	local download_link=$(
+		curl -s "$mirror" |
+			grep -m1 zip |
+			awk -F\" '{ print $2 }'
+	)
+	local output_file="haiku.zip"
+	download "$download_link" "$output_file"
+}
+
+download_reactos() {
+	local mirror="https://sourceforge.net/projects/reactos/files/latest/download"
+	local output_file="reactos.zip"
+	download "$mirror" "$output_file"
+}
+
+download_freedos() {
+	local url_page="https://www.freedos.org/download/"
+	local html=$(curl -sSLf "$url_page")
+	local download_link=$(extract_links_from_html "${html}" | grep "zip" | fzf --cycle --prompt "Choose iso to download: ")
+	local output_file="freedos.zip"
+	download "$download_link" "$output_file"
+}
+
+# Windows
+build_unattended_windows_xml() {
 	cat <<'EOF' >"${1}"
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
@@ -1724,27 +1354,27 @@ $scripts = @(
 EOF
 }
 
-downloadWindowsISO() {
+getWindowsISOLink() {
 	# Define product IDs and names
 	declare -A products=(
-		["48"]="Windows 8.1 Single Language (9600.17415)"
 		["2618"]="❤️ Windows 10 22H2 v1 (19045.2965)"
 		["3113"]="❤️ Windows 11 24H2 (26100.1742)"
 	)
 
-	if [[ "$1" = "win81x64" ]]; then
-		selected_product_id="48"
-	elif [[ "$1" = "win10x64" ]]; then
-		selected_product_id="2618"
-	elif [[ "$1" = "win11x64" ]]; then
-		selected_product_id="3113"
+	if [[ "$1" = "windows10" ]]; then
+		local selected_product_id="2618"
+	elif [[ "$1" = "windows11" ]]; then
+		local selected_product_id="3113"
+	else
+		echo "Unsupported windows product $1"
+		exit 1
 	fi
 
 	# Fetch SKU information for the selected product ID
-	sku_response=$(curl -s "https://api.gravesoft.dev/msdl/skuinfo?product_id=$selected_product_id")
+	local sku_response=$(curl -s "https://api.gravesoft.dev/msdl/skuinfo?product_id=$selected_product_id")
 
 	# Use jq to extract and format the SKU information
-	selected_sku=$(echo "$sku_response" | jq -r '.Skus[] | "\(.Id) \(.Description)"' | sort | fzf --header="Select a SKU")
+	local selected_sku=$(echo "$sku_response" | jq -r '.Skus[] | "\(.Id) \(.Description)"' | sort | fzf --header="Select a SKU")
 
 	# Check if a SKU was selected
 	if [ -z "$selected_sku" ]; then
@@ -1753,13 +1383,13 @@ downloadWindowsISO() {
 	fi
 
 	# Extract the SKU ID from the selected SKU
-	sku_id=$(echo "$selected_sku" | awk '{print $1}')
+	local sku_id=$(echo "$selected_sku" | awk '{print $1}')
 
 	# Fetch download options for the selected SKU
-	download_response=$(curl -s "https://api.gravesoft.dev/msdl/proxy?product_id=$selected_product_id&sku_id=$sku_id")
+	local download_response=$(curl -s "https://api.gravesoft.dev/msdl/proxy?product_id=$selected_product_id&sku_id=$sku_id")
 
 	# Use jq to extract and format the download options
-	selected_download=$(echo "$download_response" | jq -r '.ProductDownloadOptions[] | "\(.Name) \(.Uri)"' | fzf --header="Select a download option")
+	local selected_download=$(echo "$download_response" | jq -r '.ProductDownloadOptions[] | "\(.Name) \(.Uri)"' | fzf --header="Select a download option")
 
 	# Check if a download option was selected
 	if [ -z "$selected_download" ]; then
@@ -1768,460 +1398,337 @@ downloadWindowsISO() {
 	fi
 
 	# Extract the download URL from the selected download option
-	windowsGlobalDownloadLink=$(echo "$selected_download" | awk '{print $NF}')
+	local downloadLink=$(echo "$selected_download" | awk '{print $NF}')
 
-	aria2c -j 16 -x 16 -s 16 -k 1M "${windowsGlobalDownloadLink}"
+	echo "${downloadLink}"
 }
 
-CallWindowsDownloader() {
-	clear
-
-	echo -e "Downloading $output"
-	downloadWindowsISO "$1"
-
-	iso=$(find -type f | grep "iso" | head -1 | xargs -I {} realpath "{}")
-	if [[ "$1" == "win10x64" || "$1" == "win11x64" ]]; then
-		mv "${iso}" "${VMS_ISO}/tmp_download-$1-$2/${output}"
-	else
-		mv "${iso}" "${VMS_ISO}/${output}"
-	fi
-}
-
-downloadWindowsSpice() {
+download_drivers() {
 	echo -e "Downloading Spice Agents for copy paste functionality ..."
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi"
+	download "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi" "spice-webdavd-x64-latest.msi"
+	download "https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.10.0/spice-vdagent-x64-0.10.0.msi" "spice-vdagent-x64-0.10.0.msi"
+	download "https://www.spice-space.org/download/windows/usbdk/UsbDk_1.0.22_x64.msi" "UsbDk_1.0.22_x64.msi"
 }
 
-winget() {
+download_windows() {
 	# CACHE PASSWORD
 	sudo sed -i '71 a Defaults        timestamp_timeout=30000' /etc/sudoers
 
-	mkdir -p "$VMS_ISO"
-
-	if [[ "$1" == "win81x64" ]]; then
-
-		cd "${VMS_ISO}"
-
-		# Download vanilla windows iso
-
-		CallWindowsDownloader "$1"
-
-		# Download spice setup files
-
-		mkdir "windows-spice-setupfiles"
-		cd "windows-spice-setupfiles"
-		downloadWindowsSpice
-		cd ..
-
-	else
-
-		read -p "Do you want an unattendeded installer ? (y/n/yes/no):" want_unattended
-		username=""
-		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
-			read -p "Enter username for your account:" username
-		fi
-
-		epoch_date_created=$(date +%s)
-
-		mkdir -p "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
-		cd "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
-
-		# Download vanilla windows iso
-
-		CallWindowsDownloader "$1" "$epoch_date_created"
-
-		# Create iso with unattended.xml
-
-		mkdir mnt
-		sudo mount -o rw,loop "${output}" mnt
-
-		epoch=$(date +%s)
-		mkdir "win-${epoch}"
-		echo "Doing magic please wait ..."
-		sudo cp -r mnt/* "win-${epoch}"
-
-		mkdir "modifications-${epoch}"
-		cd "modifications-${epoch}"
-
-		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
-			clear
-			echo "Creating unattended installer ...."
-			downloadWindowsSpice
-			unattended_windows "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
-			sed -i "s/<USERNAME_HERE>/${username}/g" "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
-			sed -i "s/ Project//g" "${VMS_ISO}/tmp_download-$1-${epoch_date_created}/modifications-${epoch}/autounattend.xml"
-		else
-			echo "Creating non-unattended installer ...."
-		fi
-
-		cd ..
-
-		sudo umount mnt
-		sudo rm -rf mnt
-
-		cd "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
-
-		mkisofs \
-			-iso-level 4 \
-			-rock \
-			-disable-deep-relocation \
-			-untranslated-filenames \
-			-b boot/etfsboot.com \
-			-no-emul-boot \
-			-boot-load-size 8 \
-			-eltorito-alt-boot \
-			-eltorito-platform efi \
-			-b efi/microsoft/boot/efisys.bin \
-			-o "../${output}" \
-			"./win-${epoch}" "./modifications-${epoch}"
-
-		if [[ "${want_unattended}" = "y" || "${want_unattended}" = "yes" ]]; then
-			fileName=$(basename "${output}" ".iso")
-			suffix="unattended"
-
-			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
-			else
-				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
-			fi
-
-		else
-			fileName=$(basename "${output}" ".iso")
-			suffix="non-unattended"
-
-			if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
-			else
-				mv "../${output}" "../${fileName}-${suffix}-${epoch}.iso"
-			fi
-
-		fi
+	# Check if unattended user is needed
+	read -p "Do you want an unattended installer ? (y/n/yes/no):" use_unattended_installer
+	local admin_username=""
+	if [[ "${use_unattended_installer}" = "y" || "${use_unattended_installer}" = "yes" ]]; then
+		read -p "Enter username for your account:" admin_username
 	fi
 
-	cd "${VMS_ISO}"
+	local windows_version="$1"
+	local iso_download_url=$(getWindowsISOLink "$windows_version")
+	local iso_file_name="${windows_version}.iso"
+
+	if [[ -z "${iso_download_url}" ]]; then
+		echo "No windows iso link found"
+		exit 1
+	fi
+
+	# download windows iso
+	local current_timestamp=$(date +%s)
+	local temporary_download_directory=$(echo "${DOWNLOAD_DIR}/tmp_download-${windows_version}-${current_timestamp}")
+	mkdir -p "${temporary_download_directory}"
+	cd "${temporary_download_directory}"
+	download "${iso_download_url}" "${iso_file_name}"
+
+	# mount downloaded iso
+	mkdir iso_mount
+	sudo mount -o rw,loop "${iso_file_name}" iso_mount
+
+	# copy all the content of iso to a folder
+	local new_timestamp=$(date +%s)
+	local modified_windows_directory="${temporary_download_directory}/win-${new_timestamp}"
+	mkdir "${modified_windows_directory}"
+	sudo cp -r iso_mount/* "${modified_windows_directory}"
+
+	# add drivers and unattended.xml file
+	local modification_directory="${temporary_download_directory}/modifications-${new_timestamp}"
+	mkdir "${modification_directory}"
+	cd "${modification_directory}"
+
+	if [[ "${use_unattended_installer}" = "y" || "${use_unattended_installer}" = "yes" ]]; then
+		echo "Creating unattended installer ...."
+		build_unattended_windows_xml "${modification_directory}/autounattend.xml"
+		sed -i "s/<USERNAME_HERE>/${admin_username}/g" "${modification_directory}/autounattend.xml"
+		sed -i "s/ Project//g" "${modification_directory}/autounattend.xml"
+
+		download_drivers
+	else
+		echo "Creating non-unattended installer ...."
+	fi
+	cd ..
+
+	# unmount iso
+	sudo umount iso_mount
+	sudo rm -rf iso_mount
+
+	# build iso
+	local iso_file_name_final=""
+	local iso_file_suffix=""
+	if [[ "${use_unattended_installer}" = "y" || "${use_unattended_installer}" = "yes" ]]; then
+		iso_file_suffix="unattended"
+	else
+		iso_file_suffix="non-unattended"
+	fi
+	local new_timestamp=$(date +%s)
+	iso_file_name_final="${windows_version}-${iso_file_suffix}-${new_timestamp}.iso"
+
+	mkisofs \
+		-iso-level 4 \
+		-rock \
+		-disable-deep-relocation \
+		-untranslated-filenames \
+		-b boot/etfsboot.com \
+		-no-emul-boot \
+		-boot-load-size 8 \
+		-eltorito-alt-boot \
+		-eltorito-platform efi \
+		-b efi/microsoft/boot/efisys.bin \
+		-o "../${iso_file_name_final}" \
+		"${modified_windows_directory}" "${modification_directory}"
+
+	# Download virtio iso
+	cd "${DOWNLOAD_DIR}"
 	rm -rf "virtio.iso"
-	clear
+	echo "Downloading Virtio Drivers for setting higher resolution ..."
+	download "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" "virtio.iso"
+
+	# Delete Temp Windows Directory
+	sudo rm -rf "${temporary_download_directory}"
 
 	# DELETE CACHED PASSWORD
 	sudo sed -i '72d' /etc/sudoers
+}
 
-	# Download virtio drivers iso
-	echo "Downloading Virtio Drivers for setting higher resolution ..."
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso" -o "virtio.iso"
+download_windows10() {
+	download_windows "windows10"
+}
 
-	if [[ "${windowsGlobalDownloadLink}" != "" ]]; then
-		sudo rm -rf "${VMS_ISO}/tmp_download-$1-${epoch_date_created}"
+download_windows11() {
+	download_windows "windows11"
+}
+
+# Bootable USB Tools
+download_ventoy() {
+	local url_page="https://github.com/ventoy/Ventoy"
+
+	local html
+	html=$(curl -fsSL "$url_page")
+	local ver
+	ver=$(extract_links_from_html "$html" | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
+
+	# Construct download link
+	local download_link="${url_page}/releases/download/v$ver/ventoy-$ver-linux.tar.gz"
+	local output_file="ventoy.tar.gz"
+
+	# Download the file
+	download "$download_link" "$output_file"
+}
+
+download_balena_etcher() {
+	local url_page="https://github.com/balena-io/etcher"
+
+	local html
+	html=$(curl -fsSL "$url_page")
+	ver=$(extract_links_from_html "$html" | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
+
+	# local download_link
+	download_link="${url_page}/releases/download/v$ver/balenaEtcher-${ver}-x64.AppImage"
+	local output_file="balena_etcher.AppImage"
+
+	# Download the file
+	download "$download_link" "$output_file"
+}
+
+# Recovery Environments
+download_hirens_bootcd_pe() {
+	local download_link="https://www.hirensbootcd.org/files/HBCD_PE_x64.iso"
+	local output_file="HBCD_PE_x64.iso"
+
+	# Download the file
+	download "$download_link" "$output_file"
+}
+
+download_medicat() {
+	local url_page="https://medicatusb.com/"
+	local html
+	html=$(curl -fsSL "$url_page")
+
+	# Extract and filter the download link
+	local download_link
+	download_link=$(extract_links_from_html "$html" |
+		grep dog |
+		awk -F"=" '{print $2}' |
+		cut -d" " -f1 |
+		xargs)
+
+	# Check if a link was found
+	if [[ -z "$download_link" ]]; then
+		echo "❌ No valid download link found on $url_page"
+		return 1
 	fi
+
+	local output_file="medicat.7z"
+
+	# Download the file
+	download "$download_link" "$output_file"
 }
 
-win8_1url() {
-	output="Windows8_1.iso"
-	winget "win81x64"
+# Firewalls
+
+download_pfsense() {
+	local mirror="https://atxfiles.netgate.com/mirror/downloads/"
+	local iso_file
+
+	# Fetch the latest ISO link
+	iso_file=$(curl -s "$mirror" | grep -oP 'href="\K[^"]*amd64\.iso\.gz' | tail -1)
+
+	# Check if the ISO file was found
+	if [[ -z "$iso_file" ]]; then
+		echo "Error: No ISO file found at the specified mirror."
+		return 1
+	fi
+
+	local download_link="${mirror}${iso_file}"
+	local output_file="pfsense.iso.gz"
+
+	# Download the file
+	download "$download_link" "$output_file"
 }
 
-win10url() {
-	output="Windows10.iso"
-	winget "win10x64"
+download_opnsense() {
+	local mirror="https://mirror.dns-root.de/opnsense/releases/mirror/"
+	local version_dir iso_file
+
+	# Fetch the latest version directory (e.g. 24.1/)
+	version_dir=$(curl -fsSL "$mirror" | grep -B1 mirror | head -1 | awk -F'"' '{ print $2 }')
+
+	if [[ -z "$version_dir" ]]; then
+		echo "Error: Could not find version directory from mirror."
+	fi
+
+	# Fetch the ISO file
+	iso_file=$(curl -fsSL "${mirror}${version_dir}" | grep -m1 dvd | awk -F'"' '{ print $2 }')
+
+	if [[ -z "$iso_file" ]]; then
+		echo "Error: Could not find ISO file in version directory '$version_dir'."
+	fi
+
+	local download_link="${mirror}${version_dir}${iso_file}"
+	local output_file="opnsense.iso.bz2"
+
+	# Download the file
+	download "$download_link" "$output_file"
 }
 
-win11url() {
-	output="Windows11.iso"
-	winget "win11x64"
+# Download function
+download() {
+	local url="$1"
+	local output="$2"
+
+	echo "📥 Downloading from: $url"
+
+	if command -v aria2c >/dev/null 2>&1; then
+		echo "⬇️  Trying aria2c: $output"
+		aria2c -j 16 -x 16 -s 16 -k 1M "$url" -o "$output"
+		if [[ $? -eq 0 ]]; then return 0; else echo "❌ aria2c failed, falling back to curl..."; fi
+	fi
+
+	if command -v curl >/dev/null 2>&1; then
+		echo "⬇️  Trying curl: $output"
+		curl -L --fail "$url" -o "$output"
+		if [[ $? -eq 0 ]]; then return 0; else echo "❌ curl failed, falling back to wget..."; fi
+	fi
+
+	if command -v wget >/dev/null 2>&1; then
+		echo "⬇️  Trying wget: $output"
+		wget "$url" -O "$output"
+		if [[ $? -eq 0 ]]; then return 0; else echo "❌ wget also failed."; fi
+	fi
+
+	echo "❌ All download methods failed for: $url"
+	return 1
 }
 
-## Bootable USB
-
-ventoyurl() {
-	mirror="https://github.com/ventoy/Ventoy"
-	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
-	wget "${mirror}/releases/download/v$ver/ventoy-$ver-linux.tar.gz" -O "$VMS_ISO/ventoy.tar.gz"
-}
-
-balena_etcher_url() {
-	mirror="https://github.com/balena-io/etcher/"
-	ver=$(curl "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs | tr -d "v")
-	wget "${mirror}/releases/download/v$ver/balenaEtcher-${ver}-x64.AppImage" -O "$VMS_ISO/balena_etcher.AppImage"
-}
-
-## Recovery Environment
-
-hirens_bootcd_pe_url() {
-	cd "${VMS_ISO}"
-	aria2c -j 16 -x 16 -s 16 -k 1M "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso"
-	cd
-}
-
-medicat_url() {
-	mirror="https://medicatusb.com/"
-	cd "${VMS_ISO}"
-	link=$(curl -s "${mirror}" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep dog | awk -F"=" '{print $2}' | cut -d" " -f1 | xargs)
-	aria2c -j 16 -x 16 -s 16 -k 1M "${link}"
-	cd
-}
-
-# Categories
-arch=(archlinux archlinuxgui manjaro arcolinux archbang parabola endeavour artix arco garuda rebornos namib obarun archcraft peux bluestar xerolinux cachyos)
-deb=(debian ubuntu linuxmint zorinos popos deepin mxlinux knoppix kali puppy pureos elementary backbox devuan jingos cutefishos parrot antix trisquel peppermintos nitrux damn_small_linux vanillaos tails_os)
-rpm=(fedora centos opensuse rosa altlinux mandriva mageia clearos alma rocky qubes nobara ultramarine springdale berry risios eurolinux)
-other=(alpine tinycore porteus slitaz pclinuxos void fourmlinux kaos clearlinux dragora slackware adelie plop solus peropesis openmamba pisi)
-sourcebased=(gentoo calculate nixos guix crux gobolinux easyos)
-containers=(rancheros k3os flatcar silverblue photon coreos dcos)
-bsd=(freebsd netbsd openbsd ghostbsd hellosystem dragonflybsd pfsense opnsense midnightbsd truenas nomadbsd hardenedbsd xigmanas clonos)
-notlinux=(openindiana minix haiku menuetos kolibri reactos freedos)
-windows=(windows8_1 windows10 windows11)
-bootable_usb=(ventoy balena_etcher)
-recovery_environment=(hirens_bootcd_pe medicat)
-
-# All distributions
-category_names=("Arch-based" "DEB-based" "RPM-based" "Other" "Source-based" "Containers and DCs" "BSD, NAS, Firewall" "Not linux" "Windows" "Bootable_USB" "Recovery Environment")
-distro_all=("arch" "deb" "rpm" "other" "sourcebased" "containers" "bsd" "notlinux" "windows" "bootable_usb" "recovery_environment")
-distro_arr=("${arch[@]}" "${deb[@]}" "${rpm[@]}" "${other[@]}" "${sourcebased[@]}" "${containers[@]}" "${bsd[@]}" "${notlinux[@]}" "${windows[@]}" "${bootable_usb[@]}" "${recovery_environment[@]}")
-
-# Legend ## Distroname ## Arch  ## Type     ## Download URL function name
-
-# Archlinux-based distros
-archlinux=("ArchLinux" "amd64" "rolling" "archurl")
-archlinuxgui=("ArchLinuxGUI" "amd64" "rolling" "archguiurl")
-manjaro=("Manjaro" "amd64" "rolling" "manjarourl")
-arcolinux=("Arcolinux" "amd64" "rolling" "arcourl")
-archbang=("Archbang" "amd64" "rolling" "archbangurl")
-parabola=("Parabola" "amd64" "rolling" "parabolaurl")
-endeavour=("EendeavourOS" "amd64" "latest" "endeavoururl")
-artix=("ArtixLinux" "amd64" "daily" "artixurl")
-arco=("ArcoLinux" "amd64" "release" "arcourl")
-garuda=("Garuda" "amd64" "release" "garudaurl")
-rebornos=("RebornOS" "amd64" "release" "rebornurl")
-namib=("Namib" "amd64" "release" "namiburl")
-obarun=("Obarun" "amd64" "rolling" "obarunurl")
-archcraft=("ArchCraft" "amd64" "release" "archcrafturl")
-peux=("Peux" "amd64" "release" "peuxurl")
-bluestar=("Bluestar" "amd64" "release" "bluestarurl")
-xerolinux=("XeroLinux" "amd64" "rolling" "xerourl")
-cachyos=("CachyOS" "amd64" "latest" "cachyosurl")
-
-# Consider in the future if the distros continue to evolve
-# https://sourceforge.net/projects/calinixos/
-# https://sourceforge.net/projects/hefftorlinux/
-
-# Debian/Ubuntu-based distros
-debian=("Debian" "amd64" "testing" "debianurl")
-ubuntu=("Ubuntu" "amd64" "daily-live" "ubuntuurl")
-linuxmint=("LinuxMint" "amd64" "release" "minturl")
-zorinos=("ZorinOS" "amd64" "core" "zorinurl")
-popos=("PopOS" "amd64" "release" "popurl")
-deepin=("Deepin" "amd64" "release" "deepinurl")
-mxlinux=("MXLinux" "amd64" "release" "mxurl")
-knoppix=("Knoppix" "amd64" "release" "knoppixurl")
-kali=("Kali" "amd64" "kali-weekly" "kaliurl")
-puppy=("Puppy" "amd64" "bionicpup64" "puppyurl")
-pureos=("PureOS" "amd64" "release" "pureurl")
-elementary=("ElementaryOS" "amd64" "release" "elementurl")
-backbox=("Backbox" "amd64" "release" "backboxurl")
-devuan=("Devuan" "amd64" "beowulf" "devuanurl")
-jingos=("JingOS" "amd64" "v0.9" "jingosurl")
-cutefishos=("CutefishOS" "amd64" "release" "cutefishosurl")
-parrot=("Parrot" "amd64" "testing" "parroturl")
-antix=("Antix" "amd64" "full" "antixurl")
-trisquel=("Trisquel" "amd64" "latest" "trisquelurl")
-peppermintos=("Peppermintos" "amd64" "latest" "peppermintosurl")
-nitrux=("nitrux" "amd64" "latest" "nitruxurl")
-damn_small_linux=("damn_small_linux" "amd64" "latest" "damn_small_linux_url")
-vanillaos=("vanillaos" "amd64" "latest" "vanillaos_url")
-tails_os=("tails_os" "amd64" "latest" "tailsurl")
-
-# Add if wanted
-# https://distrowatch.com/table.php?distribution=rebeccablackos
-# https://distrowatch.com/table.php?distribution=regata
-# https://distrowatch.com/table.php?distribution=uruk
-# https://distrowatch.com/table.php?distribution=netrunner
-
-# Fedora/RedHat-based distros
-fedora=("Fedora" "amd64" "Workstation" "fedoraurl")
-centos=("CentOS" "amd64" "stream" "centosurl")
-opensuse=("OpenSUSE" "amd64" "tumbleweed" "suseurl")
-rosa=("ROSA" "amd64" "desktop-fresh" "rosaurl")
-altlinux=("ALTLinux" "amd64" "release" "alturl")
-mandriva=("Mandriva" "amd64" "release" "mandrivaurl")
-mageia=("Mageia" "amd64" "cauldron" "mageiaurl")
-clearos=("ClearOS" "amd64" "release" "clearosurl")
-alma=("AlmaLinux" "amd64" "release" "almaurl")
-rocky=("RockyLinux" "amd64" "rc" "rockyurl")
-qubes=("QubesOS" "amd64" "release" "qubesurl")
-nobara=("Nobara" "amd64" "release" "nobaraurl")
-ultramarine=("Ultramarine" "amd64" "release" "ultraurl")
-springdale=("Springdale" "amd64" "release" "springurl")
-berry=("Berry" "amd64" "release" "berryurl")
-risios=("RisiOS" "amd64" "release" "risiurl")
-eurolinux=("EuroLinux" "amd64" "release" "eurourl")
-
-# Other distros
-alpine=("Alpine" "amd64" "extended" "alpineurl")
-tinycore=("TinyCore" "amd64" "current" "tinycoreurl")
-porteus=("Porteus" "amd64" "kiosk" "porteusurl")
-slitaz=("SliTaz" "amd64" "rolling" "slitazurl")
-pclinuxos=("PCLinuxOS" "amd64" "livecd" "pclinuxosurl")
-void=("Void" "amd64" "live" "voidurl")
-fourmlinux=("4mlinux" "amd64" "release" "fourmurl")
-kaos=("kaos" "amd64" "release" "kaosurl")
-clearlinux=("ClearLinux" "amd64" "release" "clearurl")
-dragora=("Dragora" "amd64" "release" "dragoraurl")
-slackware=("Slackware" "amd64" "current" "slackwareurl")
-adelie=("Adelie" "amd64" "rc1" "adelieurl")
-plop=("Plop" "amd64" "current-stable" "plopurl")
-solus=("Solus" "amd64" "release" "solusurl")
-peropesis=("Peropesis" "amd64" "live" "peropesisurl")
-openmamba=("Openmamba" "amd64" "rolling" "openmambaurl")
-pisi=("Pisilinux" "amd64" "release" "pisiurl")
-
-# Source-based distros
-gentoo=("Gentoo" "amd64" "admincd" "gentoourl")
-calculate=("Calculate" "amd64" "release" "calcurl")
-nixos=("NixOS" "amd64" "unstable" "nixurl")
-guix=("Guix" "amd64" "release" "guixurl")
-crux=("CRUX" "amd64" "release" "cruxurl")
-gobolinux=("GoboLinux" "amd64" "release" "gobourl")
-easyos=("EasyOS" "amd64" "dunfell" "easyurl")
-
-# Distros for containers and data-centers
-rancheros=("RancherOS" "amd64" "release" "rancherurl")
-k3os=("K3OS" "amd64" "release" "k3osurl")
-flatcar=("Flatcar" "amd64" "release" "flatcarurl")
-silverblue=("Silverblue" "amd64" "release" "silverblueurl")
-photon=("PhotonOS" "amd64" "fulliso" "photonurl")
-coreos=("CoreOS" "amd64" "next" "coreosurl")
-dcos=("DC/OS" "amd64" "script" "dcosurl")
-
-# FreeBSD family
-freebsd=("FreeBSD" "amd64" "release" "freebsdurl")
-netbsd=("NetBSD" "amd64" "release" "netbsdurl")
-openbsd=("OpenBSD" "amd64" "release" "openbsdurl")
-ghostbsd=("GhostBSD" "amd64" "release" "ghostbsdurl")
-hellosystem=("HelloSystem" "amd64" "v0.5" "hellosystemurl")
-dragonflybsd=("DragonflyBSD" "amd64" "release" "dragonurl")
-pfsense=("pfSense" "amd64" "release" "pfsenseurl")
-opnsense=("opnsense" "amd64" "release" "opnsenseurl")
-midnightbsd=("midnightbsd" "amd64" "release" "midnightbsdurl")
-truenas=("truenas" "amd64" "release" "truenasurl")
-nomadbsd=("nomadbsd" "amd64" "release" "nomadbsdurl")
-hardenedbsd=("hardenedbsd" "amd64" "latest" "hardenedbsdurl")
-xigmanas=("xigmanas" "amd64" "release" "xigmanasurl")
-clonos=("clonos" "amd64" "release" "clonosurl")
-
-# Add more FreeBSD stuff
-# https://en.wikipedia.org/wiki/List_of_BSD_operating_systems
-# https://en.wikipedia.org/wiki/List_of_products_based_on_FreeBSD
-
-# Not linux, but free
-
-# Add More Solaris stuff https://solaris.com
-
-openindiana=("OpenIndiana" "amd64" "release" "indianaurl")
-minix=("MINIX" "amd64" "release" "minixurl")
-haiku=("Haiku" "amd64" "nightly" "haikuurl")
-menuetos=("MenuetOS" "amd64" "release" "menueturl")
-kolibri=("Kolibri" "amd64" "release" "kolibriurl")
-reactos=("ReactOS" "amd64" "release" "reactosurl")
-freedos=("FreeDOS" "amd64" "release" "freedosurl")
-
-# Windows
-windows8_1=("Windows8_1" "amd64" "latest" "win8_1url")
-windows10=("Windows10" "amd64" "latest" "win10url")
-windows11=("Windows11" "amd64" "latest" "win11url")
-
-# Bootable USB
-ventoy=("ventoy" "amd64" "latest" "ventoyurl")
-balena_etcher=("balena_etcher" "amd64" "latest" "balena_etcher_url")
-
-# Recovery Environment
-hirens_bootcd_pe=("hirens_bootcd_pe" "amd64" "latest" "hirens_bootcd_pe_url")
-medicat=("medicat" "amd64" "latest" "medicat_url")
-
-drawmenu() {
-	q=0
-
-	for ((i = 0; i < ${#distro_all[@]}; i++)); do
-		col+="${category_names[$i]}: \n"
-		dist=${distro_all[$i]}
-		typeset -n arr=$dist
-		for ((d = 0; d < ${#arr[@]}; d++)); do
-			allDistros+="$q.${arr[$d]}.[${dist}]\n"
-			((q++))
+# Extract links html from html
+extract_links_from_html() {
+	local html="$1"
+	echo "$html" | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' |
+		while IFS= read -r url; do
+			printf '%b\n' "${url//%/\\x}"
 		done
-	done
 }
 
-normalmode() {
-	mkdir -p "${VMS_ISO}"
-	echo -e "\n\n"
-	allDistros=$(echo "$allDistros" | sed '/^\s*$/d')
-	drawmenu
-	x=$(echo -e "$allDistros" | sed '/^$/d' | fzf --cycle -m --prompt "Please choose distro to download:" --height 15 | awk -F "." '{print $1}' | xargs)
+# Dispatcher function
+download_distro() {
+	local distro="$1"
+	local func="${distro_download[$distro]}"
 
-	# Happens if the input is empty
-	if [ -z "$x" ]; then
-		echo "Empty distribution number.Exiting"
-		exit
-	fi # "Empty" handling
-
-	# Happens if we ask only for menu
-	if [ "$x" = "menu" ]; then
-		drawmenu
-		exit
+	if [[ -z "$func" ]]; then
+		echo "❌ No download function registered for '$distro'"
+		return 1
 	fi
 
-	# This questions are asked ONLY if user hadn't used the option "all".
-	if [ "$x" != "all" ] && [ "$x" != "filesize" ] && [ "$x" != "netbootxyz" ] && [ "$x" != "netbootsal" ] && [ "$noconfirm" != "1" ] && [ "$x" != "netbootipxe" ]; then
-		for distr in $x; do
-			dist=${distro_arr[$distr]}
-			typeset -n arr=$dist
-			echo "You choose ${arr[0]} distro ${arr[2]}, built for ${arr[1]} arch."
-			$"${arr[3]}"
-		done
-	else
-
-		if [ "$noconfirm" = "1" ]; then
-			for distr in $x; do
-				dist=${distro_arr[$distr]}
-				typeset -n arr=$dist
-				$"${arr[3]}"
-			done
-			#done
-		fi
-
-		# Sizecheck handling: show the distribution file sizes
-		if [ "$x" = "filesize" ]; then
-			for ((i = 0; i < ${#distro_arr[@]}; i++)); do xx+="$i "; done
-			x=$xx
-			#for ((i=0; i<${#distro_arr[@]}; i++)); do
-			for distr in $x; do
-				dist=${distro_arr[$distr]}
-				typeset -n arr=$dist
-				$"${arr[3]}" "filesize"
-			done
-			#done
-		fi
-
-		if [ "$x" = "netbootxyz" ]; then
-			echo "Downloading netboot image from netboot.xyz, please wait..." && netbootxyz
-			echo "Loading netboot.xyz.iso..." && $cmd -boot d -cdrom netboot.xyz.iso -m $ram
-		fi
-
-		if [ "$x" = "netbootsal" ]; then
-			echo "Downloading netboot image from boot.salstar.sk, please wait..." && netbootsal
-			echo "Loading ipxe.iso..." && $cmd -boot d -cdrom ipxe.iso -m $ram
-		fi
-
-		if [ "$x" = "netbootipxe" ]; then
-			echo "Downloading netboot image from boot.ipxe.org, please wait..." && netbootipxe
-			echo "Loading bootipxe.iso..." && $cmd -boot d -cdrom bootipxe.iso -m $ram
-		fi
+	if ! declare -f "$func" >/dev/null; then
+		echo "❌ Download function '$func' is not defined"
+		return 1
 	fi
+
+	local initial_dir
+	initial_dir=$(pwd)
+
+	echo "⬇️ Downloading $distro (family: ${distro_family[$distro]}) to $DOWNLOAD_DIR"
+
+	cd "$DOWNLOAD_DIR" || {
+		echo "❌ Failed to cd into $DOWNLOAD_DIR"
+		return 1
+	}
+
+	# Run the download function (which should save files in the current directory)
+	"$func"
+
+	cd "$initial_dir" || {
+		echo "❌ Failed to return to $initial_dir"
+		return 1
+	}
+
+	echo "✅ Finished download of $distro"
 }
 
-if [ "$silent" != "1" ]; then
-	helpsection
+# Selector
+select_distro() {
+	# Prepare list: "distro (family)"
+	# Sort first by family name, then by distro name
+	local options
+	options=$(for d in "${!distro_family[@]}"; do
+		echo "$d ${distro_family[$d]}"
+	done | sort -k2,2 -k1,1 | awk '{print $1 " (" $2 ")"}')
+
+	# Run fzf to select
+	local selected
+	selected=$(echo "$options" | fzf --prompt="Select an OS or tool to download: " --height=15 --border) || return 1
+
+	# Extract distro name before space
+	local distro_name="${selected%% *}"
+
+	if [[ -z "$distro_name" ]]; then
+		log "No distro selected, exiting."
+		return 1
+	fi
+
+	download_distro "$distro_name"
+}
+
+# Main
+if ! command -v fzf &>/dev/null; then
+	echo "❌ fzf not found! Please install fzf to use this script."
+	exit 1
 fi
 
-normalmode
+select_distro
