@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Check if the user provided an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <seconds>"
+    exit 1
+fi
+
+# Get the number of seconds from the input
+SECONDS=$1
+
+# Wait for the specified time
+sleep $SECONDS
+
+# Function to play sound (beep)
+play_sound() {
+    while true; do
+        echo -e "\a"  # Sends the terminal bell character
+        sleep 1       # Wait for 1 second before the next beep
+    done
+}
+
+# Trap SIGINT (Ctrl+C) to exit gracefully
+trap "echo 'Alarm stopped.'; exit" SIGINT
+
+# Start playing the sound
+play_sound
