@@ -978,3 +978,6 @@ export NNN_PLUG='f:fzcd;o:fzopen;p:preview-tui;d:dragdrop'
 export NNN_FCOLORS='c1e20406006033f7c6d6abc4'
 export NNN_FIFO='/tmp/nnn.fifo'
 export NNN_TRASH=1
+
+# MPV
+export MPV_SOURCE=(which mpv)
