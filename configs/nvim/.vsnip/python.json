@@ -2,7 +2,7 @@
     "Space&Time": {
         "prefix": ["pst"],
         "body": [
-            "# <Question Link> , <Difficulty>, <Pattern>",
+            "# <Question Link>, <Difficulty>, <Pattern>",
             "",
             "# Question",
             "",
@@ -29,7 +29,7 @@
     "Space&Time DP": {
         "prefix": ["dpst"],
         "body": [
-            "# <Question Link> , <Difficulty>, <Pattern>",
+            "# <Question Link>, <Difficulty>, <Pattern>",
             "",
             "# Question",
             "",
