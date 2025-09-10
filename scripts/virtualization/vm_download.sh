@@ -609,8 +609,8 @@ download_ghostbsd() {
 	local download_link=$(
 		curl -s -L "$mirror" |
 			grep ".iso<" |
-			head -1 |
-			awk -F\" '{ print $2 }'
+			awk -F\" '{ print $2 }' |
+			fzf --cycle --prompt "Choose iso to download: "
 	)
 	local output_file="ghostbsd.iso"
 	download "${mirror}${download_link}" "$output_file"
@@ -1673,7 +1673,7 @@ select_distro() {
 
 	# Run fzf to select
 	local selected
-	selected=$(echo "$options" | fzf --prompt="Select an OS or tool to download: " --height=15 --border) || return 1
+	selected=$(echo "$options" | fzf --cycle --prompt="Select an OS or tool to download: " --height=15 --border) || return 1
 
 	# Extract distro name before space
 	local distro_name="${selected%% *}"
