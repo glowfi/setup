@@ -34,7 +34,7 @@ void setupsignals();
 void sighandler(int signum);
 int getstatus(char *str, char *last);
 void statusloop();
-void termhandler();
+void termhandler(int sig);
 void pstdout();
 #ifndef NO_X
 void setroot();
@@ -158,16 +158,16 @@ void pstdout()
 
 void statusloop()
 {
-	setupsignals();
-	int i = 0;
-	getcmds(-1);
-	while (1) {
-		getcmds(i++);
-		writestatus();
-		if (!statusContinue)
-			break;
-		sleep(1.0);
-	}
+    setupsignals();
+    int i = 0;
+    getcmds(-1);
+    while (1) {
+        getcmds(i++);
+        writestatus();
+        if (!statusContinue)
+            break;
+        sleep(1);
+    }
 }
 
 #ifndef __OpenBSD__
@@ -184,8 +184,9 @@ void sighandler(int signum)
 	writestatus();
 }
 
-void termhandler()
+void termhandler(int sig)
 {
+    (void)sig;
 	statusContinue = 0;
 }
 
