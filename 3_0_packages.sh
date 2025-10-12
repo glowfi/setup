@@ -86,8 +86,8 @@ if [[ "$initType" != "systemD" ]]; then
 fi
 
 ### CORE (Fonts)
-install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts ttf-joypixels" "pac"
-install "ttf-fantasque-nerd ttf-ms-fonts ttf-vista-fonts" "yay"
+install "ttf-fantasque-sans-mono noto-fonts-emoji noto-fonts" "pac"
+install "ttf-fantasque-nerd ttf-joypixels ttf-ms-fonts ttf-vista-fonts" "yay"
 
 ### CORE (AUDIO)
 if [[ "$initType" != "systemD" ]]; then
@@ -162,34 +162,28 @@ install "fortune-mod lolcat cmatrix asciiquarium cowsay" "pac"
 for i in {1..5}; do yes | sudo pacman -S sl && break || sleep 1; done
 
 install "figlet" "pac"
-install "toilet toilet-fonts" "yay"
+# install "toilet toilet-fonts" "yay"
 klone "https://github.com/xero/figlet-fonts"
 sudo cp -r figlet-fonts/* /usr/share/figlet/fonts
 rm -rf figlet-fonts
 
-klone "https://github.com/pipeseroni/pipes.sh"
-cd pipes.sh
-sudo make clean install
-cd ..
-rm -rf pipes.sh
+# klone "https://github.com/pipeseroni/pipes.sh"
+# cd pipes.sh
+# sudo make clean install
+# cd ..
+# rm -rf pipes.sh
 
 # ===================== XORG Dependent ===================================
-klone "https://github.com/xorg62/tty-clock"
-cd tty-clock
-sudo make clean install
-cd ..
-rm -rf tty-clock
+# klone "https://github.com/xorg62/tty-clock"
+# cd tty-clock
+# sudo make clean install
+# cd ..
+# rm -rf tty-clock
 # ===================== END Dependent ====================================
 
 ### Writing Tools
 
 install "rnote" "pac"
-
-mkdir - p $HOME/.local/bin/
-drawio_ver=$(curl "https://github.com/jgraph/drawio-desktop" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6 | xargs)
-drawio_ver_unversioned=$(echo "${drawio_ver}" | tr -d "v")
-wget "https://github.com/jgraph/drawio-desktop/releases/download/${drawio_ver}/drawio-x86_64-${drawio_ver_unversioned}.AppImage" -O $HOME/.local/bin/drawio
-chmod +x $HOME/.local/bin/drawio
 
 echo ""
 echo "------------------------------------------------------------------------"

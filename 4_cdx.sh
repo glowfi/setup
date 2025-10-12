@@ -514,29 +514,10 @@ cd
 
 install "tesseract tesseract-data-eng" "pac"
 
-### Cloud 
-
-npm i -g vercel
-wget "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz"
-sudo tar -xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin/
-rm ngrok-v3-stable-linux-amd64.tgz
-
 ### Ueberzug and Ueberzugpp
 
 install "ueberzugpp" "pac"
 install "openslide" "pac"
-
-# pip uninstall -y cmake
-# install "libxres openslide cmake chafa libvips libsixel python-opencv" "pac"
-# klone "https://github.com/jstkdng/ueberzugpp.git"
-# cd ueberzugpp
-# mkdir build && cd build
-# cmake -DCMAKE_BUILD_TYPE=Release ..
-# cmake --build .
-# mv ./ueberzug ./ueberzugpp
-# mv ./ueberzugpp ~/.local/bin/
-# cd ..;cd ..
-# rm -rf ueberzugpp
 
 # ===================== XORG Dependent ===================================
 install "libxres" "pac"
