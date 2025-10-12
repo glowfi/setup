@@ -28,7 +28,8 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 install "xterm" "pac"
-install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot xautolock" "pac"
+install "xorg-server xorg-xinit xorg-xrandr xorg-xsetroot" "pac"
+install "xautolock" "yay"
 install "xdg-user-dirs xdg-desktop-portal xdg-utils" "pac"
 install "wmctrl" "pac"
 
@@ -86,7 +87,7 @@ cp -r $HOME/setup/configs/picom $HOME/.config/
 
 install "lxappearance-gtk3 qt6ct kvantum" "pac"
 
-install "breeze-icons breeze-gtk breeze ttf-joypixels" "pac"
+install "breeze-icons breeze-gtk breeze" "pac"
 
 klone "https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme"
 cd ./Gruvbox-GTK-Theme/
