@@ -44,6 +44,8 @@ install "redshift" "pac"
 install "mtpfs gvfs-mtp" "pac"
 install "jmtpfs" "yay"
 
+xdg-user-dirs-update
+
 ### MISC
 
 mkdir -p $HOME/.misc

@@ -34,6 +34,8 @@ install "kwrited kwin kgamma kinfocenter kscreen systemsettings sddm sddm-kcm li
 
 install "redshift" "pac"
 
+xdg-user-dirs-update
+
 # CORE PACKAGES
 
 # ===================== XORG Dependent ===================================
