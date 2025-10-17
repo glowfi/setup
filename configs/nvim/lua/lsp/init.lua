@@ -148,37 +148,63 @@ if not status_ok_ then
 end
 
 -- Python LSP
-lspconfig.pyright.setup({ capabilities = capabilities })
+vim.lsp.enable("pyright")
+vim.lsp.config("pyright", { capabilities = capabilities })
+-- lspconfig.pyright.setup({ capabilities = capabilities })
 
 -- Rust LSP
-lspconfig.rust_analyzer.setup({
+vim.lsp.enable("rust_analyzer")
+vim.lsp.config("rust_analyzer", {
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
 	end,
 })
+-- lspconfig.rust_analyzer.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(client, bufnr)
+-- 		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
+-- 	end,
+-- })
 
 -- Golang LSP
-require("lspconfig").gopls.setup({
+vim.lsp.enable("gopls")
+vim.lsp.config("gopls", {
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
 	end,
 })
+-- require("lspconfig").gopls.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(client, bufnr)
+-- 		client.server_capabilities.document_formatting = false
+-- 	end,
+-- })
 
 -- Zig LSP
-require("lspconfig").zls.setup({
+vim.lsp.enable("zls")
+vim.lsp.config("zls", {
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
 	end,
 })
+-- require("lspconfig").zls.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(client, bufnr)
+-- 		client.server_capabilities.document_formatting = false
+-- 	end,
+-- })
 
 -- Clangd LSP
-require("lspconfig").clangd.setup({})
+vim.lsp.enable("clangd")
+vim.lsp.config("clangd", {})
+-- require("lspconfig").clangd.setup({})
 
 -- Lua LSP
-lspconfig.lua_ls.setup({
+vim.lsp.enable("lua_ls")
+vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
 			workspace = { checkThirdParty = false },
@@ -186,15 +212,29 @@ lspconfig.lua_ls.setup({
 		},
 	},
 })
+-- lspconfig.lua_ls.setup({
+-- 	settings = {
+-- 		Lua = {
+-- 			workspace = { checkThirdParty = false },
+-- 			telemetry = { enable = false },
+-- 		},
+-- 	},
+-- })
 
 -- HTML CSS
-lspconfig.html.setup({ capabilities = capabilities })
+vim.lsp.enable("html")
+vim.lsp.config("html", { capabilities = capabilities })
+-- lspconfig.html.setup({ capabilities = capabilities })
 
-lspconfig.cssls.setup({ capabilities = capabilities })
+vim.lsp.enable("cssls")
+vim.lsp.config("cssls", { capabilities = capabilities })
+-- lspconfig.cssls.setup({ capabilities = capabilities })
 
-lspconfig.tailwindcss.setup({
-	capabilities = capabilities,
-})
+vim.lsp.enable("tailwindcss")
+vim.lsp.config("tailwindcss", { capabilities = capabilities })
+-- lspconfig.tailwindcss.setup({
+-- 	capabilities = capabilities,
+-- })
 
 -- Emmet
 local status_ok__, configs = pcall(require, "lspconfig.configs")
@@ -224,15 +264,26 @@ configs.ls_emmet = {
 lspconfig.ls_emmet.setup({ capabilities = capabilities })
 
 -- JSON
-lspconfig.jsonls.setup({
+vim.lsp.enable("jsonls")
+vim.lsp.config("jsonls", {
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
 	end,
 })
+-- lspconfig.jsonls.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(client, bufnr)
+-- 		client.server_capabilities.document_formatting = false
+-- 	end,
+-- })
 
 -- GraphQL
-lspconfig.graphql.setup({ capabilities = capabilities })
+vim.lsp.enable("graphql")
+vim.lsp.config("graphql", {
+	capabilities = capabilities,
+})
+-- lspconfig.graphql.setup({ capabilities = capabilities })
 
 -- TS TSX JS JSX
 require("typescript-tools").setup({
@@ -257,7 +308,11 @@ vim.cmd("nnoremap <silent>qq :TSToolsFixAll<CR>")
 vim.cmd("nnoremap <silent>gr :TSToolsRenameFile<CR>")
 
 -- Bash
-lspconfig.bashls.setup({ capabilities = capabilities })
+vim.lsp.enable("bashls")
+vim.lsp.config("bashls", {
+	capabilities = capabilities,
+})
+-- lspconfig.bashls.setup({ capabilities = capabilities })
 
 -- Null-ls Integration
 local status_ok___, null_ls = pcall(require, "lsp.null-ls")
