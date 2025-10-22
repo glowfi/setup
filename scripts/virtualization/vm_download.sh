@@ -19,6 +19,7 @@ declare -A distro_family=(
 	[garuda]="arch"
 	[archcraft]="arch"
 	[cachyos]="arch"
+	[omarchy]="arch"
 
 	# Debian-based
 	[debian]="deb"
@@ -110,6 +111,7 @@ declare -A distro_download=(
 	[garuda]="download_garuda"
 	[archcraft]="download_archcraft"
 	[cachyos]="download_cachyos"
+	[omarchy]="download_omarchy"
 
 	# Debian-based
 	[debian]="download_debian"
@@ -268,6 +270,14 @@ download_archcraft() {
 
 download_cachyos() {
 	download "https://sourceforge.net/projects/cachyos-arch/files/latest/download" "cachyos.iso"
+}
+
+download_omarchy() {
+	local mirror="https://omarchy.org"
+	local html=$(curl -sSLf "$mirror")
+	local download_link=$(extract_links_from_html "$html" | grep -Eo ".+iso\$" | xargs)
+	local output_file="omarchy.iso"
+	download "$download_link" "$output_file"
 }
 
 # Debian-based
