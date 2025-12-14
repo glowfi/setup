@@ -2197,7 +2197,7 @@
         "default_directory": ""
     },
     "session": {
-        "restore_on_startup": 5
+        "restore_on_startup": 1
     },
     "sessions": {
         "event_log": [
