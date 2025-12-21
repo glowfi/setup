@@ -346,6 +346,8 @@ EOF
 
 	chmod +x qemu-net.sh
 
+	MAC="$(printf '52:54:00:%02x:%02x:%02x' $((RANDOM % 256)) $((RANDOM % 256)) $((RANDOM % 256)))"
+
 	### Startup script [UEFI+Secure Boot Disabled]
 
 	echo "#!/usr/bin/env bash
@@ -353,26 +355,41 @@ set -uo pipefail
 
 SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
 QEMU_NET=\"\$SCRIPT_DIR/qemu-net.sh\"
+PID_FILE="${name}.pid"
 
 cleanup() {
 	echo \"[+] Cleaning up...\"
 
+	# Remove PID file only if it belongs to us
+	if [[ -n \"\${QEMU_PID:-}\" ]] && [[ -f \"\$PID_FILE\" ]]; then
+		rm -f \"\$PID_FILE\"
+	fi
+
+	# Remove ONLY the TAP we created
 	if [[ -n \"\${TAP:-}\" ]]; then
 		echo \"[+] Removing TAP \$TAP\"
 		sudo -A \"\$QEMU_NET\" remove \"\$TAP\" || true
 	fi
-
-	echo \"[+] Stopping qemu-net\"
-	sudo -A \"\$QEMU_NET\" stop || true
 }
 
 trap cleanup EXIT INT TERM
 
 # Kill all sockets
-rm -rf rocky-agent.sock
+rm -rf "${name}-agent.sock"
 
-# Kill any qemu with process name as the current os name
-ps aux | grep \"qemu\" | grep \"rocky\" | head -1 | awk -F\" \" '{print \$2}' | xargs -I{} kill -9 \"{}\"
+# Check if this VM is already running
+if [[ -f \"\$PID_FILE\" ]]; then
+	old_pid=\"\$(cat \"\$PID_FILE\")\"
+	if ps -p \"\$old_pid\" >/dev/null 2>&1; then
+		echo \"[!] Rocky VM already running (PID=\$old_pid). Exiting.\"
+		exit 0
+	else
+		echo \"[!] Stale PID file found. Removing.\"
+		rm -f \"\$PID_FILE\"
+	fi
+fi
+
+VM_MAC="${MAC}"
 
 # Start networking
 sudo -A \"\$QEMU_NET\" start
@@ -388,7 +405,7 @@ qemu-system-x86_64 \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
     -netdev tap,id=net0,ifname=\"\$TAP\",script=no,downscript=no \\
-	-device virtio-net-pci,netdev=net0 \\
+	-device virtio-net-pci,netdev=net0,mac=\"\$VM_MAC\" \\
     -display none \\
 	${spiceSettings}
     -audiodev spice,id=audio0 \\
@@ -444,26 +461,41 @@ set -uo pipefail
 
 SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
 QEMU_NET=\"\$SCRIPT_DIR/qemu-net.sh\"
+PID_FILE="${name}.pid"
 
 cleanup() {
 	echo \"[+] Cleaning up...\"
 
+	# Remove PID file only if it belongs to us
+	if [[ -n \"\${QEMU_PID:-}\" ]] && [[ -f \"\$PID_FILE\" ]]; then
+		rm -f \"\$PID_FILE\"
+	fi
+
+	# Remove ONLY the TAP we created
 	if [[ -n \"\${TAP:-}\" ]]; then
 		echo \"[+] Removing TAP \$TAP\"
 		sudo -A \"\$QEMU_NET\" remove \"\$TAP\" || true
 	fi
-
-	echo \"[+] Stopping qemu-net\"
-	sudo -A \"\$QEMU_NET\" stop || true
 }
 
 trap cleanup EXIT INT TERM
 
 # Kill all sockets
-rm -rf rocky-agent.sock
+rm -rf "${name}-agent.sock"
 
-# Kill any qemu with process name as the current os name
-ps aux | grep \"qemu\" | grep \"rocky\" | head -1 | awk -F\" \" '{print \$2}' | xargs -I{} kill -9 \"{}\"
+# Check if this VM is already running
+if [[ -f \"\$PID_FILE\" ]]; then
+	old_pid=\"\$(cat \"\$PID_FILE\")\"
+	if ps -p \"\$old_pid\" >/dev/null 2>&1; then
+		echo \"[!] Rocky VM already running (PID=\$old_pid). Exiting.\"
+		exit 0
+	else
+		echo \"[!] Stale PID file found. Removing.\"
+		rm -f \"\$PID_FILE\"
+	fi
+fi
+
+VM_MAC="${MAC}"
 
 # Start networking
 sudo -A \"\$QEMU_NET\" start
@@ -479,7 +511,7 @@ qemu-system-x86_64 \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
     -netdev tap,id=net0,ifname=\"\$TAP\",script=no,downscript=no \\
-	-device virtio-net-pci,netdev=net0 \\
+	-device virtio-net-pci,netdev=net0,mac=\"\$VM_MAC\" \\
     -display none \\
 	${spiceSettings}
     -audiodev spice,id=audio0 \\
