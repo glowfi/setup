@@ -170,15 +170,216 @@ addScripts() {
 		-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &"
 	fi
 
+	### Network Script
+	cat <<'EOF' >>qemu-net.sh
+#!/bin/bash
+
+BRIDGE=br0
+GATEWAY=192.168.53.1
+NETWORK=192.168.53.0/24
+DHCP_START=192.168.53.50
+DHCP_END=192.168.53.150
+DNS="8.8.8.8,1.1.1.1"
+WIFI=$(ip route | grep default | awk '{print $5}' | head -1)
+USER_NAME=${SUDO_USER:-$(logname)}
+
+start() {
+	echo "[+] Starting network setup..."
+
+	# ---- Bridge ----
+	if ! ip link show "$BRIDGE" &>/dev/null; then
+		echo "[+] Creating bridge $BRIDGE"
+		ip link add "$BRIDGE" type bridge
+	else
+		echo "[=] Bridge $BRIDGE already exists"
+	fi
+
+	# Assign IP only if not present
+	if ! ip addr show "$BRIDGE" | grep -q "$GATEWAY/24"; then
+		ip addr flush dev "$BRIDGE"
+		ip addr add "$GATEWAY/24" dev "$BRIDGE"
+	else
+		echo "[=] Bridge IP already configured"
+	fi
+
+	ip link set "$BRIDGE" up
+
+	# ---- IP Forwarding ----
+	if [ "$(sysctl -n net.ipv4.ip_forward)" != "1" ]; then
+		echo "[+] Enabling IPv4 forwarding"
+		sysctl -qw net.ipv4.ip_forward=1
+	else
+		echo "[=] IPv4 forwarding already enabled"
+	fi
+
+	# ---- nftables NAT ----
+	if ! nft list table ip qemu-nat &>/dev/null; then
+		echo "[+] Creating nftables NAT table"
+		nft -f - <<-NFT
+			table ip qemu-nat {
+				chain postrouting {
+					type nat hook postrouting priority 100;
+					ip saddr $NETWORK oifname "$WIFI" masquerade
+				}
+			}
+		NFT
+	else
+		echo "[=] nftables NAT table already exists"
+	fi
+
+	# ---- Forwarding rules (custom table assumed to exist) ----
+	if ! nft list chain inet my_table my_forward 2>/dev/null | grep -q "iifname \"$BRIDGE\""; then
+		nft add rule inet my_table my_forward iifname "$BRIDGE" accept
+	fi
+
+	if ! nft list chain inet my_table my_forward 2>/dev/null | grep -q "oifname \"$BRIDGE\""; then
+		nft add rule inet my_table my_forward oifname "$BRIDGE" accept
+	fi
+
+	# ---- dnsmasq ----
+	if [ -f /run/qemu-dnsmasq.pid ] && kill -0 "$(cat /run/qemu-dnsmasq.pid)" 2>/dev/null; then
+		echo "[=] dnsmasq already running"
+	else
+		echo "[+] Starting dnsmasq"
+		dnsmasq \
+			--interface="$BRIDGE" \
+			--bind-interfaces \
+			--listen-address="$GATEWAY" \
+			--dhcp-range="$DHCP_START","$DHCP_END",12h \
+			--dhcp-option=option:router,"$GATEWAY" \
+			--dhcp-option=option:dns-server,"$DNS" \
+			--server=127.0.0.1#5353 \
+			--pid-file=/run/qemu-dnsmasq.pid \
+			--dhcp-leasefile=/var/lib/misc/dnsmasq.leases \
+			--conf-file=/dev/null \
+			--port=0
+	fi
+
+	echo "✔ Network ready. Use: $0 create"
+}
+
+stop() {
+	echo "[+] Stopping network..."
+
+	# ---- dnsmasq ----
+	if [ -f /run/qemu-dnsmasq.pid ] && kill -0 "$(cat /run/qemu-dnsmasq.pid)" 2>/dev/null; then
+		echo "[+] Stopping dnsmasq"
+		kill "$(cat /run/qemu-dnsmasq.pid)"
+	else
+		echo "[=] dnsmasq already stopped"
+	fi
+
+	rm -f /run/qemu-dnsmasq.pid /var/lib/misc/dnsmasq.leases
+
+	# ---- TAP devices ----
+	for tap in $(ip -o link show | awk -F': ' '{print $2}' | grep '^tap'); do
+		echo "[+] Removing $tap"
+		ip link del "$tap"
+	done
+
+	# ---- Bridge ----
+	if ip link show "$BRIDGE" &>/dev/null; then
+		echo "[+] Removing bridge $BRIDGE"
+		ip link del "$BRIDGE"
+	else
+		echo "[=] Bridge already removed"
+	fi
+
+	# ---- nftables ----
+	if nft list table ip qemu-nat &>/dev/null; then
+		echo "[+] Removing nftables NAT table"
+		nft delete table ip qemu-nat
+	else
+		echo "[=] NAT table already removed"
+	fi
+
+	if nft list chain inet my_table my_forward &>/dev/null; then
+		for h in $(nft -a list chain inet my_table my_forward | grep "$BRIDGE" | awk '{print $NF}'); do
+			nft delete rule inet my_table my_forward handle "$h"
+		done
+	fi
+
+	echo "✔ Network stopped"
+}
+
+create_tap() {
+	# Find next available tap number
+	i=0
+	while ip link show tap$i &>/dev/null; do ((i++)); done
+
+	ip tuntap add dev tap$i mode tap user $USER_NAME
+	ip link set tap$i up master $BRIDGE
+	echo "tap$i"
+}
+
+remove_tap() {
+	[ -z "$1" ] && {
+		echo "Usage: $0 remove <tap>"
+		exit 1
+	}
+	ip link del $1 2>/dev/null && echo "Removed $1"
+}
+
+status() {
+	echo "=== Bridge ==="
+	ip -br addr show $BRIDGE 2>/dev/null || echo "Down"
+	echo -e "\n=== Active TAPs ==="
+	ip -br link show | grep tap || echo "None"
+	echo -e "\n=== DHCP Leases ==="
+	cat /var/lib/misc/dnsmasq.leases 2>/dev/null || echo "Empty"
+}
+
+case "$1" in
+start) start ;;
+stop) stop ;;
+restart)
+	stop
+	sleep 1
+	start
+	;;
+status) status ;;
+create) create_tap ;;
+remove) remove_tap "$2" ;;
+*) echo "Usage: $0 {start|stop|restart|status|create|remove <tap>}" ;;
+esac
+EOF
+
+	chmod +x qemu-net.sh
+
 	### Startup script [UEFI+Secure Boot Disabled]
 
 	echo "#!/usr/bin/env bash
+set -uo pipefail
+
+SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
+QEMU_NET=\"\$SCRIPT_DIR/qemu-net.sh\"
+
+cleanup() {
+	echo \"[+] Cleaning up...\"
+
+	if [[ -n \"\${TAP:-}\" ]]; then
+		echo \"[+] Removing TAP \$TAP\"
+		sudo -A \"\$QEMU_NET\" remove \"\$TAP\" || true
+	fi
+
+	echo \"[+] Stopping qemu-net\"
+	sudo -A \"\$QEMU_NET\" stop || true
+}
+
+trap cleanup EXIT INT TERM
 
 # Kill all sockets
-rm -rf "${name}-agent.sock"
+rm -rf rocky-agent.sock
 
-# Kill any running python script qemu with process name as the current os name
-ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
+# Kill any qemu with process name as the current os name
+ps aux | grep \"qemu\" | grep \"rocky\" | head -1 | awk -F\" \" '{print \$2}' | xargs -I{} kill -9 \"{}\"
+
+# Start networking
+sudo -A \"\$QEMU_NET\" start
+
+# ---- Create TAP ----
+TAP=\"\$(sudo -A \"\$QEMU_NET\" create)\"
+echo \"[+] Using TAP: \$TAP\"
 
 # Startup script
 qemu-system-x86_64 \\
@@ -186,6 +387,8 @@ qemu-system-x86_64 \\
 	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
+    -netdev tap,id=net0,ifname=\"\$TAP\",script=no,downscript=no \\
+	-device virtio-net-pci,netdev=net0 \\
     -display none \\
 	${spiceSettings}
     -audiodev spice,id=audio0 \\
@@ -222,21 +425,52 @@ qemu-system-x86_64 \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
     ${_iso_sharedfolder_string}
 
+QEMU_PID=\$!
+echo \"[+] QEMU started (PID=\$QEMU_PID)\"
 
-        # Open remote viewer
-        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start.sh
+# Open viewer
+remote-viewer spice+unix:///run/user/1000/spice.sock &
+
+# Wait for QEMU to exit
+wait \"\$QEMU_PID\"
+echo \"[+] QEMU exited\"" >>start.sh
 
 	chmod +x start.sh
 
 	### Startup script [UEFI+Secure Boot Enabled]
 
 	echo "#!/usr/bin/env bash
+set -uo pipefail
+
+SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
+QEMU_NET=\"\$SCRIPT_DIR/qemu-net.sh\"
+
+cleanup() {
+	echo \"[+] Cleaning up...\"
+
+	if [[ -n \"\${TAP:-}\" ]]; then
+		echo \"[+] Removing TAP \$TAP\"
+		sudo -A \"\$QEMU_NET\" remove \"\$TAP\" || true
+	fi
+
+	echo \"[+] Stopping qemu-net\"
+	sudo -A \"\$QEMU_NET\" stop || true
+}
+
+trap cleanup EXIT INT TERM
 
 # Kill all sockets
-rm -rf "${name}-agent.sock"
+rm -rf rocky-agent.sock
 
-# Kill any running python script qemu with process name as the current os name
-ps aux | grep \"qemu\"| grep \"${name}\" |head -1 | awk -F\" \" '{print \$2}'|xargs -I{} kill -9 \"{}\"
+# Kill any qemu with process name as the current os name
+ps aux | grep \"qemu\" | grep \"rocky\" | head -1 | awk -F\" \" '{print \$2}' | xargs -I{} kill -9 \"{}\"
+
+# Start networking
+sudo -A \"\$QEMU_NET\" start
+
+# ---- Create TAP ----
+TAP=\"\$(sudo -A \"\$QEMU_NET\" create)\"
+echo \"[+] Using TAP: \$TAP\"
 
 # Startup script
 qemu-system-x86_64 \\
@@ -244,6 +478,8 @@ qemu-system-x86_64 \\
 	-enable-kvm -machine q35,smm=on,vmport=off,hpet=off,acpi=on -cpu host,kvm=on,migratable=on,topoext \\
     -overcommit mem-lock=off -smp cores=${cores},threads=${threads},sockets=1 -m ${ram} -device virtio-balloon \\
     ${videoSettings}
+    -netdev tap,id=net0,ifname=\"\$TAP\",script=no,downscript=no \\
+	-device virtio-net-pci,netdev=net0 \\
     -display none \\
 	${spiceSettings}
     -audiodev spice,id=audio0 \\
@@ -282,7 +518,17 @@ qemu-system-x86_64 \\
 
 
         # Open remote viewer
-        remote-viewer spice+unix:///run/user/1000/spice.sock &" >>start_secboot.sh
+        remote-viewer spice+unix:///run/user/1000/spice.sock &
+
+QEMU_PID=\$!
+echo \"[+] QEMU started (PID=\$QEMU_PID)\"
+
+# Open viewer
+remote-viewer spice+unix:///run/user/1000/spice.sock &
+
+# Wait for QEMU to exit
+wait \"\$QEMU_PID\"
+echo \"[+] QEMU exited\"" >>start_secboot.sh
 
 	chmod +x start_secboot.sh
 
