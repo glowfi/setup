@@ -132,15 +132,15 @@ addScripts() {
 
 	if [[ "$vga" == "qxl" ]]; then
 		videoSettings="-vga qxl \\"
-		spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+		spiceSettings="-spice unix=on,addr=/run/user/1000/${name}-agent.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
 	elif [[ "$vga" == "virtio" ]]; then
 		### Check GPU
 		if [[ "$gpu" = "Software" || "$gpu" = "" ]]; then
 			videoSettings="-device virtio-vga \\"
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
+			spiceSettings="-spice unix=on,addr=/run/user/1000/${name}-agent.sock,disable-ticketing=on,image-compression=off,gl=off,seamless-migration=on \\"
 		else
 			videoSettings="-device virtio-vga-gl \\"
-			spiceSettings="-spice unix=on,addr=/run/user/1000/spice.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
+			spiceSettings="-spice unix=on,addr=/run/user/1000/${name}-agent.sock,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/by-path/pci-${gpu}-render,seamless-migration=on \\"
 		fi
 	fi
 
