@@ -446,7 +446,7 @@ QEMU_PID=\$!
 echo \"[+] QEMU started (PID=\$QEMU_PID)\"
 
 # Open viewer
-remote-viewer spice+unix:///run/user/1000/spice.sock &
+remote-viewer spice+unix:///run/user/1000/${name}-agent.sock &
 
 # Wait for QEMU to exit
 wait \"\$QEMU_PID\"
@@ -556,7 +556,7 @@ QEMU_PID=\$!
 echo \"[+] QEMU started (PID=\$QEMU_PID)\"
 
 # Open viewer
-remote-viewer spice+unix:///run/user/1000/spice.sock &
+remote-viewer spice+unix:///run/user/1000/${name}-agent.sock &
 
 # Wait for QEMU to exit
 wait \"\$QEMU_PID\"
