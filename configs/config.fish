@@ -965,6 +965,9 @@ end
 #                     Environment variables
 # ===================================================================
 
+# Direnv
+direnv hook fish | source
+
 # ENV Export
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/lib/ssh/ssh-askpass

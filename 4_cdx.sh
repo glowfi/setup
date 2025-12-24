@@ -458,6 +458,9 @@ sudo systemctl stop docker.service
 go install github.com/jesseduffield/lazydocker@latest
 # ======================================================= END ======================================================================================
 
+### Install Direnv
+install "direnv" "pac"
+
 ### SETUP KUBERNETES
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
