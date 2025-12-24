@@ -153,7 +153,7 @@ addScripts() {
 
 		if [[ "$isWindows7" == "yes" || "$isWindows7" == "y" ]]; then
 			_iso_sharedfolder_string="-drive file=${name}.iso,media=cdrom \\
--drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
+-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw
 		"
 		else
 			### Copy virtio
@@ -161,13 +161,13 @@ addScripts() {
 
 			_iso_sharedfolder_string="-drive file=${name}.iso,media=cdrom \\
 		-drive file=virtio.iso,media=cdrom \\
--drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &
+-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw
 		"
 		fi
 
 	else
 		_iso_sharedfolder_string="-drive media=cdrom,file=${name}.iso \\
-		-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw &"
+		-drive file=fat:rw:${VMS_PATH}/${name}/sharedFolder,format=raw"
 	fi
 
 	### Network Script
@@ -381,7 +381,8 @@ rm -rf "${name}-agent.sock"
 if [[ -f \"\$PID_FILE\" ]]; then
 	old_pid=\"\$(cat \"\$PID_FILE\")\"
 	if ps -p \"\$old_pid\" >/dev/null 2>&1; then
-		echo \"[!] Rocky VM already running (PID=\$old_pid). Exiting.\"
+	    remote-viewer spice+unix:///run/user/1000/${name}-agent.sock &
+		echo \"[!] VM already running (PID=\$old_pid). Exiting.\"
 		exit 0
 	else
 		echo \"[!] Stale PID file found. Removing.\"
@@ -440,7 +441,8 @@ qemu-system-x86_64 \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \\
 	-drive file=Image.img \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
-    ${_iso_sharedfolder_string}
+    ${_iso_sharedfolder_string} \\
+    -pidfile \"\$PID_FILE\" &
 
 QEMU_PID=\$!
 echo \"[+] QEMU started (PID=\$QEMU_PID)\"
@@ -487,6 +489,7 @@ rm -rf "${name}-agent.sock"
 if [[ -f \"\$PID_FILE\" ]]; then
 	old_pid=\"\$(cat \"\$PID_FILE\")\"
 	if ps -p \"\$old_pid\" >/dev/null 2>&1; then
+	    remote-viewer spice+unix:///run/user/1000/${name}-agent.sock &
 		echo \"[!] Rocky VM already running (PID=\$old_pid). Exiting.\"
 		exit 0
 	else
@@ -546,7 +549,8 @@ qemu-system-x86_64 \\
     -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \\
 	-drive file=Image.img \\
 	-sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny \\
-    ${_iso_sharedfolder_string}
+    ${_iso_sharedfolder_string} \\
+    -pidfile \"\$PID_FILE\" &
 
 
         # Open remote viewer
