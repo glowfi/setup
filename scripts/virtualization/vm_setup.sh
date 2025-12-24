@@ -14,6 +14,7 @@ gpu=""
 VMS_PATH="$HOME/Downloads/VMS"
 VMS_ISO="$HOME/Downloads/VMS_ISO"
 CONFIG_FILE=".config"
+MAC="$(printf '52:54:00:%02x:%02x:%02x' $((RANDOM % 256)) $((RANDOM % 256)) $((RANDOM % 256)))"
 
 while [[ $# > 0 ]]; do
 	case "$1" in
@@ -346,8 +347,6 @@ EOF
 
 	chmod +x qemu-net.sh
 
-	MAC="$(printf '52:54:00:%02x:%02x:%02x' $((RANDOM % 256)) $((RANDOM % 256)) $((RANDOM % 256)))"
-
 	### Startup script [UEFI+Secure Boot Disabled]
 
 	echo "#!/usr/bin/env bash
@@ -633,6 +632,7 @@ qemu-system-x86_64 -enable-kvm \\
 	echo "${vga}" >>"${CONFIG_FILE}"
 	echo "${gpu}" >>"${CONFIG_FILE}"
 	echo "${isWindows}" >>"${CONFIG_FILE}"
+	echo "${MAC}" >>"${CONFIG_FILE}"
 }
 
 takeInput() {
@@ -770,6 +770,7 @@ if [[ "$unattendedUpdateScripts" = "yes" ]]; then
 	vga=$(sed -n '5p' <"$CONFIG_FILE")
 	gpu=$(sed -n '6p' <"$CONFIG_FILE")
 	isWindows=$(sed -n '7p' <"$CONFIG_FILE")
+	MAC=$(sed -n '8p' <"$CONFIG_FILE")
 
 	find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
 	addScripts
@@ -782,6 +783,7 @@ else
 		takeInput "reconf"
 		configPath="${goto}/${CONFIG_FILE}"
 		isWindows=$(sed -n '7p' <"$configPath")
+		MAC=$(sed -n '8p' <"$CONFIG_FILE")
 		find . -maxdepth 1 ! -name '*.iso' ! -name '*.img' ! -type d -delete
 		addScripts
 	fi
