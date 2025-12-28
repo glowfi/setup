@@ -91,7 +91,7 @@ end
 alias ls='exa --icons -l --color=always --group-directories-first -F'
 
 # Changing cat to bat
-alias cat="bat --theme=$BAT_THEME"
+alias cat="bat -p --theme=$BAT_THEME"
 
 # Changing top to bottom
 alias top="btm --theme $TOP_THEME"
