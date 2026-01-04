@@ -26,6 +26,9 @@ configs.setup({
 		"yaml",
 		"toml",
 		"markdown",
+		"latex",
+		"dockerfile",
+		"csv",
 	},
 	highlight = { enable = true, additional_vim_regex_highlighting = true },
 	incremental_selection = {
