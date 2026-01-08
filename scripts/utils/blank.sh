@@ -181,6 +181,8 @@ LLMNR=no' | sudo tee -a /etc/systemd/resolved.conf >/dev/null
 
 	sudo systemctl enable dnscrypt-proxy
 	sudo systemctl enable dnsmasq
+	sudo systemctl start --now dnscrypt-proxy
+	sudo systemctl start --now dnsmasq
 
 	sudo chattr -i /etc/resolv.conf
 	sudo truncate -s 0 /etc/resolv.conf
@@ -190,6 +192,8 @@ nameserver 127.0.0.1
 options edns0 single-request-reopen' | sudo tee -a /etc/resolv.conf >/dev/null
 	sudo chattr +i /etc/resolv.conf
 
+	sudo systemctl restart NetworkManager
+
 	echo "Enabled Network Security"
 }
 
@@ -198,9 +202,10 @@ disableNetworkSecurity() {
 		sudo sed -i '$d; $d; $d; $d; $d; $d' /etc/systemd/resolved.conf
 	fi
 
-	sudo systemctl disable dnscrypt-proxy
-	sudo systemctl disable dnsmasq
+	sudo systemctl disable --now dnscrypt-proxy
+	sudo systemctl disable --now dnsmasq
 	sudo chattr -i /etc/resolv.conf
+	sudo systemctl restart NetworkManager
 
 	echo "Disabled Network Security"
 }
