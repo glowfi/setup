@@ -41,6 +41,7 @@ declare -A distro_family=(
 	[damn_small_linux]="deb"
 	[vanillaos]="deb"
 	[tails_os]="deb"
+	[linux_lite]="deb"
 
 	# RPM-based
 	[fedora]="rpm"
@@ -133,6 +134,7 @@ declare -A distro_download=(
 	[damn_small_linux]="download_damn_small_linux"
 	[vanillaos]="download_vanillaos"
 	[tails_os]="download_tails_os"
+	[linux_lite]="download_linux_lite"
 
 	# RPM-based
 	[fedora]="download_fedora"
@@ -423,6 +425,32 @@ download_tails_os() {
 	local x="https://mirrors.edge.kernel.org/tails/stable/${version}/${version}.img"
 	local download_link="$x"
 	local output_file="tailsos.img"
+	download "$download_link" "$output_file"
+}
+
+download_linux_lite() {
+	local mirror="https://mirror.gofoss.xyz/linuxlite/isos"
+	local output_file="linux-lite.iso"
+
+	local versions
+	versions=$(curl -s "$mirror/" | grep -oP '\d+(\.\d+)*/' | tr -d '/' | sort -u)
+
+	echo "Scanning mirrors for ISOs..."
+	local iso_links
+	iso_links=$(
+		echo "$versions" | xargs -P8 -I{} sh -c '
+            echo "  Checking version {}..." >&2
+            curl -s --max-time 5 "'"$mirror"'/{}/" \
+            | grep -oP "href=\"\\K[^\"]+\\.iso" \
+            | sed "s|^|'"$mirror"'/{}/|"
+        ' | sort -V -r | uniq
+	)
+
+	local download_link
+	download_link=$(echo "$iso_links" | fzf --cycle --prompt="Select Linux Lite ISO: ")
+
+	[[ -z "$download_link" ]] && return 1
+
 	download "$download_link" "$output_file"
 }
 
@@ -1294,7 +1322,16 @@ download() {
 
 # Extract links html from html
 extract_links_from_html() {
-	local html="$1"
+	local html
+
+	if [[ -t 0 ]]; then
+		# no stdin → read from argument
+		html="$1"
+	else
+		# stdin present → read from pipe
+		html="$(cat)"
+	fi
+
 	echo "$html" | grep -o '<a .*href=.*' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d'
 }
 
