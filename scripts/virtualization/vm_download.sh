@@ -436,9 +436,37 @@ download_fedora() {
 }
 
 download_opensuse() {
-	local mirror="https://get.opensuse.org/tumbleweed/#download"
-	local download_link=$(curl -s "$mirror" | grep -m1 Current.iso | awk -F"\"" '{ print $2 }' | awk -F"\"" '{ print $1 }')
-	local output_file="opensuse.iso"
+	local mirror_tumbleweed="https://get.opensuse.org/tumbleweed/#download"
+	local mirror_leap="https://get.opensuse.org/leap/16.0/#download"
+
+	# Fetch HTML
+	local html_tumbleweed
+	html_tumbleweed=$(curl -fsSL "$mirror_tumbleweed")
+
+	local html_leap
+	html_leap=$(curl -fsSL "$mirror_leap")
+
+	# Extract ISO links
+	local dlinks_tumbleweed
+	dlinks_tumbleweed=$(extract_links_from_html "$html_tumbleweed" | grep -E 'Tumbleweed.*-Current.*\.iso$')
+
+	local dlinks_leap
+	dlinks_leap=$(extract_links_from_html "$html_leap" | grep -E '\.install\.iso$')
+
+	# Combine lists
+	local all_links
+	all_links=$(printf "%s\n%s\n" "$dlinks_tumbleweed" "$dlinks_leap")
+
+	# Select via fzf
+	local download_link
+	download_link=$(echo "$all_links" | fzf --cycle --prompt="Choose openSUSE ISO > ")
+
+	# Exit if nothing selected
+	[[ -z "$download_link" ]] && return
+
+	local output_file
+	output_file=$(basename "$download_link")
+
 	download "$download_link" "$output_file"
 }
 
@@ -452,7 +480,7 @@ download_mandriva() {
 download_rocky() {
 	local url_page="https://rockylinux.org/download"
 	local html=$(curl -sSLf "$url_page")
-	local download_link=$(extract_links_from_html "${html}" | grep iso | grep -v -e "CHECKSUM" | fzf --cycle --prompt "Choose iso to download:")
+	local download_link=$(extract_links_from_html "${html}" | grep iso | grep -v -e "CHECKSUM" | uniq | fzf --cycle --prompt "Choose iso to download:")
 	local output_file="rocky.iso"
 	download "$download_link" "$output_file"
 }
