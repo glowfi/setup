@@ -135,7 +135,7 @@ sudo sed -i "${getLineNumber}s/.*/${rep}/" $HOME/.gtkrc-2.0
 sed "s/\$USER/$USER/" .gtkrc-2.0
 
 
-# SETUP dxhd
+# SETUP ghkd
 
 echo ""
 echo "-------------------------------------------------------------------------------"
@@ -143,15 +143,15 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-klone "https://github.com/dakyskye/dxhd.git"
-cd dxhd
-fish -c 'make fast'
-mv ./dxhd ~/.local/bin/
+
+klone "https://github.com/glowfi/ghkd"
+cd ghkd
+go build -o ghkd ./main.go
+sudo mv ghkd /usr/local/bin/
 cd ..
-rm -rf dxhd
-mkdir -p $HOME/.config/dxhd
-mv $HOME/setup/configs/dxhd/dxhd_dwm.sh $HOME/.config/dxhd
-mv $HOME/.config/dxhd/dxhd_dwm.sh $HOME/.config/dxhd/dxhd.sh
+rm -rf ghkd
+mkdir -p $HOME/.config/ghkd
+mv $HOME/setup/configs/ghkd/config_dwm.yaml $HOME/.config/ghkd/config.yaml
 
 echo ""
 echo "----------------------------------------------------------------------------------------"
@@ -196,7 +196,7 @@ picom -b
 ${pipeStr}
 "'
 # Hotkey daemon
-dxhd -b &
+ghkd -b -c ~/.config/ghkd/config.yaml &
 
 # Wallpaper
 sh $HOME/.local/bin/wall.sh &

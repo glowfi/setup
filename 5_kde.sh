@@ -127,7 +127,7 @@ fi
 touch $HOME/.xprofile
 
 echo "# Hotkey daemon
-dxhd -b &
+ghkd -b -c ~/.config/ghkd/config.yaml &
 
 # Pipewire
 ${pipeStr}
@@ -190,9 +190,7 @@ echo ""
 mkdir -p $HOME/.local/share/kservices6
 cp -r $HOME/setup/configs/plasma/kittyhere.desktop $HOME/.local/share/kservices6
 
-# ===================== XORG Dependent ===================================
-
-# SETUP dxhd
+# SETUP ghkd
 
 echo ""
 echo "-------------------------------------------------------------------------------"
@@ -201,17 +199,14 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 
-klone "https://github.com/dakyskye/dxhd.git"
-cd dxhd
-fish -c 'make fast'
-mv ./dxhd ~/.local/bin/
+klone "https://github.com/glowfi/ghkd"
+cd ghkd
+go build -o ghkd ./main.go
+sudo mv ghkd /usr/local/bin/
 cd ..
-rm -rf dxhd
-mkdir -p $HOME/.config/dxhd
-mv $HOME/setup/configs/dxhd/dxhd_kde.sh $HOME/.config/dxhd
-mv $HOME/.config/dxhd/dxhd_kde.sh $HOME/.config/dxhd/dxhd.sh
-
-# ===================== END Dependent ====================================
+rm -rf ghkd
+mkdir -p $HOME/.config/ghkd
+mv $HOME/setup/configs/ghkd/config_kde.yaml $HOME/.config/ghkd/config.yaml
 
 echo ""
 echo "------------------------------------------------------------------------------------------"
