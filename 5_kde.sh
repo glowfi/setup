@@ -198,7 +198,7 @@ echo "--------------Installing Hotkey Daemon...---------------------------------
 echo "-------------------------------------------------------------------------------"
 echo ""
 
-
+sudo usermod -aG input $USER
 klone "https://github.com/glowfi/ghkd"
 cd ghkd
 go build -o ghkd ./main.go
