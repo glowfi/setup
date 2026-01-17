@@ -72,7 +72,7 @@ keybindings:
       fi
 
   - name: Screenshot
-    keys: print
+    keys: super+print
     interpreter: bash
     script: |
       sed -i "35s/.*/fading = false;/" $HOME/.config/picom/picom.conf
