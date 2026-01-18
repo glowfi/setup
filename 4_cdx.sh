@@ -465,6 +465,9 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 chmod +x kubectl
 mv kubectl $HOME/.local/bin
 go install github.com/derailed/k9s@latest
+
+### DOWNLOAD ZED
+install "zed" "pac"
 # ======================================================= END ======================================================================================
 
 
@@ -485,7 +488,7 @@ end
 
 install "cmake ninja tree-sitter tree-sitter-cli xclip shfmt meson" "pac"
 install "neovim" "pac"
-install "zls" "pac"
+# install "zls" "pac"
 
 # COPY NEOVIM SETTINGS
 
