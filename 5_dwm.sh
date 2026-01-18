@@ -146,7 +146,7 @@ echo ""
 sudo usermod -aG input $USER
 klone "https://github.com/glowfi/ghkd"
 cd ghkd
-go build -o ghkd ./main.go
+fish -c 'go build -o ghkd ./main.go'
 sudo mv ghkd /usr/local/bin/
 cd ..
 rm -rf ghkd

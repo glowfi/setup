@@ -41,7 +41,7 @@ xdg-user-dirs-update
 # ===================== XORG Dependent ===================================
 install "xorg-server" "pac"
 install "xorg-xrandr" "pac"
-install "xautolock" "pac"
+install "xautolock" "yay"
 # ===================== END Dependent ====================================
 
 ### Other Core
@@ -71,7 +71,7 @@ cd
 
 # Install clipmenu
 
-install "clipmenu" "pac";sudo pacman -Rdd dmenu
+install "clipmenu" "pac";sudo pacman --noconfirm -Rdd dmenu
 
 # ===================== END Dependent ====================================
 
@@ -201,7 +201,7 @@ echo ""
 sudo usermod -aG input $USER
 klone "https://github.com/glowfi/ghkd"
 cd ghkd
-go build -o ghkd ./main.go
+fish -c 'go build -o ghkd ./main.go'
 sudo mv ghkd /usr/local/bin/
 cd ..
 rm -rf ghkd
