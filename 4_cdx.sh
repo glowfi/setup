@@ -81,6 +81,9 @@ pip install rich pygments
 
 # ======================================================= END ======================================================================================
 
+### Install Direnv
+install "direnv" "pac"
+
 echo ""
 echo "------------------------------------------------------------------------"
 echo "--------------Installing Node Modules...--------------------------------"
@@ -457,9 +460,6 @@ sudo systemctl stop docker.service
 # ======================================================= Can Be Deleted for minimal install =======================================================
 go install github.com/jesseduffield/lazydocker@latest
 # ======================================================= END ======================================================================================
-
-### Install Direnv
-install "direnv" "pac"
 
 ### SETUP KUBERNETES
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
