@@ -459,13 +459,14 @@ sudo chmod 666 /var/run/docker.sock
 sudo systemctl stop docker.service
 # ======================================================= Can Be Deleted for minimal install =======================================================
 go install github.com/jesseduffield/lazydocker@latest
-# ======================================================= END ======================================================================================
 
 ### SETUP KUBERNETES
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 mv kubectl $HOME/.local/bin
 go install github.com/derailed/k9s@latest
+# ======================================================= END ======================================================================================
+
 
 ### DOWNLOAD NEOVIM
 
