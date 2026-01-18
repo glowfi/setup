@@ -199,7 +199,7 @@ echo ""
 
 # INSTALL Zig
 
-install "zig" "pac"
+# install "zig" "pac"
 
 
 echo ""
@@ -210,13 +210,13 @@ echo ""
 
 # INSTALL CLANGD LSP
 
-install "clang" "pac"
-set clangd_ver (curl "https://github.com/clangd/clangd" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs)
-wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O $HOME/clangd.zip
-unzip $HOME/clangd.zip -d $HOME
-rm -rf $HOME/clangd.zip
-mv $HOME/clangd_"$clangd_ver" $HOME/.local/bin/clangd
-source $HOME/.config/fish/config.fish
+# install "clang" "pac"
+# set clangd_ver (curl "https://github.com/clangd/clangd" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs)
+# wget "https://github.com/clangd/clangd/releases/download/$clangd_ver/clangd-linux-$clangd_ver.zip" -O $HOME/clangd.zip
+# unzip $HOME/clangd.zip -d $HOME
+# rm -rf $HOME/clangd.zip
+# mv $HOME/clangd_"$clangd_ver" $HOME/.local/bin/clangd
+# source $HOME/.config/fish/config.fish
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -400,27 +400,27 @@ set beekeeper_ver (curl "https://github.com/beekeeper-studio/beekeeper-studio" |
 wget "https://github.com/beekeeper-studio/beekeeper-studio/releases/download/v$beekeeper_ver/Beekeeper-Studio-$beekeeper_ver.AppImage" -O ~/.local/bin/beekeeper
 chmod +x ~/.local/bin/beekeeper
 
-install "redis" "pac"
-install "postgresql" "pac"
-install "mongodb-bin mongodb-tools-bin" "yay"
-sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
-sudo systemctl start postgresql
-sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
-for i in (seq 2)
-    pip install pgcli
-end
+# install "redis" "pac"
+# install "postgresql" "pac"
+# install "mongodb-bin mongodb-tools-bin" "yay"
+# sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data;exit"
+# sudo systemctl start postgresql
+# sudo su - postgres -c "(echo $USER;echo 'password';echo 'password';echo y;)|createuser --interactive -P;createdb -O $USER delta;exit"
+# for i in (seq 2)
+#     pip install pgcli
+# end
 
 ### Add mongodb-compass
 
-if test "$argv[1]" = "KDE"
-    if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_kde.sh"
-    end
-else
-    if test "$argv[2]" = "No"
-        echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_dwm.sh"
-    end
-end
+# if test "$argv[1]" = "KDE"
+#     if test "$argv[2]" = "No"
+#         echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_kde.sh"
+#     end
+# else
+#     if test "$argv[2]" = "No"
+#         echo "yay -S --noconfirm mongodb-compass-bin" >> "$SCRIPT_DIR/5_dwm.sh"
+#     end
+# end
 
 ### SETUP VIRTUALIZATION
 
@@ -445,10 +445,10 @@ chmod +x $HOME/.local/bin/vm_download.sh $HOME/.local/bin/vm_setup.sh $HOME/.loc
 
 ### Bruno
 
-set brunover (curl "https://github.com/usebruno/bruno" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
-set url (string join "" "https://github.com/usebruno/bruno/releases/download/v$brunover/bruno_" "$brunover" "_x86_64_linux.AppImage") 
-wget "$url" -O ~/.local/bin/bruno
-chmod +x ~/.local/bin/bruno
+# set brunover (curl "https://github.com/usebruno/bruno" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
+# set url (string join "" "https://github.com/usebruno/bruno/releases/download/v$brunover/bruno_" "$brunover" "_x86_64_linux.AppImage") 
+# wget "$url" -O ~/.local/bin/bruno
+# chmod +x ~/.local/bin/bruno
 
 ### SETUP DOCKER
 
