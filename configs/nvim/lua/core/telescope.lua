@@ -70,3 +70,8 @@ pcall(require("telescope").load_extension, "fzf")
 
 -- It sets vim.ui.select to telescope
 telescope.load_extension("ui-select")
+
+vim.api.nvim_set_hl(0, "TelescopeSelection", {
+	bg = "#665c54",
+	bold = true,
+})
