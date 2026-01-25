@@ -521,10 +521,10 @@ download_qubes() {
 }
 
 download_nobara() {
-	local url_page="https://nobaraproject.org/download-nobara/"
+	local url_page="https://nobaraproject.org/download.html"
 	local html=$(curl -sSLf "$url_page")
-	local download_link=$(extract_links_from_html "${html}" | grep -E "iso" | fzf --cycle --prompt "Choose iso to download:")
-	local output_file="nobara.iso"
+	local download_link=$(echo "${html}" | grep data-url | grep -oP 'data-url="\K[^"]+' | fzf --cycle --prompt "Choose iso to download:")
+	local output_file=$(basename "${download_link}")
 	download "$download_link" "$output_file"
 }
 
