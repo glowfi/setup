@@ -456,10 +456,33 @@ download_linux_lite() {
 
 # RPM-based
 download_fedora() {
-	local url_page="https://fedoraproject.org/workstation/download"
-	local html=$(curl -sSLf "$url_page")
-	local download_link=$(extract_links_from_html "${html}" | grep iso | fzf --cycle --prompt "Choose iso to download:")
-	local output_file="fedora.iso"
+	local urls=(
+		"https://fedoraproject.org/workstation/download"
+		"https://www.fedoraproject.org/atomic-desktops/silverblue/download"
+		"https://www.fedoraproject.org/atomic-desktops/kinoite/download"
+		"https://www.fedoraproject.org/atomic-desktops/sway/download"
+		"https://www.fedoraproject.org/atomic-desktops/budgie/download"
+		"https://www.fedoraproject.org/atomic-desktops/cosmic/download"
+	)
+
+	local download_page
+	download_page=$(printf "%s\n" "${urls[@]}" |
+		sort -u |
+		fzf --cycle --prompt "Choose Fedora variant: ")
+
+	[ -z "$download_page" ] && return 1
+
+	local html
+	html=$(curl -sSLf "$download_page") || return 1
+
+	local download_link
+	download_link=$(extract_links_from_html "$html" |
+		grep -i '\.iso' |
+		fzf --cycle --prompt "Choose ISO to download: ")
+
+	[ -z "$download_link" ] && return 1
+
+	local output_file=$(basename "$download_link")
 	download "$download_link" "$output_file"
 }
 
