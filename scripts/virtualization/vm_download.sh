@@ -463,6 +463,18 @@ download_fedora() {
 		"https://www.fedoraproject.org/atomic-desktops/sway/download"
 		"https://www.fedoraproject.org/atomic-desktops/budgie/download"
 		"https://www.fedoraproject.org/atomic-desktops/cosmic/download"
+		"https://fedoraproject.org/spins/xfce/download"
+		"https://fedoraproject.org/spins/cinnamon/download"
+		"https://fedoraproject.org/spins/mate/download"
+		"https://fedoraproject.org/spins/i3/download"
+		"https://fedoraproject.org/spins/lxqt/download"
+		"https://fedoraproject.org/spins/lxde/download"
+		"https://fedoraproject.org/spins/soas/download"
+		"https://fedoraproject.org/spins/sway/download"
+		"https://fedoraproject.org/spins/budgie/download"
+		"https://fedoraproject.org/spins/miraclewm/download"
+		"https://fedoraproject.org/spins/kde-mobile/download"
+		"https://fedoraproject.org/spins/cosmic/download"
 	)
 
 	local download_page
