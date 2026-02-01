@@ -9,3 +9,4 @@
   community.general.filesystem:
     dev: "{{ root_device }}"
     fstype: "{{ file_system }}"
+    force: true
