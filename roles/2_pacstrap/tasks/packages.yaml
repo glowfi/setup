@@ -1,0 +1,30 @@
+---
+
+- name: Define microcode package
+  set_fact:
+    microcode_pkg: "{{ 'intel-ucode' if cpu == 'intel' else 'amd-ucode' }}"
+
+- name: Define init system packages for artix
+  set_fact:
+    artix_init_pkgs:
+      - openrc
+      - elogind-openrc
+  when: os == "artix"
+
+- name: Define base package list
+  set_fact:
+    base_packages: >-
+      {{
+        [
+          'base',
+          'base-devel',
+          'linux-zen',
+          'linux-zen-headers',
+          'linux-firmware',
+          microcode_pkg,
+          'btrfs-progs',
+          'git',
+          'vim'
+        ]
+        + (artix_init_pkgs | default([]))
+      }}

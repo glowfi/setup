@@ -1,0 +1,10 @@
+---
+
+- name: Derive partition suffix
+  set_fact:
+    part_suffix: "{{ 'p' if 'nvme' in disk else '' }}"
+
+- name: Define partition paths
+  set_fact:
+    efi_part: "{{ disk }}{{ part_suffix }}1"
+    root_part: "{{ disk }}{{ part_suffix }}2"

@@ -1,0 +1,22 @@
+---
+
+- name: Ensure /mnt exists
+  file:
+    path: /mnt
+    state: directory
+
+- import_tasks: btrfs.yml
+- import_tasks: ext4.yml
+
+- name: Ensure EFI mountpoint
+  file:
+    path: /mnt/boot/efi
+    state: directory
+    recurse: true
+
+- name: Mount EFI
+  ansible.posix.mount:
+    path: /mnt/boot/efi
+    src: "{{ efi_part }}"
+    fstype: vfat
+    state: mounted

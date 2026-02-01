@@ -1,0 +1,57 @@
+- name: Mount btrfs temporarily
+  ansible.posix.mount:
+    path: /mnt
+    src: "{{ root_device }}"
+    fstype: btrfs
+    state: mounted
+  when: file_system == "btrfs"
+
+- name: Create BTRFS subvolumes
+  community.general.btrfs_subvolume:
+    name: "{{ item }}"
+    filesystem: /mnt
+    state: present
+  loop:
+    - "@"
+    - "@home"
+    - "@snapshots"
+    - "@var_log"
+  when: file_system == "btrfs"
+
+- name: Unmount temporary mount
+  ansible.posix.mount:
+    path: /mnt
+    state: unmounted
+  when: file_system == "btrfs"
+
+- name: Mount root subvolume
+  ansible.posix.mount:
+    path: /mnt
+    src: "{{ root_device }}"
+    fstype: btrfs
+    opts: "noatime,compress=zstd,subvol=@"
+    state: mounted
+  when: file_system == "btrfs"
+
+- name: Ensure subvolume mountpoints
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /mnt/home
+    - /mnt/.snapshots
+    - /mnt/var_log
+  when: file_system == "btrfs"
+
+- name: Mount BTRFS subvolumes
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ root_device }}"
+    fstype: btrfs
+    opts: "noatime,compress=zstd,subvol={{ item.subvol }}"
+    state: mounted
+  loop:
+    - { path: "/mnt/home", subvol: "@home" }
+    - { path: "/mnt/.snapshots", subvol: "@snapshots" }
+    - { path: "/mnt/var_log", subvol: "@var_log" }
+  when: file_system == "btrfs"
