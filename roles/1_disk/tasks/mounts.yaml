@@ -5,8 +5,8 @@
     path: /mnt
     state: directory
 
-- import_tasks: btrfs.yml
-- import_tasks: ext4.yml
+- import_tasks: btrfs.yaml
+- import_tasks: ext4.yaml
 
 - name: Ensure EFI mountpoint
   file:

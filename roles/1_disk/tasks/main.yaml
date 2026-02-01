@@ -1,7 +1,7 @@
 ---
 
-- import_tasks: facts.yml
-- import_tasks: partitions.yml
-- import_tasks: luks.yml
-- import_tasks: filesystem.yml
-- import_tasks: mounts.yml
+- import_tasks: facts.yaml
+- import_tasks: partitions.yaml
+- import_tasks: filesystem.yaml
+- import_tasks: luks.yaml
+- import_tasks: mounts.yaml
