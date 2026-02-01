@@ -22,8 +22,3 @@
     perf_no_write_workqueue: "{{ drive_type == 'ssd' }}"
     passphrase: "{{ encryption_password }}"
   when: encrypt_disk
-
-- name: Set root device fact
-  set_fact:
-    root_device: "{{ '/dev/mapper/cryptroot' if encrypt_disk else root_part }}"
-  when: encrypt_disk

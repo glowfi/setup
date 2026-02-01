@@ -8,3 +8,4 @@
   set_fact:
     efi_part: "{{ disk }}{{ part_suffix }}1"
     root_part: "{{ disk }}{{ part_suffix }}2"
+    root_device: "{{ '/dev/mapper/cryptroot' if encrypt_disk else root_part }}"
