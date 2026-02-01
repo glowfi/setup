@@ -9,7 +9,6 @@
 - name: Create BTRFS subvolumes
   community.general.btrfs_subvolume:
     name: "{{ item }}"
-    filesystem: /mnt
     state: present
   loop:
     - "@"
