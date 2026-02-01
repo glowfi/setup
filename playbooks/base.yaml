@@ -1,0 +1,8 @@
+---
+
+- hosts: pc
+  name: Bootstrap
+  roles:
+    - role: 0_initial_setup
+    - role: 1_disk
+    - role: 2_pacstrap

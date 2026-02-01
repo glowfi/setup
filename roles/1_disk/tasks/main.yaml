@@ -1,0 +1,7 @@
+---
+
+- import_tasks: facts.yml
+- import_tasks: partitions.yml
+- import_tasks: luks.yml
+- import_tasks: filesystem.yml
+- import_tasks: mounts.yml

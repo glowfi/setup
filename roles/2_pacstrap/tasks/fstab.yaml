@@ -1,0 +1,15 @@
+---
+
+- name: Generate fstab content
+  command: >
+    {{ 'fstabgen' if os == 'artix' else 'genfstab' }} -U /mnt
+  register: fstab_output
+  changed_when: false
+
+- name: Write fstab file
+  copy:
+    dest: /mnt/etc/fstab
+    content: "{{ fstab_output.stdout }}"
+    owner: root
+    group: root
+    mode: '0644'

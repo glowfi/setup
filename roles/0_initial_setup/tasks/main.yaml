@@ -1,0 +1,91 @@
+---
+- name: Configure pacman.conf
+  block:
+    - name: Enable Color in pacman
+      ansible.builtin.lineinfile:
+        path: /etc/pacman.conf
+        regexp: '^#?Color'
+        line: 'Color'
+        state: present
+
+    - name: Enable ILoveCandy
+      ansible.builtin.lineinfile:
+        path: /etc/pacman.conf
+        regexp: '^ILoveCandy'
+        line: 'ILoveCandy'
+        insertafter: '^Color'
+        state: present
+
+    - name: Set ParallelDownloads
+      ansible.builtin.lineinfile:
+        path: /etc/pacman.conf
+        regexp: '^#?ParallelDownloads'
+        line: 'ParallelDownloads = 16'
+        state: present
+
+- name: Configure repositories for Artix
+  block:
+    - name: Install artix-archlinux-support
+      community.general.pacman:
+        name: artix-archlinux-support
+        state: present
+
+    - name: Add Arch repositories to pacman.conf
+      ansible.builtin.blockinfile:
+        path: /etc/pacman.conf
+        marker: "# {mark} Arch Repos"
+        block: |
+          [extra]
+          Include = /etc/pacman.d/mirrorlist-arch
+
+          [community]
+          Include = /etc/pacman.d/mirrorlist-arch
+        state: present
+
+    - name: Check if Arch keyring already populated
+      ansible.builtin.command: pacman-key --list-keys archlinux
+      register: arch_keyring_check
+      failed_when: false
+      changed_when: false
+
+    - name: Populate Arch keyring
+      ansible.builtin.command: pacman-key --populate archlinux
+      when: arch_keyring_check.rc != 0
+  when: os == "artix"
+
+- name: Configure repositories for Arch
+  block:
+    - name: Install archlinux-keyring
+      community.general.pacman:
+        name: archlinux-keyring
+        state: present
+  when: os == "arch"
+
+- name: Install base packages
+  community.general.pacman:
+    name:
+      - reflector
+      - gptfdisk
+    state: present
+
+- name: Set mirror file path
+  ansible.builtin.set_fact:
+    mirror_file: >-
+      {{ '/etc/pacman.d/mirrorlist-arch'
+         if os == 'artix'
+         else '/etc/pacman.d/mirrorlist' }}
+
+- name: Generate mirrorlist
+  ansible.builtin.command: >
+    reflector --country DE
+    --latest 5
+    --fastest 5
+    --protocol https
+    --sort rate
+    --save {{ mirror_file }}
+  args:
+    creates: "{{ mirror_file }}"
+
+- name: Refresh pacman cache
+  community.general.pacman:
+    update_cache: true

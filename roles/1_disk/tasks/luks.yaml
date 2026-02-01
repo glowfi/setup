@@ -1,0 +1,29 @@
+---
+
+- name: Create LUKS container
+  community.crypto.luks_device:
+    device: "{{ root_part }}"
+    state: present
+    type: luks1
+    cipher: aes-xts-plain64
+    perf_no_read_workqueue: "{{ drive_type == 'ssd' }}"
+    perf_no_write_workqueue: "{{ drive_type == 'ssd' }}"
+    keysize: 256
+    passphrase: "{{ encryption_password }}"
+  when: encrypt_disk
+
+- name: Open LUKS container
+  community.crypto.luks_device:
+    device: "{{ root_part }}"
+    name: cryptroot
+    state: opened
+    allow_discards: "{{ drive_type == 'ssd' }}"
+    perf_no_read_workqueue: "{{ drive_type == 'ssd' }}"
+    perf_no_write_workqueue: "{{ drive_type == 'ssd' }}"
+    passphrase: "{{ encryption_password }}"
+  when: encrypt_disk
+
+- name: Set root device fact
+  set_fact:
+    root_device: "{{ '/dev/mapper/cryptroot' if encrypt_disk else root_part }}"
+  when: encrypt_disk

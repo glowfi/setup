@@ -1,0 +1,25 @@
+---
+
+- name: Ensure GPT label
+  community.general.parted:
+    device: "{{ disk }}"
+    label: gpt
+
+- name: Ensure EFI partition
+  community.general.parted:
+    device: "{{ disk }}"
+    number: 1
+    part_start: 1MiB
+    part_end: 1025MiB
+    name: EFI
+    flags: [ esp ]
+    state: present
+
+- name: Ensure root partition
+  community.general.parted:
+    device: "{{ disk }}"
+    number: 2
+    part_start: 1025MiB
+    part_end: 100%
+    name: ArchLinux
+    state: present

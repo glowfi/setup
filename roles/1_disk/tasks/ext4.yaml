@@ -1,0 +1,10 @@
+---
+
+- name: Mount ext4 root
+  ansible.posix.mount:
+    path: /mnt
+    src: "{{ root_device }}"
+    fstype: ext4
+    opts: noatime
+    state: mounted
+  when: file_system == "ext4"
