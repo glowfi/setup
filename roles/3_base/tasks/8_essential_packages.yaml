@@ -1,0 +1,74 @@
+---
+- name: Install essential system packages
+  pacman_bootstrap:
+    name:
+      - os-prober
+      - grub
+      - efibootmgr
+      - ntfs-3g
+
+      - cracklib
+      - pacman-contrib
+
+      - networkmanager
+      - network-manager-applet
+      - wireless_tools
+      - wpa_supplicant
+      - net-tools
+      - dnsutils
+      - usbutils
+      - gperftools
+
+      - dialog
+      - mtools
+      - dosfstools
+      - gptfdisk
+
+      - rsync
+      - reflector
+      - wget
+
+      - lsof
+      - strace
+      - bc
+
+      - acpi
+      - acpi_call-dkms
+      - acpid
+
+      - exa
+      - bat
+      - ripgrep
+      - fd
+      - bottom
+      - sad
+      - git-delta
+      - tldr
+      - duf
+      - gping
+
+      - tokei
+      - hyperfine
+
+    state: present
+    update_cache: true
+    chroot_mountpoint: /mnt
+
+- name: Install Artix-specific packages
+  pacman_bootstrap:
+    name:
+      - backlight-openrc
+      - syslog-ng
+      - logrotate
+      - libdbi
+      - librabbitmq-c
+      - mongo-c-driver
+      - libesmtp
+      - hiredis
+      - libmaxminddb
+      - net-snmp
+      - librdkafka
+      - python-ply
+    state: present
+    chroot_mountpoint: /mnt
+  when: os == "artix"

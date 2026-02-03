@@ -1,0 +1,11 @@
+---
+- import_tasks: 1_timezone.yaml
+- import_tasks: 2_locale.yaml
+- import_tasks: 3_hostname.yaml
+- import_tasks: 4_makepkg.yaml
+- import_tasks: 5_pacman.yaml
+- import_tasks: 6_users.yaml
+- import_tasks: 7_gpu.yaml
+- import_tasks: 8_essential_packages.yaml
+- import_tasks: 9_boot_stack.yaml
+- import_tasks: 10_finalize_base.yaml

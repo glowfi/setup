@@ -1,0 +1,13 @@
+---
+- name: Set hostname
+  copy:
+    dest: /mnt/etc/hostname
+    content: "{{ host_name }}\n"
+
+- name: Configure hosts file
+  copy:
+    dest: /mnt/etc/hosts
+    content: |
+      127.0.0.1 localhost
+      ::1       localhost
+      127.0.1.1 {{ host_name }}.localdomain {{ host_name }}

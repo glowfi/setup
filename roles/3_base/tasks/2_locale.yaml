@@ -1,0 +1,16 @@
+---
+- name: Enable locale in locale.gen
+  lineinfile:
+    path: /mnt/etc/locale.gen
+    regexp: '^#?en_US.UTF-8 UTF-8'
+    line: 'en_US.UTF-8 UTF-8'
+
+- name: Generate locale
+  pacman_bootstrap:
+    command: "locale-gen"
+    chroot_mountpoint: /mnt
+
+- name: Set locale.conf
+  copy:
+    dest: /mnt/etc/locale.conf
+    content: "LANG=en_US.UTF-8\n"
