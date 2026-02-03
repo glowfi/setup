@@ -1,0 +1,25 @@
+- name: Read device information
+  community.general.parted:
+    device: "{{ disk }}"
+    state: info
+  register: disk_info
+
+- name: Create EFI partition
+  community.general.parted:
+    device: "{{ disk }}"
+    label: gpt
+    number: 1
+    state: present
+    part_end: 1GiB
+    flags: [ esp ]
+    name: EFI
+
+- name: Create Root partition
+  community.general.parted:
+    device: "{{ disk }}"
+    label: gpt
+    number: 2
+    state: present
+    part_start: 1GiB
+    part_end: 100%
+    name: Linux

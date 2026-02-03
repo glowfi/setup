@@ -1,4 +1,8 @@
 ---
+- name: Refresh pacman cache
+  community.general.pacman:
+    update_cache: true
+
 - name: Configure pacman.conf
   block:
     - name: Enable Color in pacman

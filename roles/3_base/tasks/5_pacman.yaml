@@ -1,0 +1,28 @@
+---
+- name: Enable Color
+  ansible.builtin.lineinfile:
+    path: /mnt/etc/pacman.conf
+    regexp: '^#?Color'
+    line: 'Color'
+
+- name: Enable ILoveCandy
+  ansible.builtin.lineinfile:
+    path: /mnt/etc/pacman.conf
+    regexp: '^ILoveCandy'
+    line: 'ILoveCandy'
+    insertafter: '^Color'
+
+- name: Set ParallelDownloads
+  ansible.builtin.lineinfile:
+    path: /mnt/etc/pacman.conf
+    regexp: '^#?ParallelDownloads'
+    line: 'ParallelDownloads = 16'
+
+- name: Install archlinux-keyring
+  pacman_bootstrap:
+    name:
+      - archlinux-keyring
+    state: present
+    update_cache: true
+    chroot_mountpoint: /mnt
+  when: os == "arch"

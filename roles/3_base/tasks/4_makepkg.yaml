@@ -1,0 +1,16 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+
+- name: Set MAKEFLAGS based on CPU cores
+  ansible.builtin.lineinfile:
+    path: /mnt/etc/makepkg.conf
+    regexp: '^#?MAKEFLAGS='
+    line: 'MAKEFLAGS="-j{{ ansible_facts.processor_vcpus }}"'
+
+- name: Optimize XZ compression if enough memory
+  ansible.builtin.lineinfile:
+    path: /mnt/etc/makepkg.conf
+    regexp: '^COMPRESSXZ='
+    line: 'COMPRESSXZ=(xz -c -T {{ ansible_facts.processor_vcpus }} -z -)'
+  when: ansible_facts.memtotal_mb | int > 8000

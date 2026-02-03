@@ -1,0 +1,48 @@
+- name: Enable sudo insults
+  lineinfile:
+    path: /mnt/etc/sudoers
+    regexp: '^Defaults\s+insults'
+    line: 'Defaults insults'
+    state: present
+    validate: 'visudo -cf %s'
+
+- name: Ensure NetworkManager conf.d exists
+  file:
+    path: /mnt/etc/NetworkManager/conf.d
+    state: directory
+
+- name: Disable wifi powersave
+  copy:
+    dest: /mnt/etc/NetworkManager/conf.d/wifi-powersave.conf
+    content: |
+      [connection]
+      wifi.powersave = 2
+    mode: "0644"
+
+- name: Fix fstab for Timeshift (remove subvolid)
+  replace:
+    path: /mnt/etc/fstab
+    regexp: 'subvolid=[^,]*,?'
+    replace: ''
+  when: file_system == "btrfs"
+
+- name: Enable OpenRC services
+  pacman_bootstrap:
+    command: rc-update add {{ item }} default
+    chroot_mountpoint: /mnt
+  loop:
+    - NetworkManager
+    - acpid
+    - backlight
+    - syslog-ng
+  when: os == "artix"
+
+- name: Enable systemd services
+  pacman_bootstrap:
+    command: systemctl enable {{ item }}
+    chroot_mountpoint: /mnt
+  loop:
+    - NetworkManager
+    - reflector.timer
+    - acpid
+  when: os == "arch"
