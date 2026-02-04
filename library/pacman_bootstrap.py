@@ -9,7 +9,7 @@ from subprocess import run
 from pathlib import Path
 from shutil import which
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import AnsibleModule, shlex
 
 # pylint: disable-next=invalid-name
 __metaclass__ = type
@@ -128,8 +128,9 @@ class Pacman:
         self.build_inventory(self.packages)
 
     def run_command(self, cmd: str) -> tuple[int, str, str]:
+        args = shlex.split(cmd, posix=True)
         process = run(
-            self.chroot + cmd.split(),
+            self.chroot + args,
             capture_output=True,
             check=False,
             text=True,
