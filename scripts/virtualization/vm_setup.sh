@@ -213,7 +213,7 @@ start() {
 		echo "[=] IPv4 forwarding already enabled"
 	fi
 
-	# ---- nftables NAT ----
+	# ---- nftables NAT (Self-contained) ----
 	if ! nft list table ip qemu-nat &>/dev/null; then
 		echo "[+] Creating nftables NAT table"
 		nft -f - <<-NFT
@@ -228,13 +228,21 @@ start() {
 		echo "[=] nftables NAT table already exists"
 	fi
 
-	# ---- Forwarding rules (custom table assumed to exist) ----
-	if ! nft list chain inet my_table my_forward 2>/dev/null | grep -q "iifname \"$BRIDGE\""; then
-		nft add rule inet my_table my_forward iifname "$BRIDGE" accept
-	fi
-
-	if ! nft list chain inet my_table my_forward 2>/dev/null | grep -q "oifname \"$BRIDGE\""; then
-		nft add rule inet my_table my_forward oifname "$BRIDGE" accept
+	# ---- nftables Filter/Forwarding (Self-contained) ----
+	# Create a dedicated table instead of assuming 'my_table' exists
+	if ! nft list table inet qemu-filter &>/dev/null; then
+		echo "[+] Creating nftables Filter table"
+		nft -f - <<-NFT
+			table inet qemu-filter {
+				chain forward {
+					type filter hook forward priority 0; policy accept;
+					iifname "$BRIDGE" accept
+					oifname "$BRIDGE" accept
+				}
+			}
+		NFT
+	else
+		echo "[=] nftables Filter table already exists"
 	fi
 
 	# ---- dnsmasq ----
@@ -294,10 +302,11 @@ stop() {
 		echo "[=] NAT table already removed"
 	fi
 
-	if nft list chain inet my_table my_forward &>/dev/null; then
-		for h in $(nft -a list chain inet my_table my_forward | grep "$BRIDGE" | awk '{print $NF}'); do
-			nft delete rule inet my_table my_forward handle "$h"
-		done
+	if nft list table inet qemu-filter &>/dev/null; then
+		echo "[+] Removing nftables Filter table"
+		nft delete table inet qemu-filter
+	else
+		echo "[=] Filter table already removed"
 	fi
 
 	echo "✔ Network stopped"
