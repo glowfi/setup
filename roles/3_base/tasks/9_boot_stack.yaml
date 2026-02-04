@@ -99,32 +99,23 @@
     part_suffix: "{{ 'p2' if 'nvme' in disk else '2' }}"
   when: encrypt_disk
 
-
-- name: Check if keyfile already registered
+- name: Generate random keyfile
   pacman_bootstrap:
     command: >
-      cryptsetup luksDump {{ disk }}{{ part_suffix }}
-    chroot_mountpoint: /mnt
-  register: luks_dump
-  changed_when: false
-  when: encrypt_disk
-
-- name: Add LUKS keyfile to encrypted device
-  pacman_bootstrap:
-    command: >
-      bash -c "echo '{{ encryption_password }}' |
-      cryptsetup luksAddKey --key-file -
-      {{ disk }}{{ part_suffix }}
-      /root/cryptlvm.keyfile"
+      dd bs=512 count=4 if=/dev/random of=/root/cryptlvm.keyfile iflag=fullblock
     chroot_mountpoint: /mnt
   when:
     - encrypt_disk
-    - "'/root/cryptlvm.keyfile' not in luks_dump.stdout"
-  # no_log: true
+  args:
+    creates: /root/cryptlvm.keyfile
 
-
-
-
+- name: Add LUKS key
+  pacman_bootstrap:
+    command: >
+      sh -c "echo {{ encryption_password}} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
+    chroot_mountpoint: /mnt
+  when:
+    - encrypt_disk
 
 ############################################################
 # GRUB cryptdevice parameter

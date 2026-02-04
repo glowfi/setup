@@ -5,7 +5,7 @@ all:
     timezone: Asia/Kolkata         # curl --fail https://ipapi.co/timezone
     keyboard_layout: us            # us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk
 
-    file_system: btrfs            # btrfs ext4
+    file_system: ext4             # btrfs ext4
     drive_type: non-ssd           # ssd non-ssd
     disk: /dev/sda                # do a lsblk and check
     encrypt_disk: true
@@ -13,14 +13,14 @@ all:
 
     users:
       - name: root
-        password: mypassword
+        password: p
 
       - name: username
         full_name: fullname
-        password: mypassword
+        password: p
         groups:
-          - docker
-          - libvirt
+          # - docker
+          # - libvirt
           - video
           - input
           - wheel
@@ -31,5 +31,5 @@ all:
     kernel: linux-zen # linux linux-zen linux-lts linux-hardened
   hosts:
     pc:
-      ansible_host: 192.168.53.72
+      ansible_host: 192.168.53.68
       ansible_user: root

@@ -24,7 +24,7 @@
 - name: Set user passwords
   pacman_bootstrap:
     command: >
-      echo '{{ item.name }}:{{ item.password }}' | chpasswd
+      sh -c "echo '{{ item.name }}:{{ item.password }}' | chpasswd"
     chroot_mountpoint: /mnt
   loop: "{{ users }}"
 
