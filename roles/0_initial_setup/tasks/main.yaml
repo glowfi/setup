@@ -6,14 +6,14 @@
 - name: Configure pacman.conf
   block:
     - name: Enable Color in pacman
-      ansible.builtin.lineinfile:
+      lineinfile:
         path: /etc/pacman.conf
         regexp: '^#?Color'
         line: 'Color'
         state: present
 
     - name: Enable ILoveCandy
-      ansible.builtin.lineinfile:
+      lineinfile:
         path: /etc/pacman.conf
         regexp: '^ILoveCandy'
         line: 'ILoveCandy'
@@ -21,7 +21,7 @@
         state: present
 
     - name: Set ParallelDownloads
-      ansible.builtin.lineinfile:
+      lineinfile:
         path: /etc/pacman.conf
         regexp: '^#?ParallelDownloads'
         line: 'ParallelDownloads = 16'
@@ -35,7 +35,7 @@
         state: present
 
     - name: Add Arch repositories to pacman.conf
-      ansible.builtin.blockinfile:
+      blockinfile:
         path: /etc/pacman.conf
         marker: "# {mark} Arch Repos"
         block: |
@@ -47,13 +47,13 @@
         state: present
 
     - name: Check if Arch keyring already populated
-      ansible.builtin.command: pacman-key --list-keys archlinux
+      command: pacman-key --list-keys archlinux
       register: arch_keyring_check
       failed_when: false
       changed_when: false
 
     - name: Populate Arch keyring
-      ansible.builtin.command: pacman-key --populate archlinux
+      command: pacman-key --populate archlinux
       when: arch_keyring_check.rc != 0
   when: os == "artix"
 
@@ -65,7 +65,7 @@
         state: present
   when: os == "arch"
 
-- name: Install base packages
+- name: Install reflector,gptfdisk
   community.general.pacman:
     name:
       - reflector
@@ -73,15 +73,15 @@
     state: present
 
 - name: Set mirror file path
-  ansible.builtin.set_fact:
+  set_fact:
     mirror_file: >-
       {{ '/etc/pacman.d/mirrorlist-arch'
          if os == 'artix'
          else '/etc/pacman.d/mirrorlist' }}
 
-- name: Generate mirrorlist
-  ansible.builtin.command: >
-    reflector --country DE
+- name: Generate mirrorlist for arch repositories
+  command: >
+    reflector --country {{ arch_repo_country }}
     --latest 5
     --fastest 5
     --protocol https
