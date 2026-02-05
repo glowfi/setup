@@ -1,10 +1,21 @@
+---
+- name: Check if root subvolume already mounted
+  command: findmnt -n -o OPTIONS /mnt
+  register: mnt_options
+  failed_when: false
+  changed_when: false
+  when: file_system == "btrfs"
+
 - name: Mount btrfs temporarily
   ansible.posix.mount:
     path: /mnt
     src: "{{ root_device }}"
     fstype: btrfs
     state: mounted
-  when: file_system == "btrfs"
+    fstab: /tmp/fstab.tmp
+  when:
+    - file_system == "btrfs"
+    - mnt_options.rc != 0 or 'subvol=/@' not in mnt_options.stdout
 
 - name: Create BTRFS subvolumes
   community.general.btrfs_subvolume:
@@ -15,21 +26,31 @@
     - "@home"
     - "@snapshots"
     - "@var_log"
-  when: file_system == "btrfs"
+  when:
+    - file_system == "btrfs"
+    - mnt_options.rc != 0 or 'subvol=/@' not in mnt_options.stdout
 
 - name: Unmount temporary mount
   ansible.posix.mount:
     path: /mnt
     state: unmounted
-  when: file_system == "btrfs"
+    fstab: /tmp/fstab.tmp
+  when:
+    - file_system == "btrfs"
+    - mnt_options.rc != 0 or 'subvol=/@' not in mnt_options.stdout
 
 - name: Mount root subvolume
   ansible.posix.mount:
     path: /mnt
     src: "{{ root_device }}"
     fstype: btrfs
-    opts: "noatime,compress=zstd,subvol=@"
+    opts: >-
+      {{ 
+        'noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=@' if drive_type == 'ssd' 
+        else 'noatime,compress-force=zstd,commit=120,space_cache=v2,subvol=@' 
+      }}
     state: mounted
+    fstab: /tmp/fstab.tmp
   when: file_system == "btrfs"
 
 - name: Ensure subvolume mountpoints
@@ -39,7 +60,13 @@
   loop:
     - /mnt/home
     - /mnt/.snapshots
-    - /mnt/var_log
+    - /mnt/var/log
+  when: file_system == "btrfs"
+
+- name: Check mounted subvolumes
+  command: findmnt -n -o TARGET
+  register: mounted_targets
+  changed_when: false
   when: file_system == "btrfs"
 
 - name: Mount BTRFS subvolumes
@@ -47,10 +74,17 @@
     path: "{{ item.path }}"
     src: "{{ root_device }}"
     fstype: btrfs
-    opts: "noatime,compress=zstd,subvol={{ item.subvol }}"
+    opts: >-
+      {{ 
+        'noatime,compress-force=zstd,commit=120,space_cache=v2,ssd,discard=async,subvol=' ~ item.subvol if drive_type == 'ssd' 
+        else 'noatime,compress-force=zstd,commit=120,space_cache=v2,subvol=' ~ item.subvol 
+      }}
     state: mounted
+    fstab: /tmp/fstab.tmp
   loop:
     - { path: "/mnt/home", subvol: "@home" }
     - { path: "/mnt/.snapshots", subvol: "@snapshots" }
-    - { path: "/mnt/var_log", subvol: "@var_log" }
-  when: file_system == "btrfs"
+    - { path: "/mnt/var/log", subvol: "@var_log" }
+  when:
+    - file_system == "btrfs"
+    - item.path not in mounted_targets.stdout_lines
