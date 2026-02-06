@@ -5,7 +5,7 @@
     path: /mnt/usr/bin/bash
   register: arch_root
 
-- name: Bootstrap Arch system
+- name: Bootstrap system
   command: >
     {{ 'basestrap' if os == 'artix' else 'pacstrap' }}
     /mnt {{ base_packages | join(' ') }}
