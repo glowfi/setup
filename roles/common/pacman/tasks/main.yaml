@@ -1,0 +1,8 @@
+---
+- name: Load normal pacman tasks
+  import_tasks: pacman.yaml
+  when: not chroot_env
+
+- name: Load chroot pacman tasks
+  import_tasks: pacman_chroot.yaml
+  when: chroot_env

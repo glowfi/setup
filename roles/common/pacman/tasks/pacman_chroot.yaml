@@ -1,0 +1,177 @@
+---
+- name: Set mirror file path (chroot)
+  set_fact:
+    arch_mirror_file: >-
+      {{ '/etc/pacman.d/mirrorlist-arch'
+         if os == 'artix'
+         else '/etc/pacman.d/mirrorlist' }}
+    pacman_conf: /mnt/etc/pacman.conf
+    rate_mirror_dst: /mnt/usr/bin/rate-mirrors
+
+
+- name: Enable Color
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^#?Color'
+    line: 'Color'
+    state: present
+
+- name: Enable ILoveCandy
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^ILoveCandy'
+    line: 'ILoveCandy'
+    insertafter: '^Color'
+    state: present
+
+- name: Set ParallelDownloads
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^#?ParallelDownloads'
+    line: 'ParallelDownloads = 16'
+    state: present
+
+
+- name: Artix specific configuration
+  block:
+
+    - name: Get latest rate-mirrors release info
+      uri:
+        url: https://api.github.com/repos/westandskif/rate-mirrors/releases/latest
+        return_content: yes
+      register: rate_mirrors_release
+      changed_when: false
+
+    - name: Set rate-mirrors version
+      set_fact:
+        rate_mirrors_version: "{{ rate_mirrors_release.json.tag_name | trim }}"
+
+    - name: Set download URL
+      set_fact:
+        rate_mirrors_url: >-
+          https://github.com/westandskif/rate-mirrors/releases/download/{{ rate_mirrors_version }}/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl.tar.gz
+
+    - name: Download rate-mirrors tarball
+      get_url:
+        url: "{{ rate_mirrors_url }}"
+        dest: /tmp/rate-mirrors.tar.gz
+        mode: "0644"
+
+    - name: Ensure temporary extraction directory exists
+      file:
+        path: /tmp/rate-mirrors
+        state: directory
+
+    - name: Extract rate-mirrors
+      unarchive:
+        src: /tmp/rate-mirrors.tar.gz
+        dest: /tmp/rate-mirrors
+        remote_src: true
+        creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
+
+    - name: Install rate-mirrors binary
+      copy:
+        src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
+        dest: "{{ rate_mirror_dst }}"
+        mode: "0755"
+        remote_src: true
+
+    - name: Cleanup extracted directory
+      file:
+        path: /tmp/rate-mirrors
+        state: absent
+
+    - name: Cleanup tarball
+      file:
+        path: /tmp/rate-mirrors.tar.gz
+        state: absent
+
+    - name: Refresh pacman database
+      pacman_bootstrap:
+        name: []
+        update_cache: true
+        chroot_mountpoint: /mnt
+
+    - name: Install artix-archlinux-support
+      pacman_bootstrap:
+        name: artix-archlinux-support
+        state: present
+        chroot_mountpoint: /mnt
+
+    - name: Add Arch extra repo
+      blockinfile:
+        path: '{{ pacman_conf }}'
+        marker: "# {mark} Arch Repos"
+        block: |
+          [extra]
+          Include = /etc/pacman.d/mirrorlist-arch
+
+    - name: Populate Arch keyring
+      pacman_bootstrap:
+        command: pacman-key --populate archlinux
+        chroot_mountpoint: /mnt
+      changed_when: false
+
+    - name: Generate arch mirrorlist
+      pacman_bootstrap:
+        command: >
+          rate-mirrors --entry-country={{ repo_country }}
+          --max-mirrors-to-output=5
+          --save='{{arch_mirror_file}}'
+          --allow-root arch
+        chroot_mountpoint: /mnt
+      changed_when: false
+
+    - name: Refresh pacman database
+      pacman_bootstrap:
+        name: []
+        update_cache: true
+        chroot_mountpoint: /mnt
+
+    - name: Install gptfdisk
+      pacman_bootstrap:
+        name: gptfdisk
+        state: present
+        chroot_mountpoint: /mnt
+  when: os == "artix"
+
+- name: Arch specific configuration
+  block:
+    - name: Refresh pacman database
+      pacman_bootstrap:
+        name: []
+        update_cache: true
+        chroot_mountpoint: /mnt
+
+    - name: Install reflector and gptfdisk
+      pacman_bootstrap:
+        name:
+          - reflector
+          - gptfdisk
+        chroot_mountpoint: /mnt
+
+    - name: Generate mirrorlist
+      pacman_bootstrap:
+        command: >
+          reflector --verbose
+          -c {{ repo_country }}
+          --latest 5
+          --fastest 5
+          --protocol https
+          --sort rate
+          --save='{{ arch_mirror_file }}'
+        chroot_mountpoint: /mnt
+      changed_when: false
+
+    - name: Install archlinux-keyring
+      pacman_bootstrap:
+        name: archlinux-keyring
+        state: present
+        chroot_mountpoint: /mnt
+
+    - name: Refresh pacman database
+      pacman_bootstrap:
+        name: []
+        update_cache: true
+        chroot_mountpoint: /mnt
+  when: os == "arch"

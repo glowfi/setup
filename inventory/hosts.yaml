@@ -5,11 +5,14 @@ all:
     timezone: Asia/Kolkata         # curl --fail https://ipapi.co/timezone
     keyboard_layout: us            # us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk
 
-    file_system: ext4             # btrfs ext4
-    drive_type: non-ssd           # ssd non-ssd
-    disk: /dev/sda                # do a lsblk and check
+    file_system: btrfs             # btrfs ext4
+    drive_type: ssd                # ssd non-ssd
+    disk: /dev/sda                 # do a lsblk and check
     encrypt_disk: true
     encryption_password: password
+
+    repo_country: DE
+    chroot_env: false
 
     users:
       - name: root
@@ -25,11 +28,11 @@ all:
           - input
           - wheel
     cpu: amd    # amd intel
-    gpu: amd    # amd intel nvidia
+    gpu: nvidia # amd intel nvidia
 
     secure_boot: false
     kernel: linux-zen # linux linux-zen linux-lts linux-hardened
   hosts:
     pc:
-      ansible_host: 192.168.53.68
+      ansible_host: 192.168.53.65
       ansible_user: root

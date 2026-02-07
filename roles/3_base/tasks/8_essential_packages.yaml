@@ -10,7 +10,6 @@
       - cracklib
       - pacman-contrib
 
-      - networkmanager
       - network-manager-applet
       - wireless_tools
       - wpa_supplicant
@@ -34,7 +33,6 @@
 
       - acpi
       - acpi_call-dkms
-      - acpid
 
       - exa
       - bat
@@ -49,14 +47,27 @@
 
       - tokei
       - hyperfine
-
     state: present
     update_cache: true
     chroot_mountpoint: /mnt
 
+- name: Install Arch service packages
+  pacman_bootstrap:
+    name:
+      - networkmanager
+      - acpid
+      - syslog-ng
+      - logrotate
+    state: present
+    chroot_mountpoint: /mnt
+  when: os == "arch"
+
 - name: Install Artix-specific packages
   pacman_bootstrap:
     name:
+      - syslog-ng-openrc
+      - acpid-openrc
+      - networkmanager-openrc
       - backlight-openrc
       - syslog-ng
       - logrotate
