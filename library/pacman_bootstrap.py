@@ -116,8 +116,8 @@ class Pacman:
         if chroot_mnt:
             if which("arch-chroot"):
                 self.chroot = ["arch-chroot", chroot_mnt]
-            else:
-                self.chroot = ["chroot", chroot_mnt]
+            if which("artix-chroot"):
+                self.chroot = ["artix-chroot", chroot_mnt]
         else:
             self.chroot = []
 
