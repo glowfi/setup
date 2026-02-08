@@ -2,680 +2,680 @@
 # USER LOCAL BIN
 ############################################################
 
-# - name: Ensure user local bin exists
-#   file:
-#     path: "/home/{{ ansible_user }}/.local/bin"
-#     state: directory
-#     mode: "0755"
-
-# ############################################################
-# # INSTALL SYSTEM PIP (only pip itself via pacman)
-# ############################################################
-
-# - name: Find EXTERNALLY-MANAGED marker
-#   find:
-#     paths: /usr/lib
-#     patterns: "EXTERNALLY-MANAGED"
-#     recurse: true
-#   register: externally_managed_file
-#   become: true
-
-# - name: Remove EXTERNALLY-MANAGED marker
-#   file:
-#     path: "{{ item.path }}"
-#     state: absent
-#   loop: "{{ externally_managed_file.files }}"
-#   when: externally_managed_file.matched > 0
-#   become: true
-
-# - name: Ensure python-pip installed
-#   community.general.pacman:
-#     name: python-pip
-#     state: present
-#   become: true
-
-# ############################################################
-# # UPGRADE USER PIP
-# ############################################################
-
-# - name: Upgrade pip
-#   ansible.builtin.pip:
-#     name: pip
-#     state: latest
-#     executable: pip3
-
-# ############################################################
-# # CORE PYTHON BUILD TOOLS
-# ############################################################
-
-# - name: Install setuptools and sortedcontainers
-#   ansible.builtin.pip:
-#     name:
-#       - setuptools
-#       - sortedcontainers
-#     state: latest
-#     executable: pip3
-
-# ############################################################
-# # PYTHON DEV TOOLING
-# ############################################################
-
-# - name: Install python dev tools
-#   ansible.builtin.pip:
-#     name:
-#       - virtualenv
-#       - twine
-#       - wheel
-#     state: latest
-#     executable: pip3
-
-# ############################################################
-# # PYTHON GTK / SYSTEM INTERFACE
-# ############################################################
-
-# - name: Install pygobject
-#   ansible.builtin.pip:
-#     name: pygobject
-#     state: latest
-#     executable: pip3
-
-# ############################################################
-# # PYTHON MISC TOOLS
-# ############################################################
-
-# - name: Install misc python packages
-#   ansible.builtin.pip:
-#     name:
-#       - pyautogui
-#       - pynput
-#       - pyfzf
-#       - poetry
-#       - rich
-#       - pygments
-#     state: latest
-#     executable: pip3
-
-# ############################################################
-# # MINICONDA INSTALL
-# ############################################################
-
-# - name: Ensure miniconda directory exists
-#   file:
-#     path: "/home/{{ ansible_user }}/miniconda3"
-#     state: directory
-#     mode: "0755"
-
-# - name: Check if Miniconda installer already exists
-#   stat:
-#     path: "/home/{{ ansible_user }}/miniconda3/miniconda.sh"
-#   register: miniconda_installer
-
-# - name: Download Miniconda installer
-#   get_url:
-#     url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-#     dest: "/home/{{ ansible_user }}/miniconda3/miniconda.sh"
-#     mode: "0755"
-#   when: not miniconda_installer.stat.exists
-
-# - name: Install Miniconda silently
-#   command: >
-#     bash /home/{{ ansible_user }}/miniconda3/miniconda.sh
-#     -b -u -p /home/{{ ansible_user }}/miniconda3
-#   args:
-#     creates: "/home/{{ ansible_user }}/miniconda3/bin/conda"
-
-# - name: Mark conda activated
-#   file:
-#     path: "/home/{{ ansible_user }}/.config/conda-activated"
-#     state: touch
-
-
-# ############################################################
-# # Install Direnv
-# ############################################################
-
-# - name: Install direnv
-#   community.general.pacman:
-#     name: direnv
-#     state: present
-#   become: true
-
-
-# ############################################################
-# # Install NodeJS
-# ############################################################
-
-# - name: Get latest Node LTS version info
-#   uri:
-#     url: https://nodejs.org/dist/index.json
-#     return_content: true
-#   register: node_index
-#   changed_when: false
-
-# - name: Set latest LTS version
-#   set_fact:
-#     node_version: >-
-#       {{
-#         (node_index.json
-#         | selectattr('lts', '!=', false)
-#         | list
-#         | first).version
-#       }}
-
-# - name: Set Node download URL
-#   set_fact:
-#     node_tarball_url: "https://nodejs.org/dist/{{ node_version }}/node-{{ node_version }}-linux-x64.tar.xz"
-
-# - name: Check if node already installed
-#   stat:
-#     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin/node"
-#   register: node_binary
-
-# - name: Download NodeJS tarball
-#   get_url:
-#     url: "{{ node_tarball_url }}"
-#     dest: "{{ ansible_env.HOME }}/node.tar.xz"
-#     mode: "0644"
-#   when: not node_binary.stat.exists
-
-# - name: Extract NodeJS
-#   unarchive:
-#     src: "{{ ansible_env.HOME }}/node.tar.xz"
-#     dest: "{{ ansible_env.HOME }}"
-#     remote_src: true
-#   when: not node_binary.stat.exists
-
-# - name: Ensure nodeJS target directory exists
-#   file:
-#     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS"
-#     state: directory
-#     mode: "0755"
-
-# - name: Copy Node contents into ~/.local/bin/nodeJS
-#   copy:
-#     src: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64/"
-#     dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/"
-#     remote_src: true
-#     mode: preserve
-#   when: not node_binary.stat.exists
-
-# - name: Remove Node tarball
-#   file:
-#     path: "{{ ansible_env.HOME }}/node.tar.xz"
-#     state: absent
-
-# - name: Remove Node folder
-#   file:
-#     path: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64"
-#     state: absent
-
-# ############################################################
-# # NODE MODULES
-# ############################################################
-
-# - name: Set npm executable path
-#   set_fact:
-#     npm_exec: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin/npm"
-
-# - name: Update npm globally
-#   community.general.npm:
-#     name: npm
-#     global: true
-#     state: latest
-#     executable: "{{ npm_exec }}"
-
-# - name: Install global npm packages
-#   community.general.npm:
-#     name: "{{ item }}"
-#     global: true
-#     executable: "{{ npm_exec }}"
-#   loop:
-#     - console-log-cleaner
-#     - md-to-pdf
-
-# ############################################################
-# # Fix md-to-pdf highlight.js
-# ############################################################
-
-# - name: Check if base16 highlight styles exist
-#   stat:
-#     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16"
-#   register: base16_dir
-
-# - name: Move base16 highlight styles
-#   copy:
-#     src: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/"
-#     dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/"
-#     remote_src: true
-#   when: base16_dir.stat.exists
-
-
-# - name: Remove base16 directory
-#   file:
-#     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16"
-#     state: absent
-
-# ############################################################
-# # Install Bun
-# ############################################################
-
-# - name: Install Bun
-#   shell: curl -fsSL https://bun.sh/install | bash
-#   args:
-#     creates: "{{ ansible_env.HOME }}/.bun"
-
-# ############################################################
-# # RUST INSTALLATION
-# ############################################################
-
-# - name: Ensure Rust is installed (rustup)
-#   shell: |
-#     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-#   args:
-#     creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
-
-# - name: Ensure stable toolchain
-#   command: "{{ ansible_env.HOME }}/.cargo/bin/rustup default stable"
-#   changed_when: false
-
-# ############################################################
-# # RUST ANALYZER
-# ############################################################
-
-# - name: Clone rust-analyzer
-#   git:
-#     repo: https://github.com/rust-analyzer/rust-analyzer.git
-#     dest: /tmp/rust-analyzer
-#     depth: 1
-
-# - name: Install rust-analyzer server
-#   command: cargo xtask install --server
-#   args:
-#     chdir: /tmp/rust-analyzer
-#     creates: "{{ ansible_env.HOME }}/.cargo/bin/rust-analyzer"
-
-# - name: Remove rust-analyzer source
-#   file:
-#     path: /tmp/rust-analyzer
-#     state: absent
-
-# ############################################################
-# # RUST CARGO PACKAGES
-# ############################################################
-
-# - name: Install Rust cargo tools
-#   community.general.cargo:
-#     name: "{{ item }}"
-#     state: latest
-#   loop:
-#     - ripdrag
-#     - csvlens
-#   environment:
-#     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
-
-# - name: Check if nerdfix is already installed
-#   stat:
-#     path: "{{ ansible_env.HOME }}/.cargo/bin/nerdfix"
-#   register: nerdfix_bin
-
-# - name: Install nerdfix from git
-#   shell: >
-#     cargo install --git https://github.com/loichyan/nerdfix.git
-#   when: not nerdfix_bin.stat.exists
-#   environment:
-#     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
-
-
-# ############################################################
-# # GOLANG INSTALLATION
-# ############################################################
-
-# - name: Ensure ~/.local/bin exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.local/bin"
-#     state: directory
-#     mode: "0755"
-
-# - name: Check if Go is already installed
-#   ansible.builtin.stat:
-#     path: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
-#   register: go_installed
-
-# - name: Download Go tarball
-#   ansible.builtin.get_url:
-#     url: https://go.dev/dl/go1.25.7.linux-amd64.tar.gz
-#     dest: /tmp/go.tar.gz
-#     mode: "0644"
-#   when: not go_installed.stat.exists
-
-# - name: Extract Go into ~/.local/bin
-#   ansible.builtin.unarchive:
-#     src: /tmp/go.tar.gz
-#     dest: "{{ ansible_env.HOME }}/.local/bin"
-#     remote_src: true
-#   when: not go_installed.stat.exists
-
-# - name: Rename extracted folder to golang
-#   ansible.builtin.command:
-#     cmd: mv "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
-#   args:
-#     creates: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
-#   when: not go_installed.stat.exists
-
-# - name: Remove Go tarball
-#   ansible.builtin.file:
-#     path: /tmp/go.tar.gz
-#     state: absent
-#   when: not go_installed.stat.exists
-
-# ############################################################
-# # GOLANG MODULES
-# ############################################################
-
-# - name: Ensure GOPATH exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/go"
-#     state: directory
-#     mode: "0755"
-
-# - name: Install Go tools
-#   ansible.builtin.shell: |
-#     "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install {{ item }}
-#   loop:
-#     - github.com/ericchiang/pup@latest
-#     - golang.org/x/tools/gopls@latest
-#     - github.com/segmentio/golines@latest
-#     - golang.org/x/tools/cmd/goimports@latest
-#     - mvdan.cc/gofumpt@latest
-#     - github.com/fatih/gomodifytags@latest
-#     - github.com/josharian/impl@latest
-#     - github.com/koron/iferr@latest
-#     - github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-#     - github.com/pressly/goose/v3/cmd/goose@latest
-#     - github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-#     - github.com/golangci/misspell/cmd/misspell@latest
-#   environment:
-#     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
-
-
-# ############################################################
-# # LUA LSP
-# ############################################################
-
-# - name: Get latest LuaLS release info
-#   ansible.builtin.uri:
-#     url: https://api.github.com/repos/LuaLS/lua-language-server/releases/latest
-#     return_content: true
-#   register: lua_ls_release
-
-# - name: Set LuaLS version
-#   ansible.builtin.set_fact:
-#     lua_ls_version: "{{ lua_ls_release.json.tag_name | trim }}"
-
-# - name: Ensure ~/.local/bin exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.local/bin"
-#     state: directory
-#     mode: "0755"
-
-# - name: Check if LuaLS already installed
-#   ansible.builtin.stat:
-#     path: "{{ ansible_env.HOME }}/.local/bin/luaLSP/bin/lua-language-server"
-#   register: lua_ls_binary
-
-# - name: Download LuaLS tarball
-#   ansible.builtin.get_url:
-#     url: "https://github.com/LuaLS/lua-language-server/releases/download/{{ lua_ls_version }}/lua-language-server-{{ lua_ls_version }}-linux-x64.tar.gz"
-#     dest: "/tmp/lua-ls.tar.gz"
-#   when: not lua_ls_binary.stat.exists
-
-# - name: Create LuaLS install directory
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.local/bin/luaLSP"
-#     state: directory
-#   when: not lua_ls_binary.stat.exists
-
-# - name: Extract LuaLS
-#   ansible.builtin.unarchive:
-#     src: "/tmp/lua-ls.tar.gz"
-#     dest: "{{ ansible_env.HOME }}/.local/bin/luaLSP"
-#     remote_src: true
-#   when: not lua_ls_binary.stat.exists
-
-# - name: Remove LuaLS tarball
-#   ansible.builtin.file:
-#     path: "/tmp/lua-ls.tar.gz"
-#     state: absent
-
-# - name: Install stylua via cargo
-#   community.general.cargo:
-#     name: stylua
-#     state: latest
-#   environment:
-#     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
-
-# ############################################################
-# # FZF TERMINAL INTEGRATION
-# ############################################################
-
-# - name: Clone fzf repository
-#   ansible.builtin.git:
-#     repo: https://github.com/junegunn/fzf.git
-#     dest: "{{ ansible_env.HOME }}/.fzf"
-#     depth: 1
-
-# - name: Install fzf non-interactively
-#   ansible.builtin.shell: |
-#     yes | {{ ansible_env.HOME }}/.fzf/install
-#   args:
-#     creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
-
-# ############################################################
-# # sYT INSTALL
-# ############################################################
-
-# - name: Install numerize via pip
-#   ansible.builtin.pip:
-#     name: numerize
-#     state: present
-
-# - name: Clone sYT repository
-#   ansible.builtin.git:
-#     repo: https://github.com/glowfi/sYT
-#     dest: /tmp/sYT
-#     depth: 1
-
-# - name: Ensure ~/.local/bin exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.local/bin"
-#     state: directory
-#     mode: "0755"
-
-# - name: Copy sYT.py to ~/.local/bin
-#   ansible.builtin.copy:
-#     src: /tmp/sYT/sYT.py
-#     dest: "{{ ansible_env.HOME }}/.local/bin/sYT.py"
-#     mode: "0755"
-#     remote_src: true
-
-# - name: Copy sYT.sh to ~/.local/bin
-#   ansible.builtin.copy:
-#     src: /tmp/sYT/sYT.sh
-#     dest: "{{ ansible_env.HOME }}/.local/bin/sYT.sh"
-#     mode: "0755"
-#     remote_src: true
-
-# - name: Remove sYT temp directory
-#   ansible.builtin.file:
-#     path: /tmp/sYT
-#     state: absent
-
-# ############################################################
-# # MPV CONFIGURATION
-# ############################################################
-
-# - name: Ensure MPV config directory exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.config/mpv/scripts"
-#     state: directory
-#     mode: "0755"
-
-# - name: Ensure mpv.conf exists
-#   ansible.builtin.file:
-#     path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
-#     state: touch
-
-# - name: Ensure yt-dlp hook config present
-#   ansible.builtin.lineinfile:
-#     path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
-#     line: "script-opts-append=ytdl_hook-ytdl_path=yt-dlp"
-#     state: present
-
-# - name: Ensure save position on quit
-#   ansible.builtin.lineinfile:
-#     path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
-#     line: "save-position-on-quit"
-#     state: present
-
-# ############################################################
-# # MPV SCRIPTS
-# ############################################################
-
-# - name: Download webm.lua
-#   ansible.builtin.get_url:
-#     url: https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
-#     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/webm.lua"
-#     mode: "0644"
-
-# - name: Download thumbfast.lua
-#   ansible.builtin.get_url:
-#     url: https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.lua
-#     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/thumbfast.lua"
-#     mode: "0644"
-
-# - name: Download osc.lua
-#   ansible.builtin.get_url:
-#     url: https://raw.githubusercontent.com/po5/thumbfast/vanilla-osc/player/lua/osc.lua
-#     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/osc.lua"
-#     mode: "0644"
-
-# - name: Clone PureMPV repository
-#   ansible.builtin.git:
-#     repo: https://github.com/4ndrs/PureMPV
-#     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/PureMPV"
-#     depth: 1
-
-
-# ############################################################
-# # Copy Dotfile Scripts
-# ############################################################
-
-# - name: Copy user utility scripts
-#   copy:
-#     src: "{{ ansible_env.HOME }}/.dotfiles/scripts/{{ item }}"
-#     dest: "{{ ansible_env.HOME }}/.local/bin/{{ item | basename }}"
-#     remote_src: true
-#     mode: "0755"
-#   loop:
-#     - blank.sh
-#     - cpx
-#     - edit.sh
-#     - gpatch.sh
-#     - gtfu.sh
-#     - int.sh
-#     - killprocess.sh
-#     - mp
-#     - opa.sh
-#     - prev.sh
-#     - rename.sh
-#     - rlt
-#     - saveScraper.py
-#     - searchArchive.sh
-#     - send.sh
-#     - windowshot.sh
-
-# ############################################################
-# # Install vimv
-# ############################################################
-
-# - name: Clone vimv
-#   git:
-#     repo: https://github.com/thameera/vimv
-#     dest: /tmp/vimv
-#     depth: 1
-
-# - name: Install vimv binary
-#   copy:
-#     src: /tmp/vimv/vimv
-#     dest: "{{ ansible_env.HOME }}/.local/bin/vimv"
-#     mode: "0755"
-#     remote_src: true
-
-# - name: Remove vimv temp directory
-#   file:
-#     path: /tmp/vimv
-#     state: absent
-
-# ############################################################
-# # Build ezgif Binary
-# ############################################################
-
-# - name: Uninstall pathlib
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
-
-# - name: Install required Python packages
-#   ansible.builtin.pip:
-#     name:
-#       - pyinstaller
-#       - ffmpeg-python
-#       - typing-extensions
-#     state: present
-
-# - name: Install gifsicle
-#   community.general.pacman:
-#     name: gifsicle
-#     state: present
-#   become: true
-
-# - name: Clone ezgif-essentials
-#   git:
-#     repo: https://github.com/winstxnhdw/ezgif-essentials
-#     dest: /tmp/ezgif
-#     depth: 1
-
-# - name: Build ezgif binary
-#   command: >
-#     pyinstaller --onefile main.py
-#   args:
-#     chdir: /tmp/ezgif
-#     creates: /tmp/ezgif/dist/main
-
-# - name: Install ezgif binary
-#   copy:
-#     src: /tmp/ezgif/dist/main
-#     dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
-#     mode: "0755"
-#     remote_src: true
-
-# - name: Remove ezgif build directory
-#   file:
-#     path: /tmp/ezgif
-#     state: absent
-
-# - name: Install pathlib
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
-
-# - name: Uninstall pyinstaller
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
+- name: Ensure user local bin exists
+  file:
+    path: "/home/{{ ansible_user }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+############################################################
+# INSTALL SYSTEM PIP (only pip itself via pacman)
+############################################################
+
+- name: Find EXTERNALLY-MANAGED marker
+  find:
+    paths: /usr/lib
+    patterns: "EXTERNALLY-MANAGED"
+    recurse: true
+  register: externally_managed_file
+  become: true
+
+- name: Remove EXTERNALLY-MANAGED marker
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ externally_managed_file.files }}"
+  when: externally_managed_file.matched > 0
+  become: true
+
+- name: Ensure python-pip installed
+  community.general.pacman:
+    name: python-pip
+    state: present
+  become: true
+
+############################################################
+# UPGRADE USER PIP
+############################################################
+
+- name: Upgrade pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+    executable: pip3
+
+############################################################
+# CORE PYTHON BUILD TOOLS
+############################################################
+
+- name: Install setuptools and sortedcontainers
+  ansible.builtin.pip:
+    name:
+      - setuptools
+      - sortedcontainers
+    state: latest
+    executable: pip3
+
+############################################################
+# PYTHON DEV TOOLING
+############################################################
+
+- name: Install python dev tools
+  ansible.builtin.pip:
+    name:
+      - virtualenv
+      - twine
+      - wheel
+    state: latest
+    executable: pip3
+
+############################################################
+# PYTHON GTK / SYSTEM INTERFACE
+############################################################
+
+- name: Install pygobject
+  ansible.builtin.pip:
+    name: pygobject
+    state: latest
+    executable: pip3
+
+############################################################
+# PYTHON MISC TOOLS
+############################################################
+
+- name: Install misc python packages
+  ansible.builtin.pip:
+    name:
+      - pyautogui
+      - pynput
+      - pyfzf
+      - poetry
+      - rich
+      - pygments
+    state: latest
+    executable: pip3
+
+############################################################
+# MINICONDA INSTALL
+############################################################
+
+- name: Ensure miniconda directory exists
+  file:
+    path: "/home/{{ ansible_user }}/miniconda3"
+    state: directory
+    mode: "0755"
+
+- name: Check if Miniconda installer already exists
+  stat:
+    path: "/home/{{ ansible_user }}/miniconda3/miniconda.sh"
+  register: miniconda_installer
+
+- name: Download Miniconda installer
+  get_url:
+    url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    dest: "/home/{{ ansible_user }}/miniconda3/miniconda.sh"
+    mode: "0755"
+  when: not miniconda_installer.stat.exists
+
+- name: Install Miniconda silently
+  command: >
+    bash /home/{{ ansible_user }}/miniconda3/miniconda.sh
+    -b -u -p /home/{{ ansible_user }}/miniconda3
+  args:
+    creates: "/home/{{ ansible_user }}/miniconda3/bin/conda"
+
+- name: Mark conda activated
+  file:
+    path: "/home/{{ ansible_user }}/.config/conda-activated"
+    state: touch
+
+
+############################################################
+# Install Direnv
+############################################################
+
+- name: Install direnv
+  community.general.pacman:
+    name: direnv
+    state: present
+  become: true
+
+
+############################################################
+# Install NodeJS
+############################################################
+
+- name: Get latest Node LTS version info
+  uri:
+    url: https://nodejs.org/dist/index.json
+    return_content: true
+  register: node_index
+  changed_when: false
+
+- name: Set latest LTS version
+  set_fact:
+    node_version: >-
+      {{
+        (node_index.json
+        | selectattr('lts', '!=', false)
+        | list
+        | first).version
+      }}
+
+- name: Set Node download URL
+  set_fact:
+    node_tarball_url: "https://nodejs.org/dist/{{ node_version }}/node-{{ node_version }}-linux-x64.tar.xz"
+
+- name: Check if node already installed
+  stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin/node"
+  register: node_binary
+
+- name: Download NodeJS tarball
+  get_url:
+    url: "{{ node_tarball_url }}"
+    dest: "{{ ansible_env.HOME }}/node.tar.xz"
+    mode: "0644"
+  when: not node_binary.stat.exists
+
+- name: Extract NodeJS
+  unarchive:
+    src: "{{ ansible_env.HOME }}/node.tar.xz"
+    dest: "{{ ansible_env.HOME }}"
+    remote_src: true
+  when: not node_binary.stat.exists
+
+- name: Ensure nodeJS target directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/bin/nodeJS"
+    state: directory
+    mode: "0755"
+
+- name: Copy Node contents into ~/.local/bin/nodeJS
+  copy:
+    src: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64/"
+    dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/"
+    remote_src: true
+    mode: preserve
+  when: not node_binary.stat.exists
+
+- name: Remove Node tarball
+  file:
+    path: "{{ ansible_env.HOME }}/node.tar.xz"
+    state: absent
+
+- name: Remove Node folder
+  file:
+    path: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64"
+    state: absent
+
+############################################################
+# NODE MODULES
+############################################################
+
+- name: Set npm executable path
+  set_fact:
+    npm_exec: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin/npm"
+
+- name: Update npm globally
+  community.general.npm:
+    name: npm
+    global: true
+    state: latest
+    executable: "{{ npm_exec }}"
+
+- name: Install global npm packages
+  community.general.npm:
+    name: "{{ item }}"
+    global: true
+    executable: "{{ npm_exec }}"
+  loop:
+    - console-log-cleaner
+    - md-to-pdf
+
+############################################################
+# Fix md-to-pdf highlight.js
+############################################################
+
+- name: Check if base16 highlight styles exist
+  stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16"
+  register: base16_dir
+
+- name: Move base16 highlight styles
+  copy:
+    src: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/"
+    dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/"
+    remote_src: true
+  when: base16_dir.stat.exists
+
+
+- name: Remove base16 directory
+  file:
+    path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16"
+    state: absent
+
+############################################################
+# Install Bun
+############################################################
+
+- name: Install Bun
+  shell: curl -fsSL https://bun.sh/install | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.bun"
+
+############################################################
+# RUST INSTALLATION
+############################################################
+
+- name: Ensure Rust is installed (rustup)
+  shell: |
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  args:
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
+
+- name: Ensure stable toolchain
+  command: "{{ ansible_env.HOME }}/.cargo/bin/rustup default stable"
+  changed_when: false
+
+############################################################
+# RUST ANALYZER
+############################################################
+
+- name: Clone rust-analyzer
+  git:
+    repo: https://github.com/rust-analyzer/rust-analyzer.git
+    dest: /tmp/rust-analyzer
+    depth: 1
+
+- name: Install rust-analyzer server
+  command: cargo xtask install --server
+  args:
+    chdir: /tmp/rust-analyzer
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/rust-analyzer"
+
+- name: Remove rust-analyzer source
+  file:
+    path: /tmp/rust-analyzer
+    state: absent
+
+############################################################
+# RUST CARGO PACKAGES
+############################################################
+
+- name: Install Rust cargo tools
+  community.general.cargo:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - ripdrag
+    - csvlens
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Check if nerdfix is already installed
+  stat:
+    path: "{{ ansible_env.HOME }}/.cargo/bin/nerdfix"
+  register: nerdfix_bin
+
+- name: Install nerdfix from git
+  shell: >
+    cargo install --git https://github.com/loichyan/nerdfix.git
+  when: not nerdfix_bin.stat.exists
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+
+############################################################
+# GOLANG INSTALLATION
+############################################################
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Check if Go is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
+  register: go_installed
+
+- name: Download Go tarball
+  ansible.builtin.get_url:
+    url: https://go.dev/dl/go1.25.7.linux-amd64.tar.gz
+    dest: /tmp/go.tar.gz
+    mode: "0644"
+  when: not go_installed.stat.exists
+
+- name: Extract Go into ~/.local/bin
+  ansible.builtin.unarchive:
+    src: /tmp/go.tar.gz
+    dest: "{{ ansible_env.HOME }}/.local/bin"
+    remote_src: true
+  when: not go_installed.stat.exists
+
+- name: Rename extracted folder to golang
+  ansible.builtin.command:
+    cmd: mv "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
+  args:
+    creates: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
+  when: not go_installed.stat.exists
+
+- name: Remove Go tarball
+  ansible.builtin.file:
+    path: /tmp/go.tar.gz
+    state: absent
+  when: not go_installed.stat.exists
+
+############################################################
+# GOLANG MODULES
+############################################################
+
+- name: Ensure GOPATH exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/go"
+    state: directory
+    mode: "0755"
+
+- name: Install Go tools
+  ansible.builtin.shell: |
+    "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install {{ item }}
+  loop:
+    - github.com/ericchiang/pup@latest
+    - golang.org/x/tools/gopls@latest
+    - github.com/segmentio/golines@latest
+    - golang.org/x/tools/cmd/goimports@latest
+    - mvdan.cc/gofumpt@latest
+    - github.com/fatih/gomodifytags@latest
+    - github.com/josharian/impl@latest
+    - github.com/koron/iferr@latest
+    - github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+    - github.com/pressly/goose/v3/cmd/goose@latest
+    - github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    - github.com/golangci/misspell/cmd/misspell@latest
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+
+
+############################################################
+# LUA LSP
+############################################################
+
+- name: Get latest LuaLS release info
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/LuaLS/lua-language-server/releases/latest
+    return_content: true
+  register: lua_ls_release
+
+- name: Set LuaLS version
+  ansible.builtin.set_fact:
+    lua_ls_version: "{{ lua_ls_release.json.tag_name | trim }}"
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Check if LuaLS already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/luaLSP/bin/lua-language-server"
+  register: lua_ls_binary
+
+- name: Download LuaLS tarball
+  ansible.builtin.get_url:
+    url: "https://github.com/LuaLS/lua-language-server/releases/download/{{ lua_ls_version }}/lua-language-server-{{ lua_ls_version }}-linux-x64.tar.gz"
+    dest: "/tmp/lua-ls.tar.gz"
+  when: not lua_ls_binary.stat.exists
+
+- name: Create LuaLS install directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin/luaLSP"
+    state: directory
+  when: not lua_ls_binary.stat.exists
+
+- name: Extract LuaLS
+  ansible.builtin.unarchive:
+    src: "/tmp/lua-ls.tar.gz"
+    dest: "{{ ansible_env.HOME }}/.local/bin/luaLSP"
+    remote_src: true
+  when: not lua_ls_binary.stat.exists
+
+- name: Remove LuaLS tarball
+  ansible.builtin.file:
+    path: "/tmp/lua-ls.tar.gz"
+    state: absent
+
+- name: Install stylua via cargo
+  community.general.cargo:
+    name: stylua
+    state: latest
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+############################################################
+# FZF TERMINAL INTEGRATION
+############################################################
+
+- name: Clone fzf repository
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: "{{ ansible_env.HOME }}/.fzf"
+    depth: 1
+
+- name: Install fzf non-interactively
+  ansible.builtin.shell: |
+    yes | {{ ansible_env.HOME }}/.fzf/install
+  args:
+    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+
+############################################################
+# sYT INSTALL
+############################################################
+
+- name: Install numerize via pip
+  ansible.builtin.pip:
+    name: numerize
+    state: present
+
+- name: Clone sYT repository
+  ansible.builtin.git:
+    repo: https://github.com/glowfi/sYT
+    dest: /tmp/sYT
+    depth: 1
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Copy sYT.py to ~/.local/bin
+  ansible.builtin.copy:
+    src: /tmp/sYT/sYT.py
+    dest: "{{ ansible_env.HOME }}/.local/bin/sYT.py"
+    mode: "0755"
+    remote_src: true
+
+- name: Copy sYT.sh to ~/.local/bin
+  ansible.builtin.copy:
+    src: /tmp/sYT/sYT.sh
+    dest: "{{ ansible_env.HOME }}/.local/bin/sYT.sh"
+    mode: "0755"
+    remote_src: true
+
+- name: Remove sYT temp directory
+  ansible.builtin.file:
+    path: /tmp/sYT
+    state: absent
+
+############################################################
+# MPV CONFIGURATION
+############################################################
+
+- name: Ensure MPV config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/mpv/scripts"
+    state: directory
+    mode: "0755"
+
+- name: Ensure mpv.conf exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
+    state: touch
+
+- name: Ensure yt-dlp hook config present
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
+    line: "script-opts-append=ytdl_hook-ytdl_path=yt-dlp"
+    state: present
+
+- name: Ensure save position on quit
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/mpv/mpv.conf"
+    line: "save-position-on-quit"
+    state: present
+
+############################################################
+# MPV SCRIPTS
+############################################################
+
+- name: Download webm.lua
+  ansible.builtin.get_url:
+    url: https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
+    dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/webm.lua"
+    mode: "0644"
+
+- name: Download thumbfast.lua
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.lua
+    dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/thumbfast.lua"
+    mode: "0644"
+
+- name: Download osc.lua
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/po5/thumbfast/vanilla-osc/player/lua/osc.lua
+    dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/osc.lua"
+    mode: "0644"
+
+- name: Clone PureMPV repository
+  ansible.builtin.git:
+    repo: https://github.com/4ndrs/PureMPV
+    dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/PureMPV"
+    depth: 1
+
+
+############################################################
+# Copy Dotfile Scripts
+############################################################
+
+- name: Copy user utility scripts
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/scripts/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item | basename }}"
+    remote_src: true
+    mode: "0755"
+  loop:
+    - blank.sh
+    - cpx
+    - edit.sh
+    - gpatch.sh
+    - gtfu.sh
+    - int.sh
+    - killprocess.sh
+    - mp
+    - opa.sh
+    - prev.sh
+    - rename.sh
+    - rlt
+    - saveScraper.py
+    - searchArchive.sh
+    - send.sh
+    - windowshot.sh
+
+############################################################
+# Install vimv
+############################################################
+
+- name: Clone vimv
+  git:
+    repo: https://github.com/thameera/vimv
+    dest: /tmp/vimv
+    depth: 1
+
+- name: Install vimv binary
+  copy:
+    src: /tmp/vimv/vimv
+    dest: "{{ ansible_env.HOME }}/.local/bin/vimv"
+    mode: "0755"
+    remote_src: true
+
+- name: Remove vimv temp directory
+  file:
+    path: /tmp/vimv
+    state: absent
+
+############################################################
+# Build ezgif Binary
+############################################################
+
+- name: Uninstall pathlib
+  ansible.builtin.pip:
+    name:
+      - pathlib
+    state: absent
+
+- name: Install required Python packages
+  ansible.builtin.pip:
+    name:
+      - pyinstaller
+      - ffmpeg-python
+      - typing-extensions
+    state: present
+
+- name: Install gifsicle
+  community.general.pacman:
+    name: gifsicle
+    state: present
+  become: true
+
+- name: Clone ezgif-essentials
+  git:
+    repo: https://github.com/winstxnhdw/ezgif-essentials
+    dest: /tmp/ezgif
+    depth: 1
+
+- name: Build ezgif binary
+  command: >
+    pyinstaller --onefile main.py
+  args:
+    chdir: /tmp/ezgif
+    creates: /tmp/ezgif/dist/main
+
+- name: Install ezgif binary
+  copy:
+    src: /tmp/ezgif/dist/main
+    dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
+    mode: "0755"
+    remote_src: true
+
+- name: Remove ezgif build directory
+  file:
+    path: /tmp/ezgif
+    state: absent
+
+- name: Install pathlib
+  ansible.builtin.pip:
+    name:
+      - pathlib
+    state: absent
+
+- name: Uninstall pyinstaller
+  ansible.builtin.pip:
+    name:
+      - pathlib
+    state: absent
 
 ############################################################
 # Download Beekeeper Studio AppImage
