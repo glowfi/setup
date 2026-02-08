@@ -1,8 +1,16 @@
----
 - name: Load normal pacman tasks
   import_tasks: pacman.yaml
-  when: not chroot_env
+  when:
+    - not chroot_env
+    - not sudo_env
 
 - name: Load chroot pacman tasks
   import_tasks: pacman_chroot.yaml
-  when: chroot_env
+  when:
+    - chroot_env
+
+- name: Load sudo pacman tasks
+  import_tasks: pacman_sudo.yaml
+  when:
+    - not chroot_env
+    - sudo_env

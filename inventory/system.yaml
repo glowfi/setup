@@ -1,0 +1,12 @@
+all:
+  vars:
+    os: arch    # arch artix
+    de_wm : kde # kde dwm
+
+    repo_country: DE
+    chroot_env: false
+    sudo_env: true
+  hosts:
+    pc:
+      ansible_host: 192.168.53.63
+      ansible_user: username

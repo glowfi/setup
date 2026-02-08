@@ -1,0 +1,364 @@
+---
+############################################################
+# AUR HELPER
+############################################################
+
+- name: Check if yay is installed
+  command: which yay
+  register: yay_check
+  changed_when: false
+  failed_when: false
+
+- name: Install yay
+  when: yay_check.rc != 0
+  block:
+    - name: Ensure base-devel installed
+      community.general.pacman:
+        name: base-devel
+        state: present
+      become: true
+
+    - name: Clone yay-bin repository
+      git:
+        repo: https://aur.archlinux.org/yay-bin.git
+        dest: /tmp/yay-bin
+        update: no
+
+    - name: Build yay package
+      command: makepkg -s --noconfirm
+      args:
+        chdir: /tmp/yay-bin
+        creates: /tmp/yay-bin/yay-bin-*.pkg.tar.zst
+      become: false
+
+    - name: Find built yay package
+      find:
+        paths: /tmp/yay-bin
+        patterns: "yay-bin-*.pkg.tar.zst"
+      register: yay_pkg
+
+    - name: Install yay with pacman
+      community.general.pacman:
+        name: "{{ yay_pkg.files[0].path }}"
+        state: present
+      become: true
+
+  always:
+    - name: Remove yay build directory
+      file:
+        path: /tmp/yay-bin
+        state: absent
+
+############################################################
+# CORE Packages
+############################################################
+
+- name: Install core main packages
+  community.general.pacman:
+    name:
+      - zip
+      - unzip
+      - unrar
+      - p7zip
+      - lzop
+      - ouch
+      - man-db
+      - fish
+      - kitty
+      - jq
+      - aria2
+    state: present
+    update_cache: true
+  become: true
+
+############################################################
+# CORE (Fonts)
+############################################################
+
+- name: Install core fonts
+  community.general.pacman:
+    name:
+      - ttf-fantasque-sans-mono
+      - noto-fonts
+      - noto-fonts-emoji
+    state: present
+  become: true
+
+- name: Install AUR fonts
+  yay:
+    name:
+      - ttf-fantasque-nerd
+      - ttf-joypixels
+      - ttf-ms-fonts
+      - ttf-vista-fonts
+    state: present
+
+
+############################################################
+# CORE (AUDIO)
+############################################################
+
+- name: Install audio packages systemd variant
+  community.general.pacman:
+    name:
+      - alsa-utils
+      - alsa-plugins
+      - pipewire
+      - pipewire-alsa
+      - pipewire-pulse
+      - pipewire-jack
+      - wireplumber
+    state: present
+  when: os == "arch"
+  become: true
+
+- name: Install audio packages openrc variant
+  community.general.pacman:
+    name:
+      - alsa-utils-openrc
+      - alsa-plugins
+      - pipewire-openrc
+      - pipewire-alsa
+      - pipewire-pulse-openrc
+      - pipewire-jack
+      - wireplumber-openrc
+    state: present
+  when: os == "artix"
+  become: true
+
+- name: Install Bluetooth packages
+  community.general.pacman:
+    name:
+      - bluez
+      - bluez-utils
+      - blueman
+    state: present
+  become: true
+
+- name: Install audio utilities
+  community.general.pacman:
+    name:
+      - songrec
+      - easyeffects
+      - lsp-plugins
+    state: present
+  become: true
+
+- name: Ensure EasyEffects config directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ ansible_env.HOME }}/.config/easyeffects"
+    - "{{ ansible_env.HOME }}/.config/easyeffects/output"
+
+- name: Download EasyEffects preset installer
+  get_url:
+    url: https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
+    dest: /tmp/easyeffects-install.sh
+    mode: "0755"
+
+- name: Run EasyEffects installer non-interactively
+  shell: |
+    echo | bash /tmp/easyeffects-install.sh
+
+- name: Remove EasyEffects installer
+  file:
+    path: /tmp/easyeffects-install.sh
+    state: absent
+
+- name: Enable PipeWire services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+    scope: user
+  loop:
+    - pipewire
+    - wireplumber
+    - pipewire-pulse
+  when: os == "arch"
+
+- name: Enable PipeWire services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - pipewire
+    - wireplumber
+    - pipewire-pulse
+  when: os == "artix"
+
+############################################################
+# CORE (VIDEO)
+############################################################
+
+- name: Install video packages
+  community.general.pacman:
+    name:
+      - ffmpeg
+      - yt-dlp
+      - mujs
+      - mpv
+    state: present
+  become: true
+
+############################################################
+# CORE (IMAGE)
+############################################################
+
+- name: Install image tools
+  community.general.pacman:
+    name:
+      - imagemagick
+      - ffmpegthumbnailer
+    state: present
+  become: true
+
+############################################################
+# CORE (EXTRAS)
+############################################################
+
+- name: Install extra utilities
+  community.general.pacman:
+    name:
+      - android-tools
+      - scrcpy
+      - gpick
+      - mediainfo
+      - perl-image-exiftool
+      - inotify-tools
+      - libnotify
+      - gum
+    state: present
+  become: true
+
+- name: Install localsend
+  yay:
+    name: localsend-bin
+    state: present
+
+############################################################
+# IMAGE
+############################################################
+
+- name: Install GIMP
+  community.general.pacman:
+    name: gimp
+    state: present
+  become: true
+  retries: 5
+
+- name: Remove existing GIMP config directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/GIMP/3.0"
+    state: absent
+
+- name: Recreate GIMP config directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/GIMP/3.0"
+    state: directory
+    mode: "0755"
+
+- name: Clone PhotoGIMP repository
+  git:
+    repo: https://github.com/Diolinux/PhotoGIMP
+    dest: "{{ ansible_env.HOME }}/.config/GIMP/3.0/PhotoGIMP"
+    depth: 1
+
+- name: Copy PhotoGIMP config into GIMP directory
+  copy:
+    src: "{{ ansible_env.HOME }}/.config/GIMP/3.0/PhotoGIMP/.config/GIMP/3.0/"
+    dest: "{{ ansible_env.HOME }}/.config/GIMP/3.0/"
+    remote_src: true
+
+- name: Remove PhotoGIMP repo and unwanted directories
+  file:
+    path: "{{ ansible_env.HOME }}/.config/GIMP/3.0/{{ item }}"
+    state: absent
+  loop:
+    - PhotoGIMP
+    - filters
+    - plug-ins
+    - splashes
+
+############################################################
+# VIDEO
+############################################################
+
+- name: Install kdenlive
+  community.general.pacman:
+    name: kdenlive
+    state: present
+  become: true
+  retries: 5
+
+############################################################
+# EXTRAS
+############################################################
+
+# - name: Install onlyoffice
+#   yay:
+#     name: onlyoffice-bin
+#     state: present
+
+- name: Install tectonic
+  community.general.pacman:
+    name: tectonic
+    state: present
+  become: true
+
+############################################################
+# TERMINAL TOMFOOLERY
+############################################################
+
+- name: Install terminal fun packages
+  community.general.pacman:
+    name:
+      - fortune-mod
+      - lolcat
+      - cmatrix
+      - asciiquarium
+      - cowsay
+      - figlet
+      - sl
+    state: present
+  become: true
+
+- name: Clone figlet fonts repository
+  git:
+    repo: https://github.com/xero/figlet-fonts
+    dest: /tmp/figlet-fonts
+    update: no
+
+- name: Ensure figlet fonts directory exists
+  file:
+    path: /usr/share/figlet/fonts
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Copy figlet fonts into system
+  copy:
+    src: /tmp/figlet-fonts/
+    dest: /usr/share/figlet/fonts/
+    remote_src: true
+  become: true
+
+- name: Remove temporary figlet directory
+  file:
+    path: /tmp/figlet-fonts
+    state: absent
+  become: true
+
+############################################################
+# Writing Tools
+############################################################
+
+- name: Install rnote
+  community.general.pacman:
+    name: rnote
+    state: present
+  become: true
