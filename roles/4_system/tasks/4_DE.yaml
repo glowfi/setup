@@ -1,0 +1,319 @@
+---
+############################################################
+# KDE Plasma Core
+############################################################
+
+- name: Install KDE Plasma core packages
+  community.general.pacman:
+    name:
+      - plasma-desktop
+      - plasma-workspace
+      - plasma-nm
+      - plasma-pa
+      - qt6-tools
+    state: present
+    update_cache: true
+  become: true
+
+
+############################################################
+# KDE Themes & Integration
+############################################################
+
+- name: Install KDE themes and integration
+  community.general.pacman:
+    name:
+      - breeze
+      - breeze-gtk
+      - kde-gtk-config
+      - kdecoration
+    state: present
+  become: true
+
+
+############################################################
+# Power & Portal
+############################################################
+
+- name: Install power management and portals
+  community.general.pacman:
+    name:
+      - powerdevil
+      - xdg-desktop-portal-kde
+    state: present
+  become: true
+
+
+############################################################
+# KDE System Tools + Display Manager
+############################################################
+
+- name: Install KDE system tools
+  community.general.pacman:
+    name:
+      - kwrited
+      - kwin
+      - kgamma
+      - kinfocenter
+      - kscreen
+      - systemsettings
+      - libnotify
+      - konqueror
+    state: present
+  become: true
+
+- name: Install SDDM 
+  community.general.pacman:
+    name:
+      - sddm
+      - sddm-kcm
+    state: present
+  when: os == "arch"
+  become: true
+
+
+- name: Install SDDM 
+  community.general.pacman:
+    name:
+      - sddm-openrc
+      - sddm-kcm
+    state: present
+  when: os == "artix"
+  become: true
+
+############################################################
+# ===================== XORG Packages =====================
+############################################################
+
+- name: Install Xorg packages
+  community.general.pacman:
+    name:
+      - xorg-server
+      - xorg-xrandr
+      - xorg-xdpyinfo 
+      - xorg-xprop 
+      - xorg-xwininfo 
+      - xdotool
+      - wmctrl
+      - plasma-x11-session
+    state: present
+    update_cache: true
+  become: true
+
+############################################################
+# ===================== WAYLAND Packages ==================
+############################################################
+
+- name: Install Wayland core packages
+  community.general.pacman:
+    name:
+      - plasma-wayland-protocols
+      - wayland
+      - wayland-protocols
+      - xorg-xwayland
+      - qt6-wayland
+      - egl-wayland
+    state: present
+  become: true
+
+############################################################
+# ===================== System Applications ===============
+############################################################
+
+- name: Install KDE applications
+  community.general.pacman:
+    name:
+      - dolphin
+      - ark
+      - gwenview
+      - okular
+    state: present
+  become: true
+
+- name: Install audio control utilities
+  community.general.pacman:
+    name:
+      - pulsemixer
+      - pamixer
+    state: present
+  become: true
+
+- name: Install brightness control
+  community.general.pacman:
+    name: 
+      - brightnessctl
+      - redshift
+    state: present
+  become: true
+
+############################################################
+# Update XDG User Directories
+############################################################
+
+- name: Update XDG user directories
+  ansible.builtin.command: xdg-user-dirs-update
+  changed_when: false
+
+############################################################
+# Copy Xresources
+############################################################
+
+- name: Copy .Xresources
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/.Xresources"
+    dest: "{{ ansible_env.HOME }}/.Xresources"
+    mode: "0644"
+    remote_src: true
+
+############################################################
+# Register kitty in dolphin
+############################################################
+
+- name: Ensure kservices6 directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/kservices6"
+    state: directory
+    mode: "0755"
+
+- name: Install kittyhere desktop file
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/kittyhere.desktop"
+    dest: "{{ ansible_env.HOME }}/.local/share/kservices6/kittyhere.desktop"
+    mode: "0644"
+    remote_src: true
+
+############################################################
+# Install Hotkey Daemon
+############################################################
+
+- name: Add user to input group
+  user:
+    name: "{{ ansible_user }}"
+    groups: input
+    append: true
+  become: true
+
+- name: Clone ghkd
+  git:
+    repo: https://github.com/glowfi/ghkd
+    dest: /tmp/ghkd
+    depth: 1
+
+- name: Build ghkd
+  command: go build -o ghkd ./main.go
+  args:
+    chdir: /tmp/ghkd
+    creates: /tmp/ghkd/ghkd
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+
+- name: Install ghkd binary
+  copy:
+    src: /tmp/ghkd/ghkd
+    dest: /usr/local/bin/ghkd
+    mode: "0755"
+    remote_src: true
+  become: true
+
+- name: Remove ghkd source
+  file:
+    path: /tmp/ghkd
+    state: absent
+
+- name: Ensure ghkd config directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/ghkd"
+    state: directory
+    mode: "0755"
+
+- name: Deploy ghkd config
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/ghkd/config_kde.yaml"
+    dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
+    mode: "0644"
+    remote_src: true
+
+############################################################
+# Plasma looks and optimization
+############################################################
+
+- name: Set Plasma theme
+  command: >
+    kwriteconfig6 --file kdeglobals
+    --group KDE
+    --key LookAndFeelPackage
+    org.kde.breezedark.desktop
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable splash engine
+  command: kwriteconfig6 --file ksplashrc --group KSplash --key Engine none
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable splash theme
+  command: kwriteconfig6 --file ksplashrc --group KSplash --key Theme none
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable bouncing cursor
+  command: >
+    kwriteconfig6 --file klaunchrc
+    --group BusyCursorSettings
+    --key Bouncing false
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable busy cursor feedback
+  command: >
+    kwriteconfig6 --file klaunchrc
+    --group FeedbackStyle
+    --key BusyCursor false
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable Baloo
+  command: balooctl6 disable
+  become: true
+  become_user: "{{ ansible_user }}"
+  ignore_errors: true
+
+- name: Disable KWallet
+  command: >
+    kwriteconfig6 --file kwalletrc
+    --group Wallet
+    --key Enabled false
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable KWallet first use
+  command: >
+    kwriteconfig6 --file kwalletrc
+    --group Wallet
+    --key "First Use" false
+  become: true
+  become_user: "{{ ansible_user }}"
+
+- name: Remove kwallet dbus service
+  file:
+    path: /usr/share/dbus-1/services/org.kde.kwalletd6.service
+    state: absent
+  become: true
+
+- name: Set SDDM theme to breeze
+  ini_file:
+    path: /etc/sddm.conf
+    section: Theme
+    option: Current
+    value: breeze
+  become: true
+
+############################################################
+# Enable Display Manager
+############################################################
+
+- name: Enable SDDM
+  ansible.builtin.service:
+    name: sddm
+    enabled: true
+  become: true

@@ -6,6 +6,8 @@ all:
     repo_country: DE
     chroot_env: false
     sudo_env: true
+    git_user_name: glowfi
+    git_user_email: "86939591+glowfi@users.noreply.github.com"
   hosts:
     pc:
       ansible_host: 192.168.53.63
