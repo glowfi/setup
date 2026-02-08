@@ -299,10 +299,10 @@
 # EXTRAS
 ############################################################
 
-# - name: Install onlyoffice
-#   yay:
-#     name: onlyoffice-bin
-#     state: present
+- name: Install onlyoffice
+  yay:
+    name: onlyoffice-bin
+    state: present
 
 - name: Install tectonic
   community.general.pacman:
