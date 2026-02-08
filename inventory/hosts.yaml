@@ -34,5 +34,5 @@ all:
     kernel: linux-zen # linux linux-zen linux-lts linux-hardened
   hosts:
     pc:
-      ansible_host: 192.168.53.65
+      ansible_host: 192.168.53.67
       ansible_user: root

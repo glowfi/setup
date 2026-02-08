@@ -85,7 +85,7 @@
   lineinfile:
     path: /mnt/etc/mkinitcpio.conf
     regexp: "^HOOKS="
-    line: "HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)"
+    line: "HOOKS=(base udev autodetect keyboard keymap microcode modconf kms consolefont block encrypt filesystems fsck)"
     state: present
   when: encrypt_disk
 
@@ -132,8 +132,8 @@
     path: /mnt/etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
     line: >-
-      GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID={{ luks_uuid.stdout }}:cryptroot
-      root=/dev/mapper/cryptroot{% if drive_type == 'ssd' %}:allow-discards{% endif %}
+      GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID={{ luks_uuid.stdout }}:cryptroot{% if drive_type == 'ssd' %}:allow-discards{% endif %}
+      root=/dev/mapper/cryptroot
       cryptkey=rootfs:/root/cryptlvm.keyfile"
     state: present
   when: encrypt_disk
