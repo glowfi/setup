@@ -3,5 +3,5 @@
 - hosts: pc
   name: System Installation
   roles:
-    - role: common/pacman
+    # - role: common/pacman
     - role: 4_system

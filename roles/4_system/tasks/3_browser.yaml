@@ -22,7 +22,6 @@
   yay:
     name: brave-bin
     state: present
-  become: true
 
 - name: Create Brave policy directory
   file:
@@ -36,6 +35,7 @@
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/policy.json"
     dest: /etc/brave/policies/managed/brave-policy.json
     mode: "0644"
+    remote_src: true
   become: true
 
 ############################################################
@@ -113,22 +113,23 @@
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
     dest: "{{ brave_config_dir }}/{{ brave_folder }}/Default/Preferences"
     mode: "0644"
+    remote_src: true
 
 - name: Deploy Secondary Preferences
   copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
     dest: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}/Preferences"
     mode: "0644"
+    remote_src: true
 
 ############################################################
 # Librewolf Installation
 ############################################################
 
-- name: Install librewolf (AUR)
+- name: Install librewolf
   yay:
     name: librewolf-bin
     state: present
-  become: true
 
 ############################################################
 # Variables
@@ -136,7 +137,7 @@
 
 - name: Set Librewolf variables
   set_fact:
-    librewolf_profile_root: "{{ ansible_env.HOME }}/.librewolf"
+    librewolf_profile_root: "{{ ansible_env.HOME }}/.config/librewolf"
     librewolf_policy_file: "/usr/lib/librewolf/distribution/policies.json"
     librewolf_extensions:
       - "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi"
@@ -174,9 +175,10 @@
 
 - name: Copy libw launcher script
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/scripts/system/libw"
+    src: "{{ ansible_env.HOME }}/.dotfiles/scripts/libw"
     dest: "{{ ansible_env.HOME }}/.local/bin/libw"
     mode: "0755"
+    remote_src: true
 
 ############################################################
 # Add Extensions to policies.json (safe JSON modification)
@@ -206,6 +208,7 @@
     paths: "{{ librewolf_profile_root }}"
     patterns: "*default-default*"
     file_type: directory
+    recurse: true
   register: lw_profile
 
 - name: Set default profile path
