@@ -181,22 +181,50 @@
     remote_src: true
 
 ############################################################
-# Add Extensions to policies.json (safe JSON modification)
+# Add Extensions to policies.json
 ############################################################
 
-- name: Ensure policies.json exists
-  file:
-    path: "{{ librewolf_policy_file }}"
-    state: touch
+- name: Read existing Librewolf policies.json
+  ansible.builtin.slurp:
+    src: "{{ librewolf_policy_file }}"
+  register: librewolf_policy_raw
   become: true
 
-- name: Add extension URLs to policies.json
-  lineinfile:
-    path: "{{ librewolf_policy_file }}"
-    insertafter: '"ExtensionSettings": {'
-    line: '        "{{ item }}",'
-    state: present
-  loop: "{{ librewolf_extensions }}"
+- name: Decode JSON
+  ansible.builtin.set_fact:
+    librewolf_policy_json: "{{ librewolf_policy_raw.content | b64decode | from_json }}"
+
+- name: Patch Extensions block
+  ansible.builtin.set_fact:
+    librewolf_policy_json: >-
+      {{
+        librewolf_policy_json
+        | combine({
+            "policies": {
+              "Extensions": {
+                "Install": [
+                  "https://addons.mozilla.org/firefox/downloads/latest/port-authority/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+                ],
+                "Uninstall": [
+                  "google@search.mozilla.org",
+                  "bing@search.mozilla.org",
+                  "amazondotcom@search.mozilla.org",
+                  "ebay@search.mozilla.org",
+                  "twitter@search.mozilla.org"
+                ]
+              }
+            }
+          }, recursive=True)
+      }}
+
+- name: Write patched policies.json back
+  ansible.builtin.copy:
+    dest: "{{ librewolf_policy_file }}"
+    content: "{{ librewolf_policy_json | to_nice_json }}"
+    mode: "0644"
   become: true
 
 ############################################################
