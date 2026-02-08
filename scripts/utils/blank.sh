@@ -108,6 +108,11 @@ table inet my_table {
 
 	chain my_forward {
 		type filter hook forward priority security; policy drop;
+
+		# Allow traffic from the QEMU VM Bridge
+		iifname "br0" accept
+		oifname "br0" accept
+
   		mark 1 accept
 		# Drop everything forwarded to that's not from docker us. We do not forward. That is routers job.
 	}
