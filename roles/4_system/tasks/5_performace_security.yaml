@@ -64,6 +64,14 @@
     name: apparmor
     state: present
   become: true
+  when: os == "arch"
+
+- name: Install AppArmor
+  community.general.pacman:
+    name: apparmor-openrc
+    state: present
+  become: true
+  when: os == "artix"
 
 - name: Configure AppArmor parser
   ansible.builtin.lineinfile:
@@ -187,6 +195,13 @@
     regexp: '^umask'
     line: 'umask 077'
   become: true
+
+- name: Ensure /etc/modules-load.d present
+  become: true
+  ansible.builtin.file:
+    path: /etc/modules-load.d/
+    state: directory
+    mode: '0644'
 
 - name: Enable TCP BBR module load
   ansible.builtin.copy:
@@ -413,9 +428,10 @@
 ############################################################
 
 - name: Enable zram service
-  ansible.builtin.command: rc-update add zram
-  args:
-    creates: /etc/runlevels/default/zram
+  service:
+    name: zram
+    enabled: true
+    runlevel: default
   become: true
   when: os == "artix"
 
@@ -423,14 +439,14 @@
   ansible.builtin.service:
     name: systemd-zram-setup@zram0.service
     enabled: true
-    state: started
   become: true
   when: os == "arch"
 
 - name: Enable AppArmor
-  ansible.builtin.command: rc-update add apparmor
-  args:
-    creates: /etc/runlevels/default/apparmor
+  service:
+    name: apparmor
+    enabled: true
+    runlevel: default
   become: true
   when: os == "artix"
 
@@ -438,7 +454,6 @@
   ansible.builtin.service:
     name: apparmor.service
     enabled: true
-    state: started
   become: true
   when: os == "arch"
 
@@ -447,57 +462,66 @@
   become: true
 
 - name: Enable nftables
+  service:
+    name: nftables
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable nftables
   ansible.builtin.service:
     name: nftables
     enabled: true
-    state: started
+  become: true
   when: os == "arch"
-  become: true
 
-- name: Enable nftables
-  ansible.builtin.command: rc-update add nftables
+- name: Save nftables
+  ansible.builtin.command: rc-service nftables save
   when: os == "artix"
   become: true
-  changed_when: false
 
-- name: Enable grub-btrfs
-  command: rc-update add grub-btrfsd
-  when: os == "artix"
-  become: true
-  changed_when: false
-
-- name: Enable grub-btrfs service
+- name: Enable grub-btrfsd
   service:
     name: grub-btrfsd
     enabled: true
-    state: started
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable grub-btrfsd
+  service:
+    name: grub-btrfsd
+    enabled: true
   when: os == "arch"
   become: true
 
 - name: Enable dnscrypt-proxy
-  ansible.builtin.command: rc-update add dnscrypt-proxy
+  service:
+    name: dnscrypt-proxy
+    enabled: true
+    runlevel: default
   become: true
-  changed_when: false
   when: os == "artix"
 
 - name: Enable dnscrypt-proxy
   ansible.builtin.service:
     name: dnscrypt-proxy
     enabled: true
-    state: started
   become: true
   when: os == "arch"
-
-- name: Enable dnsmasq
-  command: rc-update add dnsmasq
-  when: os == "artix"
-  become: true
-  changed_when: false
 
 - name: Enable dnsmasq
   service:
     name: dnsmasq
     enabled: true
-    state: started
-  when: os == "arch"
+    runlevel: default
   become: true
+  when: os == "artix"
+
+- name: Enable dnsmasq
+  service:
+    name: dnsmasq
+    enabled: true
+  become: true
+  when: os == "arch"

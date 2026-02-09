@@ -223,6 +223,8 @@
     global: true
     state: latest
     executable: "{{ npm_exec }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
 
 - name: Install global npm packages
   community.general.npm:
@@ -232,6 +234,8 @@
   loop:
     - console-log-cleaner
     - md-to-pdf
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
 
 ############################################################
 # Fix md-to-pdf highlight.js
@@ -900,6 +904,8 @@
     - "@tailwindcss/language-server"
     - browser-sync
     - graphql-language-service-cli
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
 
 - name: Copy nvim config
   copy:

@@ -43,6 +43,16 @@
         state: present
       become: true
 
+    - name: Allow password‑less pacman and yay for members of the wheel group
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/pacman-yay
+        owner: root
+        group: root
+        mode: '0440'
+        content: |
+          {{ target_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman, /usr/bin/yay
+
   always:
     - name: Remove yay build directory
       file:
@@ -181,14 +191,13 @@
   when: os == "arch"
 
 - name: Enable PipeWire services
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: started
-    enabled: true
+  become: false
+  ansible.builtin.command:
+    cmd: "rc-update --user add {{ item }} default"
   loop:
     - pipewire
-    - wireplumber
     - pipewire-pulse
+    - wireplumber
   when: os == "artix"
 
 ############################################################

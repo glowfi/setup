@@ -4,3 +4,4 @@
 - import_tasks: 3_browser.yaml
 - import_tasks: 4_DE.yaml
 - import_tasks: 5_performace_security.yaml
+- import_tasks: 6_cleanup.yaml
