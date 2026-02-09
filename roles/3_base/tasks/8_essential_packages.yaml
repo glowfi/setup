@@ -80,6 +80,7 @@
       - net-snmp
       - librdkafka
       - python-ply
+      - openssh-openrc
     state: present
     chroot_mountpoint: /mnt
   when: os == "artix"
