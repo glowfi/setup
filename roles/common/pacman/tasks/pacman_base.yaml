@@ -119,9 +119,10 @@
         update_cache: true
         force: true
 
-    - name: Install gptfdisk
+    - name: Install parted, gptfdisk
       community.general.pacman:
         name: 
+         - parted
          - gptfdisk 
         state: present
   when: os == "artix"
@@ -133,10 +134,11 @@
         update_cache: true
         force: true
 
-    - name: Install reflector and gptfdisk
+    - name: Install reflector, gptfdisk, parted
       community.general.pacman:
         name: 
          - reflector
+         - parted
          - gptfdisk 
         state: present
         update_cache: true

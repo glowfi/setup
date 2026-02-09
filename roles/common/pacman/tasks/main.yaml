@@ -1,5 +1,5 @@
 - name: Load normal pacman tasks
-  import_tasks: pacman.yaml
+  import_tasks: pacman_base.yaml
   when:
     - not chroot_env
     - not sudo_env

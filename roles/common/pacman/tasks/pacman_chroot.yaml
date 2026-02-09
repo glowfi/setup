@@ -130,7 +130,9 @@
 
     - name: Install gptfdisk
       pacman_bootstrap:
-        name: gptfdisk
+        name: 
+          - gptfdisk
+          - parted
         state: present
         chroot_mountpoint: /mnt
   when: os == "artix"
@@ -148,6 +150,7 @@
         name:
           - reflector
           - gptfdisk
+          - parted
         chroot_mountpoint: /mnt
 
     - name: Generate mirrorlist
