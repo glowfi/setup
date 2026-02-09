@@ -13,6 +13,7 @@ all:
 
     repo_country: DE
     chroot_env: false
+    sudo_env: false
 
     users:
       - name: root
