@@ -12,9 +12,6 @@ all:
     encryption_password: password
 
     repo_country: DE
-    chroot_env: false
-    sudo_env: false
-
     users:
       - name: root
         password: p
