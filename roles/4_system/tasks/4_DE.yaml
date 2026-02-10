@@ -240,7 +240,7 @@
 
 - name: Deploy ghkd config
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/ghkd/config_kde.yaml"
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/ghkd/config.yaml"
     dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
     mode: "0644"
     remote_src: true
