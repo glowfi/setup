@@ -1,4 +1,4 @@
-# Arch / Artix Setup (Ansible)
+# Arch / Artix Setup
 
 Declarative Arch / Artix Linux installation using Ansible.
 
@@ -23,150 +23,44 @@ Supports:
 
 ---
 
-# Stage 0 — Boot ISO
+## Features
 
-Boot into:
+- **Openrc** as init with **artix**
+- **SystemD** as init with **arch**
+- **Secure Boot**
+- **Zen** kernel
+- **Zstd** Compression
+- **Btrfs**
+- **Zram**
+- **LUKS** encryption
+- **Apparmor**
+- **Dnscrypt**
+- **Some tweaks for performance**
+- **Hardened SSH**
+- **Hardened Firewall**
+- **Hardened browser** with custom settings and user policy
 
-- Arch Linux ISO  
-  or
-- Artix Linux ISO
+## How to Install
 
-Connect to the internet first.
+**Base install**
 
----
+> Connect to internet before running the below commands and edit the `inventory/base.yaml` as per your needs
 
-# Stage 1 — Bootstrap (Disk + Base System)
+```sh
 
-This stage:
-
-- Partitions disk
-- Sets up LUKS encryption
-- Creates Btrfs layout with subvolumes
-- Enables Zstd compression
-- Installs base system
-- Installs Zen kernel
-- Configures bootloader
-- Enables Secure Boot (if configured)
-- Prepares system for first reboot
-
-Run:
-
-```bash
-pacman -Sy git ansible
 git clone https://github.com/glowfi/setup
-cd setup
-ansible-playbook -i inventory/bootstrap.yaml playbooks/base.yaml
+ansible-playbook -i inventory/base.yaml playbooks/base.yaml
 ```
 
-After completion:
+**DE/WM/Server install**
 
-```bash
-reboot
-```
+> Restart and login as the new user created from above script and run the below commands. Edit the `inventory/system.yaml` as per your needs.
 
----
-
-# Stage 2 — System Installation
-
-Login as the newly created user.
-
-This stage:
-
-- Configures pacman
-- Installs KDE (minimal)
-- Configures SDDM
-- Sets up NetworkManager
-- Installs PipeWire audio
-- Installs development stack (Node, Rust, Go, Python)
-- Configures virtualization (libvirt + QEMU)
-- Installs and configures browsers
-- Enables AppArmor
-- Configures dnscrypt-proxy
-- Sets up nftables firewall
-- Enables ZRAM
-- Applies performance tuning
-- Deploys dotfiles
-- Hardens SSH
-
-Run:
-
-```bash
+```sh
+cd
 git clone https://github.com/glowfi/setup
-cd setup
-ansible-playbook -i inventory/system.yaml playbooks/base.yaml
+ansible-playbook -K -i inventory/system.yaml playbooks/system.yaml
 ```
-
-Reboot once finished.
-
----
-
-# Inventory Configuration
-
-Edit:
-
-```
-inventory/system.yaml
-```
-
-Example:
-
-```yaml
-all:
-    vars:
-        os: arch # arch | artix
-        de_wm: kde
-    hosts:
-        pc:
-            ansible_host: 192.168.1.10
-            ansible_user: username
-```
-
----
-
-# What Gets Installed
-
-## Core
-
-- Zen kernel
-- LUKS
-- Btrfs
-- ZRAM
-- AppArmor
-- dnscrypt-proxy
-- nftables
-- Hardened SSH
-
-## Desktop
-
-- plasma-desktop
-- plasma-workspace
-- breeze
-- SDDM
-- Dolphin, Okular, Gwenview
-- PipeWire
-
-Configured with:
-
-- Splash disabled
-- Launch feedback disabled
-- Baloo disabled
-- KWallet disabled
-- Theme set to Breeze Dark
-
-## Dev Stack
-
-- Node (manual install)
-- Rust (rustup)
-- Go (local install)
-- Python (user-based pip)
-- Neovim + LSP tooling
-
-## Virtualization
-
-- libvirt
-- qemu
-- virt-manager
-- DNS + bridge setup
 
 ---
 

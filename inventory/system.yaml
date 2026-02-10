@@ -1,9 +1,7 @@
 all:
   vars:
     os: arch    # arch artix
-    de_wm : kde # kde dwm
-
-    repo_country: DE
+    repo_country: DE # Country code for your country
     git_user_name: glowfi
     git_user_email: "86939591+glowfi@users.noreply.github.com"
   hosts:
