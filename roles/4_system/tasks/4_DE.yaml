@@ -166,6 +166,100 @@
   changed_when: false
 
 ############################################################
+# Install redshift,bemenu,autost
+############################################################
+
+- name: Install redshift
+  community.general.pacman:
+    name: 
+      - redshift
+    state: present
+  become: true
+  retries: 5
+
+- name: Run bemenu help.sh for wayland
+  ansible.builtin.command: ./help.sh wayland
+  args:
+    chdir: "{{ ansible_env.HOME }}/.dotfiles/configs/bemenu-app"
+    creates: "{{ ansible_env.HOME }}/.dotfiles/configs/bemenu-app/bemenu"
+  become: false
+
+- name: Copy bemenu-app directory to /usr/local/bin
+  ansible.builtin.shell:
+    "mv '{{ ansible_env.HOME }}/.dotfiles/configs/bemenu-app' /usr/local/bin"
+  become: true
+
+- name: Symlink bemenu binary
+  ansible.builtin.file:
+    src: /usr/local/bin/bemenu-app/bemenu
+    dest: /usr/local/bin/bemenu
+    state: link
+  become: true
+
+- name: Symlink bemenu-run binary
+  ansible.builtin.file:
+    src: /usr/local/bin/bemenu-app/bemenu-run
+    dest: /usr/local/bin/bemenu-run
+    state: link
+  become: true
+
+- name: Clone autost
+  git:
+    repo: https://github.com/glowfi/autost
+    dest: /tmp/autost
+    depth: 1
+  retries: 5
+
+- name: Build autost
+  command: go build -o autost ./main.go
+  args:
+    chdir: /tmp/autost
+    creates: /tmp/autost/autost
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+
+- name: Install autost binary
+  copy:
+    src: /tmp/autost/autost
+    dest: /usr/local/bin/autost
+    mode: "0755"
+    remote_src: true
+  become: true
+
+- name: Remove autost source
+  file:
+    path: /tmp/autost
+    state: absent
+
+- name: Ensure autost config directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/autost"
+    state: directory
+    mode: "0755"
+
+- name: Deploy autost config
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
+    dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
+    mode: "0644"
+    remote_src: true
+
+- name: Deploy autost service file
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
+    dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
+    mode: "0644"
+    remote_src: true
+  when: os == "arch"
+
+- name: Enable autost service
+  ansible.builtin.systemd_service:
+    name: "autost"
+    enabled: true
+    scope: user
+  when: os == "arch"
+
+############################################################
 # Copy Xresources
 ############################################################
 
