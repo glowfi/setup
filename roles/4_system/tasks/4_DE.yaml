@@ -240,14 +240,14 @@
 - name: Deploy autost config
   copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
-    dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
+    dest: "{{ ansible_env.HOME }}/.config/autost/config.yaml"
     mode: "0644"
     remote_src: true
 
 - name: Deploy autost service file
   copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
-    dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
+    dest: "{{ ansible_env.HOME }}/.config/autost/config.yaml"
     mode: "0644"
     remote_src: true
   when: os == "arch"
