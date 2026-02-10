@@ -1,0 +1,239 @@
+############################################################
+# Install Required Packages
+############################################################
+
+- name: Install bootloader packages
+  pacman_bootstrap:
+    name:
+      - grub
+      - efibootmgr
+      - os-prober
+      - sbctl
+    state: present
+    chroot_mountpoint: /mnt
+  retries: 5
+
+- name: Install cryptsetup (if encrypted)
+  pacman_bootstrap:
+    name: cryptsetup
+    state: present
+    chroot_mountpoint: /mnt
+  when: encrypt_disk
+
+
+############################################################
+# GRUB Default Configuration
+############################################################
+
+- name: Enable GRUB cryptodisk
+  lineinfile:
+    path: /mnt/etc/default/grub
+    line: "GRUB_ENABLE_CRYPTODISK=y"
+    state: present
+  when: encrypt_disk
+
+- name: Remove quiet flag
+  replace:
+    path: /mnt/etc/default/grub
+    regexp: " quiet"
+    replace: ""
+
+- name: Set GRUB resolution
+  lineinfile:
+    path: /mnt/etc/default/grub
+    regexp: "^GRUB_GFXMODE="
+    line: "GRUB_GFXMODE=auto"
+    state: present
+
+
+############################################################
+# mkinitcpio MODULES
+############################################################
+
+- name: Configure mkinitcpio modules
+  lineinfile:
+    path: /mnt/etc/mkinitcpio.conf
+    regexp: "^MODULES="
+    line: >-
+      MODULES=(
+      {% if file_system == 'btrfs' %}btrfs {% endif %}
+      {% if gpu == 'nvidia' %}
+      nvidia nvidia_modeset nvidia_uvm nvidia_drm
+      {% elif gpu == 'amd' %}
+      amdgpu
+      {% endif %}
+      )
+    state: present
+
+############################################################
+# Add keyfile to mkinitcpio FILES (for encrypted systems)
+############################################################
+
+- name: Ensure mkinitcpio FILES contains crypt keyfile
+  lineinfile:
+    path: /mnt/etc/mkinitcpio.conf
+    regexp: '^FILES='
+    line: 'FILES=(/root/cryptlvm.keyfile)'
+    state: present
+  when: encrypt_disk
+
+
+############################################################
+# Encryption Hooks (mkinitcpio)
+############################################################
+
+- name: Configure mkinitcpio encryption hooks
+  lineinfile:
+    path: /mnt/etc/mkinitcpio.conf
+    regexp: "^HOOKS="
+    line: "HOOKS=(base udev autodetect keyboard keymap microcode modconf kms consolefont block encrypt filesystems fsck)"
+    state: present
+  when: encrypt_disk
+
+
+############################################################
+# LUKS Keyfile Creation
+############################################################
+
+- name: Determine partition suffix
+  set_fact:
+    part_suffix: "{{ 'p2' if 'nvme' in disk else '2' }}"
+  when: encrypt_disk
+
+- name: Generate random keyfile
+  pacman_bootstrap:
+    command: >
+      dd bs=512 count=4 if=/dev/random of=/root/cryptlvm.keyfile iflag=fullblock
+    chroot_mountpoint: /mnt
+  when:
+    - encrypt_disk
+  args:
+    creates: /root/cryptlvm.keyfile
+
+- name: Add LUKS key
+  pacman_bootstrap:
+    command: >
+      sh -c "echo {{ encryption_password}} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
+    chroot_mountpoint: /mnt
+  when:
+    - encrypt_disk
+
+############################################################
+# GRUB cryptdevice parameter
+############################################################
+
+- name: Get LUKS UUID
+  command: blkid -s UUID -o value {{ disk }}{{ part_suffix }}
+  register: luks_uuid
+  changed_when: false
+  when: encrypt_disk
+
+- name: Configure GRUB cryptdevice kernel parameter
+  lineinfile:
+    path: /mnt/etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
+    line: >-
+      GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID={{ luks_uuid.stdout }}:cryptroot{% if drive_type == 'ssd' %}:allow-discards{% endif %}
+      root=/dev/mapper/cryptroot
+      cryptkey=rootfs:/root/cryptlvm.keyfile"
+    state: present
+  when: encrypt_disk
+
+
+############################################################
+# NVIDIA DRM Modeset (append safely)
+############################################################
+
+- name: Enable NVIDIA DRM modeset
+  lineinfile:
+    path: /mnt/etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 nvidia-drm.modeset=1"'
+    backrefs: yes
+  when: gpu == "nvidia"
+
+
+############################################################
+# Install GRUB EFI
+############################################################
+
+- name: Install GRUB EFI
+  pacman_bootstrap:
+    command: >
+      grub-install
+      --target=x86_64-efi
+      --efi-directory=/boot/efi
+      --bootloader-id=GRUB
+      --recheck
+      --modules=tpm
+      --disable-shim-lock
+    chroot_mountpoint: /mnt
+  args:
+    creates: /mnt/boot/efi/EFI/GRUB/grubx64.efi
+
+############################################################
+# Regenerate Initramfs
+############################################################
+
+- name: Regenerate initramfs
+  pacman_bootstrap:
+    command: "mkinitcpio -P"
+    chroot_mountpoint: /mnt
+
+
+############################################################
+# Generate GRUB Config
+############################################################
+
+- name: Generate GRUB config
+  pacman_bootstrap:
+    command: "grub-mkconfig -o /boot/grub/grub.cfg"
+    chroot_mountpoint: /mnt
+
+
+############################################################
+# Secure Boot Setup
+############################################################
+
+- name: Create sbctl keys
+  pacman_bootstrap:
+    command: sbctl create-keys
+    chroot_mountpoint: /mnt
+  when: secure_boot
+  ignore_errors: true
+
+- name: Enroll sbctl keys
+  pacman_bootstrap:
+    command: sbctl enroll-keys -m
+    chroot_mountpoint: /mnt
+  when: secure_boot
+  ignore_errors: true
+
+- name: Sign kernel and GRUB
+  pacman_bootstrap:
+    command: >
+      sbctl sign /boot/vmlinuz-{{ kernel }} &&
+      sbctl sign /boot/grub/x86_64-efi/core.efi &&
+      sbctl sign /boot/grub/x86_64-efi/grub.efi &&
+      sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+    chroot_mountpoint: /mnt
+  when: secure_boot
+
+
+############################################################
+# Secure Boot Auto-Sign Hook
+############################################################
+
+- name: Ensure pacman hooks directory exists
+  file:
+    path: /mnt/etc/pacman.d/hooks
+    state: directory
+    mode: "0755"
+  when: secure_boot
+
+- name: Install secure boot hook
+  template:
+    src: secureboot.hook.j2
+    dest: /mnt/etc/pacman.d/hooks/999-sign_kernel_for_secureboot.hook
+    mode: "0644"
+  when: secure_boot

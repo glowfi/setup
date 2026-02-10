@@ -1,0 +1,9 @@
+---
+
+- hosts: pc
+  name: Bootstrap
+  roles:
+    - role: common/pacman
+    - role: 1_disk
+    - role: 2_pacstrap
+    - role: 3_base

@@ -1,0 +1,13 @@
+---
+
+- name: Check if system already bootstrapped
+  stat:
+    path: /mnt/usr/bin/bash
+  register: base_root
+
+- name: Bootstrap system
+  command: >
+    {{ 'basestrap' if os == 'artix' else 'pacstrap' }}
+    /mnt {{ base_packages | join(' ') }}
+  when: not base_root.stat.exists
+  retries: 5

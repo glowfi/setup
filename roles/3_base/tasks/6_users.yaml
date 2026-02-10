@@ -1,0 +1,46 @@
+---
+- name: Collect existing groups inside target
+  pacman_bootstrap:
+    command: "getent group"
+    chroot_mountpoint: /mnt
+  register: group_list
+  changed_when: false
+
+- name: Extract existing group names
+  set_fact:
+    existing_groups: "{{ group_list.stdout_lines | map('split', ':') | map('first') | list }}"
+
+- name: Create non root users
+  pacman_bootstrap:
+    command: >
+      useradd -m
+      -c "{{ item.full_name | default(item.name) }}"
+      {{ item.name }}
+    chroot_mountpoint: /mnt
+    creates: "/home/{{ item.name }}"
+  loop: "{{ users }}"
+  when: item.name != "root"
+
+- name: Set user passwords
+  pacman_bootstrap:
+    command: >
+      sh -c "echo '{{ item.name }}:{{ item.password }}' | chpasswd"
+    chroot_mountpoint: /mnt
+  loop: "{{ users }}"
+
+- name: Add users to existing groups
+  pacman_bootstrap:
+    command: >
+      usermod -aG {{ item.1 }} {{ item.0.name }}
+    chroot_mountpoint: /mnt
+  loop: "{{ users | subelements('groups', skip_missing=True) }}"
+  when:
+    - item.0.name != "root"
+    - item.1 in existing_groups
+
+- name: Enable wheel group sudo
+  lineinfile:
+    path: /mnt/etc/sudoers
+    regexp: '^#?\s*%wheel ALL='
+    line: '%wheel ALL=(ALL) ALL'
+    validate: 'visudo -cf %s'

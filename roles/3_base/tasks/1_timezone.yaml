@@ -1,0 +1,33 @@
+---
+- name: Set timezone
+  file:
+    src: "/usr/share/zoneinfo/{{ timezone }}"
+    dest: "/mnt/etc/localtime"
+    state: link
+    force: true
+
+
+- name: Install openntpd for Artix
+  pacman_bootstrap:
+    name: openntpd-openrc
+    state: present
+    chroot_mountpoint: /mnt
+  when: os == "artix"
+  retries: 5
+
+- name: Enable ntpd
+  pacman_bootstrap:
+    command: rc-update add ntpd default
+    chroot_mountpoint: /mnt
+  when: os == "artix"
+
+- name: Enable ntp
+  pacman_bootstrap:
+    command: timedatectl set-ntp true
+    chroot_mountpoint: /mnt
+  when: os == "arch"
+
+- name: Sync hardware clock
+  pacman_bootstrap:
+    command: "hwclock --systohc"
+    chroot_mountpoint: /mnt

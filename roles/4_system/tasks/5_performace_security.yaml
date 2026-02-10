@@ -1,0 +1,542 @@
+---
+
+############################################################
+# OpenRC Performance Optimizations
+############################################################
+
+- name: Configure OpenRC performance settings
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}="{{ item.value }}"'
+    state: present
+  loop:
+    - { key: "rc_parallel", value: "YES" }
+    - { key: "rc_send_sighup", value: "YES" }
+    - { key: "rc_timeout_stopsec", value: "10" }
+    - { key: "rc_send_sigkill", value: "YES" }
+  when: os == "artix"
+  become: true
+
+############################################################
+# ZRAM
+############################################################
+
+- name: Install zram-openrc
+  yay:
+    name: zram-openrc
+    state: present
+  when: os == "artix"
+  retries: 5
+
+- name: Configure zram size
+  ansible.builtin.lineinfile:
+    path: /etc/conf.d/zram
+    regexp: '^zram_size='
+    line: 'zram_size="32G"'
+    create: true
+  become: true
+  when: os == "artix"
+
+- name: Install zram-generator
+  community.general.pacman:
+    name: zram-generator
+    state: present
+  become: true
+  when: os == "arch"
+  retries: 5
+
+- name: Configure zram-generator
+  ansible.builtin.blockinfile:
+    path: /etc/systemd/zram-generator.conf
+    block: |
+      [zram0]
+      zram-size = 32768
+      compression-algorithm = zstd
+    create: true
+  become: true
+  when: os == "arch"
+
+############################################################
+# AppArmor Installation
+############################################################
+
+- name: Install AppArmor
+  community.general.pacman:
+    name: apparmor
+    state: present
+  become: true
+  when: os == "arch"
+  retries: 5
+
+- name: Install AppArmor
+  community.general.pacman:
+    name: apparmor-openrc
+    state: present
+  become: true
+  when: os == "artix"
+  retries: 5
+
+- name: Configure AppArmor parser
+  ansible.builtin.lineinfile:
+    path: /etc/apparmor/parser.conf
+    line: "{{ item }}"
+    state: present
+  loop:
+    - write-cache
+    - Optimize=compress-fast
+  become: true
+
+- name: Ensure LSM flags present in GRUB
+  ansible.builtin.replace:
+    path: /etc/default/grub
+    regexp: '(^GRUB_CMDLINE_LINUX_DEFAULT=".*)(?<!lsm=landlock,lockdown,yama,apparmor,bpf)"'
+    replace: '\1 lsm=landlock,lockdown,yama,apparmor,bpf"'
+  become: true
+
+############################################################
+# Increase Virtual Memory
+############################################################
+
+- name: Set vm.max_map_count
+  ansible.builtin.lineinfile:
+    path: /etc/sysctl.d/90-override.conf
+    regexp: '^vm.max_map_count='
+    line: 'vm.max_map_count=2147483642'
+    create: true
+  become: true
+
+############################################################
+# Systemd-resolved Hardening
+############################################################
+
+- name: Disable LLMNR
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: '^#?LLMNR='
+    line: 'LLMNR=no'
+  when: os == "arch"
+  become: true
+
+- name: Enable DNS over TLS
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: '^#?DNSOverTLS='
+    line: 'DNSOverTLS=yes'
+  when: os == "arch"
+  become: true
+
+############################################################
+# SETUP SSH
+############################################################
+
+- name: Install SSH packages
+  community.general.pacman:
+    name:
+      - openssh
+      - sshguard
+      - x11-ssh-askpass
+    state: present
+  when: os == "arch"
+  become: true
+  retries: 5
+
+- name: Install SSH packages
+  community.general.pacman:
+    name:
+      - openssh-openrc
+      - sshguard-openrc
+      - x11-ssh-askpass
+    state: present
+  when: os == "artix"
+  become: true
+  retries: 5
+
+- name: Deploy sshguard config
+  ansible.builtin.template:
+    src: sshguard.conf.j2
+    dest: /etc/sshguard.conf
+    mode: "0644"
+  become: true
+
+############################################################
+# Blacklist modules
+############################################################
+
+- name: Deploy modprobe blacklist config
+  ansible.builtin.template:
+    src: blacklist.conf.j2
+    dest: /etc/modprobe.d/blacklist.conf
+    mode: "0644"
+  become: true
+
+- name: Blacklist pcspkr
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/nobeep.conf
+    content: "blacklist pcspkr\n"
+    mode: "0644"
+  become: true
+
+- name: Remove pcspkr module if loaded
+  ansible.builtin.command: rmmod pcspkr
+  register: rmmod_result
+  failed_when: false
+  changed_when: rmmod_result.rc == 0
+  become: true
+
+############################################################
+# System Optimization
+############################################################
+
+- name: Deploy IO scheduler rules
+  ansible.builtin.template:
+    src: 60-ioschedulers.rules.j2
+    dest: /etc/udev/rules.d/60-ioschedulers.rules
+    mode: "0644"
+  become: true
+
+- name: Set system umask to 077
+  ansible.builtin.lineinfile:
+    path: /etc/profile
+    regexp: '^umask'
+    line: 'umask 077'
+  become: true
+
+- name: Ensure /etc/modules-load.d present
+  become: true
+  ansible.builtin.file:
+    path: /etc/modules-load.d/
+    state: directory
+    mode: '0644'
+
+- name: Enable TCP BBR module load
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/bbr.conf
+    content: "tcp_bbr\n"
+    mode: "0644"
+  become: true
+
+- name: Deploy kernel performanceconfig
+  ansible.builtin.template:
+    src: 99-sysctl-performance-tweaks.conf.j2
+    dest: /etc/sysctl.d/99-sysctl-performance-tweaks.conf
+    mode: "0644"
+  become: true
+
+############################################################
+# FIREWALL
+############################################################
+
+- name: Install firewall packages
+  community.general.pacman:
+    name:
+      - nftables
+    state: present
+  when: os == "arch"
+  become: true
+  retries: 5
+
+- name: Install firewall packages
+  community.general.pacman:
+    name:
+      - nftables-openrc
+      - iptables-openrc
+    state: present
+  when: os == "artix"
+  become: true
+  retries: 5
+
+- name: Deploy nftables config
+  ansible.builtin.template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    mode: "0600"
+  become: true
+
+- name: Secure firewall config permissions
+  ansible.builtin.file:
+    path: /etc/nftables.conf
+    mode: "0700"
+  become: true
+
+############################################################
+# TimeShift
+############################################################
+
+- name: Install grub-btrfs
+  community.general.pacman:
+    name: grub-btrfs
+    state: present
+  when: os == "arch"
+  become: true
+  retries: 5
+
+- name: Install timeshift
+  yay:
+    name: timeshift
+    state: present
+  become: true
+  retries: 5
+
+- name: Clone grub-btrfs
+  git:
+    repo: https://github.com/Antynea/grub-btrfs
+    dest: /tmp/grub-btrfs
+    depth: 1
+  when: os == "artix"
+  retries: 5
+
+- name: Patch Makefile for OpenRC
+  lineinfile:
+    path: /tmp/grub-btrfs/Makefile
+    regexp: '^OPENRC'
+    line: 'OPENRC ?= true'
+  when: os == "artix"
+
+- name: Install grub-btrfs
+  command: make install
+  args:
+    chdir: /tmp/grub-btrfs
+    creates: /usr/bin/grub-btrfsd
+  when: os == "artix"
+  become: true
+
+- name: Remove grub-btrfs build directory
+  file:
+    path: /tmp/grub-btrfs
+    state: absent
+  when: os == "artix"
+
+############################################################
+# dnscrypt-proxy
+############################################################
+
+- name: Install dnscrypt-proxy
+  community.general.pacman:
+    name: dnscrypt-proxy
+    state: present
+  become: true
+  when: os == "arch"
+  retries: 5
+
+- name: Install dnscrypt-proxy
+  community.general.pacman:
+    name: dnscrypt-proxy-openrc
+    state: present
+  become: true
+  when: os == "artix"
+  retries: 5
+
+- name: Configure dnscrypt-proxy OpenRC user
+  ansible.builtin.lineinfile:
+    path: /etc/conf.d/dnscrypt-proxy
+    regexp: '^#?DNSCRYPT_PROXY_USER='
+    line: 'DNSCRYPT_PROXY_USER="root"'
+  when: os == "artix"
+  become: true
+
+- name: Set dnscrypt-proxy user_name
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^#?\s*user_name\s*='
+    line: "user_name = 'nobody'"
+  when: os == "artix"
+  become: true
+
+- name: Set dnscrypt-proxy init command_args
+  ansible.builtin.lineinfile:
+    path: /etc/init.d/dnscrypt-proxy
+    regexp: '^command_args='
+    line: 'command_args="${DNSCRYPT_PROXY_OPTS:--config /etc/dnscrypt-proxy/dnscrypt-proxy.toml} --logfile /var/log/dnscrypt-proxy/dnsprox.txt"'
+  when: os == "artix"
+  become: true
+
+- name: Set dnscrypt server names
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^#\sserver_names\s*='
+    line: "server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri','sfw.scaleway-fr','dnscrypt-de-blahdns-ipv4','dnscrypt-de-blahdns-ipv6','quad9-doh-ip6-port443-filter-ecs-pri','quad9-doh-ip6-port5053-filter-ecs-pri','ahadns-doh-nl','ahadns-doh-la','ams-dnscrypt-nl','scaleway-ams','dnscry.pt-amsterdam-ipv4','dnsforge.de','oszx','libredns-noads','mullvad-base-doh']"
+  become: true
+
+- name: Set dnscrypt listen addresses
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^listen_addresses\s*='
+    line: "listen_addresses = ['127.0.0.1:53', '[::1]:53']"
+  become: true
+
+- name: Enable DNSSEC
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^#?\s*require_dnssec\s*='
+    line: 'require_dnssec = true'
+  become: true
+
+- name: Set netprobe timeout
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^netprobe_timeout\s*='
+    line: 'netprobe_timeout = -1'
+  become: true
+
+- name: Enable HTTP3
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^http3\s*='
+    line: 'http3 = true'
+  become: true
+
+- name: Force TCP
+  ansible.builtin.lineinfile:
+    path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+    regexp: '^force_tcp\s*='
+    line: 'force_tcp = true'
+  become: true
+
+############################################################
+# dnsmasq
+############################################################
+
+- name: Install dnsmasq
+  community.general.pacman:
+    name: dnsmasq
+    state: present
+  become: true
+  when: os == "arch"
+  retries: 5
+
+- name: Install dnsmasq
+  community.general.pacman:
+    name: dnsmasq-openrc
+    state: present
+  become: true
+  when: os == "artix"
+  retries: 5
+
+- name: Deploy dnsmasq config
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    mode: "0644"
+  become: true
+
+- name: Remove immutable flag from resolv.conf
+  command: chattr -i /etc/resolv.conf
+  failed_when: false
+  changed_when: false
+  become: true
+
+- name: Deploy resolv.conf from template
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: "0644"
+  become: true
+
+- name: Set immutable flag on resolv.conf
+  command: chattr +i /etc/resolv.conf
+  become: true
+
+
+############################################################
+# Enable Servies
+############################################################
+
+- name: Enable zram service
+  service:
+    name: zram
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable zram service
+  ansible.builtin.service:
+    name: systemd-zram-setup@zram0.service
+    enabled: true
+  become: true
+  when: os == "arch"
+
+- name: Enable AppArmor
+  service:
+    name: apparmor
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable AppArmor
+  ansible.builtin.service:
+    name: apparmor.service
+    enabled: true
+  become: true
+  when: os == "arch"
+
+- name: Regenerate GRUB config
+  ansible.builtin.command: grub-mkconfig -o /boot/grub/grub.cfg
+  become: true
+
+- name: Enable nftables
+  service:
+    name: nftables
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable nftables
+  ansible.builtin.service:
+    name: nftables
+    enabled: true
+  become: true
+  when: os == "arch"
+
+- name: Save nftables
+  ansible.builtin.command: rc-service nftables save
+  when: os == "artix"
+  become: true
+
+- name: Enable grub-btrfsd
+  service:
+    name: grub-btrfsd
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable grub-btrfsd
+  service:
+    name: grub-btrfsd
+    enabled: true
+  when: os == "arch"
+  become: true
+
+- name: Enable dnscrypt-proxy
+  service:
+    name: dnscrypt-proxy
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable dnscrypt-proxy
+  ansible.builtin.service:
+    name: dnscrypt-proxy
+    enabled: true
+  become: true
+  when: os == "arch"
+
+- name: Enable dnsmasq
+  service:
+    name: dnsmasq
+    enabled: true
+    runlevel: default
+  become: true
+  when: os == "artix"
+
+- name: Enable dnsmasq
+  service:
+    name: dnsmasq
+    enabled: true
+  become: true
+  when: os == "arch"

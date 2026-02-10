@@ -1,0 +1,5 @@
+---
+
+- import_tasks: 1_packages.yaml
+- import_tasks: 2_pacstrap.yaml
+- import_tasks: 3_fstab.yaml

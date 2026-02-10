@@ -1,0 +1,218 @@
+---
+- name: Set mirror file path
+  set_fact:
+    arch_mirror_file: >-
+      {{ '/etc/pacman.d/mirrorlist-arch'
+         if os == 'artix'
+         else '/etc/pacman.d/mirrorlist' }}
+    pacman_conf: /etc/pacman.conf
+    rate_mirror_dst: /usr/bin/rate-mirrors
+
+- name: Enable and start systemd-timesyncd
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    enabled: true
+    state: started
+  become: true
+  when: os == "arch"
+
+- name: Enable ntpd service
+  ansible.builtin.service:
+    name: ntpd
+    enabled: true
+    state: started
+  become: true
+  when: os == "artix"
+
+- name: Enable Color
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^#?Color'
+    line: 'Color'
+    state: present
+  become: true
+
+- name: Enable ILoveCandy
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^ILoveCandy'
+    line: 'ILoveCandy'
+    insertafter: '^Color'
+    state: present
+  become: true
+
+- name: Set ParallelDownloads
+  lineinfile:
+    path: '{{ pacman_conf }}'
+    regexp: '^#?ParallelDownloads'
+    line: 'ParallelDownloads = 16'
+    state: present
+  become: true
+
+- name: Artix specific configuration
+  block:
+    - name: Get latest rate-mirrors release info
+      uri:
+        url: https://api.github.com/repos/westandskif/rate-mirrors/releases/latest
+        return_content: yes
+      register: rate_mirrors_release
+      changed_when: false
+
+    - name: Set rate-mirrors version
+      set_fact:
+        rate_mirrors_version: "{{ rate_mirrors_release.json.tag_name | trim }}"
+
+    - name: Set download URL
+      set_fact:
+        rate_mirrors_url: >-
+          https://github.com/westandskif/rate-mirrors/releases/download/{{ rate_mirrors_version }}/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl.tar.gz
+
+    - name: Download rate-mirrors tarball
+      get_url:
+        url: "{{ rate_mirrors_url | replace('\n','') }}"
+        dest: /tmp/rate-mirrors.tar.gz
+        mode: "0644"
+      retries: 5
+
+    - name: Ensure temporary extraction directory exists
+      file:
+        path: /tmp/rate-mirrors
+        state: directory
+
+    - name: Extract rate-mirrors
+      unarchive:
+        src: /tmp/rate-mirrors.tar.gz
+        dest: /tmp/rate-mirrors
+        remote_src: true
+        creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
+
+    - name: Install rate-mirrors binary
+      copy:
+        src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
+        dest: '{{ rate_mirror_dst }}'
+        mode: "0755"
+        remote_src: true
+      become: true
+
+    - name: Cleanup extracted directory
+      file:
+        path: /tmp/rate-mirrors
+        state: absent
+
+    - name: Cleanup tarball
+      file:
+        path: /tmp/rate-mirrors.tar.gz
+        state: absent
+
+    - name: Force refresh database
+      community.general.pacman:
+        update_cache: true
+        force: true
+      become: true
+
+    - name: Install artix-archlinux-support
+      community.general.pacman:
+        name: artix-archlinux-support
+        state: present
+      become: true
+      retries: 5
+
+    - name: Add Arch extra repo
+      blockinfile:
+        path: '{{ pacman_conf }}'
+        marker: "# {mark} Arch Repos"
+        block: |
+          [extra]
+          Include = /etc/pacman.d/mirrorlist-arch
+      become: true
+
+    - name: Populate Arch keyring
+      command: pacman-key --populate archlinux
+      changed_when: false
+      become: true
+
+    - name: Generate mirrorlist-arch
+      command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
+      changed_when: false
+      become: true
+
+    - name: Force refresh database
+      community.general.pacman:
+        update_cache: true
+        force: true
+      become: true
+  when: os == "artix"
+
+- name: Arch specific configuration
+  block:
+    - name: Get latest rate-mirrors release info
+      uri:
+        url: https://api.github.com/repos/westandskif/rate-mirrors/releases/latest
+        return_content: yes
+      register: rate_mirrors_release
+      changed_when: false
+
+    - name: Set rate-mirrors version
+      set_fact:
+        rate_mirrors_version: "{{ rate_mirrors_release.json.tag_name | trim }}"
+
+    - name: Set download URL
+      set_fact:
+        rate_mirrors_url: >-
+          https://github.com/westandskif/rate-mirrors/releases/download/{{ rate_mirrors_version }}/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl.tar.gz
+
+    - name: Download rate-mirrors tarball
+      get_url:
+        url: "{{ rate_mirrors_url | replace('\n','') }}"
+        dest: /tmp/rate-mirrors.tar.gz
+        mode: "0644"
+      retries: 5
+
+    - name: Ensure temporary extraction directory exists
+      file:
+        path: /tmp/rate-mirrors
+        state: directory
+
+    - name: Extract rate-mirrors
+      unarchive:
+        src: /tmp/rate-mirrors.tar.gz
+        dest: /tmp/rate-mirrors
+        remote_src: true
+        creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
+
+    - name: Install rate-mirrors binary
+      copy:
+        src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
+        dest: '{{ rate_mirror_dst }}'
+        mode: "0755"
+        remote_src: true
+      become: true
+
+    - name: Cleanup extracted directory
+      file:
+        path: /tmp/rate-mirrors
+        state: absent
+
+    - name: Cleanup tarball
+      file:
+        path: /tmp/rate-mirrors.tar.gz
+        state: absent
+
+    - name: Generate mirrorlist-arch
+      command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
+      changed_when: false
+      become: true
+
+    - name: Force refresh database
+      community.general.pacman:
+        update_cache: true
+        force: true
+      become: true
+
+    - name: Install archlinux-keyring
+      community.general.pacman:
+        name: archlinux-keyring
+        state: present
+      become: true
+      retries: 5
+  when: os == "arch"

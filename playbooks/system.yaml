@@ -1,0 +1,9 @@
+---
+
+- hosts: pc
+  name: System Installation
+  vars:
+    chroot_env: true
+  roles:
+    - role: common/pacman
+    - role: 4_system

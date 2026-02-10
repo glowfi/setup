@@ -1,0 +1,12 @@
+all:
+  vars:
+    os: arch    # arch artix
+    de_wm : kde # kde dwm
+
+    repo_country: DE
+    git_user_name: glowfi
+    git_user_email: "86939591+glowfi@users.noreply.github.com"
+  hosts:
+    pc:
+      ansible_host: 192.168.53.63
+      ansible_user: username

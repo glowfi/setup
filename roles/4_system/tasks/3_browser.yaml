@@ -1,0 +1,283 @@
+---
+
+- name: Set Brave variables
+  set_fact:
+    brave_bin: brave
+    brave_folder: Brave-Browser
+    brave_secondary_profile: Tmp
+    brave_config_dir: "{{ ansible_env.HOME }}/.config/BraveSoftware"
+
+- name: Remove system Brave policies directory
+  file:
+    path: /etc/brave
+    state: absent
+  become: true
+
+- name: Remove user Brave config
+  file:
+    path: "{{ ansible_env.HOME }}/.config/BraveSoftware"
+    state: absent
+
+- name: Install Brave browser
+  yay:
+    name: brave-bin
+    state: present
+  retries: 5
+
+- name: Create Brave policy directory
+  file:
+    path: /etc/brave/policies/managed
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Deploy Brave policy.json
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/policy.json"
+    dest: /etc/brave/policies/managed/brave-policy.json
+    mode: "0644"
+    remote_src: true
+  become: true
+
+############################################################
+# DEFAULT PROFILE
+############################################################
+
+- name: Start Brave headless (default profile)
+  ansible.builtin.shell: >
+    sudo -u {{ ansible_user }} {{ brave_bin }} --headless=new &
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Ensure Default profile directory exists
+  file:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/Default"
+    state: directory
+    mode: "0755"
+
+- name: Wait for Brave to initialize profile
+  wait_for:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/Default"
+    timeout: 10
+
+- name: Kill Brave process (default profile)
+  ansible.builtin.shell: >
+    pkill -u {{ ansible_user }} {{ brave_bin }} || true
+  changed_when: false
+
+- name: Remove SingletonLock (default)
+  file:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/SingletonLock"
+    state: absent
+
+############################################################
+# SECONDARY PROFILE
+############################################################
+
+- name: Start Brave headless (secondary profile)
+  ansible.builtin.shell: >
+    sudo -u {{ ansible_user }} {{ brave_bin }}
+    --headless=new
+    --profile-directory={{ brave_secondary_profile }} &
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Ensure Secondary profile directory exists
+  file:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}"
+    state: directory
+    mode: "0755"
+
+- name: Wait for Secondary profile initialization
+  wait_for:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}"
+    timeout: 10
+
+- name: Kill Brave process (secondary profile)
+  ansible.builtin.shell: >
+    pkill -u {{ ansible_user }} {{ brave_bin }} || true
+  changed_when: false
+
+- name: Remove SingletonLock (secondary)
+  file:
+    path: "{{ brave_config_dir }}/{{ brave_folder }}/SingletonLock"
+    state: absent
+
+############################################################
+# COPY PREFERENCES
+############################################################
+
+- name: Deploy Default Preferences
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
+    dest: "{{ brave_config_dir }}/{{ brave_folder }}/Default/Preferences"
+    mode: "0644"
+    remote_src: true
+
+- name: Deploy Secondary Preferences
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
+    dest: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}/Preferences"
+    mode: "0644"
+    remote_src: true
+
+############################################################
+# Librewolf Installation
+############################################################
+
+- name: Install librewolf
+  yay:
+    name: librewolf-bin
+    state: present
+  retries: 5
+
+############################################################
+# Variables
+############################################################
+
+- name: Set Librewolf variables
+  set_fact:
+    librewolf_profile_root: "{{ ansible_env.HOME }}/.config/librewolf"
+    librewolf_policy_file: "/usr/lib/librewolf/distribution/policies.json"
+    librewolf_extensions:
+      - "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi"
+      - "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi"
+      - "https://addons.mozilla.org/firefox/downloads/latest/port-authority/latest.xpi"
+
+############################################################
+# Generate Profile
+############################################################
+
+- name: Start Librewolf headless to generate profile
+  shell: sudo -u {{ ansible_user }} librewolf --headless &
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Wait for profile creation
+  wait_for:
+    path: "{{ librewolf_profile_root }}"
+    timeout: 15
+
+- name: Kill Librewolf
+  shell: pkill -u {{ ansible_user }} librewolf || true
+  changed_when: false
+
+############################################################
+# Install libw launcher
+############################################################
+
+- name: Ensure ~/.local/bin exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Copy libw launcher script
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/scripts/libw"
+    dest: "{{ ansible_env.HOME }}/.local/bin/libw"
+    mode: "0755"
+    remote_src: true
+
+############################################################
+# Add Extensions to policies.json
+############################################################
+
+- name: Read existing Librewolf policies.json
+  ansible.builtin.slurp:
+    src: "{{ librewolf_policy_file }}"
+  register: librewolf_policy_raw
+  become: true
+
+- name: Decode JSON
+  ansible.builtin.set_fact:
+    librewolf_policy_json: "{{ librewolf_policy_raw.content | b64decode | from_json }}"
+
+- name: Patch Extensions block
+  ansible.builtin.set_fact:
+    librewolf_policy_json: >-
+      {{
+        librewolf_policy_json
+        | combine({
+            "policies": {
+              "Extensions": {
+                "Install": [
+                  "https://addons.mozilla.org/firefox/downloads/latest/port-authority/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi",
+                  "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+                ],
+                "Uninstall": [
+                  "google@search.mozilla.org",
+                  "bing@search.mozilla.org",
+                  "amazondotcom@search.mozilla.org",
+                  "ebay@search.mozilla.org",
+                  "twitter@search.mozilla.org"
+                ]
+              }
+            }
+          }, recursive=True)
+      }}
+
+- name: Write patched policies.json back
+  ansible.builtin.copy:
+    dest: "{{ librewolf_policy_file }}"
+    content: "{{ librewolf_policy_json | to_nice_json }}"
+    mode: "0644"
+  become: true
+
+############################################################
+# Locate Default Profile
+############################################################
+
+- name: Find default Librewolf profile
+  find:
+    paths: "{{ librewolf_profile_root }}"
+    patterns: "*default-default*"
+    file_type: directory
+    recurse: true
+  register: lw_profile
+
+- name: Set default profile path
+  set_fact:
+    lw_profile_path: "{{ lw_profile.files[0].path }}"
+  when: lw_profile.matched > 0
+
+############################################################
+# Arkenfox user.js
+############################################################
+
+- name: Download arkenfox user.js
+  get_url:
+    url: https://raw.githubusercontent.com/arkenfox/user.js/master/user.js
+    dest: "{{ lw_profile_path }}/user.js"
+    mode: "0644"
+  retries: 5
+
+############################################################
+# Append Overrides
+############################################################
+
+- name: Append custom overrides to user.js
+  blockinfile:
+    path: "{{ lw_profile_path }}/user.js"
+    marker: "// {mark} ANSIBLE OVERRIDES"
+    block: |
+      user_pref("keyword.enabled", true);
+      user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+      user_pref("general.smoothScroll", true);
+      user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
+      user_pref("general.smoothScroll.msdPhysics.enabled", true);
+      user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant", 600);
+      user_pref("general.smoothScroll.msdPhysics.regularSpringConstant", 650);
+      user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS", 25);
+      user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio", 2.0);
+      user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
+      user_pref("general.smoothScroll.currentVelocityWeighting", 1.0);
+      user_pref("general.smoothScroll.stopDecelerationWeighting", 1.0);
+      user_pref("mousewheel.default.delta_multiplier_y", 300);
+      user_pref("privacy.resistFingerprinting", true);
+      user_pref("privacy.resistFingerprinting.letterboxing", true);

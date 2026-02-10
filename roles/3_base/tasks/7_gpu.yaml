@@ -1,0 +1,34 @@
+---
+- name: Install NVIDIA drivers
+  pacman_bootstrap:
+    name:
+      - nvidia-dkms
+      - nvidia-utils
+      - nvidia-settings
+      - nvidia-prime
+      - nvtop
+    state: present
+    chroot_mountpoint: /mnt
+  when: gpu == "nvidia"
+  retries: 5
+
+- name: Install AMD drivers
+  pacman_bootstrap:
+    name:
+      - xf86-video-amdgpu
+    state: present
+    chroot_mountpoint: /mnt
+  when: gpu == "amd"
+  retries: 5
+
+- name: Install Intel drivers
+  pacman_bootstrap:
+    name:
+      - libva-intel-driver
+      - libvdpau-va-gl
+      - vulkan-intel
+      - libva-utils
+    state: present
+    chroot_mountpoint: /mnt
+  when: gpu == "intel"
+  retries: 5

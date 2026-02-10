@@ -1,0 +1,17 @@
+- name: Define base package list
+  set_fact:
+    base_packages: >-
+      {{
+        [
+          'base',
+          'base-devel',
+          kernel,
+          kernel ~ '-headers',
+          'linux-firmware',
+          ('intel-ucode' if cpu == 'intel' else 'amd-ucode'),
+          'git',
+          'vim'
+        ]
+        + (['btrfs-progs'] if file_system == 'btrfs' else [])
+        + (['openrc','elogind-openrc'] if os == 'artix' else [])
+      }}

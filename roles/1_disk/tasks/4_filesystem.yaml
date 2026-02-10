@@ -1,0 +1,13 @@
+---
+
+- name: Format EFI partition
+  community.general.filesystem:
+    state: present
+    dev: "{{ efi_part }}"
+    fstype: vfat
+
+- name: Format root filesystem
+  community.general.filesystem:
+    state: present
+    dev: "{{ root_device }}"
+    fstype: "{{ file_system }}"

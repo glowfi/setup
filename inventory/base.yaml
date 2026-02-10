@@ -1,0 +1,36 @@
+all:
+  vars:
+    os: arch                       # arch artix
+    host_name: arch                # hostname of the system
+    timezone: Asia/Kolkata         # curl --fail https://ipapi.co/timezone
+    keyboard_layout: us            # us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk
+
+    file_system: btrfs             # btrfs ext4
+    drive_type: ssd                # ssd non-ssd
+    disk: /dev/sda                 # do a lsblk and check
+    encrypt_disk: true
+    encryption_password: password
+
+    repo_country: DE
+    users:
+      - name: root
+        password: p
+
+      - name: username
+        full_name: fullname
+        password: p
+        groups:
+          # - docker
+          # - libvirt
+          - video
+          - input
+          - wheel
+    cpu: amd    # amd intel
+    gpu: nvidia # amd intel nvidia
+
+    secure_boot: false
+    kernel: linux-zen # linux linux-zen linux-lts linux-hardened
+  hosts:
+    pc:
+      ansible_host: 192.168.53.67
+      ansible_user: root

@@ -1,0 +1,6 @@
+---
+- name: Configure repositories
+  import_role:
+    name: common/pacman
+  vars:
+    chroot_env: true
