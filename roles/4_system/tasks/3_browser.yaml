@@ -22,6 +22,7 @@
   yay:
     name: brave-bin
     state: present
+  retries: 5
 
 - name: Create Brave policy directory
   file:
@@ -130,6 +131,7 @@
   yay:
     name: librewolf-bin
     state: present
+  retries: 5
 
 ############################################################
 # Variables
@@ -253,6 +255,7 @@
     url: https://raw.githubusercontent.com/arkenfox/user.js/master/user.js
     dest: "{{ lw_profile_path }}/user.js"
     mode: "0644"
+  retries: 5
 
 ############################################################
 # Append Overrides

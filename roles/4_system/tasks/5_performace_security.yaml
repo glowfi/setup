@@ -27,6 +27,7 @@
     name: zram-openrc
     state: present
   when: os == "artix"
+  retries: 5
 
 - name: Configure zram size
   ansible.builtin.lineinfile:
@@ -43,6 +44,7 @@
     state: present
   become: true
   when: os == "arch"
+  retries: 5
 
 - name: Configure zram-generator
   ansible.builtin.blockinfile:
@@ -65,6 +67,7 @@
     state: present
   become: true
   when: os == "arch"
+  retries: 5
 
 - name: Install AppArmor
   community.general.pacman:
@@ -72,6 +75,7 @@
     state: present
   become: true
   when: os == "artix"
+  retries: 5
 
 - name: Configure AppArmor parser
   ansible.builtin.lineinfile:
@@ -135,6 +139,7 @@
     state: present
   when: os == "arch"
   become: true
+  retries: 5
 
 - name: Install SSH packages
   community.general.pacman:
@@ -145,6 +150,7 @@
     state: present
   when: os == "artix"
   become: true
+  retries: 5
 
 - name: Deploy sshguard config
   ansible.builtin.template:
@@ -228,6 +234,7 @@
     state: present
   when: os == "arch"
   become: true
+  retries: 5
 
 - name: Install firewall packages
   community.general.pacman:
@@ -237,6 +244,7 @@
     state: present
   when: os == "artix"
   become: true
+  retries: 5
 
 - name: Deploy nftables config
   ansible.builtin.template:
@@ -261,12 +269,14 @@
     state: present
   when: os == "arch"
   become: true
+  retries: 5
 
 - name: Install timeshift
   yay:
     name: timeshift
     state: present
   become: true
+  retries: 5
 
 - name: Clone grub-btrfs
   git:
@@ -274,6 +284,7 @@
     dest: /tmp/grub-btrfs
     depth: 1
   when: os == "artix"
+  retries: 5
 
 - name: Patch Makefile for OpenRC
   lineinfile:
@@ -306,6 +317,7 @@
     state: present
   become: true
   when: os == "arch"
+  retries: 5
 
 - name: Install dnscrypt-proxy
   community.general.pacman:
@@ -313,6 +325,7 @@
     state: present
   become: true
   when: os == "artix"
+  retries: 5
 
 - name: Configure dnscrypt-proxy OpenRC user
   ansible.builtin.lineinfile:
@@ -390,6 +403,7 @@
     state: present
   become: true
   when: os == "arch"
+  retries: 5
 
 - name: Install dnsmasq
   community.general.pacman:
@@ -397,6 +411,7 @@
     state: present
   become: true
   when: os == "artix"
+  retries: 5
 
 - name: Deploy dnsmasq config
   template:

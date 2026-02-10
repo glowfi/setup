@@ -23,6 +23,7 @@
         repo: https://aur.archlinux.org/yay-bin.git
         dest: /tmp/yay-bin
         update: no
+      retries: 5
 
     - name: Build yay package
       command: makepkg -s --noconfirm
@@ -31,10 +32,13 @@
         creates: /tmp/yay-bin/yay-bin-*.pkg.tar.zst
       become: false
 
-    - name: Find built yay package
+    - name: Find the regular yay package
       find:
         paths: /tmp/yay-bin
         patterns: "yay-bin-*.pkg.tar.zst"
+        excludes: "*debug*.pkg.tar.zst"
+        file_type: file
+        recurse: no
       register: yay_pkg
 
     - name: Install yay with pacman
@@ -51,7 +55,7 @@
         group: root
         mode: '0440'
         content: |
-          {{ target_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman, /usr/bin/yay
+          {{ ansible_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman, /usr/bin/yay
 
   always:
     - name: Remove yay build directory
@@ -80,6 +84,7 @@
     state: present
     update_cache: true
   become: true
+  retries: 5
 
 ############################################################
 # CORE (Fonts)
@@ -93,6 +98,7 @@
       - noto-fonts-emoji
     state: present
   become: true
+  retries: 5
 
 - name: Install AUR fonts
   yay:
@@ -102,6 +108,7 @@
       - ttf-ms-fonts
       - ttf-vista-fonts
     state: present
+  retries: 5
 
 
 ############################################################
@@ -121,6 +128,7 @@
     state: present
   when: os == "arch"
   become: true
+  retries: 5
 
 - name: Install audio packages openrc variant
   community.general.pacman:
@@ -135,6 +143,7 @@
     state: present
   when: os == "artix"
   become: true
+  retries: 5
 
 - name: Install Bluetooth packages
   community.general.pacman:
@@ -144,6 +153,7 @@
       - blueman
     state: present
   become: true
+  retries: 5
 
 - name: Install audio utilities
   community.general.pacman:
@@ -153,6 +163,7 @@
       - lsp-plugins
     state: present
   become: true
+  retries: 5
 
 - name: Ensure EasyEffects config directories exist
   file:
@@ -168,6 +179,7 @@
     url: https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh
     dest: /tmp/easyeffects-install.sh
     mode: "0755"
+  retries: 5
 
 - name: Run EasyEffects installer non-interactively
   shell: |
@@ -213,6 +225,7 @@
       - mpv
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # CORE (IMAGE)
@@ -225,6 +238,7 @@
       - ffmpegthumbnailer
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # CORE (EXTRAS)
@@ -243,11 +257,13 @@
       - gum
     state: present
   become: true
+  retries: 5
 
 - name: Install localsend
   yay:
     name: localsend-bin
     state: present
+  retries: 5
 
 ############################################################
 # IMAGE
@@ -276,6 +292,7 @@
     repo: https://github.com/Diolinux/PhotoGIMP
     dest: "{{ ansible_env.HOME }}/.config/GIMP/3.0/PhotoGIMP"
     depth: 1
+  retries: 5
 
 - name: Copy PhotoGIMP config into GIMP directory
   copy:
@@ -318,6 +335,7 @@
     name: tectonic
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # TERMINAL TOMFOOLERY
@@ -335,12 +353,14 @@
       - sl
     state: present
   become: true
+  retries: 5
 
 - name: Clone figlet fonts repository
   git:
     repo: https://github.com/xero/figlet-fonts
     dest: /tmp/figlet-fonts
     update: no
+  retries: 5
 
 - name: Ensure figlet fonts directory exists
   file:
@@ -371,6 +391,7 @@
     name: rnote
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # CLONE DOTFILES REPO
@@ -382,6 +403,7 @@
     dest: "/home/{{ ansible_user }}/.dotfiles"
     update: yes
   become: false
+  retries: 5
 
 
 ############################################################
@@ -461,6 +483,7 @@
       - nnn
     state: present
   become: true
+  retries: 5
 
 
 - name: Ensure nnn plugin directory exists

@@ -43,6 +43,7 @@
     name: pip
     state: latest
     executable: pip3
+  retries: 5
 
 ############################################################
 # CORE PYTHON BUILD TOOLS
@@ -55,6 +56,7 @@
       - sortedcontainers
     state: latest
     executable: pip3
+  retries: 5
 
 ############################################################
 # PYTHON DEV TOOLING
@@ -68,6 +70,7 @@
       - wheel
     state: latest
     executable: pip3
+  retries: 5
 
 ############################################################
 # PYTHON GTK / SYSTEM INTERFACE
@@ -78,6 +81,7 @@
     name: pygobject
     state: latest
     executable: pip3
+  retries: 5
 
 ############################################################
 # PYTHON MISC TOOLS
@@ -94,6 +98,7 @@
       - pygments
     state: latest
     executable: pip3
+  retries: 5
 
 ############################################################
 # MINICONDA INSTALL
@@ -116,6 +121,7 @@
     dest: "/home/{{ ansible_user }}/miniconda3/miniconda.sh"
     mode: "0755"
   when: not miniconda_installer.stat.exists
+  retries: 5
 
 - name: Install Miniconda silently
   command: >
@@ -139,6 +145,7 @@
     name: direnv
     state: present
   become: true
+  retries: 5
 
 
 ############################################################
@@ -177,6 +184,7 @@
     dest: "{{ ansible_env.HOME }}/node.tar.xz"
     mode: "0644"
   when: not node_binary.stat.exists
+  retries: 5
 
 - name: Extract NodeJS
   unarchive:
@@ -225,6 +233,7 @@
     executable: "{{ npm_exec }}"
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 - name: Install global npm packages
   community.general.npm:
@@ -236,6 +245,7 @@
     - md-to-pdf
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 ############################################################
 # Fix md-to-pdf highlight.js
@@ -267,6 +277,7 @@
   shell: curl -fsSL https://bun.sh/install | bash
   args:
     creates: "{{ ansible_env.HOME }}/.bun"
+  retries: 5
 
 ############################################################
 # RUST INSTALLATION
@@ -277,6 +288,7 @@
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   args:
     creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
+  retries: 5
 
 - name: Ensure stable toolchain
   command: "{{ ansible_env.HOME }}/.cargo/bin/rustup default stable"
@@ -291,12 +303,14 @@
     repo: https://github.com/rust-analyzer/rust-analyzer.git
     dest: /tmp/rust-analyzer
     depth: 1
+  retries: 5
 
 - name: Install rust-analyzer server
   command: cargo xtask install --server
   args:
     chdir: /tmp/rust-analyzer
     creates: "{{ ansible_env.HOME }}/.cargo/bin/rust-analyzer"
+  retries: 5
 
 - name: Remove rust-analyzer source
   file:
@@ -316,6 +330,7 @@
     - csvlens
   environment:
     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 - name: Check if nerdfix is already installed
   stat:
@@ -328,6 +343,7 @@
   when: not nerdfix_bin.stat.exists
   environment:
     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 
 ############################################################
@@ -351,6 +367,7 @@
     dest: /tmp/go.tar.gz
     mode: "0644"
   when: not go_installed.stat.exists
+  retries: 5
 
 - name: Extract Go into ~/.local/bin
   ansible.builtin.unarchive:
@@ -400,6 +417,7 @@
     - github.com/golangci/misspell/cmd/misspell@latest
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 
 ############################################################
@@ -432,6 +450,7 @@
     url: "https://github.com/LuaLS/lua-language-server/releases/download/{{ lua_ls_version }}/lua-language-server-{{ lua_ls_version }}-linux-x64.tar.gz"
     dest: "/tmp/lua-ls.tar.gz"
   when: not lua_ls_binary.stat.exists
+  retries: 5
 
 - name: Create LuaLS install directory
   ansible.builtin.file:
@@ -457,6 +476,7 @@
     state: latest
   environment:
     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 ############################################################
 # FZF TERMINAL INTEGRATION
@@ -467,6 +487,7 @@
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ ansible_env.HOME }}/.fzf"
     depth: 1
+  retries: 5
 
 - name: Install fzf non-interactively
   ansible.builtin.shell: |
@@ -482,12 +503,14 @@
   ansible.builtin.pip:
     name: numerize
     state: present
+  retries: 5
 
 - name: Clone sYT repository
   ansible.builtin.git:
     repo: https://github.com/glowfi/sYT
     dest: /tmp/sYT
     depth: 1
+  retries: 5
 
 - name: Ensure ~/.local/bin exists
   ansible.builtin.file:
@@ -550,24 +573,28 @@
     url: https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/webm.lua"
     mode: "0644"
+  retries: 5
 
 - name: Download thumbfast.lua
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.lua
     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/thumbfast.lua"
     mode: "0644"
+  retries: 5
 
 - name: Download osc.lua
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/po5/thumbfast/vanilla-osc/player/lua/osc.lua
     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/osc.lua"
     mode: "0644"
+  retries: 5
 
 - name: Clone PureMPV repository
   ansible.builtin.git:
     repo: https://github.com/4ndrs/PureMPV
     dest: "{{ ansible_env.HOME }}/.config/mpv/scripts/PureMPV"
     depth: 1
+  retries: 5
 
 
 ############################################################
@@ -607,6 +634,7 @@
     repo: https://github.com/thameera/vimv
     dest: /tmp/vimv
     depth: 1
+  retries: 5
 
 - name: Install vimv binary
   copy:
@@ -637,18 +665,21 @@
       - ffmpeg-python
       - typing-extensions
     state: present
+  retries: 5
 
 - name: Install gifsicle
   community.general.pacman:
     name: gifsicle
     state: present
   become: true
+  retries: 5
 
 - name: Clone ezgif-essentials
   git:
     repo: https://github.com/winstxnhdw/ezgif-essentials
     dest: /tmp/ezgif
     depth: 1
+  retries: 5
 
 - name: Build ezgif binary
   command: >
@@ -708,6 +739,7 @@
     dest: "{{ ansible_env.HOME }}/.local/bin/beekeeper"
     mode: "0755"
   when: not beekeeper.stat.exists
+  retries: 5
 
 ############################################################
 # Download Bruno AppImage
@@ -715,7 +747,7 @@
 
 - name: Check if Bruno exists
   stat:
-    path: "{{ ansible_env.HOME }}/.local/bin/beekeeper"
+    path: "{{ ansible_env.HOME }}/.local/bin/bruno"
   register: bruno
 
 - name: Get latest Bruno release
@@ -736,6 +768,7 @@
     dest: "{{ ansible_env.HOME }}/.local/bin/bruno"
     mode: "0755"
   when: not bruno.stat.exists
+  retries: 5
 
 ############################################################
 # Install virtualization packages
@@ -777,6 +810,7 @@
       - cdrtools
     state: present
   become: true
+  retries: 5
 
 - name: Add user to libvirt group
   user:
@@ -807,6 +841,7 @@
       - docker-compose
     state: present
   become: true
+  retries: 5
 
 - name: Add user to docker group
   user:
@@ -820,35 +855,38 @@
    "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/jesseduffield/lazydocker@latest
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 ############################################################
 # K8s
 ############################################################
 
-- name: Check if K8s exists
+- name: Check if kubectl exists
   stat:
-    path: "{{ ansible_env.HOME }}/.local/bin/beekeeper"
-  register: k8s
+    path: "{{ ansible_env.HOME }}/.local/bin/kubectl"
+  register: kubectl
 
 - name: Download stable kubectl version
   uri:
     url: https://dl.k8s.io/release/stable.txt
     return_content: yes
   register: kubectl_version
-  when: not k8s.stat.exists
+  when: not kubectl.stat.exists
 
 - name: Download kubectl binary
   get_url:
     url: "https://dl.k8s.io/release/{{ kubectl_version.content | trim }}/bin/linux/amd64/kubectl"
     dest: "{{ ansible_env.HOME }}/.local/bin/kubectl"
     mode: "0755"
-  when: not k8s.stat.exists
+  when: not kubectl.stat.exists
+  retries: 5
 
 - name: Install k9s
   shell: >
     "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/derailed/k9s@latest
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 ############################################################
 # Install Zed
@@ -859,6 +897,7 @@
     name: zed
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # Install Neovim
@@ -877,6 +916,7 @@
       - neovim
     state: present
   become: true
+  retries: 5
 
 - name: Install Neovim pip packages
   ansible.builtin.pip:
@@ -885,6 +925,7 @@
       - black
       - ruff
       - djlint
+  retries: 5
 
 - name: Install global npm LSP packages
   community.general.npm:
@@ -906,6 +947,7 @@
     - graphql-language-service-cli
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin/nodeJS/bin:{{ ansible_env.PATH }}"
+  retries: 5
 
 - name: Copy nvim config
   copy:
@@ -932,6 +974,7 @@
     dest: "{{ ansible_env.HOME }}/.local/bin/youtube-local"
     depth: 1
     update: no
+  retries: 5
 
 - name: Create virtual environment for youtube-local
   ansible.builtin.command: python -m venv env
@@ -943,6 +986,7 @@
   ansible.builtin.pip:
     requirements: "{{ ansible_env.HOME }}/.local/bin/youtube-local/requirements.txt"
     virtualenv: "{{ ansible_env.HOME }}/.local/bin/youtube-local/env"
+  retries: 5
 
 ############################################################
 # OCR
@@ -955,6 +999,7 @@
       - tesseract-data-eng
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # Ueberzugpp + Dependencies
@@ -966,6 +1011,7 @@
       - ueberzugpp
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # Legacy ueberzug
@@ -978,18 +1024,21 @@
       - libxres
     state: present
   become: true
+  retries: 5
 
 - name: Clone legacy ueberzug
   ansible.builtin.git:
     repo: https://github.com/ueber-devel/ueberzug
     dest: /tmp/ueberzug
     depth: 1
+  retries: 5
 
 - name: Install ueberzug via pip
   ansible.builtin.pip:
     chdir: /tmp/ueberzug
     name: .
     editable: false
+  retries: 5
 
 - name: Remove ueberzug temp directory
   ansible.builtin.file:
@@ -1007,6 +1056,7 @@
       - github-cli
     state: present
   become: true
+  retries: 5
 
 - name: Configure git user name
   community.general.git_config:

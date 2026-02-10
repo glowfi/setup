@@ -72,6 +72,7 @@
         url: "{{ rate_mirrors_url | replace('\n','') }}"
         dest: /tmp/rate-mirrors.tar.gz
         mode: "0644"
+      retries: 5
 
     - name: Ensure temporary extraction directory exists
       file:
@@ -114,6 +115,7 @@
         name: artix-archlinux-support
         state: present
       become: true
+      retries: 5
 
     - name: Add Arch extra repo
       blockinfile:
@@ -164,6 +166,7 @@
         url: "{{ rate_mirrors_url | replace('\n','') }}"
         dest: /tmp/rate-mirrors.tar.gz
         mode: "0644"
+      retries: 5
 
     - name: Ensure temporary extraction directory exists
       file:
@@ -211,4 +214,5 @@
         name: archlinux-keyring
         state: present
       become: true
+      retries: 5
   when: os == "arch"

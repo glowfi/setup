@@ -14,6 +14,7 @@
     state: present
     update_cache: true
   become: true
+  retries: 5
 
 
 ############################################################
@@ -29,6 +30,7 @@
       - kdecoration
     state: present
   become: true
+  retries: 5
 
 
 ############################################################
@@ -42,6 +44,7 @@
       - xdg-desktop-portal-kde
     state: present
   become: true
+  retries: 5
 
 
 ############################################################
@@ -61,6 +64,7 @@
       - konqueror
     state: present
   become: true
+  retries: 5
 
 - name: Install SDDM 
   community.general.pacman:
@@ -70,6 +74,7 @@
     state: present
   when: os == "arch"
   become: true
+  retries: 5
 
 
 - name: Install SDDM 
@@ -80,6 +85,7 @@
     state: present
   when: os == "artix"
   become: true
+  retries: 5
 
 ############################################################
 # ===================== XORG Packages =====================
@@ -99,6 +105,7 @@
     state: present
     update_cache: true
   become: true
+  retries: 5
 
 ############################################################
 # ===================== WAYLAND Packages ==================
@@ -115,6 +122,7 @@
       - egl-wayland
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # ===================== System Applications ===============
@@ -129,6 +137,7 @@
       - okular
     state: present
   become: true
+  retries: 5
 
 - name: Install audio control utilities
   community.general.pacman:
@@ -137,6 +146,7 @@
       - pamixer
     state: present
   become: true
+  retries: 5
 
 - name: Install brightness control
   community.general.pacman:
@@ -145,6 +155,7 @@
       - redshift
     state: present
   become: true
+  retries: 5
 
 ############################################################
 # Update XDG User Directories
@@ -198,6 +209,7 @@
     repo: https://github.com/glowfi/ghkd
     dest: /tmp/ghkd
     depth: 1
+  retries: 5
 
 - name: Build ghkd
   command: go build -o ghkd ./main.go

@@ -11,6 +11,7 @@
       - sbctl
     state: present
     chroot_mountpoint: /mnt
+  retries: 5
 
 - name: Install cryptsetup (if encrypted)
   pacman_bootstrap:

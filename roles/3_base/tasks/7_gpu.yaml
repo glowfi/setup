@@ -10,6 +10,7 @@
     state: present
     chroot_mountpoint: /mnt
   when: gpu == "nvidia"
+  retries: 5
 
 - name: Install AMD drivers
   pacman_bootstrap:
@@ -18,6 +19,7 @@
     state: present
     chroot_mountpoint: /mnt
   when: gpu == "amd"
+  retries: 5
 
 - name: Install Intel drivers
   pacman_bootstrap:
@@ -29,3 +31,4 @@
     state: present
     chroot_mountpoint: /mnt
   when: gpu == "intel"
+  retries: 5

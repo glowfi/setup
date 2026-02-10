@@ -56,6 +56,7 @@
         url: "{{ rate_mirrors_url }}"
         dest: /tmp/rate-mirrors.tar.gz
         mode: "0644"
+      retries: 5
 
     - name: Ensure temporary extraction directory exists
       file:
@@ -97,6 +98,7 @@
         name: artix-archlinux-support
         state: present
         chroot_mountpoint: /mnt
+      retries: 5
 
     - name: Add Arch extra repo
       blockinfile:
@@ -135,6 +137,7 @@
           - parted
         state: present
         chroot_mountpoint: /mnt
+      retries: 5
   when: os == "artix"
 
 - name: Arch specific configuration
@@ -152,6 +155,7 @@
           - gptfdisk
           - parted
         chroot_mountpoint: /mnt
+      retries: 5
 
     - name: Generate mirrorlist
       pacman_bootstrap:
@@ -171,6 +175,7 @@
         name: archlinux-keyring
         state: present
         chroot_mountpoint: /mnt
+      retries: 5
 
     - name: Refresh pacman database
       pacman_bootstrap:

@@ -13,6 +13,7 @@
     state: present
     chroot_mountpoint: /mnt
   when: os == "artix"
+  retries: 5
 
 - name: Enable ntpd
   pacman_bootstrap:
