@@ -45,6 +45,7 @@ Supports:
 **Base install**
 
 > Connect to internet before running the below commands and edit the `inventory/base.yaml` as per your needs
+> If installing from another pc dont forget to enable ssh and set password
 
 ```sh
 
