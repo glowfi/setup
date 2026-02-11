@@ -293,21 +293,16 @@
     remote_src: true
 
 ############################################################
-# Register kitty in dolphin
+# Copy Plasma settings
 ############################################################
 
-- name: Ensure kservices6 directory exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/share/kservices6"
-    state: directory
-    mode: "0755"
-
-- name: Install kittyhere desktop file
+- name: Copy plasma applet settings
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/kittyhere.desktop"
-    dest: "{{ ansible_env.HOME }}/.local/share/kservices6/kittyhere.desktop"
-    mode: "0644"
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma-org.kde.plasma.desktop-appletsrc"
+    dest: "{{ ansible_env.HOME }}/.config"
+    mode: "0755"
     remote_src: true
+  become: true
 
 ############################################################
 # Install Hotkey Daemon
