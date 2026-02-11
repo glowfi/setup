@@ -358,7 +358,7 @@
 
 - name: Check if Go is already installed
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
+    path: "{{ ansible_env.HOME }}/.local/bin/golang/"
   register: go_installed
 
 - name: Download Go tarball
@@ -378,9 +378,9 @@
 
 - name: Rename extracted folder to golang
   ansible.builtin.command:
-    cmd: cp "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
+    cmd: mv "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
+    creates: "{{ ansible_env.HOME }}/.local/bin/golang"
   when: not go_installed.stat.exists
 
 - name: Remove Go tarball
