@@ -378,7 +378,7 @@
 
 - name: Rename extracted folder to golang
   ansible.builtin.command:
-    cmd: mv "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
+    cmd: cp "{{ ansible_env.HOME }}/.local/bin/go" "{{ ansible_env.HOME }}/.local/bin/golang"
   args:
     creates: "{{ ansible_env.HOME }}/.local/bin/golang/bin/go"
   when: not go_installed.stat.exists
@@ -683,7 +683,7 @@
 
 - name: Build ezgif binary
   command: >
-    pyinstaller --onefile main.py
+    {{ ansible_env.HOME }}/.local/bin/pyinstaller --onefile main.py
   args:
     chdir: /tmp/ezgif
     creates: /tmp/ezgif/dist/main

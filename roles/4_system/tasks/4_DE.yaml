@@ -186,7 +186,7 @@
 
 - name: Copy bemenu-app directory to /usr/local/bin
   ansible.builtin.shell:
-    "mv '{{ ansible_env.HOME }}/.dotfiles/configs/bemenu-app' /usr/local/bin"
+    "cp -r '{{ ansible_env.HOME }}/.dotfiles/configs/bemenu-app' /usr/local/bin"
   become: true
 
 - name: Symlink bemenu binary
