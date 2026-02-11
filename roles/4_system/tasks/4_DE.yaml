@@ -226,11 +226,6 @@
     remote_src: true
   become: true
 
-- name: Remove autost source
-  file:
-    path: /tmp/autost
-    state: absent
-
 - name: Ensure autost config directory exists
   file:
     path: "{{ ansible_env.HOME }}/.config/autost"
@@ -244,10 +239,17 @@
     mode: "0644"
     remote_src: true
 
+- name: Ensure systemd user directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    state: directory
+    mode: "0755"
+  when: os == "arch"
+
 - name: Deploy autost service file
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
-    dest: "{{ ansible_env.HOME }}/.config/autost/config.yaml"
+    src: "/tmp/autost/autost.service"
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user"
     mode: "0644"
     remote_src: true
   when: os == "arch"
@@ -258,6 +260,26 @@
     enabled: true
     scope: user
   when: os == "arch"
+
+- name: Ensure autostart directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/autostart"
+    state: directory
+    mode: "0755"
+  when: os == "artix"
+
+- name: Deploy autostart desktop file
+  copy:
+    src: "/tmp/autost/Autostart.desktop"
+    dest: "{{ ansible_env.HOME }}/.config/autostart"
+    mode: "0644"
+    remote_src: true
+  when: os == "artix"
+
+- name: Remove autost source
+  file:
+    path: /tmp/autost
+    state: absent
 
 ############################################################
 # Copy Xresources
