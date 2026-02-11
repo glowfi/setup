@@ -369,37 +369,37 @@
   become: true
   become_user: "{{ ansible_user }}"
 
-- name: Disable splash engine
-  command: kwriteconfig6 --file ksplashrc --group KSplash --key Engine none
-  become: true
-  become_user: "{{ ansible_user }}"
+# - name: Disable splash engine
+#   command: kwriteconfig6 --file ksplashrc --group KSplash --key Engine none
+#   become: true
+#   become_user: "{{ ansible_user }}"
 
-- name: Disable splash theme
-  command: kwriteconfig6 --file ksplashrc --group KSplash --key Theme none
-  become: true
-  become_user: "{{ ansible_user }}"
+# - name: Disable splash theme
+#   command: kwriteconfig6 --file ksplashrc --group KSplash --key Theme none
+#   become: true
+#   become_user: "{{ ansible_user }}"
 
-- name: Disable bouncing cursor
-  command: >
-    kwriteconfig6 --file klaunchrc
-    --group BusyCursorSettings
-    --key Bouncing false
-  become: true
-  become_user: "{{ ansible_user }}"
+# - name: Disable bouncing cursor
+#   command: >
+#     kwriteconfig6 --file klaunchrc
+#     --group BusyCursorSettings
+#     --key Bouncing false
+#   become: true
+#   become_user: "{{ ansible_user }}"
 
-- name: Disable busy cursor feedback
-  command: >
-    kwriteconfig6 --file klaunchrc
-    --group FeedbackStyle
-    --key BusyCursor false
-  become: true
-  become_user: "{{ ansible_user }}"
+# - name: Disable busy cursor feedback
+#   command: >
+#     kwriteconfig6 --file klaunchrc
+#     --group FeedbackStyle
+#     --key BusyCursor false
+#   become: true
+#   become_user: "{{ ansible_user }}"
 
-- name: Disable Baloo
-  command: balooctl6 disable
-  become: true
-  become_user: "{{ ansible_user }}"
-  ignore_errors: true
+# - name: Disable Baloo
+#   command: balooctl6 disable
+#   become: true
+#   become_user: "{{ ansible_user }}"
+#   ignore_errors: true
 
 - name: Disable KWallet
   command: >
