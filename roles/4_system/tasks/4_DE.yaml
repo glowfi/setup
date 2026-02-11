@@ -304,6 +304,13 @@
     remote_src: true
   become: true
 
+- name: Copy wall.sh to ~/.local/bin
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/scripts/wall.sh"
+    dest: "{{ ansible_env.HOME }}/.local/bin"
+    mode: "0755"
+    remote_src: true
+
 ############################################################
 # Install Hotkey Daemon
 ############################################################
