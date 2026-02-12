@@ -296,13 +296,21 @@
 # Copy Plasma settings
 ############################################################
 
-# - name: Copy plasma applet settings
-#   copy:
-#     src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma-org.kde.plasma.desktop-appletsrc"
-#     dest: "{{ ansible_env.HOME }}/.config"
-#     mode: "0755"
-#     remote_src: true
-#   become: true
+- name: Copy plasma applet settings
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma-org.kde.plasma.desktop-appletsrc"
+    dest: "{{ ansible_env.HOME }}/.config"
+    mode: "0755"
+    remote_src: true
+  become: true
+
+- name: Copy plasmashell settings
+  copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasmashellrc"
+    dest: "{{ ansible_env.HOME }}/.config"
+    mode: "0755"
+    remote_src: true
+  become: true
 
 - name: Copy wall.sh to ~/.local/bin
   ansible.builtin.copy:
