@@ -416,6 +416,7 @@
     - github.com/golangci/golangci-lint/cmd/golangci-lint@latest
     - github.com/golangci/misspell/cmd/misspell@latest
   environment:
+    GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
   retries: 5
 
@@ -854,6 +855,7 @@
   shell: >
    "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/jesseduffield/lazydocker@latest
   environment:
+    GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
   retries: 5
 
@@ -885,6 +887,7 @@
   shell: >
     "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/derailed/k9s@latest
   environment:
+    GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
   retries: 5
 
