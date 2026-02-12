@@ -323,18 +323,18 @@
 # Register kitty in dolphin
 ############################################################
 
-- name: Ensure servicemenus directory exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
-    state: directory
-    mode: "0755"
+# - name: Ensure servicemenus directory exists
+#   file:
+#     path: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
+#     state: directory
+#     mode: "0755"
 
-- name: Install kittyhere desktop file
-  copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/kittyhere.desktop"
-    dest: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
-    mode: "0755"
-    remote_src: true
+# - name: Install kittyhere desktop file
+#   copy:
+#     src: "{{ ansible_env.HOME }}/.dotfiles/configs/kittyhere.desktop"
+#     dest: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
+#     mode: "0755"
+#     remote_src: true
 
 ############################################################
 # Install Hotkey Daemon
