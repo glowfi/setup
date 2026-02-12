@@ -480,11 +480,23 @@
     name:
       - trash-cli
       - tree
-      - nnn
     state: present
   become: true
   retries: 5
 
+- name: Clone NNN
+  git:
+    repo: https://github.com/jarun/nnn
+    dest: /tmp/nnn
+    depth: 1
+  retries: 5
+
+- name: Build NNN binary
+  command: >
+    sudo make O_NERD=1 install
+  args:
+    chdir: /tmp/nnn
+  become: true
 
 - name: Ensure nnn plugin directory exists
   file:
