@@ -20,17 +20,16 @@ all:
         full_name: fullname
         password: p
         groups:
-          # - docker
-          # - libvirt
           - video
           - input
           - wheel
     cpu: amd    # amd intel
     gpu: nvidia # amd intel nvidia
 
-    secure_boot: false
-    kernel: linux-zen # linux linux-zen linux-lts linux-hardened
+    secure_boot: true
+    kernel: linux-hardened # linux linux-zen linux-lts linux-hardened
   hosts:
     pc:
-      ansible_host: 192.168.53.67
+      # ansible_host: 192.168.53.118
+      ansible_connection: local
       ansible_user: root
