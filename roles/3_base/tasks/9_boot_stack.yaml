@@ -211,7 +211,6 @@
     src: "/boot/grub/themes/Grub-Themes/"
     dest: /boot/grub/themes/
     remote_src: yes
-  notify: Remove temp theme repo
 
 - name: Set GRUB theme declaratively
   ansible.builtin.lineinfile:
@@ -219,7 +218,6 @@
     regexp: '^GRUB_THEME='
     line: 'GRUB_THEME="/boot/grub/themes/Minimal/theme.txt"'
     create: yes
-  notify: Rebuild grub config
 
 ############################################################
 # Generate GRUB Config
