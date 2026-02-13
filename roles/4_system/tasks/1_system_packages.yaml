@@ -325,10 +325,12 @@
 # EXTRAS
 ############################################################
 
-# - name: Install onlyoffice
-#   yay:
-#     name: onlyoffice-bin
-#     state: present
+- name: Install libreoffice
+  community.general.pacman:
+    name: libreoffice
+    state: present
+  become: true
+  retries: 5
 
 - name: Install tectonic
   community.general.pacman:
