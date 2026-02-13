@@ -196,6 +196,7 @@
     dest: /boot/grub/themes/Grub-Themes
     version: HEAD
     update: yes
+  retries: 5
 
 - name: Remove unnecessary files
   ansible.builtin.file:
