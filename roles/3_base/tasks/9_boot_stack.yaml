@@ -186,35 +186,34 @@
 
 - name: Ensure grub themes directory exists
   ansible.builtin.file:
-    path: /boot/grub/themes
+    path: /mnt/boot/grub/themes
     state: directory
     mode: "0755"
 
 - name: Clone GRUB themes repository
   ansible.builtin.git:
     repo: https://github.com/MrVivekRajan/Grub-Themes
-    dest: /boot/grub/themes/Grub-Themes
+    dest: /mnt/boot/grub/themes/Grub-Themes
     version: HEAD
     update: yes
   retries: 5
 
 - name: Remove unnecessary files
   ansible.builtin.file:
-    path: "/boot/grub/themes/Grub-Themes/{{ item }}"
+    path: "/mnt/boot/grub/themes/Grub-Themes/{{ item }}"
     state: absent
   loop:
     - README.md
     - LICENSE
 
 - name: Copy theme directories to parent
-  ansible.builtin.copy:
-    src: "/boot/grub/themes/Grub-Themes/"
-    dest: /boot/grub/themes/
-    remote_src: yes
+  pacman_bootstrap:
+    command: "mv /boot/grub/themes/Grub-Themes/* /boot/grub/themes/Grub-Themes && sudo rm -rf /boot/grub/themes/Grub-Themes/"
+    chroot_mountpoint: /mnt
 
 - name: Set GRUB theme declaratively
   ansible.builtin.lineinfile:
-    path: /etc/default/grub
+    path: /mnt/etc/default/grub
     regexp: '^GRUB_THEME='
     line: 'GRUB_THEME="/boot/grub/themes/Minimal/theme.txt"'
     create: yes
