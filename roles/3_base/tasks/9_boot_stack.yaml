@@ -208,7 +208,7 @@
 
 - name: Copy theme directories to parent
   pacman_bootstrap:
-    command: "mv /boot/grub/themes/Grub-Themes/* /boot/grub/themes/Grub-Themes && sudo rm -rf /boot/grub/themes/Grub-Themes/"
+    command: "mv /boot/grub/themes/Grub-Themes/* /boot/grub/themes/ && sudo rm -rf /boot/grub/themes/Grub-Themes/"
     chroot_mountpoint: /mnt
 
 - name: Set GRUB theme declaratively
