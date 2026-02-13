@@ -166,6 +166,44 @@
   changed_when: false
 
 ############################################################
+# Update Mime types
+############################################################
+
+- name: Download default media player script
+  ansible.builtin.get_url:
+    url: https://gist.githubusercontent.com/acrisci/b264c4b8e7f93a21c13065d9282dfa4a/raw/8c2b2a57ac74c2fd7c26d02d57203cc746e7d3cd/default-media-player.sh
+    dest: /tmp/default-media-player.sh
+    mode: "0755"
+
+- name: Set mpv as default media player
+  ansible.builtin.command: bash /tmp/default-media-player.sh mpv.desktop
+  args:
+    creates: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+
+- name: Ensure mimeapps.list exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+    state: touch
+
+- name: Set Dolphin as default file manager
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+    regexp: '^inode/directory='
+    line: 'inode/directory=dolphin.desktop'
+
+- name: Set Brave as default browser
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+    regexp: '^x-scheme-handler/http='
+    line: 'x-scheme-handler/http=brave-browser.desktop'
+
+- name: Set Brave as default HTTPS handler
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+    regexp: '^x-scheme-handler/https='
+    line: 'x-scheme-handler/https=brave-browser.desktop'
+
+############################################################
 # Install redshift,bemenu,autost
 ############################################################
 
