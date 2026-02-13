@@ -298,7 +298,7 @@
 
 - name: Copy plasma applet settings
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma-org.kde.plasma.desktop-appletsrc"
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc"
     dest: "{{ ansible_env.HOME }}/.config"
     mode: "0755"
     remote_src: true
@@ -306,7 +306,7 @@
 
 - name: Copy plasmashell settings
   copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasmashellrc"
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma/plasmashellrc"
     dest: "{{ ansible_env.HOME }}/.config"
     mode: "0755"
     remote_src: true
@@ -318,23 +318,6 @@
     dest: "{{ ansible_env.HOME }}/.local/bin"
     mode: "0755"
     remote_src: true
-
-############################################################
-# Register kitty in dolphin
-############################################################
-
-# - name: Ensure servicemenus directory exists
-#   file:
-#     path: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
-#     state: directory
-#     mode: "0755"
-
-# - name: Install kittyhere desktop file
-#   copy:
-#     src: "{{ ansible_env.HOME }}/.dotfiles/configs/kittyhere.desktop"
-#     dest: "{{ ansible_env.HOME }}/.local/share/kio/servicemenus"
-#     mode: "0755"
-#     remote_src: true
 
 ############################################################
 # Install Hotkey Daemon
@@ -400,38 +383,6 @@
     org.kde.breezedark.desktop
   become: true
   become_user: "{{ ansible_user }}"
-
-# - name: Disable splash engine
-#   command: kwriteconfig6 --file ksplashrc --group KSplash --key Engine none
-#   become: true
-#   become_user: "{{ ansible_user }}"
-
-# - name: Disable splash theme
-#   command: kwriteconfig6 --file ksplashrc --group KSplash --key Theme none
-#   become: true
-#   become_user: "{{ ansible_user }}"
-
-# - name: Disable bouncing cursor
-#   command: >
-#     kwriteconfig6 --file klaunchrc
-#     --group BusyCursorSettings
-#     --key Bouncing false
-#   become: true
-#   become_user: "{{ ansible_user }}"
-
-# - name: Disable busy cursor feedback
-#   command: >
-#     kwriteconfig6 --file klaunchrc
-#     --group FeedbackStyle
-#     --key BusyCursor false
-#   become: true
-#   become_user: "{{ ansible_user }}"
-
-# - name: Disable Baloo
-#   command: balooctl6 disable
-#   become: true
-#   become_user: "{{ ansible_user }}"
-#   ignore_errors: true
 
 - name: Disable KWallet
   command: >
