@@ -113,7 +113,7 @@
 - name: Add LUKS key
   pacman_bootstrap:
     command: >
-      sh -c "echo {{ encryption_password}} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
+      sh -c "echo {{ encryption_password | quote }} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
     chroot_mountpoint: /mnt
   when:
     - encrypt_disk
@@ -242,25 +242,40 @@
     command: sbctl create-keys
     chroot_mountpoint: /mnt
   when: secure_boot
-  ignore_errors: true
 
 - name: Enroll sbctl keys
   pacman_bootstrap:
     command: sbctl enroll-keys -m
     chroot_mountpoint: /mnt
   when: secure_boot
-  ignore_errors: true
 
-- name: Sign kernel and GRUB
+- name: Sign kernel
   pacman_bootstrap:
     command: >
-      sbctl sign /boot/vmlinuz-{{ kernel }} &&
-      sbctl sign /boot/grub/x86_64-efi/core.efi &&
-      sbctl sign /boot/grub/x86_64-efi/grub.efi &&
-      sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+      sbctl sign /boot/vmlinuz-{{ kernel }}
     chroot_mountpoint: /mnt
   when: secure_boot
 
+- name: Sign core efi
+  pacman_bootstrap:
+    command: >
+      sbctl sign /boot/grub/x86_64-efi/core.efi
+    chroot_mountpoint: /mnt
+  when: secure_boot
+
+- name: Sign boot efi
+  pacman_bootstrap:
+    command: >
+      sbctl sign /boot/grub/x86_64-efi/grub.efi
+    chroot_mountpoint: /mnt
+  when: secure_boot
+
+- name: Sign grub efi
+  pacman_bootstrap:
+    command: >
+      sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+    chroot_mountpoint: /mnt
+  when: secure_boot
 
 ############################################################
 # Secure Boot Auto-Sign Hook

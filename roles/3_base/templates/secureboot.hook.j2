@@ -16,5 +16,5 @@ Target = linux-xanmod-anbox
 [Action]
 Description = Signing Kernel and GRUB for Secure Boot
 When = PostTransaction
-Exec = /usr/bin/sbctl sign /boot/vmlinuz-linux-zen && /usr/bin/sbctl sign /boot/grub/x86_64-efi/core.efi && /usr/bin/sbctl sign /boot/grub/x86_64-efi/grub.efi && /usr/bin/sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
+Exec = /usr/bin/sbctl sign "/boot/vmlinuz-{{ kernel }}" && /usr/bin/sbctl sign /boot/grub/x86_64-efi/core.efi && /usr/bin/sbctl sign /boot/grub/x86_64-efi/grub.efi && /usr/bin/sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
 Depends = sbctl

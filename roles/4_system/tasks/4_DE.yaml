@@ -120,6 +120,7 @@
       - xorg-xwayland
       - qt6-wayland
       - egl-wayland
+      - wl-clipboard
     state: present
   become: true
   retries: 5
