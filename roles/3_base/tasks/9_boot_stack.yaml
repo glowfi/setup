@@ -208,7 +208,7 @@
 
 - name: Copy theme directories to parent
   pacman_bootstrap:
-    command: "mv /boot/grub/themes/Grub-Themes/Minimal /boot/grub/themes/"
+    command: "mv /boot/grub/themes/Grub-Themes/SekiroShadow /boot/grub/themes/"
     chroot_mountpoint: /mnt
 
 - name: Copy theme directories to parent
@@ -220,7 +220,7 @@
   ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     regexp: '^GRUB_THEME='
-    line: 'GRUB_THEME="/boot/grub/themes/Minimal/theme.txt"'
+    line: 'GRUB_THEME="/boot/grub/themes/SekiroShadow/theme.txt"'
     create: yes
 
 ############################################################

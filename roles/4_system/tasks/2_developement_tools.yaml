@@ -653,65 +653,65 @@
 # Build ezgif Binary
 ############################################################
 
-- name: Uninstall pathlib
-  ansible.builtin.pip:
-    name:
-      - pathlib
-    state: absent
+# - name: Uninstall pathlib
+#   ansible.builtin.pip:
+#     name:
+#       - pathlib
+#     state: absent
 
-- name: Install required Python packages
-  ansible.builtin.pip:
-    name:
-      - pyinstaller
-      - ffmpeg-python
-      - typing-extensions
-    state: present
-  retries: 5
+# - name: Install required Python packages
+#   ansible.builtin.pip:
+#     name:
+#       - pyinstaller
+#       - ffmpeg-python
+#       - typing-extensions
+#     state: present
+#   retries: 5
 
-- name: Install gifsicle
-  community.general.pacman:
-    name: gifsicle
-    state: present
-  become: true
-  retries: 5
+# - name: Install gifsicle
+#   community.general.pacman:
+#     name: gifsicle
+#     state: present
+#   become: true
+#   retries: 5
 
-- name: Clone ezgif-essentials
-  git:
-    repo: https://github.com/winstxnhdw/ezgif-essentials
-    dest: /tmp/ezgif
-    depth: 1
-  retries: 5
+# - name: Clone ezgif-essentials
+#   git:
+#     repo: https://github.com/winstxnhdw/ezgif-essentials
+#     dest: /tmp/ezgif
+#     depth: 1
+#   retries: 5
 
-- name: Build ezgif binary
-  command: >
-    {{ ansible_env.HOME }}/.local/bin/pyinstaller --onefile main.py
-  args:
-    chdir: /tmp/ezgif
-    creates: /tmp/ezgif/dist/main
+# - name: Build ezgif binary
+#   command: >
+#     {{ ansible_env.HOME }}/.local/bin/pyinstaller --onefile main.py
+#   args:
+#     chdir: /tmp/ezgif
+#     creates: /tmp/ezgif/dist/main
 
-- name: Install ezgif binary
-  copy:
-    src: /tmp/ezgif/dist/main
-    dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
-    mode: "0755"
-    remote_src: true
+# - name: Install ezgif binary
+#   copy:
+#     src: /tmp/ezgif/dist/main
+#     dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
+#     mode: "0755"
+#     remote_src: true
 
-- name: Remove ezgif build directory
-  file:
-    path: /tmp/ezgif
-    state: absent
+# - name: Remove ezgif build directory
+#   file:
+#     path: /tmp/ezgif
+#     state: absent
 
-- name: Install pathlib
-  ansible.builtin.pip:
-    name:
-      - pathlib
-    state: absent
+# - name: Install pathlib
+#   ansible.builtin.pip:
+#     name:
+#       - pathlib
+#     state: absent
 
-- name: Uninstall pyinstaller
-  ansible.builtin.pip:
-    name:
-      - pathlib
-    state: absent
+# - name: Uninstall pyinstaller
+#   ansible.builtin.pip:
+#     name:
+#       - pathlib
+#     state: absent
 
 ############################################################
 # Download Beekeeper Studio AppImage
