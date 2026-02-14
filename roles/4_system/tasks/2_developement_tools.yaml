@@ -652,6 +652,25 @@
     state: absent
 
 ############################################################
+# Install xhibit
+############################################################
+
+- name: Install lsb-release
+  community.general.pacman:
+    name: lsb-release
+    state: present
+  become: true
+  retries: 5
+
+- name: Install xhibit
+  ansible.builtin.pip:
+    name:
+      - xhibit
+    state: latest
+    executable: pip3
+  retries: 5
+
+############################################################
 # Build ezgif Binary
 ############################################################
 
