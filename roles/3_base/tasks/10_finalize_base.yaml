@@ -28,7 +28,7 @@
 
 - name: Enable OpenRC services
   pacman_bootstrap:
-    ansible.builtin.command: rc-update add {{ item }} default
+    command: rc-update add {{ item }} default
     chroot_mountpoint: /mnt
   loop:
     - NetworkManager
@@ -39,7 +39,7 @@
 
 - name: Enable systemd services
   pacman_bootstrap:
-    ansible.builtin.command: systemctl enable {{ item }}
+    command: systemctl enable {{ item }}
     chroot_mountpoint: /mnt
   loop:
     - NetworkManager

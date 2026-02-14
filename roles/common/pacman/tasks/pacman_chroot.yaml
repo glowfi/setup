@@ -110,13 +110,13 @@
 
     - name: Populate Arch keyring
       pacman_bootstrap:
-        ansible.builtin.command: pacman-key --populate archlinux
+        command: pacman-key --populate archlinux
         chroot_mountpoint: /mnt
       changed_when: false
 
     - name: Generate arch mirrorlist
       pacman_bootstrap:
-        ansible.builtin.command: >
+        command: >
           rate-mirrors --entry-country={{ repo_country }}
           --max-mirrors-to-output=5
           --save='{{arch_mirror_file}}'
@@ -159,7 +159,7 @@
 
     - name: Generate mirrorlist
       pacman_bootstrap:
-        ansible.builtin.command: >
+        command: >
           reflector --verbose
           -c {{ repo_country }}
           --latest 5

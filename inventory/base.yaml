@@ -30,6 +30,6 @@ all:
     kernel: linux-hardened # linux linux-zen linux-lts linux-hardened
   hosts:
     pc:
-      # ansible_host: 192.168.53.118
-      ansible_connection: local
+      ansible_host: 192.168.53.92
+      # ansible_connection: local
       ansible_user: root

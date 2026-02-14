@@ -6,6 +6,6 @@ all:
     git_user_email: "86939591+glowfi@users.noreply.github.com"
   hosts:
     pc:
-      # ansible_host: 192.168.53.63
-      ansible_connection: local
+      ansible_host: 192.168.53.92
+      # ansible_connection: local
       ansible_user: username

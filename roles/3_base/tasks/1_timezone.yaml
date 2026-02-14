@@ -17,17 +17,17 @@
 
 - name: Enable ntpd
   pacman_bootstrap:
-    ansible.builtin.command: rc-update add ntpd default
+    command: rc-update add ntpd default
     chroot_mountpoint: /mnt
   when: os == "artix"
 
 - name: Enable ntp
   pacman_bootstrap:
-    ansible.builtin.command: timedatectl set-ntp true
+    command: timedatectl set-ntp true
     chroot_mountpoint: /mnt
   when: os == "arch"
 
 - name: Sync hardware clock
   pacman_bootstrap:
-    ansible.builtin.command: "hwclock --systohc"
+    command: "hwclock --systohc"
     chroot_mountpoint: /mnt
