@@ -313,8 +313,16 @@
 ############################################################
 
 - name: Move files into .config
-  ansible.builtin.shell: |
-    mv "{{ ansible_env.HOME }}/*" "{{ ansible_env.HOME }}/.config"
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config"
+    remote_src: true
+  loop:
+    - breezerc
+    - kdeglobals
+    - kglobalshortcutsrc
+    - plasma-org.kde.plasma.desktop-appletsrc
+    - plasmashellrc
 
 - name: Copy wall.sh to ~/.local/bin
   ansible.builtin.copy:
