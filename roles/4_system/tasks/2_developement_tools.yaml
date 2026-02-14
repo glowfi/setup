@@ -137,12 +137,14 @@
 
 
 ############################################################
-# Install Direnv
+# Install Direnv,Tmux
 ############################################################
 
 - name: Install direnv
   community.general.pacman:
-    name: direnv
+    name:
+      - direnv
+      - tmux
     state: present
   become: true
   retries: 5

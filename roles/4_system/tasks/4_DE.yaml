@@ -42,6 +42,7 @@
     name:
       - powerdevil
       - xdg-desktop-portal-kde
+      - power-profiles-daemon
     state: present
   become: true
   retries: 5
@@ -418,11 +419,17 @@
   become: true
 
 ############################################################
-# Enable Display Manager
+# Enable SDDM, power-profiles-daemon
 ############################################################
 
 - name: Enable SDDM
   ansible.builtin.service:
     name: sddm
+    enabled: true
+  become: true
+
+- name: Enable power profiles daemon
+  ansible.builtin.service:
+    name: power-profiles-daemon
     enabled: true
   become: true
