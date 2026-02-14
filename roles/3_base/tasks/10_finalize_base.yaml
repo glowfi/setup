@@ -1,5 +1,5 @@
 - name: Enable sudo insults
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/sudoers
     regexp: '^Defaults\s+insults'
     line: 'Defaults insults'
@@ -20,10 +20,10 @@
     mode: "0644"
 
 - name: Fix fstab for Timeshift (remove subvolid)
-  replace:
+  ansible.builtin.replace:
     path: /mnt/etc/fstab
     regexp: 'subvolid=[^,]*,?'
-    replace: ''
+    ansible.builtin.replace: ''
   when: file_system == "btrfs"
 
 - name: Enable OpenRC services

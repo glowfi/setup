@@ -1,6 +1,6 @@
 ---
 - name: Enable locale in locale.gen
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/locale.gen
     regexp: '^#?en_US.UTF-8 UTF-8'
     line: 'en_US.UTF-8 UTF-8'

@@ -39,7 +39,7 @@
     - item.1 in existing_groups
 
 - name: Enable wheel group sudo
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/sudoers
     regexp: '^#?\s*%wheel ALL='
     line: '%wheel ALL=(ALL) ALL'

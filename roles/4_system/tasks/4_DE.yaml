@@ -434,7 +434,7 @@
   become: true
 
 - name: Set SDDM theme to breeze
-  ini_file:
+  community.general.ini_file:
     path: /etc/sddm.conf
     section: Theme
     option: Current

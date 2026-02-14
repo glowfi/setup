@@ -25,7 +25,7 @@
   when: os == "artix"
 
 - name: Enable Color
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^#?Color'
     line: 'Color'
@@ -33,7 +33,7 @@
   become: true
 
 - name: Enable ILoveCandy
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^ILoveCandy'
     line: 'ILoveCandy'
@@ -42,7 +42,7 @@
   become: true
 
 - name: Set ParallelDownloads
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^#?ParallelDownloads'
     line: 'ParallelDownloads = 16'

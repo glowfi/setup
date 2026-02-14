@@ -26,20 +26,20 @@
 ############################################################
 
 - name: Enable GRUB cryptodisk
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     line: "GRUB_ENABLE_CRYPTODISK=y"
     state: present
   when: encrypt_disk
 
 - name: Remove quiet flag
-  replace:
+  ansible.builtin.replace:
     path: /mnt/etc/default/grub
     regexp: " quiet"
-    replace: ""
+    ansible.builtin.replace: ""
 
 - name: Set GRUB resolution
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     regexp: "^GRUB_GFXMODE="
     line: "GRUB_GFXMODE=auto"
@@ -51,7 +51,7 @@
 ############################################################
 
 - name: Configure mkinitcpio modules
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/mkinitcpio.conf
     regexp: "^MODULES="
     line: >-
@@ -70,7 +70,7 @@
 ############################################################
 
 - name: Ensure mkinitcpio FILES contains crypt keyfile
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/mkinitcpio.conf
     regexp: '^FILES='
     line: 'FILES=(/root/cryptlvm.keyfile)'
@@ -83,7 +83,7 @@
 ############################################################
 
 - name: Configure mkinitcpio encryption hooks
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/mkinitcpio.conf
     regexp: "^HOOKS="
     line: "HOOKS=(base udev autodetect keyboard keymap microcode modconf kms consolefont block encrypt filesystems fsck)"
@@ -129,7 +129,7 @@
   when: encrypt_disk
 
 - name: Configure GRUB cryptdevice kernel parameter
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
     line: >-
@@ -145,7 +145,7 @@
 ############################################################
 
 - name: Enable NVIDIA DRM modeset
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 nvidia-drm.modeset=1"'
@@ -289,7 +289,7 @@
   when: secure_boot
 
 - name: Install secure boot hook
-  template:
+  ansible.builtin.template:
     src: secureboot.hook.j2
     dest: /mnt/etc/pacman.d/hooks/999-sign_kernel_for_secureboot.hook
     mode: "0644"

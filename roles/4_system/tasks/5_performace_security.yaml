@@ -91,7 +91,7 @@
   ansible.builtin.replace:
     path: /etc/default/grub
     regexp: '(^GRUB_CMDLINE_LINUX_DEFAULT=".*)(?<!lsm=landlock,lockdown,yama,apparmor,bpf)"'
-    replace: '\1 lsm=landlock,lockdown,yama,apparmor,bpf"'
+    ansible.builtin.replace: '\1 lsm=landlock,lockdown,yama,apparmor,bpf"'
   become: true
 
 ############################################################
@@ -287,7 +287,7 @@
   retries: 5
 
 - name: Patch Makefile for OpenRC
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /tmp/grub-btrfs/Makefile
     regexp: '^OPENRC'
     line: 'OPENRC ?= true'
@@ -414,7 +414,7 @@
   retries: 5
 
 - name: Deploy dnsmasq config
-  template:
+  ansible.builtin.template:
     src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.conf
     mode: "0644"
@@ -427,7 +427,7 @@
   become: true
 
 - name: Deploy resolv.conf from template
-  template:
+  ansible.builtin.template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
     mode: "0644"

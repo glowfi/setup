@@ -14,14 +14,14 @@
   when: os == "arch"
 
 - name: Enable Color
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^#?Color'
     line: 'Color'
     state: present
 
 - name: Enable ILoveCandy
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^ILoveCandy'
     line: 'ILoveCandy'
@@ -29,7 +29,7 @@
     state: present
 
 - name: Set ParallelDownloads
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ pacman_conf }}'
     regexp: '^#?ParallelDownloads'
     line: 'ParallelDownloads = 16'
