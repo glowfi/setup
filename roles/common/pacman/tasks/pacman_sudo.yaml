@@ -75,7 +75,7 @@
       retries: 5
 
     - name: Ensure temporary extraction directory exists
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: directory
 
@@ -87,7 +87,7 @@
         creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
 
     - name: Install rate-mirrors binary
-      copy:
+      ansible.builtin.copy:
         src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
         dest: '{{ rate_mirror_dst }}'
         mode: "0755"
@@ -95,12 +95,12 @@
       become: true
 
     - name: Cleanup extracted directory
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: absent
 
     - name: Cleanup tarball
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors.tar.gz
         state: absent
 
@@ -127,12 +127,12 @@
       become: true
 
     - name: Populate Arch keyring
-      command: pacman-key --populate archlinux
+      ansible.builtin.command: pacman-key --populate archlinux
       changed_when: false
       become: true
 
     - name: Generate mirrorlist-arch
-      command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
+      ansible.builtin.command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
       changed_when: false
       become: true
 
@@ -169,7 +169,7 @@
       retries: 5
 
     - name: Ensure temporary extraction directory exists
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: directory
 
@@ -181,7 +181,7 @@
         creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
 
     - name: Install rate-mirrors binary
-      copy:
+      ansible.builtin.copy:
         src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
         dest: '{{ rate_mirror_dst }}'
         mode: "0755"
@@ -189,17 +189,17 @@
       become: true
 
     - name: Cleanup extracted directory
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: absent
 
     - name: Cleanup tarball
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors.tar.gz
         state: absent
 
     - name: Generate mirrorlist-arch
-      command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
+      ansible.builtin.command: rate-mirrors --entry-country={{ repo_country }} --max-mirrors-to-output=5 --save='{{arch_mirror_file}}' --allow-root arch
       changed_when: false
       become: true
 

@@ -3,7 +3,7 @@
 ############################################################
 
 - name: Ensure user local bin exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.local/bin"
     state: directory
     mode: "0755"
@@ -21,7 +21,7 @@
   become: true
 
 - name: Remove EXTERNALLY-MANAGED marker
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
   loop: "{{ externally_managed_file.files }}"
@@ -105,7 +105,7 @@
 ############################################################
 
 - name: Ensure miniconda directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/miniconda3"
     state: directory
     mode: "0755"
@@ -124,14 +124,14 @@
   retries: 5
 
 - name: Install Miniconda silently
-  command: >
+  ansible.builtin.command: >
     bash /home/{{ ansible_user }}/miniconda3/miniconda.sh
     -b -u -p /home/{{ ansible_user }}/miniconda3
   args:
     creates: "/home/{{ ansible_user }}/miniconda3/bin/conda"
 
 - name: Mark conda activated
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.config/conda-activated"
     state: touch
 
@@ -194,13 +194,13 @@
   when: not node_binary.stat.exists
 
 - name: Ensure nodeJS target directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS"
     state: directory
     mode: "0755"
 
 - name: Copy Node contents into ~/.local/bin/nodeJS
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64/"
     dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/"
     remote_src: true
@@ -208,12 +208,12 @@
   when: not node_binary.stat.exists
 
 - name: Remove Node tarball
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/node.tar.xz"
     state: absent
 
 - name: Remove Node folder
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/node-{{ node_version }}-linux-x64"
     state: absent
 
@@ -257,7 +257,7 @@
   register: base16_dir
 
 - name: Move base16 highlight styles
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16/"
     dest: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/"
     remote_src: true
@@ -265,7 +265,7 @@
 
 
 - name: Remove base16 directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.local/bin/nodeJS/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/base16"
     state: absent
 
@@ -274,7 +274,7 @@
 ############################################################
 
 - name: Install Bun
-  shell: curl -fsSL https://bun.sh/install | bash
+  ansible.builtin.shell: curl -fsSL https://bun.sh/install | bash
   args:
     creates: "{{ ansible_env.HOME }}/.bun"
   retries: 5
@@ -284,14 +284,14 @@
 ############################################################
 
 - name: Ensure Rust is installed (rustup)
-  shell: |
+  ansible.builtin.shell: |
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   args:
     creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
   retries: 5
 
 - name: Ensure stable toolchain
-  command: "{{ ansible_env.HOME }}/.cargo/bin/rustup default stable"
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.cargo/bin/rustup default stable"
   changed_when: false
 
 ############################################################
@@ -299,21 +299,21 @@
 ############################################################
 
 - name: Clone rust-analyzer
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rust-analyzer/rust-analyzer.git
     dest: /tmp/rust-analyzer
     depth: 1
   retries: 5
 
 - name: Install rust-analyzer server
-  command: cargo xtask install --server
+  ansible.builtin.command: cargo xtask install --server
   args:
     chdir: /tmp/rust-analyzer
     creates: "{{ ansible_env.HOME }}/.cargo/bin/rust-analyzer"
   retries: 5
 
 - name: Remove rust-analyzer source
-  file:
+  ansible.builtin.file:
     path: /tmp/rust-analyzer
     state: absent
 
@@ -338,7 +338,7 @@
   register: nerdfix_bin
 
 - name: Install nerdfix from git
-  shell: >
+  ansible.builtin.shell: >
     cargo install --git https://github.com/loichyan/nerdfix.git
   when: not nerdfix_bin.stat.exists
   environment:
@@ -603,7 +603,7 @@
 ############################################################
 
 - name: Copy user utility scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/scripts/{{ item }}"
     dest: "{{ ansible_env.HOME }}/.local/bin/{{ item | basename }}"
     remote_src: true
@@ -631,21 +631,21 @@
 ############################################################
 
 - name: Clone vimv
-  git:
+  ansible.builtin.git:
     repo: https://github.com/thameera/vimv
     dest: /tmp/vimv
     depth: 1
   retries: 5
 
 - name: Install vimv binary
-  copy:
+  ansible.builtin.copy:
     src: /tmp/vimv/vimv
     dest: "{{ ansible_env.HOME }}/.local/bin/vimv"
     mode: "0755"
     remote_src: true
 
 - name: Remove vimv temp directory
-  file:
+  ansible.builtin.file:
     path: /tmp/vimv
     state: absent
 
@@ -676,28 +676,28 @@
 #   retries: 5
 
 # - name: Clone ezgif-essentials
-#   git:
+#   ansible.builtin.git:
 #     repo: https://github.com/winstxnhdw/ezgif-essentials
 #     dest: /tmp/ezgif
 #     depth: 1
 #   retries: 5
 
 # - name: Build ezgif binary
-#   command: >
+#   ansible.builtin.command: >
 #     {{ ansible_env.HOME }}/.local/bin/pyinstaller --onefile main.py
 #   args:
 #     chdir: /tmp/ezgif
 #     creates: /tmp/ezgif/dist/main
 
 # - name: Install ezgif binary
-#   copy:
+#   ansible.builtin.copy:
 #     src: /tmp/ezgif/dist/main
 #     dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
 #     mode: "0755"
 #     remote_src: true
 
 # - name: Remove ezgif build directory
-#   file:
+#   ansible.builtin.file:
 #     path: /tmp/ezgif
 #     state: absent
 
@@ -821,7 +821,7 @@
   become: true
 
 - name: Copy virtualization scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/scripts/virtualization/{{ item }}"
     dest: "/home/{{ansible_user}}/.local/bin/{{ item }}"
     mode: "0755"
@@ -852,7 +852,7 @@
   become: true
 
 - name: Install lazydocker
-  shell: >
+  ansible.builtin.shell: >
    "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/jesseduffield/lazydocker@latest
   environment:
     GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
@@ -884,7 +884,7 @@
   retries: 5
 
 - name: Install k9s
-  shell: >
+  ansible.builtin.shell: >
     "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install github.com/derailed/k9s@latest
   environment:
     GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
@@ -953,7 +953,7 @@
   retries: 5
 
 - name: Copy nvim config
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/nvim"
     dest: "{{ ansible_env.HOME }}/.config/"
     mode: preserve
@@ -961,7 +961,7 @@
 
 
 - name: Sync Neovim plugins
-  shell: nvim --headless "+Lazy! sync" +qa
+  ansible.builtin.shell: nvim --headless "+Lazy! sync" +qa
   register: nvim_sync
   retries: 3
   delay: 5

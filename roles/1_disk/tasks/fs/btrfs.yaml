@@ -1,6 +1,6 @@
 ---
 - name: Check if root subvolume already mounted
-  command: findmnt -n -o OPTIONS /mnt
+  ansible.builtin.command: findmnt -n -o OPTIONS /mnt
   register: mnt_options
   failed_when: false
   changed_when: false
@@ -54,7 +54,7 @@
   when: file_system == "btrfs"
 
 - name: Ensure subvolume mountpoints
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
   loop:
@@ -64,7 +64,7 @@
   when: file_system == "btrfs"
 
 - name: Check mounted subvolumes
-  command: findmnt -n -o TARGET
+  ansible.builtin.command: findmnt -n -o TARGET
   register: mounted_targets
   changed_when: false
   when: file_system == "btrfs"

@@ -1,7 +1,7 @@
 ---
 - name: Collect existing groups inside target
   pacman_bootstrap:
-    command: "getent group"
+    ansible.builtin.command: "getent group"
     chroot_mountpoint: /mnt
   register: group_list
   changed_when: false
@@ -12,7 +12,7 @@
 
 - name: Create non root users
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       useradd -m
       -c "{{ item.full_name | default(item.name) }}"
       {{ item.name }}
@@ -23,14 +23,14 @@
 
 - name: Set user passwords
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sh -c "echo '{{ item.name }}:{{ item.password | quote }}' | chpasswd"
     chroot_mountpoint: /mnt
   loop: "{{ users }}"
 
 - name: Add users to existing groups
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       usermod -aG {{ item.1 }} {{ item.0.name }}
     chroot_mountpoint: /mnt
   loop: "{{ users | subelements('groups', skip_missing=True) }}"

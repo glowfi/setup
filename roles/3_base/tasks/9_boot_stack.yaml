@@ -102,7 +102,7 @@
 
 - name: Generate random keyfile
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       dd bs=512 count=4 if=/dev/random of=/root/cryptlvm.keyfile iflag=fullblock
     chroot_mountpoint: /mnt
   when:
@@ -112,7 +112,7 @@
 
 - name: Add LUKS key
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sh -c "echo {{ encryption_password | quote }} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
     chroot_mountpoint: /mnt
   when:
@@ -123,7 +123,7 @@
 ############################################################
 
 - name: Get LUKS UUID
-  command: blkid -s UUID -o value {{ disk }}{{ part_suffix }}
+  ansible.builtin.command: blkid -s UUID -o value {{ disk }}{{ part_suffix }}
   register: luks_uuid
   changed_when: false
   when: encrypt_disk
@@ -159,7 +159,7 @@
 
 - name: Install GRUB EFI
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       grub-install
       --target=x86_64-efi
       --efi-directory=/boot/efi
@@ -177,7 +177,7 @@
 
 - name: Regenerate initramfs
   pacman_bootstrap:
-    command: "mkinitcpio -P"
+    ansible.builtin.command: "mkinitcpio -P"
     chroot_mountpoint: /mnt
 
 ############################################################
@@ -208,12 +208,12 @@
 
 - name: Copy theme directories to parent
   pacman_bootstrap:
-    command: "mv /boot/grub/themes/Grub-Themes/SekiroShadow /boot/grub/themes/"
+    ansible.builtin.command: "mv /boot/grub/themes/Grub-Themes/SekiroShadow /boot/grub/themes/"
     chroot_mountpoint: /mnt
 
 - name: Copy theme directories to parent
   pacman_bootstrap:
-    command: "rm -rf /boot/grub/themes/Grub-Themes/"
+    ansible.builtin.command: "rm -rf /boot/grub/themes/Grub-Themes/"
     chroot_mountpoint: /mnt
 
 - name: Set GRUB theme declaratively
@@ -229,7 +229,7 @@
 
 - name: Generate GRUB config
   pacman_bootstrap:
-    command: "grub-mkconfig -o /boot/grub/grub.cfg"
+    ansible.builtin.command: "grub-mkconfig -o /boot/grub/grub.cfg"
     chroot_mountpoint: /mnt
 
 
@@ -239,40 +239,40 @@
 
 - name: Create sbctl keys
   pacman_bootstrap:
-    command: sbctl create-keys
+    ansible.builtin.command: sbctl create-keys
     chroot_mountpoint: /mnt
   when: secure_boot
 
 - name: Enroll sbctl keys
   pacman_bootstrap:
-    command: sbctl enroll-keys -m
+    ansible.builtin.command: sbctl enroll-keys -m
     chroot_mountpoint: /mnt
   when: secure_boot
 
 - name: Sign kernel
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sbctl sign /boot/vmlinuz-{{ kernel }}
     chroot_mountpoint: /mnt
   when: secure_boot
 
 - name: Sign core efi
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sbctl sign /boot/grub/x86_64-efi/core.efi
     chroot_mountpoint: /mnt
   when: secure_boot
 
 - name: Sign boot efi
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sbctl sign /boot/grub/x86_64-efi/grub.efi
     chroot_mountpoint: /mnt
   when: secure_boot
 
 - name: Sign grub efi
   pacman_bootstrap:
-    command: >
+    ansible.builtin.command: >
       sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
     chroot_mountpoint: /mnt
   when: secure_boot
@@ -282,7 +282,7 @@
 ############################################################
 
 - name: Ensure pacman hooks directory exists
-  file:
+  ansible.builtin.file:
     path: /mnt/etc/pacman.d/hooks
     state: directory
     mode: "0755"

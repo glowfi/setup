@@ -1,7 +1,7 @@
 ---
 
 - name: Ensure /mnt exists
-  file:
+  ansible.builtin.file:
     path: /mnt
     state: directory
 
@@ -9,7 +9,7 @@
 - import_tasks: fs/ext4.yaml
 
 - name: Ensure EFI mountpoint
-  file:
+  ansible.builtin.file:
     path: /mnt/boot/efi
     state: directory
     recurse: true

@@ -279,7 +279,7 @@
   retries: 5
 
 - name: Clone grub-btrfs
-  git:
+  ansible.builtin.git:
     repo: https://github.com/Antynea/grub-btrfs
     dest: /tmp/grub-btrfs
     depth: 1
@@ -294,7 +294,7 @@
   when: os == "artix"
 
 - name: Install grub-btrfs
-  command: make install
+  ansible.builtin.command: make install
   args:
     chdir: /tmp/grub-btrfs
     creates: /usr/bin/grub-btrfsd
@@ -302,7 +302,7 @@
   become: true
 
 - name: Remove grub-btrfs build directory
-  file:
+  ansible.builtin.file:
     path: /tmp/grub-btrfs
     state: absent
   when: os == "artix"
@@ -421,7 +421,7 @@
   become: true
 
 - name: Remove immutable flag from resolv.conf
-  command: chattr -i /etc/resolv.conf
+  ansible.builtin.command: chattr -i /etc/resolv.conf
   failed_when: false
   changed_when: false
   become: true
@@ -434,7 +434,7 @@
   become: true
 
 - name: Set immutable flag on resolv.conf
-  command: chattr +i /etc/resolv.conf
+  ansible.builtin.command: chattr +i /etc/resolv.conf
   become: true
 
 
@@ -443,7 +443,7 @@
 ############################################################
 
 - name: Enable zram service
-  service:
+  ansible.builtin.service:
     name: zram
     enabled: true
     runlevel: default
@@ -458,7 +458,7 @@
   when: os == "arch"
 
 - name: Enable AppArmor
-  service:
+  ansible.builtin.service:
     name: apparmor
     enabled: true
     runlevel: default
@@ -477,7 +477,7 @@
   become: true
 
 - name: Enable nftables
-  service:
+  ansible.builtin.service:
     name: nftables
     enabled: true
     runlevel: default
@@ -497,7 +497,7 @@
   become: true
 
 - name: Enable grub-btrfsd
-  service:
+  ansible.builtin.service:
     name: grub-btrfsd
     enabled: true
     runlevel: default
@@ -505,14 +505,14 @@
   when: os == "artix"
 
 - name: Enable grub-btrfsd
-  service:
+  ansible.builtin.service:
     name: grub-btrfsd
     enabled: true
   when: os == "arch"
   become: true
 
 - name: Enable dnscrypt-proxy
-  service:
+  ansible.builtin.service:
     name: dnscrypt-proxy
     enabled: true
     runlevel: default
@@ -527,7 +527,7 @@
   when: os == "arch"
 
 - name: Enable dnsmasq
-  service:
+  ansible.builtin.service:
     name: dnsmasq
     enabled: true
     runlevel: default
@@ -535,7 +535,7 @@
   when: os == "artix"
 
 - name: Enable dnsmasq
-  service:
+  ansible.builtin.service:
     name: dnsmasq
     enabled: true
   become: true

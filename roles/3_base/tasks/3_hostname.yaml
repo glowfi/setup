@@ -1,11 +1,11 @@
 ---
 - name: Set hostname
-  copy:
+  ansible.builtin.copy:
     dest: /mnt/etc/hostname
     content: "{{ host_name }}\n"
 
 - name: Configure hosts file
-  copy:
+  ansible.builtin.copy:
     dest: /mnt/etc/hosts
     content: |
       127.0.0.1 localhost

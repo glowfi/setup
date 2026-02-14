@@ -1,13 +1,13 @@
 ---
 
 - name: Generate fstab content
-  command: >
+  ansible.builtin.command: >
     {{ 'fstabgen' if os == 'artix' else 'genfstab' }} -U /mnt
   register: fstab_output
   changed_when: false
 
 - name: Write fstab file
-  copy:
+  ansible.builtin.copy:
     dest: /mnt/etc/fstab
     content: "{{ fstab_output.stdout }}"
     owner: root

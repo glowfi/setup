@@ -8,13 +8,13 @@
     brave_config_dir: "{{ ansible_env.HOME }}/.config/BraveSoftware"
 
 - name: Remove system Brave policies directory
-  file:
+  ansible.builtin.file:
     path: /etc/brave
     state: absent
   become: true
 
 - name: Remove user Brave config
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/BraveSoftware"
     state: absent
 
@@ -25,14 +25,14 @@
   retries: 5
 
 - name: Create Brave policy directory
-  file:
+  ansible.builtin.file:
     path: /etc/brave/policies/managed
     state: directory
     mode: "0755"
   become: true
 
 - name: Deploy Brave policy.json
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/policy.json"
     dest: /etc/brave/policies/managed/brave-policy.json
     mode: "0644"
@@ -51,7 +51,7 @@
   changed_when: false
 
 - name: Ensure Default profile directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ brave_config_dir }}/{{ brave_folder }}/Default"
     state: directory
     mode: "0755"
@@ -67,7 +67,7 @@
   changed_when: false
 
 - name: Remove SingletonLock (default)
-  file:
+  ansible.builtin.file:
     path: "{{ brave_config_dir }}/{{ brave_folder }}/SingletonLock"
     state: absent
 
@@ -85,7 +85,7 @@
   changed_when: false
 
 - name: Ensure Secondary profile directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}"
     state: directory
     mode: "0755"
@@ -101,7 +101,7 @@
   changed_when: false
 
 - name: Remove SingletonLock (secondary)
-  file:
+  ansible.builtin.file:
     path: "{{ brave_config_dir }}/{{ brave_folder }}/SingletonLock"
     state: absent
 
@@ -110,14 +110,14 @@
 ############################################################
 
 - name: Deploy Default Preferences
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
     dest: "{{ brave_config_dir }}/{{ brave_folder }}/Default/Preferences"
     mode: "0644"
     remote_src: true
 
 - name: Deploy Secondary Preferences
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/brave/settings.json"
     dest: "{{ brave_config_dir }}/{{ brave_folder }}/{{ brave_secondary_profile }}/Preferences"
     mode: "0644"
@@ -151,7 +151,7 @@
 ############################################################
 
 - name: Start Librewolf headless to generate profile
-  shell: sudo -u {{ ansible_user }} librewolf --headless &
+  ansible.builtin.shell: sudo -u {{ ansible_user }} librewolf --headless &
   args:
     executable: /bin/bash
   changed_when: false
@@ -162,7 +162,7 @@
     timeout: 15
 
 - name: Kill Librewolf
-  shell: pkill -u {{ ansible_user }} librewolf || true
+  ansible.builtin.shell: pkill -u {{ ansible_user }} librewolf || true
   changed_when: false
 
 ############################################################
@@ -170,13 +170,13 @@
 ############################################################
 
 - name: Ensure ~/.local/bin exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.local/bin"
     state: directory
     mode: "0755"
 
 - name: Copy libw launcher script
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/scripts/libw"
     dest: "{{ ansible_env.HOME }}/.local/bin/libw"
     mode: "0755"

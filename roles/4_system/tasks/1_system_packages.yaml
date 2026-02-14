@@ -4,7 +4,7 @@
 ############################################################
 
 - name: Check if yay is installed
-  command: which yay
+  ansible.builtin.command: which yay
   register: yay_check
   changed_when: false
   failed_when: false
@@ -19,14 +19,14 @@
       become: true
 
     - name: Clone yay-bin repository
-      git:
+      ansible.builtin.git:
         repo: https://aur.archlinux.org/yay-bin.git
         dest: /tmp/yay-bin
         update: no
       retries: 5
 
     - name: Build yay package
-      command: makepkg -s --noconfirm
+      ansible.builtin.command: makepkg -s --noconfirm
       args:
         chdir: /tmp/yay-bin
         creates: /tmp/yay-bin/yay-bin-*.pkg.tar.zst
@@ -59,7 +59,7 @@
 
   always:
     - name: Remove yay build directory
-      file:
+      ansible.builtin.file:
         path: /tmp/yay-bin
         state: absent
 
@@ -166,7 +166,7 @@
   retries: 5
 
 - name: Ensure EasyEffects config directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: "0755"
@@ -182,11 +182,11 @@
   retries: 5
 
 - name: Run EasyEffects installer non-interactively
-  shell: |
+  ansible.builtin.shell: |
     echo | bash /tmp/easyeffects-install.sh
 
 - name: Remove EasyEffects installer
-  file:
+  ansible.builtin.file:
     path: /tmp/easyeffects-install.sh
     state: absent
 
@@ -277,31 +277,31 @@
   retries: 5
 
 - name: Remove existing GIMP config directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/GIMP/3.0"
     state: absent
 
 - name: Recreate GIMP config directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/GIMP/3.0"
     state: directory
     mode: "0755"
 
 - name: Clone PhotoGIMP repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/Diolinux/PhotoGIMP
     dest: "{{ ansible_env.HOME }}/.config/GIMP/3.0/PhotoGIMP"
     depth: 1
   retries: 5
 
 - name: Copy PhotoGIMP config into GIMP directory
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.config/GIMP/3.0/PhotoGIMP/.config/GIMP/3.0/"
     dest: "{{ ansible_env.HOME }}/.config/GIMP/3.0/"
     remote_src: true
 
 - name: Remove PhotoGIMP repo and unwanted directories
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/GIMP/3.0/{{ item }}"
     state: absent
   loop:
@@ -358,28 +358,28 @@
   retries: 5
 
 - name: Clone figlet fonts repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/xero/figlet-fonts
     dest: /tmp/figlet-fonts
     update: no
   retries: 5
 
 - name: Ensure figlet fonts directory exists
-  file:
+  ansible.builtin.file:
     path: /usr/share/figlet/fonts
     state: directory
     mode: "0755"
   become: true
 
 - name: Copy figlet fonts into system
-  copy:
+  ansible.builtin.copy:
     src: /tmp/figlet-fonts/
     dest: /usr/share/figlet/fonts/
     remote_src: true
   become: true
 
 - name: Remove temporary figlet directory
-  file:
+  ansible.builtin.file:
     path: /tmp/figlet-fonts
     state: absent
   become: true
@@ -400,7 +400,7 @@
 ############################################################
 
 - name: Clone dotfiles repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/glowfi/dotfiles.git
     dest: "/home/{{ ansible_user }}/.dotfiles"
     update: yes
@@ -413,13 +413,13 @@
 ############################################################
 
 - name: Ensure fish config directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.config/fish"
     state: directory
     mode: "0755"
 
 - name: Copy fish config
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.dotfiles/configs/fish/"
     dest: "/home/{{ ansible_user }}/.config/fish/"
     remote_src: true
@@ -430,19 +430,19 @@
 ############################################################
 
 - name: Copy bashrc
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.dotfiles/configs/.bashrc"
     dest: "/home/{{ ansible_user }}/.bashrc"
     remote_src: true
 
 - name: Copy inputrc
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.dotfiles/configs/.inputrc"
     dest: "/home/{{ ansible_user }}/.inputrc"
     remote_src: true
 
 - name: Copy vimrc
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.dotfiles/configs/.vimrc"
     dest: "/home/{{ ansible_user }}/.vimrc"
     remote_src: true
@@ -453,21 +453,21 @@
 ############################################################
 
 - name: Copy bashrc to root
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.bashrc"
     dest: "/root/.bashrc"
     remote_src: true
   become: true
 
 - name: Copy inputrc to root
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.inputrc"
     dest: "/root/.inputrc"
     remote_src: true
   become: true
 
 - name: Copy vimrc to root
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.vimrc"
     dest: "/root/.vimrc"
     remote_src: true
@@ -487,27 +487,27 @@
   retries: 5
 
 - name: Clone NNN
-  git:
+  ansible.builtin.git:
     repo: https://github.com/jarun/nnn
     dest: /tmp/nnn
     depth: 1
   retries: 5
 
 - name: Build NNN binary
-  command: >
+  ansible.builtin.command: >
     sudo make O_NERD=1 install
   args:
     chdir: /tmp/nnn
   become: true
 
 - name: Ensure nnn plugin directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.config/nnn/plugins"
     state: directory
     mode: "0755"
 
 - name: Install nnn plugins
-  shell: curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+  ansible.builtin.shell: curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
   args:
     chdir: "/home/{{ ansible_user }}/.config/nnn/plugins"
     creates: "/home/{{ ansible_user }}/.config/nnn/plugins/autojump"
@@ -518,12 +518,12 @@
 ############################################################
 
 - name: Ensure kitty config directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.config/kitty"
     state: directory
 
 - name: Copy kitty config
-  copy:
+  ansible.builtin.copy:
     src: "/home/{{ ansible_user }}/.dotfiles/configs/kitty/"
     dest: "/home/{{ ansible_user }}/.config/kitty/"
     remote_src: true
@@ -534,7 +534,7 @@
 ############################################################
 
 - name: Ensure local bin exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.local/bin"
     state: directory
     mode: "0755"
@@ -553,5 +553,5 @@
 - name: Change default shell to fish
   user:
     name: "{{ ansible_user }}"
-    shell: /bin/fish
+    ansible.builtin.shell: /bin/fish
   become: true

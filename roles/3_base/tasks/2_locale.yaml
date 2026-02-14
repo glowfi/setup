@@ -7,10 +7,10 @@
 
 - name: Generate locale
   pacman_bootstrap:
-    command: "locale-gen"
+    ansible.builtin.command: "locale-gen"
     chroot_mountpoint: /mnt
 
 - name: Set locale.conf
-  copy:
+  ansible.builtin.copy:
     dest: /mnt/etc/locale.conf
     content: "LANG=en_US.UTF-8\n"

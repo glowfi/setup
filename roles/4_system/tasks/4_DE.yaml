@@ -243,14 +243,14 @@
   become: true
 
 - name: Clone autost
-  git:
+  ansible.builtin.git:
     repo: https://github.com/glowfi/autost
     dest: /tmp/autost
     depth: 1
   retries: 5
 
 - name: Build autost
-  command: go build -o autost ./main.go
+  ansible.builtin.command: go build -o autost ./main.go
   args:
     chdir: /tmp/autost
     creates: /tmp/autost/autost
@@ -258,7 +258,7 @@
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
 
 - name: Install autost binary
-  copy:
+  ansible.builtin.copy:
     src: /tmp/autost/autost
     dest: /usr/local/bin/autost
     mode: "0755"
@@ -266,27 +266,27 @@
   become: true
 
 - name: Ensure autost config directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/autost"
     state: directory
     mode: "0755"
 
 - name: Deploy autost config
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/autost/config.yaml"
     dest: "{{ ansible_env.HOME }}/.config/autost/config.yaml"
     mode: "0644"
     remote_src: true
 
 - name: Ensure systemd user directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/systemd/user"
     state: directory
     mode: "0755"
   when: os == "arch"
 
 - name: Deploy autost service file
-  copy:
+  ansible.builtin.copy:
     src: "/tmp/autost/autost.service"
     dest: "{{ ansible_env.HOME }}/.config/systemd/user"
     mode: "0644"
@@ -301,14 +301,14 @@
   when: os == "arch"
 
 - name: Ensure autostart directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/autostart"
     state: directory
     mode: "0755"
   when: os == "artix"
 
 - name: Deploy autostart desktop file
-  copy:
+  ansible.builtin.copy:
     src: "/tmp/autost/Autostart.desktop"
     dest: "{{ ansible_env.HOME }}/.config/autostart"
     mode: "0644"
@@ -316,7 +316,7 @@
   when: os == "artix"
 
 - name: Remove autost source
-  file:
+  ansible.builtin.file:
     path: /tmp/autost
     state: absent
 
@@ -325,7 +325,7 @@
 ############################################################
 
 - name: Copy .Xresources
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/.Xresources"
     dest: "{{ ansible_env.HOME }}/.Xresources"
     mode: "0644"
@@ -335,21 +335,9 @@
 # Copy Plasma settings
 ############################################################
 
-- name: Copy plasma applet settings
-  copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc"
-    dest: "{{ ansible_env.HOME }}/.config"
-    mode: "0755"
-    remote_src: true
-  become: true
-
-- name: Copy plasmashell settings
-  copy:
-    src: "{{ ansible_env.HOME }}/.dotfiles/configs/plasma/plasmashellrc"
-    dest: "{{ ansible_env.HOME }}/.config"
-    mode: "0755"
-    remote_src: true
-  become: true
+- name: Move files into .config
+  ansible.builtin.shell: |
+    mv "{{ ansible_env.HOME }}/*" "{{ ansible_env.HOME }}/.config"
 
 - name: Copy wall.sh to ~/.local/bin
   ansible.builtin.copy:
@@ -370,14 +358,14 @@
   become: true
 
 - name: Clone ghkd
-  git:
+  ansible.builtin.git:
     repo: https://github.com/glowfi/ghkd
     dest: /tmp/ghkd
     depth: 1
   retries: 5
 
 - name: Build ghkd
-  command: go build -o ghkd ./main.go
+  ansible.builtin.command: go build -o ghkd ./main.go
   args:
     chdir: /tmp/ghkd
     creates: /tmp/ghkd/ghkd
@@ -385,7 +373,7 @@
     PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
 
 - name: Install ghkd binary
-  copy:
+  ansible.builtin.copy:
     src: /tmp/ghkd/ghkd
     dest: /usr/local/bin/ghkd
     mode: "0755"
@@ -393,18 +381,18 @@
   become: true
 
 - name: Remove ghkd source
-  file:
+  ansible.builtin.file:
     path: /tmp/ghkd
     state: absent
 
 - name: Ensure ghkd config directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/ghkd"
     state: directory
     mode: "0755"
 
 - name: Deploy ghkd config
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/.dotfiles/configs/ghkd/config.yaml"
     dest: "{{ ansible_env.HOME }}/.config/ghkd/config.yaml"
     mode: "0644"
@@ -415,7 +403,7 @@
 ############################################################
 
 - name: Set Plasma theme
-  command: >
+  ansible.builtin.command: >
     kwriteconfig6 --file kdeglobals
     --group KDE
     --key LookAndFeelPackage
@@ -424,7 +412,7 @@
   become_user: "{{ ansible_user }}"
 
 - name: Disable KWallet
-  command: >
+  ansible.builtin.command: >
     kwriteconfig6 --file kwalletrc
     --group Wallet
     --key Enabled false
@@ -432,7 +420,7 @@
   become_user: "{{ ansible_user }}"
 
 - name: Disable KWallet first use
-  command: >
+  ansible.builtin.command: >
     kwriteconfig6 --file kwalletrc
     --group Wallet
     --key "First Use" false
@@ -440,7 +428,7 @@
   become_user: "{{ ansible_user }}"
 
 - name: Remove kwallet dbus service
-  file:
+  ansible.builtin.file:
     path: /usr/share/dbus-1/services/org.kde.kwalletd6.service
     state: absent
   become: true

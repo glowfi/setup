@@ -6,7 +6,7 @@
   register: base_root
 
 - name: Bootstrap system
-  command: >
+  ansible.builtin.command: >
     {{ 'basestrap' if os == 'artix' else 'pacstrap' }}
     /mnt {{ base_packages | join(' ') }}
   when: not base_root.stat.exists

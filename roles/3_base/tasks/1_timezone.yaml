@@ -1,6 +1,6 @@
 ---
 - name: Set timezone
-  file:
+  ansible.builtin.file:
     src: "/usr/share/zoneinfo/{{ timezone }}"
     dest: "/mnt/etc/localtime"
     state: link
@@ -17,17 +17,17 @@
 
 - name: Enable ntpd
   pacman_bootstrap:
-    command: rc-update add ntpd default
+    ansible.builtin.command: rc-update add ntpd default
     chroot_mountpoint: /mnt
   when: os == "artix"
 
 - name: Enable ntp
   pacman_bootstrap:
-    command: timedatectl set-ntp true
+    ansible.builtin.command: timedatectl set-ntp true
     chroot_mountpoint: /mnt
   when: os == "arch"
 
 - name: Sync hardware clock
   pacman_bootstrap:
-    command: "hwclock --systohc"
+    ansible.builtin.command: "hwclock --systohc"
     chroot_mountpoint: /mnt

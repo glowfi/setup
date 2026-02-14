@@ -59,7 +59,7 @@
       retries: 5
 
     - name: Ensure temporary extraction directory exists
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: directory
 
@@ -71,19 +71,19 @@
         creates: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl"
 
     - name: Install rate-mirrors binary
-      copy:
+      ansible.builtin.copy:
         src: "/tmp/rate-mirrors/rate-mirrors-{{ rate_mirrors_version }}-x86_64-unknown-linux-musl/rate_mirrors"
         dest: "{{ rate_mirror_dst }}"
         mode: "0755"
         remote_src: true
 
     - name: Cleanup extracted directory
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors
         state: absent
 
     - name: Cleanup tarball
-      file:
+      ansible.builtin.file:
         path: /tmp/rate-mirrors.tar.gz
         state: absent
 
@@ -110,13 +110,13 @@
 
     - name: Populate Arch keyring
       pacman_bootstrap:
-        command: pacman-key --populate archlinux
+        ansible.builtin.command: pacman-key --populate archlinux
         chroot_mountpoint: /mnt
       changed_when: false
 
     - name: Generate arch mirrorlist
       pacman_bootstrap:
-        command: >
+        ansible.builtin.command: >
           rate-mirrors --entry-country={{ repo_country }}
           --max-mirrors-to-output=5
           --save='{{arch_mirror_file}}'
@@ -159,7 +159,7 @@
 
     - name: Generate mirrorlist
       pacman_bootstrap:
-        command: >
+        ansible.builtin.command: >
           reflector --verbose
           -c {{ repo_country }}
           --latest 5

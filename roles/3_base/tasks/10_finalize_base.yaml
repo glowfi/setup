@@ -7,12 +7,12 @@
     validate: 'visudo -cf %s'
 
 - name: Ensure NetworkManager conf.d exists
-  file:
+  ansible.builtin.file:
     path: /mnt/etc/NetworkManager/conf.d
     state: directory
 
 - name: Disable wifi powersave
-  copy:
+  ansible.builtin.copy:
     dest: /mnt/etc/NetworkManager/conf.d/wifi-powersave.conf
     content: |
       [connection]
@@ -28,7 +28,7 @@
 
 - name: Enable OpenRC services
   pacman_bootstrap:
-    command: rc-update add {{ item }} default
+    ansible.builtin.command: rc-update add {{ item }} default
     chroot_mountpoint: /mnt
   loop:
     - NetworkManager
@@ -39,7 +39,7 @@
 
 - name: Enable systemd services
   pacman_bootstrap:
-    command: systemctl enable {{ item }}
+    ansible.builtin.command: systemctl enable {{ item }}
     chroot_mountpoint: /mnt
   loop:
     - NetworkManager
