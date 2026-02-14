@@ -42,7 +42,7 @@
   ansible.builtin.lineinfile:
     path: /mnt/etc/default/grub
     regexp: "^GRUB_GFXMODE="
-    line: "GRUB_GFXMODE=auto"
+    line: "GRUB_GFXMODE=1920x1080"
     state: present
 
 
@@ -186,42 +186,27 @@
 
 - name: Ensure grub themes directory exists
   ansible.builtin.file:
-    path: /mnt/boot/grub/themes
+    path: /mnt/test/minimal-grub-theme
     state: directory
     mode: "0755"
 
 - name: Clone GRUB themes repository
   ansible.builtin.git:
-    repo: https://github.com/MrVivekRajan/Grub-Themes
-    dest: /mnt/boot/grub/themes/Grub-Themes
+    repo: https://github.com/glowfi/minimal-grub-theme
+    dest: /mnt/test/minimal-grub-theme
     version: HEAD
     update: yes
   retries: 5
 
-- name: Remove unnecessary files
+- name: Install GRUB theme
+  pacman_bootstrap:
+    command: "make install -C /test/minimal-grub-theme"
+    chroot_mountpoint: /mnt
+
+- name: Remove minimal-grub-theme directory
   ansible.builtin.file:
-    path: "/mnt/boot/grub/themes/Grub-Themes/{{ item }}"
+    path: /mnt/test
     state: absent
-  loop:
-    - README.md
-    - LICENSE
-
-- name: Copy theme directories to parent
-  pacman_bootstrap:
-    command: "mv /boot/grub/themes/Grub-Themes/SekiroShadow /boot/grub/themes/"
-    chroot_mountpoint: /mnt
-
-- name: Copy theme directories to parent
-  pacman_bootstrap:
-    command: "rm -rf /boot/grub/themes/Grub-Themes/"
-    chroot_mountpoint: /mnt
-
-- name: Set GRUB theme declaratively
-  ansible.builtin.lineinfile:
-    path: /mnt/etc/default/grub
-    regexp: '^GRUB_THEME='
-    line: 'GRUB_THEME="/boot/grub/themes/SekiroShadow/theme.txt"'
-    create: yes
 
 ############################################################
 # Generate GRUB Config
