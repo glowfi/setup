@@ -242,12 +242,14 @@
     ansible.builtin.command: sbctl create-keys
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 - name: Enroll sbctl keys
   pacman_bootstrap:
     ansible.builtin.command: sbctl enroll-keys -m
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 - name: Sign kernel
   pacman_bootstrap:
@@ -255,6 +257,7 @@
       sbctl sign /boot/vmlinuz-{{ kernel }}
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 - name: Sign core efi
   pacman_bootstrap:
@@ -262,6 +265,7 @@
       sbctl sign /boot/grub/x86_64-efi/core.efi
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 - name: Sign boot efi
   pacman_bootstrap:
@@ -269,6 +273,7 @@
       sbctl sign /boot/grub/x86_64-efi/grub.efi
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 - name: Sign grub efi
   pacman_bootstrap:
@@ -276,6 +281,7 @@
       sbctl sign /boot/efi/EFI/GRUB/grubx64.efi
     chroot_mountpoint: /mnt
   when: secure_boot
+  ignore_errors: true
 
 ############################################################
 # Secure Boot Auto-Sign Hook
