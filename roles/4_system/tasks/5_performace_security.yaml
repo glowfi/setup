@@ -91,7 +91,7 @@
   ansible.builtin.replace:
     path: /etc/default/grub
     regexp: '(^GRUB_CMDLINE_LINUX_DEFAULT=".*)(?<!lsm=landlock,lockdown,yama,apparmor,bpf)"'
-    ansible.builtin.replace: '\1 lsm=landlock,lockdown,yama,apparmor,bpf"'
+    replace: '\1 lsm=landlock,lockdown,yama,apparmor,bpf"'
   become: true
 
 ############################################################

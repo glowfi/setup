@@ -23,7 +23,7 @@
   ansible.builtin.replace:
     path: /mnt/etc/fstab
     regexp: 'subvolid=[^,]*,?'
-    ansible.builtin.replace: ''
+    replace: ''
   when: file_system == "btrfs"
 
 - name: Enable OpenRC services

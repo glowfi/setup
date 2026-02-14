@@ -36,7 +36,7 @@
   ansible.builtin.replace:
     path: /mnt/etc/default/grub
     regexp: " quiet"
-    ansible.builtin.replace: ""
+    replace: ""
 
 - name: Set GRUB resolution
   ansible.builtin.lineinfile:
