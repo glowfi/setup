@@ -206,16 +206,8 @@
     line: 'x-scheme-handler/https=brave-browser.desktop'
 
 ############################################################
-# Install redshift,bemenu,autost
+# Install bemenu,autost
 ############################################################
-
-- name: Install redshift
-  community.general.pacman:
-    name: 
-      - redshift
-    state: present
-  become: true
-  retries: 5
 
 - name: Run bemenu help.sh for wayland
   ansible.builtin.command: ./help.sh wayland
