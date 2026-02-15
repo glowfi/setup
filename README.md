@@ -101,11 +101,7 @@ Then run:
 ```sh
 git clone https://github.com/glowfi/setup
 cd setup
-
-ansible-playbook \
-  -i inventory/base.yaml \
-  playbooks/base.yaml \
-  --ask-vault-pass
+ansible-playbook -i inventory/base.yaml playbooks/base.yaml --ask-vault-pass
 ```
 
 > 💡 Installing remotely? Enable SSH first.
@@ -127,10 +123,7 @@ Run:
 ```bash
 git clone https://github.com/glowfi/setup
 cd setup
-
-ansible-playbook -K \
-  -i inventory/system.yaml \
-  playbooks/system.yaml
+ansible-playbook -K -i inventory/system.yaml playbooks/system.yaml
 ```
 
 ---
