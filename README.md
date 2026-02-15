@@ -1,104 +1,207 @@
-# Arch / Artix Setup
+<div align="center">
 
-Declarative Arch / Artix Linux installation using Ansible.
+# ⚙️ setup
 
-Clean. Reproducible. Minimal.
+Declarative **Arch / Artix Linux** installation using **Ansible**
 
----
+Clean • Reproducible • Minimal
 
-# Overview
+![Arch](https://img.shields.io/badge/Arch-Linux-1793D1?logo=arch-linux&logoColor=white)
+![Artix](https://img.shields.io/badge/Artix-10A0CC)
+![Automation](https://img.shields.io/badge/Automation-Ansible-red?logo=ansible&logoColor=white)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)
 
-This project replaces shell-based install scripts with structured, idempotent Ansible roles.
-
-It performs a full system installation in **two chronological stages**:
-
-1. Bootstrap (from live ISO)
-2. System configuration (after reboot)
-
-Supports:
-
-- Arch (systemd)
-- Artix (OpenRC)
-- KDE Plasma (minimal)
+</div>
 
 ---
 
-## Features
+## ✨ What is this?
 
-- **Openrc** as init with **artix**
-- **SystemD** as init with **arch**
-- **Secure Boot**
-- **Zen** kernel
-- **Zstd** Compression
-- **Btrfs**
-- **Zram**
-- **LUKS** encryption
-- **Apparmor**
-- **Dnscrypt**
-- **Some tweaks for performance**
-- **Hardened SSH**
-- **Hardened Firewall**
-- **Hardened browser** with custom settings and user policy
+A fully declarative installation framework for **Arch** and **Artix** Linux.
 
-## How to Install
+Instead of fragile install scripts, the system is described using
+**idempotent Ansible roles** — allowing installs to be:
 
-**Base install**
+- reproducible
+- auditable
+- re-runnable
+- predictable
 
-> Connect to internet before running the below commands and edit the `inventory/base.yaml` as per your needs
-> If installing from another pc dont forget to enable ssh and set password
+> Fix configuration → rerun playbook.
 
-```sh
+---
 
-git clone https://github.com/glowfi/setup
-ansible-playbook -i inventory/base.yaml playbooks/base.yaml --ask-vault-pass
+## 🧠 Installation Model
+
+The system installs in **two deterministic stages**:
+
 ```
 
-**DE/WM/Server install**
+Live ISO
+│
+├─ 1️⃣ Bootstrap
+│     Disk → Base system → Users
+│
+└─ 2️⃣ System Configuration
+Desktop → Services → Hardening
 
-> Restart and login as the new user created from above script and run the below commands. Edit the `inventory/system.yaml` as per your needs.
+```
+
+### Supported
+
+| Distribution | Init    |
+| ------------ | ------- |
+| Arch Linux   | systemd |
+| Artix Linux  | OpenRC  |
+
+Desktop target: **Minimal KDE Plasma**
+
+---
+
+## 🚀 Features
+
+### System
+
+- 🔐 Secure Boot support
+- 💾 LUKS full disk encryption
+- 🗜️ Btrfs + Zstd compression
+- ⚡ ZRAM memory optimization
+- 🧠 Zen / Hardened kernel support
+
+### Security
+
+- 🛡️ AppArmor enabled
+- 🔒 Hardened SSH configuration
+- 🔥 Firewall hardening
+- 🌐 dnscrypt-proxy
+- 🌍 Hardened browser policies
+
+### Philosophy
+
+- Idempotent execution
+- Declarative configuration
+- Minimal defaults
+- No interactive prompts
+- Safe re-execution anytime
+
+---
+
+## ⚡ Quick Start
+
+### 1️⃣ Base Install (Live ISO)
+
+Edit:
 
 ```sh
-cd
+inventory/base.yaml
+```
+
+Then run:
+
+```sh
 git clone https://github.com/glowfi/setup
-ansible-playbook -K -i inventory/system.yaml playbooks/system.yaml
+cd setup
+
+ansible-playbook \
+  -i inventory/base.yaml \
+  playbooks/base.yaml \
+  --ask-vault-pass
+```
+
+> 💡 Installing remotely? Enable SSH first.
+
+---
+
+### 2️⃣ System Setup (After Reboot)
+
+Login as the created user.
+
+Edit:
+
+```sh
+inventory/system.yaml
+```
+
+Run:
+
+```bash
+git clone https://github.com/glowfi/setup
+cd setup
+
+ansible-playbook -K \
+  -i inventory/system.yaml \
+  playbooks/system.yaml
 ```
 
 ---
 
-# Structure
+## 🗂️ Repository Structure
 
 ```
 roles/
-├── 1_disk
-├── 2_pacstrap
-├── 3_base
-├── 4_system
-└── common
+├── 1_disk        → partitioning & encryption
+├── 2_pacstrap    → base system bootstrap
+├── 3_base        → core configuration
+├── 4_system      → desktop & services
+└── common        → shared logic
 ```
 
-Each role handles one layer of the system.
+Each role represents a **single system layer**.
 
-Execution is sequential and predictable.
-
----
-
-# Philosophy
-
-- Idempotent
-- Declarative
-- Minimal
-- No interactive prompts
-- No fragile shell chains
-- Re-runnable at any time
-
-If something breaks, fix the role and rerun.
+Execution order is explicit and chronological.
 
 ---
 
-# Requirements
+## 🔁 Idempotency
 
-- Basic understanding of Arch
-- Comfort reading logs
-- Willingness to manage your own system
+All tasks are designed to be safely re-run.
+
+```
+change config
+      ↓
+rerun playbook
+      ↓
+system converges to desired state
+```
+
+No reinstall required.
 
 ---
+
+## 🔐 Secrets
+
+Sensitive values are protected using **Ansible Vault**.
+
+Run playbooks with:
+
+```bash
+--ask-vault-pass
+```
+
+Encrypted values are safe to store in Git.
+
+---
+
+## 📋 Requirements
+
+- Basic Arch Linux knowledge
+- Ability to read logs
+- Comfort debugging system configuration
+
+This project does **not** abstract Linux away — it makes it reproducible.
+
+---
+
+## 🤝 Contributing
+
+Issues, improvements, and ideas are welcome.
+
+Small, focused PRs preferred.
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+See the [LICENSE](LICENSE) file for details.
