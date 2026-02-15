@@ -139,6 +139,7 @@
       - ark
       - gwenview
       - okular
+      - spectacle
     state: present
   become: true
   retries: 5
