@@ -599,6 +599,16 @@
     depth: 1
   retries: 5
 
+############################################################
+# Copy Btop Config
+############################################################
+
+- name: Copy btop configuration
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.dotfiles/configs/btop"
+    dest: "{{ ansible_env.HOME }}/.config/"
+    mode: preserve
+    remote_src: true
 
 ############################################################
 # Copy Dotfile Scripts

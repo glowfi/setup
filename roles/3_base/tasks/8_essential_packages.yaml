@@ -38,7 +38,7 @@
       - bat
       - ripgrep
       - fd
-      - bottom
+      - btop
       - sad
       - git-delta
       - tldr

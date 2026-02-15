@@ -388,6 +388,12 @@
   become: true
   become_user: "{{ ansible_user }}"
 
+- name: Disable Baloo
+  ansible.builtin.command: balooctl6 disable
+  become: true
+  become_user: "{{ ansible_user }}"
+  ignore_errors: true
+
 - name: Disable KWallet
   ansible.builtin.command: >
     kwriteconfig6 --file kwalletrc
