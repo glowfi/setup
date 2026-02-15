@@ -1095,13 +1095,13 @@
 - name: Configure git user name
   community.general.git_config:
     name: user.name
-    value: "{{ git_user_name }}"
+    value: "{{ git_config.username }}"
     scope: global
 
 - name: Configure git user email
   community.general.git_config:
     name: user.email
-    value: "{{ git_user_email }}"
+    value: "{{ git_config.email }}"
     scope: global
 
 - name: Configure delta git settings

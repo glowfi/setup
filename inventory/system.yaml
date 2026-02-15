@@ -1,11 +1,17 @@
 all:
   vars:
-    os: arch    # arch artix
-    repo_country: DE # Country code for your country
-    git_user_name: glowfi
-    git_user_email: "86939591+glowfi@users.noreply.github.com"
+    # ---------- System ----------
+    os: arch                    # arch | artix
+    repo_country: DE            # country code
+    display_server: both        # x11 | wayland | both
+
+    # ---------- Git ----------
+    git_config:
+      username: glowfi
+      email: 86939591+glowfi@users.noreply.github.com
+
   hosts:
     pc:
-      ansible_host: 192.168.53.92
-      # ansible_connection: local
       ansible_user: username
+      ansible_connection: local
+      # ansible_host: 192.168.53.92

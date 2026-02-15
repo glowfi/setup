@@ -107,6 +107,7 @@
     update_cache: true
   become: true
   retries: 5
+  when: display_server == "both" or display_server == "x11"
 
 ############################################################
 # ===================== WAYLAND Packages ==================
@@ -125,6 +126,7 @@
     state: present
   become: true
   retries: 5
+  when: display_server == "both" or display_server == "wayland"
 
 ############################################################
 # ===================== System Applications ===============
@@ -423,6 +425,36 @@
     option: Current
     value: breeze
   become: true
+
+############################################################
+# Tiling Support
+############################################################
+
+- name: Ensure go-task is installed
+  community.general.pacman:
+    name: go-task
+    state: present
+  become: true
+
+- name: Clone Krohnkite repository
+  ansible.builtin.git:
+    repo: https://codeberg.org/anametologin/Krohnkite
+    dest: /tmp/Krohnkite
+    version: master
+    update: no
+
+- name: Install Krohnkite
+  ansible.builtin.command: go-task install
+  args:
+    chdir: /tmp/Krohnkite
+    creates: "{{ ansible_env.HOME }}/.local/share/kwin/scripts/krohnkite"
+  environment:
+    HOME: "{{ ansible_env.HOME }}"
+
+- name: Remove Krohnkite source directory
+  ansible.builtin.file:
+    path: /tmp/Krohnkite
+    state: absent
 
 ############################################################
 # Enable SDDM, power-profiles-daemon

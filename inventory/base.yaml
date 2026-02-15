@@ -1,17 +1,22 @@
 all:
   vars:
-    os: arch                       # arch artix
-    host_name: arch                # hostname of the system
-    timezone: Asia/Kolkata         # curl --fail https://ipapi.co/timezone
-    keyboard_layout: us            # us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk
+    # ---------- System ----------
+    os: arch                    # arch | artix
+    host_name: arch             # hostname of the system
+    timezone: Asia/Kolkata      # curl --fail https://ipapi.co/timezone
+    keyboard_layout: us         # us by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk
 
-    file_system: btrfs             # btrfs ext4
-    drive_type: ssd                # ssd non-ssd
-    disk: /dev/sda                 # do a lsblk and check
+    # ---------- Disk ----------
+    file_system: btrfs          # btrfs | ext4
+    drive_type: ssd             # ssd | non-ssd
+    disk: /dev/sda              # check using lsblk
     encrypt_disk: true
     encryption_password: password
 
+    # ---------- Repository ----------
     repo_country: DE
+
+    # ---------- Users ----------
     users:
       - name: root
         password: p
@@ -23,13 +28,17 @@ all:
           - video
           - input
           - wheel
-    cpu: amd    # amd intel
-    gpu: nvidia # amd intel nvidia
 
+    # ---------- Hardware ----------
+    cpu: amd                    # amd | intel
+    gpu: nvidia                 # amd | intel | nvidia
+
+    # ---------- Boot ----------
     secure_boot: true
-    kernel: linux-hardened # linux linux-zen linux-lts linux-hardened
+    kernel: linux-hardened      # linux | linux-zen | linux-lts | linux-hardened
+
   hosts:
     pc:
-      ansible_host: 192.168.53.92
-      # ansible_connection: local
+      # ansible_host: 192.168.53.92
       ansible_user: root
+      ansible_connection: local
