@@ -50,7 +50,7 @@ Supports:
 ```sh
 
 git clone https://github.com/glowfi/setup
-ansible-playbook -i inventory/base.yaml playbooks/base.yaml
+ansible-playbook -i inventory/base.yaml playbooks/base.yaml --ask-vault-pass
 ```
 
 **DE/WM/Server install**
