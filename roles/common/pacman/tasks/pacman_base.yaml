@@ -121,11 +121,12 @@
         update_cache: true
         force: true
 
-    - name: Install parted, gptfdisk
+    - name: Install parted, gptfdisk,git
       community.general.pacman:
         name: 
          - parted
          - gptfdisk 
+         - git
         state: present
       retries: 5
   when: os == "artix"
@@ -137,12 +138,13 @@
         update_cache: true
         force: true
 
-    - name: Install reflector, gptfdisk, parted
+    - name: Install reflector, gptfdisk, parted,git
       community.general.pacman:
         name: 
          - reflector
          - parted
          - gptfdisk 
+         - git
         state: present
         update_cache: true
       retries: 5

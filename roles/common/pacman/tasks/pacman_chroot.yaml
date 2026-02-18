@@ -130,11 +130,12 @@
         update_cache: true
         chroot_mountpoint: /mnt
 
-    - name: Install gptfdisk
+    - name: Install gptfdisk,git,parted
       pacman_bootstrap:
         name: 
           - gptfdisk
           - parted
+          - git
         state: present
         chroot_mountpoint: /mnt
       retries: 5
@@ -148,12 +149,13 @@
         update_cache: true
         chroot_mountpoint: /mnt
 
-    - name: Install reflector and gptfdisk
+    - name: Install reflector,gptfdisk,parted,git
       pacman_bootstrap:
         name:
           - reflector
           - gptfdisk
           - parted
+          - git
         chroot_mountpoint: /mnt
       retries: 5
 
