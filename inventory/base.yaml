@@ -19,11 +19,11 @@ all:
     # ---------- Users ----------
     users:
       - name: root
-        password: "p"
+        password: 'pwd?\"'
 
       - name: username
         full_name: fullname
-        password: "p"
+        password: 'pwd?\"'
         groups:
           - video
           - input
