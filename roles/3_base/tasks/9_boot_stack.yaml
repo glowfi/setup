@@ -113,7 +113,7 @@
 - name: Add LUKS key
   pacman_bootstrap:
     command: >
-      sh -c "echo {{ encryption_password | quote }} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
+      sh -c "printf '%s' {{ encryption_password }} | cryptsetup -v luksAddKey {{ disk }}{{ part_suffix }} /root/cryptlvm.keyfile"
     chroot_mountpoint: /mnt
   when:
     - encrypt_disk
