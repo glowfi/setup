@@ -458,6 +458,41 @@
     state: absent
 
 ############################################################
+# SDDM Theme
+############################################################
+
+- name: Clone SilentSDDM into /tmp
+  ansible.builtin.git:
+    repo: https://github.com/uiriansan/SilentSDDM
+    dest: /tmp/SilentSDDM
+    version: main
+    depth: 1
+    force: yes
+
+- name: Remove default config line
+  ansible.builtin.lineinfile:
+    path: /tmp/SilentSDDM/install.sh
+    regexp: '^ConfigFile=configs/default.conf'
+    state: absent
+
+- name: Set rei.conf as config
+  ansible.builtin.lineinfile:
+    path: /tmp/SilentSDDM/install.sh
+    regexp: '^ConfigFile='
+    line: 'ConfigFile=configs/rei.conf'
+
+- name: Check if theme already installed
+  ansible.builtin.stat:
+    path: /usr/share/sddm/themes/SilentSDDM
+  register: silent_sddm
+
+- name: Run installer
+  ansible.builtin.command: ./install.sh
+  args:
+    chdir: /tmp/SilentSDDM
+  when: not silent_sddm.stat.exists
+
+############################################################
 # Enable SDDM, power-profiles-daemon
 ############################################################
 
@@ -472,3 +507,4 @@
     name: power-profiles-daemon
     enabled: true
   become: true
+
