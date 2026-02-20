@@ -637,6 +637,7 @@
     - searchArchive.sh
     - send.sh
     - windowshot.sh
+    - dir2clip.sh
 
 ############################################################
 # Install vimv
