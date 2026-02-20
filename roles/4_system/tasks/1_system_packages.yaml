@@ -326,10 +326,9 @@
 ############################################################
 
 - name: Install onlyoffice
-  community.general.pacman:
+  yay:
     name: onlyoffice-bin
     state: present
-  become: true
   retries: 5
 
 - name: Install tectonic

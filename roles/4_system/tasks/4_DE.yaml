@@ -47,6 +47,14 @@
   become: true
   retries: 5
 
+- name: Install power management
+  community.general.pacman:
+    name:
+      - power-profiles-daemon-openrc
+    state: present
+  become: true
+  retries: 5
+  when: os == "artix"
 
 ############################################################
 # KDE System Tools + Display Manager
