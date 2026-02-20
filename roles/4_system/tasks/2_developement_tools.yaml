@@ -638,6 +638,7 @@
     - send.sh
     - windowshot.sh
     - dir2clip.sh
+    - clipmenu.sh
 
 ############################################################
 # Install vimv
