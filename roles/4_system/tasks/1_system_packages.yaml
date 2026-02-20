@@ -325,9 +325,9 @@
 # EXTRAS
 ############################################################
 
-- name: Install libreoffice
+- name: Install onlyoffice
   community.general.pacman:
-    name: libreoffice-fresh
+    name: onlyoffice-bin
     state: present
   become: true
   retries: 5
