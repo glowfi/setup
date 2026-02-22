@@ -2,6 +2,11 @@
 - name: Install essential system packages
   pacman_bootstrap:
     name:
+      - cmake
+      - extra-cmake-modules
+      - ninja
+      - meson
+
       - os-prober
       - grub
       - efibootmgr
