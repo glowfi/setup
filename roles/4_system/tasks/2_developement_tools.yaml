@@ -875,22 +875,34 @@
 # Install Neovim
 ############################################################
 
-- name: Install build tools
+- name: Install neovim
   community.general.pacman:
     name:
-      - cmake
-      - ninja
-      - tree-sitter
-      - tree-sitter-cli
-      - xclip
-      - shfmt
-      - meson
       - neovim
     state: present
   become: true
   retries: 5
 
-- name: Install Neovim pip packages
+- name: Install tree-sitter
+  community.general.pacman:
+    name:
+      - tree-sitter
+      - tree-sitter-cli
+    state: present
+  become: true
+  retries: 5
+
+- name: Install shfmt
+  ansible.builtin.shell: |
+    "{{ ansible_env.HOME }}/.local/bin/golang/bin/go" install {{ item }}
+  loop:
+    - mvdan.cc/sh/v3/cmd/shfmt@latest
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/.local/bin/golang/"
+    PATH: "{{ ansible_env.HOME }}/.local/bin/golang/bin:{{ ansible_env.PATH }}"
+  retries: 5
+
+- name: Install Neovim python packages
   ansible.builtin.pip:
     name:
       - neovim
@@ -899,7 +911,7 @@
       - djlint
   retries: 5
 
-- name: Install global npm LSP packages
+- name: Install Neovim npm packages
   community.general.npm:
     name: "{{ item }}"
     global: true
