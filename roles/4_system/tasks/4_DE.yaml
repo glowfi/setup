@@ -109,6 +109,7 @@
       - xorg-xprop 
       - xorg-xwininfo 
       - xdotool
+      - xclip
       - wmctrl
       - plasma-x11-session
     state: present
@@ -499,6 +500,42 @@
   args:
     chdir: /tmp/SilentSDDM
   when: not silent_sddm.stat.exists
+  become: true
+
+############################################################
+# Plasma video wallpaper
+############################################################
+
+- name: Ensure required packages are installed
+  community.general.pacman:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - git
+    - gcc
+    - cmake
+    - extra-cmake-modules
+    - libplasma
+    - qt6-multimedia
+    - qt6-multimedia-ffmpeg
+  become: true
+  retries: 5
+
+- name: Clone plasma smart video wallpaper repo
+  become: no
+  ansible.builtin.git:
+    repo: "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn"
+    dest: "/tmp/plasma-smart-video-wallpaper-reborn"
+    version: HEAD
+    update: yes
+
+- name: Run install script
+  become: no
+  ansible.builtin.command: ./install.sh
+  args:
+    chdir: "/tmp/plasma-smart-video-wallpaper-reborn"
+  become: true
 
 ############################################################
 # Enable SDDM, power-profiles-daemon
