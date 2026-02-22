@@ -683,70 +683,6 @@
   retries: 5
 
 ############################################################
-# Build ezgif Binary
-############################################################
-
-# - name: Uninstall pathlib
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
-
-# - name: Install required Python packages
-#   ansible.builtin.pip:
-#     name:
-#       - pyinstaller
-#       - ffmpeg-python
-#       - typing-extensions
-#     state: present
-#   retries: 5
-
-# - name: Install gifsicle
-#   community.general.pacman:
-#     name: gifsicle
-#     state: present
-#   become: true
-#   retries: 5
-
-# - name: Clone ezgif-essentials
-#   ansible.builtin.git:
-#     repo: https://github.com/winstxnhdw/ezgif-essentials
-#     dest: /tmp/ezgif
-#     depth: 1
-#   retries: 5
-
-# - name: Build ezgif binary
-#   ansible.builtin.command: >
-#     {{ ansible_env.HOME }}/.local/bin/pyinstaller --onefile main.py
-#   args:
-#     chdir: /tmp/ezgif
-#     creates: /tmp/ezgif/dist/main
-
-# - name: Install ezgif binary
-#   ansible.builtin.copy:
-#     src: /tmp/ezgif/dist/main
-#     dest: "{{ ansible_env.HOME }}/.local/bin/ezgif"
-#     mode: "0755"
-#     remote_src: true
-
-# - name: Remove ezgif build directory
-#   ansible.builtin.file:
-#     path: /tmp/ezgif
-#     state: absent
-
-# - name: Install pathlib
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
-
-# - name: Uninstall pyinstaller
-#   ansible.builtin.pip:
-#     name:
-#       - pathlib
-#     state: absent
-
-############################################################
 # Download Beekeeper Studio AppImage
 ############################################################
 
@@ -1036,50 +972,6 @@
     state: present
   become: true
   retries: 5
-
-############################################################
-# Ueberzugpp + Dependencies
-############################################################
-
-- name: Install ueberzugpp + dependencies
-  community.general.pacman:
-    name:
-      - ueberzugpp
-    state: present
-  become: true
-  retries: 5
-
-############################################################
-# Legacy ueberzug
-############################################################
-
-- name: Install ueberzugpp + dependencies
-  community.general.pacman:
-    name:
-      - openslide
-      - libxres
-    state: present
-  become: true
-  retries: 5
-
-- name: Clone legacy ueberzug
-  ansible.builtin.git:
-    repo: https://github.com/ueber-devel/ueberzug
-    dest: /tmp/ueberzug
-    depth: 1
-  retries: 5
-
-- name: Install ueberzug via pip
-  ansible.builtin.pip:
-    chdir: /tmp/ueberzug
-    name: .
-    editable: false
-  retries: 5
-
-- name: Remove ueberzug temp directory
-  ansible.builtin.file:
-    path: /tmp/ueberzug
-    state: absent
 
 ############################################################
 # Git tools
