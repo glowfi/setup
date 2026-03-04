@@ -316,7 +316,9 @@
 
 - name: Install kdenlive
   community.general.pacman:
-    name: kdenlive
+    name:
+      - kdenlive
+      - obs-studio
     state: present
   become: true
   retries: 5
