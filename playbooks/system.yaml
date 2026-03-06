@@ -5,5 +5,5 @@
   vars:
     sudo_env: true
   roles:
-    - role: common/pacman
-    - role: 4_system
+    - common/pacman
+    - 4_system

@@ -3,7 +3,7 @@
 - hosts: pc
   name: Bootstrap
   roles:
-    - role: common/pacman
-    - role: 1_disk
-    - role: 2_pacstrap
-    - role: 3_base
+    - common/pacman
+    - 1_disk
+    - 2_pacstrap
+    - 3_base
