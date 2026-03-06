@@ -314,7 +314,7 @@
 # VIDEO
 ############################################################
 
-- name: Install kdenlive
+- name: Install kdenlive,obs
   community.general.pacman:
     name:
       - kdenlive
