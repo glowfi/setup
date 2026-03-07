@@ -523,19 +523,17 @@
   retries: 5
 
 - name: Clone plasma smart video wallpaper repo
-  become: no
   ansible.builtin.git:
     repo: "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn"
-    dest: "/tmp/plasma-smart-video-wallpaper-reborn"
+    dest: "{{ ansible_env.HOME }}/Downloads/plasma-smart-video-wallpaper-reborn"
     version: HEAD
     update: yes
 
-- name: Run install script
-  become: no
-  ansible.builtin.command: ./install.sh
-  args:
-    chdir: "/tmp/plasma-smart-video-wallpaper-reborn"
-  become: true
+# - name: Run install script
+#   ansible.builtin.command: ./install.sh
+#   args:
+#     chdir: "{{ ansible_env.HOME }}/Downloads/plasma-smart-video-wallpaper-reborn"
+#   become: true
 
 ############################################################
 # Enable SDDM, power-profiles-daemon
