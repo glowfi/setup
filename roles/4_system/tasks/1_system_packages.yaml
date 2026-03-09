@@ -150,7 +150,6 @@
     name:
       - bluez
       - bluez-utils
-      - blueman
     state: present
   become: true
   retries: 5

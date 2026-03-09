@@ -75,6 +75,14 @@
   become: true
   retries: 5
 
+- name: Install Bluedevil
+  community.general.pacman:
+    name:
+      - bluedevil
+    state: present
+  become: true
+  retries: 5
+
 - name: Install SDDM 
   community.general.pacman:
     name:
