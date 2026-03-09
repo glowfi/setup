@@ -35,7 +35,7 @@ all:
 
     # ---------- Boot ----------
     secure_boot: true
-    kernel: linux-hardened      # linux | linux-zen | linux-lts | linux-hardened
+    kernel: linux-zen          # linux | linux-zen | linux-lts | linux-hardened
 
   hosts:
     pc:
