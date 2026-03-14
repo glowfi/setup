@@ -34,7 +34,7 @@ all:
     gpu: nvidia                 # amd | intel | nvidia
 
     # ---------- Boot ----------
-    secure_boot: true
+    secure_boot: false
     kernel: linux-zen          # linux | linux-zen | linux-lts | linux-hardened
 
   hosts:
