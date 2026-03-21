@@ -8,6 +8,7 @@
     name:
       - plasma-desktop
       - plasma-workspace
+      - plasma-workspace-wallpapers
       - plasma-nm
       - plasma-pa
       - qt6-tools
