@@ -493,11 +493,11 @@
     regexp: '^ConfigFile=configs/default.conf'
     state: absent
 
-- name: Set rei.conf as config
+- name: Set ken.conf as config
   ansible.builtin.lineinfile:
     path: /tmp/SilentSDDM/install.sh
     regexp: '^ConfigFile='
-    line: 'ConfigFile=configs/rei.conf'
+    line: 'ConfigFile=configs/ken.conf'
 
 - name: Check if theme already installed
   ansible.builtin.stat:
