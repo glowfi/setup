@@ -42,7 +42,7 @@
   ansible.builtin.pip:
     name: pip
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -55,7 +55,7 @@
       - setuptools
       - sortedcontainers
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -69,7 +69,7 @@
       - twine
       - wheel
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -80,7 +80,7 @@
   ansible.builtin.pip:
     name: pygobject
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -97,7 +97,7 @@
       - rich
       - pygments
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -506,6 +506,7 @@
   ansible.builtin.pip:
     name: numerize
     state: present
+    executable: /usr/bin/pip
   retries: 5
 
 - name: Clone sYT repository
@@ -679,7 +680,7 @@
     name:
       - xhibit
     state: latest
-    executable: pip3
+    executable: /usr/bin/pip
   retries: 5
 
 ############################################################
@@ -909,6 +910,7 @@
       - black
       - ruff
       - djlint
+    executable: /usr/bin/pip
   retries: 5
 
 - name: Install Neovim npm packages
