@@ -8,7 +8,6 @@
       - grub
       - efibootmgr
       - os-prober
-      - sbctl
     state: present
     chroot_mountpoint: /mnt
   retries: 5
@@ -221,6 +220,14 @@
 ############################################################
 # Secure Boot Setup
 ############################################################
+
+- name: Install sbctl
+  pacman_bootstrap:
+    name:
+      - sbctl
+    state: present
+    chroot_mountpoint: /mnt
+  retries: 5
 
 - name: Create sbctl keys
   pacman_bootstrap:
