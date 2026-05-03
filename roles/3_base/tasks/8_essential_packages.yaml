@@ -36,9 +36,6 @@
       - strace
       - bc
 
-      - acpi
-      - acpi_call-dkms
-
       - exa
       - bat
       - ripgrep
@@ -61,7 +58,6 @@
   pacman_bootstrap:
     name:
       - networkmanager
-      - acpid
       - syslog-ng
       - logrotate
     state: present
@@ -73,7 +69,6 @@
   pacman_bootstrap:
     name:
       - syslog-ng-openrc
-      - acpid-openrc
       - networkmanager-openrc
       - backlight-openrc
       - syslog-ng

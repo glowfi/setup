@@ -32,7 +32,6 @@
     chroot_mountpoint: /mnt
   loop:
     - NetworkManager
-    - acpid
     - backlight
     - syslog-ng
   when: os == "artix"
@@ -44,5 +43,4 @@
   loop:
     - NetworkManager
     - reflector.timer
-    - acpid
   when: os == "arch"
