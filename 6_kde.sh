@@ -72,6 +72,19 @@ xdg-settings set default-web-browser brave-browser.desktop
 xdg-mime default brave-browser.desktop x-scheme-handler/http
 xdg-mime default brave-browser.desktop x-scheme-handler/https
 
+# Set neovim as default app
+for m in \
+	text/plain text/x-c text/x-c++src text/x-chdr text/x-c++hdr \
+	text/x-python text/x-script.python application/x-shellscript \
+	text/x-go text/x-rust text/x-lua text/x-java text/x-ruby \
+	text/javascript application/javascript application/json \
+	text/x-makefile text/x-cmake text/markdown text/x-readme \
+	application/x-yaml text/x-toml application/toml application/xml \
+	text/html text/css
+do
+	xdg-mime default nvim.desktop "$m"
+done
+
 # Copy plasma specific utilites/settings
 cp -r "$HOME/.dotfiles/scripts/wall.sh" "$HOME/.local/bin"
 
