@@ -58,13 +58,7 @@ install_go_tool ghkd https://github.com/glowfi/ghkd
 
 # Build bemenu
 header "Installing bemenu"
-sudo rm -rf /usr/local/bin/bemenu /usr/local/bin/bemenu-app/ /usr/local/bin/bemenu-run
-cd $HOME/.dotfiles/configs/bemenu-app
-$HOME/.dotfiles/configs/bemenu-app/help.sh wayland
-sudo mv $HOME/.dotfiles/configs/bemenu-app/ /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu /usr/local/bin/
-sudo mv /usr/local/bin/bemenu-app/bemenu-run /usr/local/bin/
-cd
+install "bemenu-wayland" "pac"
 
 # Update mimetype
 header "Update mimetype"
