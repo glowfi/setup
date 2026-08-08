@@ -88,7 +88,6 @@ install_go_tool() {
 	mv "$HOME/.dotfiles/configs/$name/config_mango.yaml" "$HOME/.config/$name/config.yaml"
 }
 
-
 # Autostart
 sudo usermod -aG input "$USER"
 install_go_tool autost https://github.com/glowfi/autost
@@ -204,8 +203,7 @@ for m in \
 	text/javascript application/javascript application/json \
 	text/x-makefile text/x-cmake text/markdown text/x-readme \
 	application/x-yaml text/x-toml application/toml application/xml \
-	text/html text/css
-do
+	text/html text/css; do
 	xdg-mime default nvim.desktop "$m"
 done
 
@@ -216,13 +214,6 @@ xdg-user-dirs-update
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd6.service
-
-# Remove gcr prompter
-mkdir -p ~/.local/share/dbus-1/services
-for s in org.gnome.keyring.SystemPrompter org.gnome.keyring.PrivatePrompter; do
-	printf '[D-BUS Service]\nName=%s\nExec=/usr/bin/false\n' "$s" \
-		> ~/.local/share/dbus-1/services/$s.service
-done
 
 # Enable services
 header "Enabling services"
