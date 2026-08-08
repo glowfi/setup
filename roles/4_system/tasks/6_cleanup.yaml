@@ -1,6 +1,0 @@
----
-- name: Remove sudoers file for yay when cleanup is desired
-  become: true
-  ansible.builtin.file:
-    path: /etc/sudoers.d/yay
-    state: absent

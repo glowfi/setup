@@ -1,9 +1,0 @@
----
-
-- hosts: pc
-  name: System Installation
-  vars:
-    sudo_env: true
-  roles:
-    - common/pacman
-    - 4_system
