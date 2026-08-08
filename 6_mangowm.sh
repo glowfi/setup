@@ -228,8 +228,8 @@ sudo sed -i '/^bigclock *=/{h;s/=.*/= en/};${x;/^$/{s//bigclock = en/;H};x}' /et
 
 # Power Management
 sudo tee /etc/udev/rules.d/99-power-profile.rules >/dev/null <<'EOF'
-SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set performance"
-SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl set balanced"
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl set performance"
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set balanced"
 EOF
 
 sudo sed -i \
