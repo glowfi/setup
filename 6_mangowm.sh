@@ -80,13 +80,14 @@ install_go_tool() {
 
 	header "Install $name"
 	git_clone "$repo" "$dir" 1
-	(cd "$dir" && go build -o "$dir/$name" .)
+	(cd "$dir" && fish -c "go build -o '$dir/$name'")
 	sudo install -m755 "$dir/$name" /usr/local/bin/
 	rm -rf "$dir"
 
 	mkdir -p "$HOME/.config/$name"
 	mv "$HOME/.dotfiles/configs/$name/config_mango.yaml" "$HOME/.config/$name/config.yaml"
 }
+
 
 # Autostart
 sudo usermod -aG input "$USER"

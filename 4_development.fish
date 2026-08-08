@@ -269,10 +269,10 @@ end
 # Docker
 header "Installing Docker"
 set user (whoami)
-install "docker docker-compose" pac
 if test "$initType" = systemD
+    install "docker docker-compose" pac
     sudo systemctl start docker.service
-    sudo usermod -aG docker $user
+    sudo usermod -aG docker $USER
     sudo chmod 666 /var/run/docker.sock
     sudo systemctl stop docker.service
     go install github.com/jesseduffield/lazydocker@latest
@@ -280,7 +280,7 @@ else
     install "docker-openrc docker-compose" pac
     sudo rc-update add docker default
     sudo rc-service docker start
-    sudo usermod -aG docker $user
+    sudo usermod -aG docker $USER
     sudo chmod 666 /var/run/docker.sock
     sudo rc-update del docker default
     sudo rc-service docker stop
