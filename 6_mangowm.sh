@@ -204,6 +204,13 @@ sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'First Use' 'false'
 sudo rm -rf /usr/share/dbus-1/services/org.kde.kwalletd6.service
 
+# Remove gcr prompter
+mkdir -p ~/.local/share/dbus-1/services
+for s in org.gnome.keyring.SystemPrompter org.gnome.keyring.PrivatePrompter; do
+	printf '[D-BUS Service]\nName=%s\nExec=/usr/bin/false\n' "$s" \
+		> ~/.local/share/dbus-1/services/$s.service
+done
+
 # Enable services
 header "Enabling services"
 for svc in swayosd-libinput-backend; do
