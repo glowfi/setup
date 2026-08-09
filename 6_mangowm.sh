@@ -114,9 +114,14 @@ TMP="$(mktemp -d)"
 THEMES_DIR="$HOME/.local/share/themes"
 ICONS_DIR="$HOME/.local/share/icons"
 
-git clone --depth 1 https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme "$TMP/gtk"
+GTK_COMMIT=44e81d8226579a24a791f3acf43b97de815bc4b1
+THEMES_DIR="$HOME/.local/share/themes"
+TMP_GTK=$(mktemp -d)
+git clone --filter=blob:none https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme "$TMP_GTK"
+git -C "$TMP_GTK" checkout "$GTK_COMMIT"
 mkdir -p "$THEMES_DIR"
-"$TMP/gtk/themes/install.sh" -d "$THEMES_DIR" -l
+cp -r "$TMP_GTK/themes/"Gruvbox* "$THEMES_DIR/"
+rm -rf "$TMP_GTK"
 
 git clone --depth 1 https://github.com/TheGreatMcPain/gruvbox-material-gtk "$TMP/icons"
 mkdir -p "$ICONS_DIR"
@@ -137,7 +142,7 @@ cp "$CONFIG_DIR/gtkrc-2.0" "$HOME/.gtkrc-2.0"
 cp "$CONFIG_DIR/qt6ct.conf" "$HOME/.config/qt6ct/qt6ct.conf"
 sudo cp "$CONFIG_DIR/environment" /etc/environment
 
-gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark-BL-LB'
 gsettings set org.gnome.desktop.interface icon-theme 'Gruvbox-Material-Dark'
 gsettings set org.gnome.desktop.interface cursor-theme 'capitaine-cursors'
 gsettings set org.gnome.desktop.interface cursor-size 24
