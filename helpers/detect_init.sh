@@ -20,5 +20,3 @@ detect_init() {
 	varInit=$(echo "$varInit" | sed 's/[ \t]*$//')
 	echo "${varInit}"
 }
-
-detect_init

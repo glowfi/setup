@@ -2,8 +2,8 @@
 
 # Setup
 set SCRIPT_DIR (cd (dirname (status -f)); and pwd)
-set INIT_SCRIPT (echo "$SCRIPT_DIR/helpers/detect_init.sh")
-set initType (bash "$INIT_SCRIPT")
+set INIT_SCRIPT (echo "$SCRIPT_DIR/helpers/detect_init.fish")
+set initType (detect_init)
 source "$SCRIPT_DIR/helpers/pkg_installer.fish"
 source "$SCRIPT_DIR/helpers/header.fish"
 source "$SCRIPT_DIR/helpers/git_clone.fish"
