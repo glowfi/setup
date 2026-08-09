@@ -255,7 +255,7 @@ sudo sed -i \
 	-e 's|^#\?HandleLidSwitch=.*|HandleLidSwitch=suspend|' \
 	-e 's|^#\?HandleLidSwitchExternalPower=.*|HandleLidSwitchExternalPower=suspend|' \
 	-e 's|^#\?HandleLidSwitchDocked=.*|HandleLidSwitchDocked=ignore|' \
-	-e 's|^#\?HandlePowerKey=.*|HandlePowerKey=suspend|' \
+	-e 's|^CriticalPowerAction=.*|CriticalPowerAction=HybridSleep|' \
 	"$LOGIND_CONF"
 
 sudo sed -i \
