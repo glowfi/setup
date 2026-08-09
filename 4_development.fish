@@ -7,6 +7,7 @@ set initType (bash "$INIT_SCRIPT")
 source "$SCRIPT_DIR/helpers/pkg_installer.fish"
 source "$SCRIPT_DIR/helpers/header.fish"
 source "$SCRIPT_DIR/helpers/git_clone.fish"
+source "$SCRIPT_DIR/helpers/github_assets.fish"
 
 # Python
 header "Configuring python"
@@ -123,8 +124,8 @@ go install github.com/golangci/misspell/cmd/misspell@latest
 # Lua
 header "Installing Lua"
 
-set lua_ver (curl "https://github.com/LuaLS/lua-language-server" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs)
-wget "https://github.com/LuaLS/lua-language-server/releases/download/$lua_ver/lua-language-server-$lua_ver-linux-x64.tar.gz" -O $HOME/lua-ls.tar.gz
+set lua_ls_download_link (ghassets LuaLS/lua-language-server "linux-x64.tar.gz")
+wget "$lua_ls_download_link" -O $HOME/lua-ls.tar.gz
 mkdir -p $HOME/lua-ls
 tar -xf $HOME/lua-ls.tar.gz -C $HOME/lua-ls/
 rm -rf $HOME/lua-ls.tar.gz
@@ -233,15 +234,14 @@ mv /tmp/youtube-local "$HOME/.local/bin/"
 
 # Beekeeper
 header "Installing Beekeeper"
-set beekeeper_ver (curl "https://github.com/beekeeper-studio/beekeeper-studio" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
-wget "https://github.com/beekeeper-studio/beekeeper-studio/releases/download/v$beekeeper_ver/Beekeeper-Studio-$beekeeper_ver.AppImage" -O ~/.local/bin/beekeeper
+set beekeeper_download_link (ghassets beekeeper-studio/beekeeper-studio -v:'arm' appimage)
+wget "$beekeeper_download_link" -O ~/.local/bin/beekeeper
 chmod +x ~/.local/bin/beekeeper
 
 # Bruno
 header "Installing Bruno"
-set brunover (curl "https://github.com/usebruno/bruno" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep -i "releases/tag" | cut -d"/" -f6|xargs|tr -d "v")
-set url (string join "" "https://github.com/usebruno/bruno/releases/download/v$brunover/bruno_" "$brunover" "_x86_64_linux.AppImage")
-wget "$url" -O ~/.local/bin/bruno
+set bruno_download_link (ghassets usebruno/bruno -v:'arm' appimage)
+wget "$bruno_download_link" -O ~/.local/bin/bruno
 chmod +x ~/.local/bin/bruno
 
 # Virtualization
