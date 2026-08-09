@@ -248,6 +248,11 @@ SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl se
 SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set balanced"
 EOF
 
+if [[ "$DISTRO_TYPE" == "arch" ]]; then
+	LOGIND_CONF=/etc/systemd/logind.conf
+else
+	LOGIND_CONF=/etc/elogind/logind.conf
+fi
 sudo sed -i \
 	-e 's|^#\?HandleLidSwitch=.*|HandleLidSwitch=suspend|' \
 	-e 's|^#\?HandleLidSwitchExternalPower=.*|HandleLidSwitchExternalPower=suspend|' \
