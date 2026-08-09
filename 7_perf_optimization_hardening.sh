@@ -98,13 +98,11 @@ if [[ "$DISTRO_TYPE" == "arch" ]]; then
 	install "power-profiles-daemon upower" "pac"
 	sudo systemctl enable "power-profiles-daemon"
 	sudo systemctl enable "upower"
-	LOGIND_CONF=/etc/systemd/logind.conf
 else
 	install "power-profiles-daemon-openrc" "pac"
 	install "upower-openrc" "yay"
 	sudo rc-update add "power-profiles-daemon" default
 	sudo rc-update add "upower" default
-	LOGIND_CONF=/etc/elogind/logind.conf
 fi
 
 # Firewall
