@@ -225,8 +225,6 @@ header "Enabling services"
 for svc in swayosd-libinput-backend; do
 	if [[ "$DISTRO_TYPE" == "arch" ]]; then
 		sudo systemctl enable "$svc"
-	# else
-	# 	sudo rc-update add "$svc" default
 	fi
 done
 
