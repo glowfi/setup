@@ -145,6 +145,11 @@ for i in 1 2 3 4 5 6; do
 	kwriteconfig6 --file kwinrc --group Desktops --key "Name_$i" "$i"
 done
 
+# Night Light: always on
+kwriteconfig6 --file kwinrc --group NightColor --key Active true
+kwriteconfig6 --file kwinrc --group NightColor --key Mode Constant
+kwriteconfig6 --file kwinrc --group NightColor --key NightTemperature 4500
+
 # Kitty Setup dolphin
 header "Setingup kitty in dolphin"
 
