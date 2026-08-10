@@ -80,8 +80,7 @@ for m in \
 	text/javascript application/javascript application/json \
 	text/x-makefile text/x-cmake text/markdown text/x-readme \
 	application/x-yaml text/x-toml application/toml application/xml \
-	text/html text/css
-do
+	text/html text/css; do
 	xdg-mime default nvim.desktop "$m"
 done
 
@@ -94,7 +93,10 @@ install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
 cp -r $HOME/.dotfiles/configs/.Xresources $HOME
 
 sudo -u "$USER" kwriteconfig6 --file kdeglobals --group KDE --key LookAndFeelPackage org.kde.breezedark.desktop
-printf '[Theme]\nCurrent=breeze\n' | sudo tee /etc/sddm.conf.d/theme.conf
+getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head -1 | xargs)
+getLineNumber=$(echo "$getReq" | cut -d":" -f1)
+rep="Current=breeze"
+sudo sed -i "${getLineNumber}s/.*/${rep}/" /usr/lib/sddm/sddm.conf.d/default.conf
 
 # Plasma optimization
 header "Adding plasma optimization"
