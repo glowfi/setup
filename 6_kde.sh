@@ -122,7 +122,7 @@ git_clone "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn"
 header "Theming SDDM"
 sddm_theme_dir="$HOME/Downloads/SilentSDDM"
 git_clone "https://github.com/uiriansan/SilentSDDM" "${sddm_theme_dir}" 1
-sed -i 's|^ConfigFile=.*|ConfigFile=configs/ken.conf|' "${sddm_theme_dir}/install.sh"
+sed -i 's|^ConfigFile=.*|ConfigFile=configs/ken.conf|' "${sddm_theme_dir}/metadata.desktop"
 cd "${sddm_theme_dir}" && sudo ./install.sh
 cd
 
