@@ -137,3 +137,64 @@ for svc in sddm; do
 		sudo rc-update add "$svc" default
 	fi
 done
+
+# Configure virtual desktop
+kwriteconfig6 --file kwinrc --group Desktops --key Number 6
+kwriteconfig6 --file kwinrc --group Desktops --key Rows 1
+for i in 1 2 3 4 5 6; do
+	kwriteconfig6 --file kwinrc --group Desktops --key "Name_$i" "$i"
+done
+
+# Kitty Setup dolphin
+header "Setingup kitty in dolphin"
+
+# 3a. "Open Kitty Here" right-click menu
+MENU_DIR="$HOME/.local/share/kio/servicemenus"
+mkdir -p "$MENU_DIR"
+cat >"$MENU_DIR/open-kitty-here.desktop" <<'EOF'
+[Desktop Entry]
+Type=Service
+MimeType=inode/directory;
+Actions=openKitty;
+X-KDE-Priority=TopLevel
+ 
+[Desktop Action openKitty]
+Name=Open Kitty Here
+Icon=kitty
+Exec=kitty --directory %f
+EOF
+chmod +x "$MENU_DIR/open-kitty-here.desktop" # required since KF 5.85
+
+# 3b. kitty as the system-wide default terminal
+kwriteconfig6 --file kdeglobals --group General --key TerminalApplication kitty
+
+# 3c. F4 in Dolphin launches kitty (instead of the embedded panel)
+UI_DIR="$HOME/.local/share/kxmlgui5/dolphin"
+mkdir -p "$UI_DIR"
+cat >"$UI_DIR/dolphinui.rc" <<'EOF'
+<?xml version="1.0"?>
+<gui name="dolphin" version="1">
+ <ActionProperties scheme="Default">
+  <Action name="open_terminal" shortcut="F4"/>
+  <Action name="show_terminal_panel" shortcut=""/>
+ </ActionProperties>
+</gui>
+EOF
+
+# Resource monitor
+header "Installing Resources Monitor plasmoid"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+git clone --depth 1 \
+	https://github.com/orblazer/plasma-applet-resources-monitor.git "$TMP"
+
+PLUGIN_ID="$(jq -r '.KPlugin.Id' "$TMP/package/metadata.json")"
+if kpackagetool6 --type Plasma/Applet --show "$PLUGIN_ID" &>/dev/null; then
+	kpackagetool6 --type Plasma/Applet --upgrade "$TMP/package"
+else
+	kpackagetool6 --type Plasma/Applet --install "$TMP/package"
+fi
+
+# Copy plasma panel settings
+cp -r "$HOME/.dotfiles/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc" "$HOME/.config/"
