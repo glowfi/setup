@@ -200,6 +200,3 @@ if kpackagetool6 --type Plasma/Applet --show "$PLUGIN_ID" &>/dev/null; then
 else
 	kpackagetool6 --type Plasma/Applet --install "$TMP/package"
 fi
-
-# Copy plasma panel settings
-cp -r "$HOME/.dotfiles/configs/plasma/plasma-org.kde.plasma.desktop-appletsrc" "$HOME/.config/"
