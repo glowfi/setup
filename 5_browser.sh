@@ -46,7 +46,7 @@ header "Setting up LibreWolf"
 
 sudo rm -rf /usr/lib/librewolf/
 rm -rf "$HOME/.librewolf/"
-install "librewolf-bin" "yay"
+install "librewolf" "pac"
 secondary_profile_name="Tmp"
 
 ###### Start Librewolf ######
