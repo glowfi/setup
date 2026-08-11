@@ -45,8 +45,7 @@ install_go_tool() {
 	sudo install -m755 "$dir/$name" /usr/local/bin/
 	rm -rf "$dir"
 
-	mkdir -p "$HOME/.config/$name"
-	mv "$HOME/.dotfiles/configs/$name/config_mango.yaml" "$HOME/.config/$name/config.yaml"
+	cp -r "$HOME/.dotfiles/configs/$name" "$HOME/.config"
 }
 
 # Autostart

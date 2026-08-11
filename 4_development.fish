@@ -186,7 +186,6 @@ set scripts \
     mp \
     opa.sh \
     prev.sh \
-    rename.sh \
     rlt \
     saveScraper.py \
     searchArchive.sh \
