@@ -314,8 +314,8 @@ install "tesseract tesseract-data-eng" pac
 # Configuring git
 install "gitui github-cli" pac
 
-git config --global user.name -
-git config --global user.email -
+git config --global user.name glowfi
+git config --global user.email 86939591+glowfi@users.noreply.github.com
 
 echo "[core]
     pager = delta --syntax-theme gruvbox-dark

@@ -41,7 +41,7 @@ install_go_tool() {
 
 	header "Install $name"
 	git_clone "$repo" "$dir" 1
-	(cd "$dir" && go build -o "$dir/$name" .)
+	(cd "$dir" && fish -c "go build -o '$dir/$name'")
 	sudo install -m755 "$dir/$name" /usr/local/bin/
 	rm -rf "$dir"
 
@@ -51,6 +51,17 @@ install_go_tool() {
 # Autostart
 sudo usermod -aG input "$USER"
 install_go_tool autost https://github.com/glowfi/autost
+mkdir -p "$HOME/.config/autostart"
+touch "$HOME/.config/autostart/autost.desktop"
+cat >"$HOME/.config/autostart/autost.desktop" <<-EOF
+	[Desktop Entry]
+	Type=Application
+	Name=Autostart Application
+	Exec=/usr/local/bin/autost
+	Hidden=False
+	NoDisplay=False
+	X-GNOME-Autostart-enabled=true
+EOF
 
 # Hotkey daemon
 install_go_tool ghkd https://github.com/glowfi/ghkd
@@ -116,6 +127,9 @@ rm -rf "${krohnkite_build_dir}"
 # Plasma Video Wallpaper
 install "git gcc cmake extra-cmake-modules libplasma qt6-multimedia qt6-multimedia-ffmpeg" "pac"
 git_clone "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn" "$HOME/Downloads/plasma-smart-video-wallpaper-reborn" 1
+cd "$HOME/Downloads/plasma-smart-video-wallpaper-reborn"
+./install.sh
+cd
 
 # SDDM Theme
 header "Theming SDDM"
