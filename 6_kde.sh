@@ -140,6 +140,11 @@ sed -i 's|^ConfigFile=.*|ConfigFile=configs/ken.conf|' "${sddm_theme_dir}/metada
 cd "${sddm_theme_dir}" && sudo ./install.sh
 cd
 
+# Screensaver
+pip install terminaltexteffects
+cp -r "$HOME/.dotfiles/scripts/screensaver.sh" "$HOME/.local/bin/"
+chmod +x "$HOME/.local/bin/screensaver.sh"
+
 # Update user dirs
 xdg-user-dirs-update
 
