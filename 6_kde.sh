@@ -128,6 +128,7 @@ rm -rf "${krohnkite_build_dir}"
 install "git gcc cmake extra-cmake-modules libplasma qt6-multimedia qt6-multimedia-ffmpeg" "pac"
 git_clone "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn" "$HOME/Downloads/plasma-smart-video-wallpaper-reborn" 1
 cd "$HOME/Downloads/plasma-smart-video-wallpaper-reborn"
+sed -i 's/ && isCurrentActivity//' package/contents/ui/main.qml
 ./install.sh
 cd
 
