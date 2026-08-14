@@ -94,7 +94,7 @@ pkgs=(
 	cmake extra-cmake-modules ninja meson
 	os-prober grub efibootmgr ntfs-3g
 	cracklib pacman-contrib
-	network-manager-applet wireless_tools wpa_supplicant net-tools dnsutils usbutils gperftools
+	network-manager-applet wireless_tools wpa_supplicant net-tools dnsutils usbutils gperftools tcpdump
 	dialog mtools dosfstools gptfdisk
 	rsync reflector wget less
 	lsof strace bc
