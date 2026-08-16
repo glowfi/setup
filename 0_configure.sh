@@ -20,15 +20,27 @@ ask_yes_no() {
 }
 
 ask_password() {
-	local label="$1" p1 p2
-	p1=$(gum input --password --placeholder "Password for $label")
-	p2=$(gum input --password --placeholder "Confirm password for $label")
-	if [[ "$p1" != "$p2" ]]; then
-		echo "Passwords do not match. Please run the script again!"
-		rm -f "$CONFIG_FILE"
-		exit 1
-	fi
-	echo "$p1"
+	local label="$1"
+	local p1 p2 retry
+
+	while true; do
+		p1=$(gum input --password --placeholder "Password for $label")
+		p2=$(gum input --password --placeholder "Confirm password for $label")
+
+		if [[ "$p1" == "$p2" ]]; then
+			echo "$p1"
+			return 0
+		else
+			retry=$(gum choose "Retry [as password do not match]" "Exit")
+			if [[ "$retry" == "Retry [as password do not match]" ]]; then
+				continue
+			else
+				echo "Passwords do not match. Exiting."
+				rm -f "$CONFIG_FILE"
+				exit 1
+			fi
+		fi
+	done
 }
 
 installDependency() {
