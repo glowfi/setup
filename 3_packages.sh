@@ -137,8 +137,10 @@ if [[ -d "$dotfile_dst" ]]; then
 	git -C "$dotfile_dst" pull
 else
 	git_clone https://github.com/glowfi/dotfiles.git "$dotfile_dst" 1
+	cd "$dotfile_dst"
+	git checkout mango
+	cd
 fi
-git -C "$dotfile_dst" checkout mango
 
 header "Setting up fish config"
 mkdir -p "${HOME}/.config/fish"
