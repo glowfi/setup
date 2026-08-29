@@ -1,7 +1,7 @@
 # setup
 
 Opinionated Arch/Artix installer. Boots from live ISO to a hardened,
-ready-to-use KDE desktop in two scripts.
+ready-to-use KDE or MangoWC desktop in two scripts.
 
 ![Coverpic](./pacman.png)
 
@@ -12,7 +12,8 @@ ready-to-use KDE desktop in two scripts.
 - Secure Boot, linux-zen kernel
 - AppArmor, dnscrypt-proxy, nftables firewall, hardened SSH & browser
 - Timeshift snapshots with grub-btrfs boot entries
-- Minimal KDE Plasma
+- KDE Plasma or MangoWC, fully configured — tiling, bar, screensaver,
+  power management, keybindings
 
 ## Install
 
