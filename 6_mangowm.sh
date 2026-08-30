@@ -19,7 +19,7 @@ install "mangowm-git" "yay"
 
 # Core
 header "Installing core packages"
-install "wl-clipboard" "pac"
+install "wl-clipboard cliphist" "pac"
 install "xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac"
 
 # Display
@@ -33,7 +33,7 @@ install "pulsemixer pamixer" "pac"
 # Apps
 header "Installing application"
 install "blueman" "pac"
-install "inotify-tools libnotify swaync" "pac"
+install "inotify-tools libnotify" "pac"
 install "awww swayosd swayimg" "pac"
 install "pcmanfm mtpfs gvfs-mtp" "pac"
 install "jmtpfs" "yay"
@@ -106,6 +106,7 @@ cd
 # Theme
 header "Installing theme packages and configuring theming"
 install "kvantum qt6ct nwg-look" "pac"
+install "papirus-icon-theme" "pac"
 install "breeze-icons breeze-gtk breeze" "pac"
 install "adwaita-icon-theme adwaita-cursors" "pac"
 
