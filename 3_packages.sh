@@ -136,9 +136,8 @@ dotfile_dst="${HOME}/.dotfiles"
 if [[ -d "$dotfile_dst" ]]; then
 	git -C "$dotfile_dst" pull
 else
-	git_clone https://github.com/glowfi/dotfiles.git "$dotfile_dst" 1
+	git_clone https://github.com/glowfi/dotfiles.git "$dotfile_dst"
 	cd "$dotfile_dst"
-	git fetch --all
 	git checkout mango
 	cd
 fi
