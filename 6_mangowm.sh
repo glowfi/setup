@@ -95,14 +95,6 @@ install_go_tool autost https://github.com/glowfi/autost
 # Hotkey daemon
 install_go_tool ghkd https://github.com/glowfi/ghkd
 
-# Mbar
-mbar_build_dir="/tmp/mbar"
-git_clone "https://github.com/glowfi/mbar" "${mbar_build_dir}" 1
-cd "/${mbar_build_dir}"
-make
-sudo mv mbar /usr/local/bin/
-cd
-
 # Theme
 header "Installing theme packages and configuring theming"
 install "kvantum qt6ct nwg-look" "pac"
