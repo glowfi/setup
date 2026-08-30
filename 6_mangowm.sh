@@ -95,6 +95,11 @@ install_go_tool autost https://github.com/glowfi/autost
 # Hotkey daemon
 install_go_tool ghkd https://github.com/glowfi/ghkd
 
+# Quickshell
+header "Installing quickshell"
+install "quickshell" "pac"
+cp -r "$HOME/.dotfiles/configs/quickshell" "$HOME/.config"
+
 # Theme
 header "Installing theme packages and configuring theming"
 install "kvantum qt6ct nwg-look" "pac"
