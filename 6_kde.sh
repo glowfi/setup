@@ -34,6 +34,7 @@ install "bluedevil powerdevil xdg-desktop-portal-kde" "pac"
 install "dolphin ark gwenview okular spectacle" "pac"
 install "pulsemixer pamixer" "pac"
 install "brightnessctl" "pac"
+install "glmark2" "pac"
 
 install_go_tool() {
 	local name="$1" repo="$2"
