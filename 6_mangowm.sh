@@ -21,6 +21,7 @@ install "mangowm-git" "yay"
 header "Installing core packages"
 install "wl-clipboard cliphist" "pac"
 install "xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac"
+install "hyprpolkitagent" "pac"
 
 # Display
 header "Installing display configuration packages"
@@ -41,6 +42,7 @@ install "jmtpfs" "yay"
 install "zathura zathura-pdf-mupdf" "pac"
 install "ark" "pac"
 install "grim slurp" "pac"
+install "veila-bin" "yay"
 
 # Swayosd openrc fix
 if [[ "$DISTRO_TYPE" == "artix" ]]; then
