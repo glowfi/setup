@@ -24,7 +24,7 @@ install "xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac
 
 # Display
 header "Installing display configuration packages"
-install "wlsunset wlr-randr wdisplays brightnessctl" "pac"
+install "wlsunset wlr-randr wdisplays wl-screenrec brightnessctl" "pac"
 
 # Audio
 header "Installing audio packages"
