@@ -35,7 +35,7 @@ header "Installing application"
 install "blueman" "pac"
 install "inotify-tools libnotify" "pac"
 install "awww swayosd swayimg" "pac"
-install "pcmanfm mtpfs gvfs-mtp" "pac"
+install "thunar tumbler mtpfs gvfs-mtp" "pac"
 install "jmtpfs" "yay"
 install "zathura zathura-pdf-mupdf" "pac"
 install "ark" "pac"
@@ -268,3 +268,47 @@ install "swayidle" "pac"
 pip install terminaltexteffects
 cp -r "$HOME/.dotfiles/scripts/screensaver.sh" "$HOME/.local/bin/"
 chmod +x "$HOME/.local/bin/screensaver.sh"
+
+# Thunar open kitty here action menu and shortcut
+UCA="$HOME/.config/Thunar/uca.xml"
+ACCELS="$HOME/.config/Thunar/accels.scm"
+ID="1000000000000000-1" # our fixed unique-id
+
+# Thunar must not be running, it overwrites configs on exit
+thunar -q 2>/dev/null || true
+sleep 1
+
+mkdir -p "$HOME/.config/Thunar"
+
+# create uca.xml if missing
+[ -f "$UCA" ] || printf '<?xml version="1.0" encoding="UTF-8"?>\n<actions>\n</actions>\n' >"$UCA"
+
+# add the action if not already there
+if ! grep -q "Open Kitty Here" "$UCA"; then
+	sed -i "s|</actions>|\
+<action>\
+<icon>kitty</icon>\
+<name>Open Kitty Here</name>\
+<submenu></submenu>\
+<unique-id>$ID</unique-id>\
+<command>kitty --directory %f</command>\
+<description>Open kitty in this directory</description>\
+<range></range>\
+<patterns>*</patterns>\
+<directories/>\
+</action>\
+</actions>|" "$UCA"
+	echo "added action to uca.xml"
+else
+	echo "action already in uca.xml"
+fi
+
+# bind F4 in accels.scm
+LINE="(gtk_accel_path \"<Actions>/ThunarActions/uca-action-$ID\" \"F4\")"
+touch "$ACCELS"
+# remove any existing binding for this action (commented or not)
+sed -i "\|uca-action-$ID|d" "$ACCELS"
+echo "$LINE" >>"$ACCELS"
+echo "bound F4 in accels.scm"
+
+echo "done — start thunar and press F4 in any folder"
