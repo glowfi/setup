@@ -25,7 +25,8 @@ install "hyprpolkitagent" "pac"
 
 # Display
 header "Installing display configuration packages"
-install "wlsunset wlr-randr wdisplays wl-screenrec brightnessctl" "pac"
+install "wlsunset wlr-randr wdisplays brightnessctl" "pac"
+install "wl-screenrec" "yay"
 install "glmark2" "pac"
 
 # Audio
