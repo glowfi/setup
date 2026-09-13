@@ -49,7 +49,7 @@ if [[ "$DISK_ENCRYPT" == "encrypt" ]]; then
 	[[ "$DISK_TYPE" == "ssd" ]] && perf_flags=(--perf-no_read_workqueue --perf-no_write_workqueue)
 
 	echo "${LUKS_PASSWORD}" | cryptsetup luksFormat --batch-mode "${perf_flags[@]}" \
-		--type luks1 -c aes-xts-plain64 -s 256 --use-random "$ROOT_PART"
+		--type luks2 --pbkdf pbkdf2 -c aes-xts-plain64 -s 256 "$ROOT_PART"
 
 	open_flags=("${perf_flags[@]}")
 	[[ "$DISK_TYPE" == "ssd" ]] && open_flags+=(--allow-discards)

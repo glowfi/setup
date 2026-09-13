@@ -157,7 +157,7 @@ if [[ "$DISK_ENCRYPT" == "encrypt" ]]; then
 	fi
 
 	if ! cryptsetup luksOpen --test-passphrase --key-file=/root/cryptlvm.keyfile "$root_part" 2>/dev/null; then
-		printf '%s' "${LUKS_PASSWORD}" | cryptsetup -v luksAddKey "$root_part" /root/cryptlvm.keyfile
+		printf '%s' "${LUKS_PASSWORD}" | cryptsetup -v luksAddKey --pbkdf pbkdf2 "$root_part" /root/cryptlvm.keyfile
 	else
 		echo "Keyfile already registered for ${root_part}, skipping luksAddKey."
 	fi
