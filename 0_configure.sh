@@ -163,7 +163,7 @@ showConfirmation() {
 
 	local encryption distro
 	if [[ "$DISK_ENCRYPT" == "encrypt" ]]; then
-		encryption="LUKS [aes-xts-plain64 256b]"$'\n'"LUKSPASS: ${LUKS_PASSWORD}"
+		encryption="LUKS2 [aes-xts-plain64 256b]"$'\n'"LUKSPASS: ${LUKS_PASSWORD}"
 	else
 		encryption="none"
 	fi
@@ -194,7 +194,7 @@ showConfirmation() {
 
 	gum style \
 		--foreground 255 --border-foreground 39 --border double \
-		--align center --width 53 --margin "1 2" --padding "2 4" \
+		--align left --width 53 --margin "1 2" --padding "2 4" \
 		"$result"
 }
 
