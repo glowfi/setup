@@ -307,6 +307,31 @@ else
 	echo "action already in uca.xml"
 fi
 
+grep -q '<name>Compress with Ark</name>' "$UCA" || sed -i '/<\/actions>/i\
+<action>\
+	<icon>ark</icon>\
+	<name>Compress with Ark</name>\
+	<command>ark --add --changetofirstpath --dialog %F</command>\
+	<description>Create archive from selected files</description>\
+	<patterns>*</patterns>\
+	<directories/>\
+	<audio-files/>\
+	<image-files/>\
+	<other-files/>\
+	<text-files/>\
+	<video-files/>\
+</action>' "$UCA"
+
+grep -q '<name>Extract here with Ark</name>' "$UCA" || sed -i '/<\/actions>/i\
+<action>\
+	<icon>ark</icon>\
+	<name>Extract here with Ark</name>\
+	<command>ark --batch --autodestination --autosubfolder %F</command>\
+	<description>Extract archive(s) into current directory</description>\
+	<patterns>*.zip;*.tar;*.tar.*;*.tgz;*.tbz2;*.txz;*.7z;*.rar</patterns>\
+	<other-files/>\
+</action>' "$UCA"
+
 # bind F4 in accels.scm
 LINE="(gtk_accel_path \"<Actions>/ThunarActions/uca-action-$ID\" \"F4\")"
 touch "$ACCELS"
