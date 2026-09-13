@@ -273,6 +273,9 @@ pip install terminaltexteffects
 cp -r "$HOME/.dotfiles/scripts/screensaver.sh" "$HOME/.local/bin/"
 chmod +x "$HOME/.local/bin/screensaver.sh"
 
+# Copy veila config
+cp -r "$HOME/.dotfiles/configs/veila" "$HOME/.config"
+
 # Thunar open kitty here action menu and shortcut
 UCA="$HOME/.config/Thunar/uca.xml"
 ACCELS="$HOME/.config/Thunar/accels.scm"
