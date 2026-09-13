@@ -73,6 +73,7 @@ else
 	install "openssh-openrc sshguard-openrc x11-ssh-askpass" "pac"
 fi
 deploy_template "sshguard.conf.j2" /etc/sshguard.conf 0644
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
 
 # Blacklist module
 header "Blacklisting modules"
