@@ -11,6 +11,42 @@ INIT_TYPE=$(detect_init)
 CONFIG_FILE=$SCRIPT_DIR/setup.conf
 : >"$CONFIG_FILE" # start with a clean, empty config file every run
 
+# Load gum variable
+BLUE="#1793D1"
+
+# style (boxes/text)
+export GUM_STYLE_FOREGROUND=$BLUE
+export GUM_STYLE_BORDER_FOREGROUND=$BLUE
+
+# input / write
+export GUM_INPUT_PROMPT_FOREGROUND=$BLUE
+export GUM_INPUT_CURSOR_FOREGROUND=$BLUE
+export GUM_INPUT_HEADER_FOREGROUND=$BLUE
+export GUM_WRITE_PROMPT_FOREGROUND=$BLUE
+export GUM_WRITE_CURSOR_FOREGROUND=$BLUE
+export GUM_WRITE_HEADER_FOREGROUND=$BLUE
+
+# choose
+export GUM_CHOOSE_CURSOR_FOREGROUND=$BLUE
+export GUM_CHOOSE_HEADER_FOREGROUND=$BLUE
+export GUM_CHOOSE_SELECTED_FOREGROUND=$BLUE
+
+# filter
+export GUM_FILTER_PROMPT_FOREGROUND=$BLUE
+export GUM_FILTER_INDICATOR_FOREGROUND=$BLUE
+export GUM_FILTER_MATCH_FOREGROUND=$BLUE
+export GUM_FILTER_HEADER_FOREGROUND=$BLUE
+export GUM_FILTER_SELECTED_PREFIX_FOREGROUND=$BLUE
+
+# confirm
+export GUM_CONFIRM_PROMPT_FOREGROUND=$BLUE
+export GUM_CONFIRM_SELECTED_BACKGROUND=$BLUE
+export GUM_CONFIRM_SELECTED_FOREGROUND=0
+
+# spin
+export GUM_SPIN_SPINNER_FOREGROUND=$BLUE
+export GUM_SPIN_TITLE_FOREGROUND=$BLUE
+
 set_config() {
 	printf '%s=%q\n' "$1" "$2" >>"$CONFIG_FILE"
 }
@@ -163,7 +199,7 @@ showConfirmation() {
 
 	local encryption distro
 	if [[ "$DISK_ENCRYPT" == "encrypt" ]]; then
-		encryption="LUKS2 [aes-xts-plain64 256b]"$'\n'"LUKSPASS: ${LUKS_PASSWORD}"
+		encryption="LUKS2 [aes-xts-plain64 256b]"$'\n'"disk password: ${LUKS_PASSWORD}"
 	else
 		encryption="none"
 	fi
