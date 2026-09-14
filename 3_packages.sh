@@ -80,7 +80,7 @@ install "kdenlive obs-studio" "pac"
 # Android Utilities
 header "Installing android utilities"
 install "android-tools scrcpy mediainfo perl-image-exiftool inotify-tools libnotify gum" "pac"
-install "kdeconnect" "pac"
+install "localsend-bin" "yay"
 
 # Document editing/Writing apps
 header "Installing Document editing/Writing apps"
