@@ -20,7 +20,7 @@ install "mangowm-git" "yay"
 # Core
 header "Installing core packages"
 install "wl-clipboard cliphist" "pac"
-install "xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac"
+install "xdg-user-dirs xdg-user-dirs-gtk xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac"
 install "hyprpolkitagent" "pac"
 
 # Display
@@ -216,6 +216,7 @@ done
 
 # Update user dirs
 xdg-user-dirs-update
+xdg-user-dirs-gtk-update
 
 # Remove kwallet
 sudo -u "$USER" kwriteconfig6 --file kwalletrc --group 'Wallet' --key 'Enabled' 'false'
