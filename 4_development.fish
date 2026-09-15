@@ -61,6 +61,9 @@ end
 
 curl -fsSL https://bun.sh/install | bash
 
+# Zig
+install "zig zls" pac
+
 # Rust
 header "Installing Rust"
 
