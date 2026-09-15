@@ -1,23 +1,23 @@
 # setup
 
-Opinionated Arch/Artix installer. Boots from live ISO to a hardened,
+Streamlined Arch/Artix installer. Boots from live ISO to a hardened,
 ready-to-use KDE or MangoWC desktop in two scripts.
 
 ![Coverpic](./pacman.png)
 
 ## What you get
 
-- **Arch** (systemd) or **Artix** (OpenRC) — auto-detected, same script
+- **Arch** (systemd) or **Artix** (OpenRC) - auto-detected, same script
 - Btrfs + zstd, zram, optional **LUKS full-disk encryption**
 - Secure Boot, linux-zen kernel
 - AppArmor, dnscrypt-proxy, nftables firewall, hardened SSH & browser
 - Timeshift snapshots with grub-btrfs boot entries
-- KDE Plasma or MangoWC, fully configured — tiling, bar, screensaver,
+- KDE Plasma or MangoWC, fully configured - tiling, bar, screensaver,
   power management, keybindings
 
 ## Install
 
-**1 — Base system** (from the live ISO, with internet):
+**1. Base system** (from the live ISO, with internet):
 
 ```sh
 pacman -Sy archlinux-keyring git
@@ -25,7 +25,7 @@ git clone https://github.com/glowfi/setup
 ./setup/run_1.sh
 ```
 
-**2 — Desktop** (reboot, log in as your new user):
+**2. Desktop** (reboot, log in as your new user):
 
 ```sh
 git clone https://github.com/glowfi/setup
