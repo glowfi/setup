@@ -102,7 +102,7 @@ pkgs=(
 	tokei hyperfine
 )
 if [[ "$DISTRO_TYPE" == "arch" ]]; then
-	pkgs+=(networkmanager syslog-ng logrotate)
+	pkgs+=(networkmanager logrotate)
 else
 	pkgs+=(
 		syslog-ng-openrc networkmanager-openrc backlight-openrc openssh-openrc
