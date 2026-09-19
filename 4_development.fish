@@ -207,7 +207,7 @@ set scripts \
     send.sh \
     dir2clip.sh \
     clipmenu.sh \
-    kdcapp.sh
+    netps.sh
 
 set SCRIPTS_SRC_DIR "$HOME/.dotfiles/scripts"
 set SCRIPTS_DST_DIR "$HOME/.local/bin"
