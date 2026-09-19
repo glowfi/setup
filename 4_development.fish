@@ -65,16 +65,16 @@ curl -fsSL https://bun.sh/install | bash
 header "Installing Zig"
 
 set arch (uname -m)-linux
-set ver (curl -s https://ziglang.org/download/index.json | jq -r 'del(.master) | keys[]' | sort -V | tail -1)
+set ver (curl https://ziglang.org/download/index.json | jq -r 'del(.master) | keys[]' | sort -V | tail -1)
 set zig_url https://ziglang.org/download/$ver/zig-$arch-$ver.tar.xz
-set zls_url (curl -s "https://releases.zigtools.org/v1/zls/select-version?zig_version=$ver&compatibility=only-runtime" | jq -r ".\"$arch\".tarball")
+set zls_url (curl "https://releases.zigtools.org/v1/zls/select-version?zig_version=$ver&compatibility=only-runtime" | jq -r ".\"$arch\".tarball")
 
 mkdir -p ~/.local/bin ~/.local/lib
 set tmp (mktemp -d)
-curl -sL $zig_url | tar -xJ -C $tmp --strip-components=1
+curlL $zig_url | tar -xJ -C $tmp --strip-components=1
 mv $tmp/zig ~/.local/bin/zig
 rm -rf ~/.local/lib/zig; and mv $tmp/lib ~/.local/lib/zig
-curl -sL $zls_url | tar -xJ -C ~/.local/bin zls
+curlL $zls_url | tar -xJ -C ~/.local/bin zls
 
 # Rust
 header "Installing Rust"
