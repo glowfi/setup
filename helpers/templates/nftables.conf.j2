@@ -82,6 +82,10 @@ table inet my_table {
 		iifname "br0" accept                   comment "QEMU VMs → out"
 		oifname "br0" accept                   comment "→ QEMU VMs"
 		iifname "tailscale0" accept            comment "subnet routes / exit node, if ever enabled"
+		iifname "docker0" accept               comment "containers -> out"
+        oifname "docker0" accept               comment "-> containers"
+        iifname "br-docker" accept             comment "compose networks -> out"
+        oifname "br-docker" accept             comment "-> compose networks"
 		mark 1 accept                          comment "docker & libvirt mark their own traffic 1"
 	}
 
