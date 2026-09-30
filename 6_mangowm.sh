@@ -164,8 +164,6 @@ chmod +x "$HOME/.local/bin/windowshot.sh"
 cp -r "$HOME/.dotfiles/scripts/wall_mango.sh" "$HOME/.local/bin/wall.sh"
 chmod +x "$HOME/.local/bin/wall.sh"
 
-cp -r $HOME/.dotfiles/configs/zathura $HOME/.config
-
 # Build bemenu
 header "Installing bemenu"
 install "bemenu-wayland" "pac"
@@ -173,19 +171,8 @@ install "bemenu-wayland" "pac"
 # Configure mimetype
 header "Configuring mimetype"
 
-printf '%s\n' \
-	"[Desktop Entry]" \
-	"Version=1.0" \
-	"Type=Application" \
-	"Name=Zathura" \
-	"Comment=A minimalistic PDF viewer" \
-	"Comment[de]=Ein minimalistischer PDF-Betrachter" \
-	"Exec=zathura %%f" \
-	"Terminal=false" \
-	"Categories=Office;Viewer;" \
-	"MimeType=application/pdf;" |
-	sudo tee /usr/share/applications/zathura.desktop >/dev/null
-xdg-mime default zathura.desktop application/pdf
+cp -r $HOME/.dotfiles/configs/zathura $HOME/.config
+xdg-mime default org.pwmt.zathura.desktop application/pdf
 
 xdg-mime default swayimg.desktop image/png
 xdg-mime default swayimg.desktop image/jpg
