@@ -147,11 +147,11 @@ mkdir -p "${HOME}/.config/fish"
 cp -r "${HOME}/.dotfiles/configs/fish/" "${HOME}/.config"
 
 header "Setting up shell rc files"
-for f in .bashrc .inputrc .vimrc; do
+for f in .bashrc .inputrc; do
 	cp "${HOME}/.dotfiles/configs/${f}" "${HOME}/${f}"
 done
 
-for f in .bashrc .inputrc .vimrc; do
+for f in .bashrc .inputrc; do
 	sudo cp "${HOME}/${f}" "/root/${f}"
 done
 
