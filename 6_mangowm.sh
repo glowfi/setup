@@ -151,8 +151,6 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 gsettings set org.gnome.desktop.interface font-name 'Sans 10'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-cp -r $HOME/.dotfiles/configs/.Xresources $HOME
-
 # Copy mango config
 header "Copy mango configuration"
 cp -r $HOME/.dotfiles/configs/mango $HOME/.config

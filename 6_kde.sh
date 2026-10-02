@@ -101,7 +101,6 @@ cp -r "$HOME/.dotfiles/scripts/wall.sh" "$HOME/.local/bin"
 # Theme
 header "Installing theme packages and configuring theming"
 install "breeze breeze-gtk kde-gtk-config kdecoration" "pac"
-cp -r $HOME/.dotfiles/configs/.Xresources $HOME
 
 sudo -u "$USER" kwriteconfig6 --file kdeglobals --group KDE --key LookAndFeelPackage org.kde.breezedark.desktop
 getReq=$(cat /usr/lib/sddm/sddm.conf.d/default.conf | grep -n "Current=" | head -1 | xargs)
