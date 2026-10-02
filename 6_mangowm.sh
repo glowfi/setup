@@ -20,7 +20,7 @@ install "mangowm-git" "yay"
 # Core
 header "Installing core packages"
 install "wl-clipboard cliphist" "pac"
-install "xdg-user-dirs xdg-user-dirs-gtk xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils" "pac"
+install "xdg-user-dirs xdg-user-dirs-gtk xdg-desktop-portal xdg-desktop-portal-wlr xdg-utils xdg-terminal-exec" "pac"
 install "hyprpolkitagent" "pac"
 
 # Display
@@ -297,6 +297,9 @@ if ! grep -q "Open Kitty Here" "$UCA"; then
 else
 	echo "action already in uca.xml"
 fi
+
+# add kitty as terminal exec
+echo 'kitty.desktop' >~/.config/xdg-terminals.list
 
 # bind F4 in accels.scm
 LINE="(gtk_accel_path \"<Actions>/ThunarActions/uca-action-$ID\" \"F4\")"
