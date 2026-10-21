@@ -15,7 +15,7 @@ fi
 
 # Window Manager
 header "Installing Mango WM"
-install "mangowm-git" "yay"
+install "mangowm" "pac"
 
 # Core
 header "Installing core packages"
