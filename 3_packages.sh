@@ -94,7 +94,7 @@ install "rnote" "pac"
 # Craft Apps
 craft_install() {
 	local app ver url out
-	local apps=(photocraft filmcraft pdfcraft wordcraft deckcraft gridcraft)
+	local apps=(photocraft vectorcraft filmcraft pdfcraft wordcraft deckcraft gridcraft)
 	local base="https://github.com/storytold"
 	local bin="$HOME/.local/bin"
 	local arch="linux-x86_64"
