@@ -59,23 +59,26 @@ else
 fi
 
 # Video / Image
-header "Installing video packages"
+header "Installing cli video packages"
 install "ffmpeg yt-dlp mujs mpv" "pac"
 
-header "Installing image tools"
+header "Installing cli image tools"
 install "imagemagick ffmpegthumbnailer" "pac"
 
-header "Setting up GIMP with PhotoGIMP"
-install "gimp" "pac"
-gimp_conf="${HOME}/.config/GIMP/3.0"
-rm -rf "$gimp_conf"
-mkdir -p "$gimp_conf"
-git_clone https://github.com/Diolinux/PhotoGIMP "${gimp_conf}/PhotoGIMP" 1
-cp -r "${gimp_conf}/PhotoGIMP/.config/GIMP/3.0/." "$gimp_conf/"
-rm -rf "${gimp_conf}/PhotoGIMP" "${gimp_conf}/filters" "${gimp_conf}/plug-ins" "${gimp_conf}/splashes"
+# header "Setting up GIMP with PhotoGIMP"
+# install "gimp" "pac"
+# gimp_conf="${HOME}/.config/GIMP/3.0"
+# rm -rf "$gimp_conf"
+# mkdir -p "$gimp_conf"
+# git_clone https://github.com/Diolinux/PhotoGIMP "${gimp_conf}/PhotoGIMP" 1
+# cp -r "${gimp_conf}/PhotoGIMP/.config/GIMP/3.0/." "$gimp_conf/"
+# rm -rf "${gimp_conf}/PhotoGIMP" "${gimp_conf}/filters" "${gimp_conf}/plug-ins" "${gimp_conf}/splashes"
 
-header "Installing video apps"
-install "kdenlive obs-studio" "pac"
+# header "Installing video apps"
+# install "kdenlive" "pac"
+
+# header "Installing screen recording apps"
+# install "obs-studio" "pac"
 
 # Android Utilities
 header "Installing android utilities"
@@ -83,10 +86,30 @@ install "android-tools scrcpy mediainfo perl-image-exiftool inotify-tools libnot
 install "localsend-bin" "yay"
 
 # Document editing/Writing apps
-header "Installing Document editing/Writing apps"
-install "onlyoffice-bin" "yay"
+header "Installing Document editing/Writing apps/tools"
+# install "onlyoffice-bin" "yay"
 install "tectonic" "pac"
 install "rnote" "pac"
+
+# Craft Apps
+craft_install() {
+	local app ver url out
+	local base="https://github.com/storytold"
+	local bin="$HOME/.local/bin"
+	local arch="linux-x86_64"
+
+	header "Installing craft apps"
+	mkdir -p "$bin"
+	for app in photocraft filmcraft pdfcraft wordcraft deckcraft gridcraft; do
+		ver=$(curl -fsSI "$base/$app/releases/latest" |
+			sed -n 's#^location: .*/tag/v\([^[:space:]]*\).*#\1#Ip' | tr -d '\r')
+		url="$base/$app/releases/download/v$ver/$app-$ver-$arch.AppImage"
+		out="$bin/$app"
+		echo "Downloading $app $ver"
+		curl -fL --progress-bar -o "$out" "$url" && chmod +x "$out"
+	done
+}
+craft_install
 
 # Terminal tomfoolery
 header "Installing terminal fun packages"
