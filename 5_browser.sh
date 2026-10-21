@@ -93,7 +93,7 @@ echo "$merged" | sudo tee "$policies_file" >/dev/null
 ###### Arkenfox Profile ######
 
 # Get Default-release Location
-findLocation=$(find "$HOME/.config/librewolf" | grep -E "default-default" | head -1)
+findLocation=$(find "$HOME/.config/librewolf" | grep -E "default-release" | head -1)
 
 (
 	cd "$findLocation"
