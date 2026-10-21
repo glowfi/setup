@@ -121,12 +121,14 @@ install "grub efibootmgr os-prober" "pac"
 
 header "Configuring GRUB defaults"
 if [[ "$DISK_ENCRYPT" == "encrypt" ]]; then
-	grep -q '^GRUB_ENABLE_CRYPTODISK=' /etc/default/grub &&
-		sed -i 's/^GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub ||
-		echo "GRUB_ENABLE_CRYPTODISK=y" >>/etc/default/grub
+	sed -i '/^#\?GRUB_ENABLE_CRYPTODISK=/d' /etc/default/grub
+	echo 'GRUB_ENABLE_CRYPTODISK=y' >>/etc/default/grub
 fi
+
 sed -i 's/ quiet//' /etc/default/grub
 sed -i "s/^GRUB_GFXMODE=.*/GRUB_GFXMODE=1920x1080/" /etc/default/grub
+sed -i '/^#\?GRUB_DISABLE_BOOTNEXT=/d' /etc/default/grub
+echo 'GRUB_DISABLE_BOOTNEXT=true' >>/etc/default/grub
 
 # Configure MODULES, FILES, HOOKS in mkinitcpio
 header "Configuring mkinitcpio"
@@ -182,7 +184,7 @@ header "Installing GRUB"
 if [[ -f /boot/efi/EFI/GRUB/grubx64.efi ]]; then
 	echo "GRUB EFI already installed, skipping."
 else
-	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck --modules=tpm --disable-shim-lock
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck --disable-shim-lock --removable
 fi
 
 # Regenerate initramfs
