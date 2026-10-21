@@ -94,13 +94,13 @@ install "rnote" "pac"
 # Craft Apps
 craft_install() {
 	local app ver url out
+	local apps=(photocraft filmcraft pdfcraft wordcraft deckcraft gridcraft)
 	local base="https://github.com/storytold"
 	local bin="$HOME/.local/bin"
 	local arch="linux-x86_64"
 
-	header "Installing craft apps"
 	mkdir -p "$bin"
-	for app in photocraft filmcraft pdfcraft wordcraft deckcraft gridcraft; do
+	for app in "${apps[@]}"; do
 		ver=$(curl -fsSI "$base/$app/releases/latest" |
 			sed -n 's#^location: .*/tag/v\([^[:space:]]*\).*#\1#Ip' | tr -d '\r')
 		url="$base/$app/releases/download/v$ver/$app-$ver-$arch.AppImage"
