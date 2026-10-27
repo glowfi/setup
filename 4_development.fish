@@ -71,10 +71,10 @@ set zls_url (curl "https://releases.zigtools.org/v1/zls/select-version?zig_versi
 
 mkdir -p ~/.local/bin ~/.local/lib
 set tmp (mktemp -d)
-curlL $zig_url | tar -xJ -C $tmp --strip-components=1
+curl $zig_url | tar -xJ -C $tmp --strip-components=1
 mv $tmp/zig ~/.local/bin/zig
 rm -rf ~/.local/lib/zig; and mv $tmp/lib ~/.local/lib/zig
-curlL $zls_url | tar -xJ -C ~/.local/bin zls
+curl $zls_url | tar -xJ -C ~/.local/bin zls
 
 # Rust
 header "Installing Rust"
